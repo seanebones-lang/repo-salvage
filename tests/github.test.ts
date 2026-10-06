@@ -1,7 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { lastHumanCommit, snapshotRepo, type GhRepo } from "@/lib/github";
+import { lastHumanCommit, snapshotRepo, resolveSourceCommit, isPublicRepo, type GhRepo } from "@/lib/github";
 
 const repo = { full_name: "me/x", default_branch: "main" } as GhRepo;
+const sha = "a".repeat(40);
 const commit = (date: string, message: string, login = "me", type = "User") => ({
   commit: { author: { date }, message },
   author: { login, type },
@@ -53,7 +54,7 @@ describe("snapshotRepo", () => {
       fetched.push(url);
       return new Response("content");
     }));
-    const snap = await snapshotRepo("t", repo);
+    const snap = await snapshotRepo("t", repo, sha);
     expect(snap.tree).toEqual(["README.md", "package.json", "src/auth.ts"]);
     expect(snap.files.map((f) => f.path).sort()).toEqual(["README.md", "package.json", "src/auth.ts"]);
     expect(fetched.some((u) => u.includes("node_modules"))).toBe(false);
@@ -61,6 +62,60 @@ describe("snapshotRepo", () => {
 
   it("gives a clear error for unreadable (empty) repos", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => json({}, 409)));
-    await expect(snapshotRepo("t", repo)).rejects.toThrow(/empty/);
+    await expect(snapshotRepo("t", repo, sha)).rejects.toThrow(/empty/);
+  });
+});
+
+describe("immutable snapshots and visibility", () => {
+  it("retains all known paths and sampled paths beyond a 300-file prompt", async () => {
+    const tree = Array.from({ length: 350 }, (_, i) => ({ path: `src/f${i}.ts`, type: "blob", size: i === 349 ? 9000 : 300 }));
+    const urls: string[] = [];
+    vi.stubGlobal("fetch", vi.fn(async (url: string, init: RequestInit) => {
+      urls.push(url);
+      expect(init.headers ?? {}).not.toHaveProperty("Authorization");
+      return url.includes("/git/trees/") ? json({ tree }) : new Response("source");
+    }));
+    const snap = await snapshotRepo("secret", repo, sha);
+    expect(snap.knownPaths).toHaveLength(350);
+    expect(snap.tree).toHaveLength(300);
+    expect(snap.tree).toContain("src/f349.ts");
+    expect(snap.files.some((f) => f.path === "src/f349.ts")).toBe(true);
+    expect(urls.every((u) => u.includes(sha))).toBe(true);
+  });
+
+  it("rejects truncated trees, missing samples and failed reads", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => json({ tree: [], truncated: true })));
+    await expect(snapshotRepo("t", repo, sha)).rejects.toThrow(/incomplete/);
+    vi.stubGlobal("fetch", vi.fn(async () => json({ tree: [] })));
+    await expect(snapshotRepo("t", repo, sha)).rejects.toThrow(/No readable/);
+    vi.stubGlobal("fetch", vi.fn(async (url: string) => url.includes("/git/trees/") ? json({ tree: [{ path: "README.md", type: "blob" }] }) : json({}, 404)));
+    await expect(snapshotRepo("t", repo, sha)).rejects.toThrow(/sampled file/);
+  });
+
+  it("resolves the branch once and pins commit history", async () => {
+    const urls: string[] = [];
+    vi.stubGlobal("fetch", vi.fn(async (url: string) => {
+      urls.push(url);
+      return url.endsWith("/commits/main") ? json({ sha }) : json([]);
+    }));
+    expect(await resolveSourceCommit("t", repo)).toBe(sha);
+    await lastHumanCommit("t", repo, sha);
+    expect(urls[1]).toContain(`sha=${sha}`);
+  });
+
+  it("hides private, deleted, transferred and unavailable repositories anonymously", async () => {
+    for (const body of [{ id: 1, private: true, owner: { id: 42 } }, { id: 1, private: false, owner: { id: 99 } }]) {
+      vi.stubGlobal("fetch", vi.fn(async () => json(body)));
+      expect(await isPublicRepo(1, 42)).toBe(false);
+    }
+    vi.stubGlobal("fetch", vi.fn(async () => json({}, 404)));
+    expect(await isPublicRepo(1, 42)).toBe(false);
+    vi.stubGlobal("fetch", vi.fn(async () => { throw new Error("offline"); }));
+    expect(await isPublicRepo(1, 42)).toBe(false);
+    vi.stubGlobal("fetch", vi.fn(async (_url: string, init: RequestInit) => {
+      expect(init.headers ?? {}).not.toHaveProperty("Authorization");
+      return json({ id: 1, private: false, owner: { id: 42 } });
+    }));
+    expect(await isPublicRepo(1, 42)).toBe(true);
   });
 });

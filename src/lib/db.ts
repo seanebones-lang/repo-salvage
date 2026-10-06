@@ -27,6 +27,9 @@ export type Listing = {
   summary: Summary;
   used_count: number;
   created_at: string;
+  source_sha: string | null;
+  analyzed_at: string | null;
+  summary_model: string | null;
 };
 
 type Row = Omit<Listing, "summary"> & { summary_json: string };
@@ -62,6 +65,10 @@ function open() {
     CREATE TABLE IF NOT EXISTS reports (id INTEGER PRIMARY KEY AUTOINCREMENT, listing_id INTEGER NOT NULL, reason TEXT NOT NULL, at TEXT NOT NULL DEFAULT (datetime('now')));
     CREATE TABLE IF NOT EXISTS summary_runs (owner_id INTEGER NOT NULL, at TEXT NOT NULL DEFAULT (datetime('now')));
   `);
+  const columns = new Set((db.prepare("PRAGMA table_info(listings)").all() as { name: string }[]).map((c) => c.name));
+  for (const column of ["source_sha", "analyzed_at", "summary_model"]) {
+    if (!columns.has(column)) db.exec(`ALTER TABLE listings ADD COLUMN ${column} TEXT`);
+  }
   return db;
 }
 
@@ -77,14 +84,14 @@ export function upsertListing(l: Omit<Listing, "id" | "used_count" | "created_at
   db()
     .prepare(
       `INSERT INTO listings (github_repo_id, owner_login, owner_id, name, full_name, url, description, language,
-        stars, forks, license, last_human_commit, owner_note, summary_json)
+        stars, forks, license, last_human_commit, owner_note, summary_json, source_sha, analyzed_at, summary_model)
        VALUES (@github_repo_id, @owner_login, @owner_id, @name, @full_name, @url, @description, @language,
-        @stars, @forks, @license, @last_human_commit, @owner_note, @summary_json)
+        @stars, @forks, @license, @last_human_commit, @owner_note, @summary_json, @source_sha, @analyzed_at, @summary_model)
        ON CONFLICT(github_repo_id) DO UPDATE SET
-        owner_login=excluded.owner_login, name=excluded.name, full_name=excluded.full_name, url=excluded.url,
+        owner_id=excluded.owner_id, owner_login=excluded.owner_login, name=excluded.name, full_name=excluded.full_name, url=excluded.url,
         description=excluded.description, language=excluded.language, stars=excluded.stars, forks=excluded.forks,
         license=excluded.license, last_human_commit=excluded.last_human_commit, owner_note=excluded.owner_note,
-        summary_json=excluded.summary_json`,
+        summary_json=excluded.summary_json, source_sha=excluded.source_sha, analyzed_at=excluded.analyzed_at, summary_model=excluded.summary_model`,
     )
     .run({ ...cols, summary_json: JSON.stringify(summary) });
 }

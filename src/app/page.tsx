@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { facets, searchListings } from "@/lib/db";
+import { publicSearch } from "@/lib/public-listings";
 
 export const dynamic = "force-dynamic";
 
@@ -7,8 +7,12 @@ type SP = Promise<{ q?: string; language?: string; license?: string }>;
 
 export default async function Home({ searchParams }: { searchParams: SP }) {
   const { q, language, license } = await searchParams;
-  const listings = searchListings({ q, language, license });
-  const f = facets();
+  const listings = await publicSearch({ q, language, license });
+  const all = q || language || license ? await publicSearch({}) : listings;
+  const f = {
+    languages: [...new Set(all.flatMap((l) => l.language ? [l.language] : []))].sort(),
+    licenses: [...new Set(all.flatMap((l) => l.license ? [l.license] : []))].sort(),
+  };
   return (
     <>
       <h1>Find parts worth salvaging</h1>

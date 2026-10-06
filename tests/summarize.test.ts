@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseSummary } from "@/lib/summarize";
+import { parseSummary, verifiedSummary } from "@/lib/summarize";
 
 const tree = ["src/jwt.ts", "src/db.ts", "README.md"];
 
@@ -47,5 +47,18 @@ describe("parseSummary sanitizing", () => {
     expect(out.overview.length).toBeLessThanOrEqual(400);
     expect(out.reusable_pieces[0].name).not.toMatch(/http|\[|\]/);
     expect(out.reusable_pieces[0].description).not.toMatch(/www|`/);
+  });
+});
+
+describe("verified generation", () => {
+  it("validates against the complete tree rather than the prompt prefix", () => {
+    const known = Array.from({ length: 350 }, (_, i) => `src/f${i}.ts`);
+    const result = verifiedSummary(JSON.stringify({ overview: "Parser", reusable_pieces: [{ name: "parse", path: known[349], description: "Parses input" }] }), known);
+    expect(result.reusable_pieces[0].path).toBe(known[349]);
+  });
+  it("rejects empty, invalid-path and sanitized-empty successes", () => {
+    expect(() => verifiedSummary("{}", tree)).toThrow(/no verified/);
+    expect(() => verifiedSummary(JSON.stringify({ overview: "x", reusable_pieces: [{ name: "x", path: "absent", description: "x" }] }), tree)).toThrow(/no verified/);
+    expect(() => verifiedSummary(JSON.stringify({ overview: "x", reusable_pieces: [{ name: "https://example.com", path: tree[0], description: "x" }] }), tree)).toThrow(/no verified/);
   });
 });

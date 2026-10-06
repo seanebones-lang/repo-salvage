@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getListing } from "@/lib/db";
+import { getPublicListing } from "@/lib/public-listings";
 import UsedButton from "./used-button";
 import ReportButton from "./report-button";
 
@@ -7,9 +7,9 @@ export const dynamic = "force-dynamic";
 
 export default async function ListingPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const l = getListing(Number(id));
+  const l = await getPublicListing(Number(id));
   if (!l) notFound();
-  const blobBase = `${l.url}/blob/HEAD/`;
+  const blobBase = l.source_sha ? `${l.url}/blob/${l.source_sha}/` : null;
   return (
     <>
       <h1>{l.full_name}</h1>
@@ -24,7 +24,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
         {l.summary.reusable_pieces.map((p) => (
           <li key={p.path + p.name}>
             <strong>{p.name}</strong> — {p.description}{" "}
-            <a href={blobBase + p.path.split("/").map(encodeURIComponent).join("/")} target="_blank" rel="noreferrer"><code>{p.path}</code></a>
+            {blobBase ? <a href={blobBase + p.path.split("/").map(encodeURIComponent).join("/")} target="_blank" rel="noreferrer"><code>{p.path}</code></a> : <code>{p.path}</code>}
           </li>
         ))}
       </ul>
@@ -33,6 +33,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
         License: {l.license ?? "none declared (check before reusing)"} · ★ {l.stars} · forks {l.forks} · last human commit{" "}
         {l.last_human_commit?.slice(0, 10) ?? "unknown"}
       </p>
+      <p className="muted">{l.source_sha ? `Analyzed ${l.analyzed_at ?? "unknown date"} · ${l.summary_model ?? "unknown model"} · commit ${l.source_sha}` : "Legacy summary: source commit unknown. Owner should re-summarize."}</p>
       <p className="muted">AI-generated from a sample of the repo. Verify before relying on it.</p>
       <div className="row">
         <a href={l.url} target="_blank" rel="noreferrer"><button>Open on GitHub</button></a>
