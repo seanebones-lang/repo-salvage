@@ -1,3 +1,4 @@
+<img width="1168" height="784" alt="VVMR1" src="https://github.com/user-attachments/assets/51c32ebe-8aa0-4bde-8186-9d468bb57a23" />
 # Repo Salvage
 
 Developers list their abandoned public GitHub repos; others browse them and lift the reusable parts.
