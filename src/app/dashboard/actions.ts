@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import { getSession } from "@/auth";
 import { deleteListing, getListing, takeSummaryRun, upsertListing } from "@/lib/db";
-import { getOwnedPublicRepo, lastHumanCommit, snapshotRepo } from "@/lib/github";
+import { getOwnedPublicRepo, lastHumanCommit, snapshotRepo, resolveSourceCommit, isPublicRepo } from "@/lib/github";
 import { summarizeRepo } from "@/lib/summarize";
 
 export type ActionState = { error?: string; ok?: string } | null;
@@ -15,11 +15,14 @@ export async function salvage(_prev: ActionState, form: FormData): Promise<Actio
   if (!takeSummaryRun(session.ghId)) return { error: "Daily summary limit reached. Try again tomorrow." };
   try {
     const repo = await getOwnedPublicRepo(session.accessToken, repoId, session.login);
+    const sourceSha = await resolveSourceCommit(session.accessToken, repo);
     const [snap, last] = await Promise.all([
-      snapshotRepo(session.accessToken, repo),
-      lastHumanCommit(session.accessToken, repo),
+      snapshotRepo(session.accessToken, repo, sourceSha),
+      lastHumanCommit(session.accessToken, repo, sourceSha),
     ]);
-    const summary = await summarizeRepo(repo, snap, note);
+    if (!(await isPublicRepo(repo.id, session.ghId))) throw new Error("Repository is no longer public or owned by you");
+    const { summary, model } = await summarizeRepo(repo, snap, note);
+    if (!(await isPublicRepo(repo.id, session.ghId))) throw new Error("Repository is no longer public or owned by you");
     upsertListing({
       github_repo_id: repo.id,
       owner_login: repo.owner.login,
@@ -35,6 +38,9 @@ export async function salvage(_prev: ActionState, form: FormData): Promise<Actio
       last_human_commit: last,
       owner_note: note,
       summary,
+      source_sha: sourceSha,
+      analyzed_at: new Date().toISOString(),
+      summary_model: model,
     });
     revalidatePath("/");
     revalidatePath("/dashboard");

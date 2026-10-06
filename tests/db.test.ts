@@ -19,6 +19,9 @@ const base = (over: Partial<Parameters<typeof import("@/lib/db").upsertListing>[
   license: "MIT",
   last_human_commit: "2023-01-01T00:00:00Z",
   owner_note: "auth middleware is solid",
+  source_sha: "a".repeat(40),
+  analyzed_at: "2026-10-06T18:00:00Z",
+  summary_model: "test-model",
   summary: {
     overview: "An auth lib",
     languages: ["TypeScript"],
@@ -90,5 +93,20 @@ describe("reports", () => {
     m.addReport(id, "spam");
     const n = (m.db().prepare("SELECT COUNT(*) AS n FROM reports WHERE listing_id = ?").get(id) as { n: number }).n;
     expect(n).toBe(1);
+  });
+});
+
+describe("ownership and provenance", () => {
+  it("reconciles transferred ownership and preserves usage while refreshing provenance", () => {
+    m.upsertListing(base({ github_repo_id: 50 }));
+    const id = m.listingsByOwner(42).find((l) => l.github_repo_id === 50)!.id;
+    m.incrementUsed(id);
+    m.upsertListing(base({ github_repo_id: 50, owner_id: 99, owner_login: "new", source_sha: "b".repeat(40), summary_model: "actual-model" }));
+    expect(m.listingsByOwner(42).some((l) => l.id === id)).toBe(false);
+    expect(m.listingsByOwner(99)[0]).toMatchObject({ id, used_count: 1, source_sha: "b".repeat(40), summary_model: "actual-model" });
+    m.deleteListing(id, 42);
+    expect(m.getListing(id)).not.toBeNull();
+    m.deleteListing(id, 99);
+    expect(m.getListing(id)).toBeNull();
   });
 });

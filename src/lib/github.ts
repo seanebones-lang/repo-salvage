@@ -13,6 +13,7 @@ export type GhRepo = {
   default_branch: string;
   fork: boolean;
   archived: boolean;
+  private: boolean;
   license: { spdx_id: string | null; name: string } | null;
   owner: { login: string; id: number };
 };
@@ -20,7 +21,7 @@ export type GhRepo = {
 async function gh<T>(token: string, path: string): Promise<T> {
   const res = await fetch(`${API}${path}`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       Accept: "application/vnd.github+json",
       "X-GitHub-Api-Version": "2022-11-28",
     },
@@ -45,21 +46,40 @@ export async function listPublicRepos(token: string): Promise<GhRepo[]> {
 }
 
 export async function getOwnedPublicRepo(token: string, id: number, ownerLogin: string): Promise<GhRepo> {
-  const repos = await listPublicRepos(token);
-  const repo = repos.find((r) => r.id === id && r.owner.login === ownerLogin);
-  if (!repo) throw new Error("Repo not found among your public repositories");
+  const repo = await gh<GhRepo>(token, `/repositories/${id}`);
+  if (repo.private || repo.fork || repo.owner.login !== ownerLogin || !(await isPublicRepo(id, repo.owner.id))) {
+    throw new Error("Repo is not a public repository owned by you");
+  }
   return repo;
+}
+
+/** Anonymous checks fail closed: authenticated access must never publish private data. */
+export async function isPublicRepo(id: number, ownerId: number): Promise<boolean> {
+  try {
+    const res = await fetch(`${API}/repositories/${id}`, {
+      headers: { Accept: "application/vnd.github+json" }, cache: "no-store",
+    });
+    if (!res.ok) return false;
+    const repo = await res.json() as GhRepo;
+    return repo.id === id && repo.private === false && repo.owner.id === ownerId;
+  } catch { return false; }
+}
+
+export async function resolveSourceCommit(token: string, repo: GhRepo): Promise<string> {
+  const commit = await gh<{ sha: string }>(token, `/repos/${repo.full_name}/commits/${encodeURIComponent(repo.default_branch)}`);
+  if (!/^[a-f0-9]{40}$/.test(commit.sha)) throw new Error("Could not resolve source commit");
+  return commit.sha;
 }
 
 const BOT = /(\[bot\]|dependabot|renovate|github-actions|greenkeeper)/i;
 const NOISE = /^(merge |bump |chore\(deps|update dependency)/i;
 
 /** Date of the most recent commit that is not by a bot and not obvious dependency noise. */
-export async function lastHumanCommit(token: string, repo: GhRepo): Promise<string | null> {
+export async function lastHumanCommit(token: string, repo: GhRepo, sourceSha?: string): Promise<string | null> {
   type C = { commit: { author: { date: string } | null; message: string }; author: { type: string; login: string } | null };
   let commits: C[];
   try {
-    commits = await gh<C[]>(token, `/repos/${repo.full_name}/commits?per_page=50`);
+    commits = await gh<C[]>(token, `/repos/${repo.full_name}/commits?per_page=50${sourceSha ? `&sha=${sourceSha}` : ""}`);
   } catch {
     return null; // empty repos return 409
   }
@@ -77,16 +97,19 @@ const SKIP_FILE = /(\.(png|jpe?g|gif|svg|ico|woff2?|ttf|lock|min\.js|map|pdf|zip
 const MANIFEST = /(^|\/)(package\.json|pyproject\.toml|requirements\.txt|Cargo\.toml|go\.mod|Gemfile|composer\.json|pom\.xml|build\.gradle|Dockerfile|docker-compose\.ya?ml)$/;
 const CODE = /\.(ts|tsx|js|jsx|mjs|py|go|rs|rb|java|kt|swift|php|cs|c|cpp|h|sh|sql|vue|svelte)$/i;
 
-export type RepoSnapshot = { tree: string[]; files: { path: string; content: string }[] };
+export type RepoSnapshot = { tree: string[]; knownPaths: string[]; sourceSha: string; files: { path: string; content: string }[] };
 
 /** Tree listing plus a bounded sample of manifests, README and source files. */
-export async function snapshotRepo(token: string, repo: GhRepo): Promise<RepoSnapshot> {
-  const tree = await gh<{ tree: { path: string; type: string; size?: number }[] }>(
-    token,
-    `/repos/${repo.full_name}/git/trees/${repo.default_branch}?recursive=1`,
+export async function snapshotRepo(token: string, repo: GhRepo, sourceSha: string): Promise<RepoSnapshot> {
+  if (!/^[a-f0-9]{40}$/.test(sourceSha)) throw new Error("Invalid source commit");
+  const tree = await gh<{ truncated?: boolean; tree: { path: string; type: string; size?: number }[] }>(
+    "",
+    `/repos/${repo.full_name}/git/trees/${sourceSha}?recursive=1`,
   ).catch(() => {
     throw new Error("Could not read this repository's files (is it empty?)");
   });
+  if (tree.truncated) throw new Error("Repository tree is incomplete; summary cannot be verified");
+  const knownPaths = tree.tree.filter((t) => t.type === "blob").map((t) => t.path);
   const blobs = tree.tree.filter((t) => t.type === "blob" && !SKIP_DIR.test(t.path) && !SKIP_FILE.test(t.path));
   const readme = blobs.find((b) => /^readme(\.md)?$/i.test(b.path));
   const manifests = blobs.filter((b) => MANIFEST.test(b.path)).slice(0, 4);
@@ -95,24 +118,26 @@ export async function snapshotRepo(token: string, repo: GhRepo): Promise<RepoSna
     // Prefer larger, shallower files: most likely to hold real logic.
     .sort((a, b) => (b.size ?? 0) / (1 + b.path.split("/").length) - (a.size ?? 0) / (1 + a.path.split("/").length))
     .slice(0, 14);
-  const picks = [...(readme ? [readme] : []), ...manifests, ...code];
+  const picks = [...new Map([...(readme ? [readme] : []), ...manifests, ...code].map((p) => [p.path, p])).values()];
+  if (!picks.length) throw new Error("No readable source or documentation to summarize");
 
   const files: RepoSnapshot["files"] = [];
   let budget = 70_000;
   for (const p of picks) {
     if (budget <= 0) break;
     try {
-      const res = await fetch(`https://raw.githubusercontent.com/${repo.full_name}/${repo.default_branch}/${p.path}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      const res = await fetch(`https://raw.githubusercontent.com/${repo.full_name}/${sourceSha}/${p.path.split("/").map(encodeURIComponent).join("/")}`, {
         cache: "no-store",
       });
-      if (!res.ok) continue;
+      if (!res.ok) throw new Error(`Could not read sampled file: ${p.path}`);
       const content = (await res.text()).slice(0, 6_000);
+      if (!content.trim()) throw new Error(`Sampled file is empty: ${p.path}`);
       budget -= content.length;
       files.push({ path: p.path, content });
     } catch {
-      /* skip unreadable file */
+      throw new Error(`Could not read sampled file: ${p.path}`);
     }
   }
-  return { tree: blobs.map((b) => b.path).slice(0, 300), files };
+  const promptPaths = [...new Set([...files.map((f) => f.path), ...blobs.map((b) => b.path)])].slice(0, 300);
+  return { tree: promptPaths, knownPaths, sourceSha, files };
 }
