@@ -10,7 +10,12 @@ const YEAR = 365 * 24 * 3600 * 1000;
 export default async function Dashboard() {
   const session = await getSession();
   if (!session) redirect("/");
-  const repos = await listPublicRepos(session.accessToken);
+  let repos;
+  try {
+    repos = await listPublicRepos(session.accessToken);
+  } catch {
+    return <p className="err">Couldn't load your repos from GitHub. Sign out and back in, then try again.</p>;
+  }
   const listed = new Map(listingsByOwner(session.ghId).map((l) => [l.github_repo_id, l]));
   const now = Date.now();
   const rows = repos

@@ -5,7 +5,7 @@ Developers list their abandoned public GitHub repos; others browse them and lift
 ## How it works
 1. Sign in with GitHub (scope: `read:user` only; public repo data needs no extra scope).
 2. Your public, non-fork repos are listed, inactive (12+ months) first.
-3. Mark a repo "Available for salvage" with an optional note. The app samples the repo (tree, manifests, README, a few source files) and makes **one** Claude call (`temperature: 0`, forced tool output) that returns languages, frameworks and 3–6 reusable pieces. Pieces pointing at paths that don't exist in the repo are dropped.
+3. Mark a repo "Available for salvage" with an optional note. The app samples the repo (tree, manifests, README, a few source files) and makes **one** Claude call (structured JSON output, medium effort) that returns languages, frameworks and 3–6 reusable pieces. Pieces pointing at paths that don't exist in the repo are dropped.
 4. License, stars/forks and the last non-bot commit date come from the GitHub API.
 5. `/` is a public, searchable index (keyword, language, license). `/listing/:id` shows the detail page and an anonymous "I forked / used this" counter.
 
@@ -20,6 +20,7 @@ Fill in `.env.local`:
 - `AUTH_SECRET`: `openssl rand -base64 32`
 - `AUTH_GITHUB_ID` / `AUTH_GITHUB_SECRET`: create an OAuth app at https://github.com/settings/developers with callback `http://localhost:3000/api/auth/callback/github`
 - `ANTHROPIC_API_KEY`
+- optional: `DAILY_SUMMARY_LIMIT` (default 10 summaries per user per day)
 
 ```bash
 npm run dev   # http://localhost:3000

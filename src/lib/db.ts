@@ -59,6 +59,7 @@ function open() {
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
     CREATE INDEX IF NOT EXISTS idx_listings_owner ON listings(owner_id);
+    CREATE TABLE IF NOT EXISTS summary_runs (owner_id INTEGER NOT NULL, at TEXT NOT NULL DEFAULT (datetime('now')));
   `);
   return db;
 }
@@ -132,4 +133,17 @@ export function facets() {
     languages: (d.prepare("SELECT DISTINCT language AS v FROM listings WHERE language IS NOT NULL ORDER BY v").all() as { v: string }[]).map((r) => r.v),
     licenses: (d.prepare("SELECT DISTINCT license AS v FROM listings WHERE license IS NOT NULL ORDER BY v").all() as { v: string }[]).map((r) => r.v),
   };
+}
+
+const DAILY_SUMMARY_LIMIT = Number(process.env.DAILY_SUMMARY_LIMIT ?? 10);
+
+/** Reserve one summary run for this user; false when they are over the daily cap. */
+export function takeSummaryRun(ownerId: number): boolean {
+  const d = db();
+  const { n } = d
+    .prepare("SELECT COUNT(*) AS n FROM summary_runs WHERE owner_id = ? AND at > datetime('now', '-1 day')")
+    .get(ownerId) as { n: number };
+  if (n >= DAILY_SUMMARY_LIMIT) return false;
+  d.prepare("INSERT INTO summary_runs (owner_id) VALUES (?)").run(ownerId);
+  return true;
 }

@@ -1,7 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { getSession } from "@/auth";
-import { deleteListing, getListing, upsertListing } from "@/lib/db";
+import { deleteListing, getListing, takeSummaryRun, upsertListing } from "@/lib/db";
 import { getOwnedPublicRepo, lastHumanCommit, snapshotRepo } from "@/lib/github";
 import { summarizeRepo } from "@/lib/summarize";
 
@@ -12,6 +12,7 @@ export async function salvage(_prev: ActionState, form: FormData): Promise<Actio
   if (!session) return { error: "Sign in first." };
   const repoId = Number(form.get("repoId"));
   const note = String(form.get("note") ?? "").trim().slice(0, 280) || null;
+  if (!takeSummaryRun(session.ghId)) return { error: "Daily summary limit reached. Try again tomorrow." };
   try {
     const repo = await getOwnedPublicRepo(session.accessToken, repoId, session.login);
     const [snap, last] = await Promise.all([

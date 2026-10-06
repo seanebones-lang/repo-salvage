@@ -52,12 +52,17 @@ export async function getOwnedPublicRepo(token: string, id: number, ownerLogin: 
 }
 
 const BOT = /(\[bot\]|dependabot|renovate|github-actions|greenkeeper)/i;
-const NOISE = /^(merge |bump |chore\(deps|update dependency|initial commit)/i;
+const NOISE = /^(merge |bump |chore\(deps|update dependency)/i;
 
 /** Date of the most recent commit that is not by a bot and not obvious dependency noise. */
 export async function lastHumanCommit(token: string, repo: GhRepo): Promise<string | null> {
   type C = { commit: { author: { date: string } | null; message: string }; author: { type: string; login: string } | null };
-  const commits = await gh<C[]>(token, `/repos/${repo.full_name}/commits?per_page=50`);
+  let commits: C[];
+  try {
+    commits = await gh<C[]>(token, `/repos/${repo.full_name}/commits?per_page=50`);
+  } catch {
+    return null; // empty repos return 409
+  }
   for (const c of commits) {
     const login = c.author?.login ?? "";
     if (c.author?.type === "Bot" || BOT.test(login)) continue;
@@ -79,7 +84,9 @@ export async function snapshotRepo(token: string, repo: GhRepo): Promise<RepoSna
   const tree = await gh<{ tree: { path: string; type: string; size?: number }[] }>(
     token,
     `/repos/${repo.full_name}/git/trees/${repo.default_branch}?recursive=1`,
-  );
+  ).catch(() => {
+    throw new Error("Could not read this repository's files (is it empty?)");
+  });
   const blobs = tree.tree.filter((t) => t.type === "blob" && !SKIP_DIR.test(t.path) && !SKIP_FILE.test(t.path));
   const readme = blobs.find((b) => /^readme(\.md)?$/i.test(b.path));
   const manifests = blobs.filter((b) => MANIFEST.test(b.path)).slice(0, 4);

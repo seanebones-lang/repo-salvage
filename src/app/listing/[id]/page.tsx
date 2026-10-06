@@ -23,7 +23,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
         {l.summary.reusable_pieces.map((p) => (
           <li key={p.path + p.name}>
             <strong>{p.name}</strong> — {p.description}{" "}
-            <a href={blobBase + p.path} target="_blank" rel="noreferrer"><code>{p.path}</code></a>
+            <a href={blobBase + p.path.split("/").map(encodeURIComponent).join("/")} target="_blank" rel="noreferrer"><code>{p.path}</code></a>
           </li>
         ))}
       </ul>

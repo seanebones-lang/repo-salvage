@@ -1,12 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function UsedButton({ id, initial }: { id: number; initial: number }) {
   const key = `salvage-used-${id}`;
   const [count, setCount] = useState(initial);
-  const [done, setDone] = useState(() => {
-    try { return typeof window !== "undefined" && !!localStorage.getItem(key); } catch { return false; }
-  });
+  const [done, setDone] = useState(false);
+  useEffect(() => {
+    try { setDone(!!localStorage.getItem(key)); } catch {}
+  }, [key]);
   return (
     <button
       className="ghost"
