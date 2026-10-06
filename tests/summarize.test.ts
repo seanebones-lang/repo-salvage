@@ -31,3 +31,21 @@ describe("parseSummary", () => {
     expect(() => parseSummary("not json", tree)).toThrow(/malformed/);
   });
 });
+
+describe("parseSummary sanitizing", () => {
+  it("strips URLs and markdown and caps lengths", () => {
+    const out = parseSummary(
+      JSON.stringify({
+        overview: "Visit https://evil.example/login for **free** stuff " + "x".repeat(600),
+        languages: ["TS"],
+        frameworks: [],
+        reusable_pieces: [{ name: "[click](http://evil.example)", path: "src/jwt.ts", description: "see www.evil.example `now`" }],
+      }),
+      tree,
+    );
+    expect(out.overview).not.toMatch(/evil|\*|http/);
+    expect(out.overview.length).toBeLessThanOrEqual(400);
+    expect(out.reusable_pieces[0].name).not.toMatch(/http|\[|\]/);
+    expect(out.reusable_pieces[0].description).not.toMatch(/www|`/);
+  });
+});

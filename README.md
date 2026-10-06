@@ -9,6 +9,8 @@ Developers list their abandoned public GitHub repos; others browse them and lift
 4. License, stars/forks and the last non-bot commit date come from the GitHub API.
 5. `/` is a public, searchable index (keyword, language, license). `/listing/:id` shows the detail page and an anonymous "I forked / used this" counter.
 
+Repo content is sent to the model as delimited, untrusted data; AI-written text is stripped of URLs and markdown before storage.
+
 Only repos you explicitly mark are stored, and only public data.
 
 ## Setup
@@ -34,4 +36,5 @@ Next.js (App Router) · Auth.js v5 · SQLite (`better-sqlite3`, file at `data/sa
 - Summaries are AI-generated from a sample and may miss things; the listing page says so.
 - The "used" counter is anonymous and only deduplicated client-side, so it is easy to inflate.
 - Tests: `npm test` (vitest; db, search, rate limit, GitHub helpers, summary parsing). CI runs typecheck, tests, audit and build.
+- Reports: the "Report" button on a listing writes to the `reports` table (`sqlite3 data/salvage.db "select * from reports"`). There is no moderation UI yet; delete a listing by removing its row from `listings`.
 - Not in v1: payments, messaging, project transfer, re-sync when a repo changes (use "Re-summarize").

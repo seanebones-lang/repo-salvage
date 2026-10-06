@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getListing } from "@/lib/db";
 import UsedButton from "./used-button";
+import ReportButton from "./report-button";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +37,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
       <div className="row">
         <a href={l.url} target="_blank" rel="noreferrer"><button>Open on GitHub</button></a>
         <UsedButton id={l.id} initial={l.used_count} />
+        <ReportButton id={l.id} />
       </div>
     </>
   );

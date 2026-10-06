@@ -59,6 +59,7 @@ function open() {
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
     CREATE INDEX IF NOT EXISTS idx_listings_owner ON listings(owner_id);
+    CREATE TABLE IF NOT EXISTS reports (id INTEGER PRIMARY KEY AUTOINCREMENT, listing_id INTEGER NOT NULL, reason TEXT NOT NULL, at TEXT NOT NULL DEFAULT (datetime('now')));
     CREATE TABLE IF NOT EXISTS summary_runs (owner_id INTEGER NOT NULL, at TEXT NOT NULL DEFAULT (datetime('now')));
   `);
   return db;
@@ -146,4 +147,8 @@ export function takeSummaryRun(ownerId: number): boolean {
   if (n >= DAILY_SUMMARY_LIMIT) return false;
   d.prepare("INSERT INTO summary_runs (owner_id) VALUES (?)").run(ownerId);
   return true;
+}
+
+export function addReport(listingId: number, reason: string) {
+  db().prepare("INSERT INTO reports (listing_id, reason) VALUES (?, ?)").run(listingId, reason.slice(0, 500));
 }

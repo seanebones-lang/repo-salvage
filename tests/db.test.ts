@@ -83,3 +83,12 @@ describe("summary rate limit", () => {
     expect(m.takeSummaryRun(8)).toBe(true);
   });
 });
+
+describe("reports", () => {
+  it("stores a report for a listing", () => {
+    const id = m.searchListings({})[0].id;
+    m.addReport(id, "spam");
+    const n = (m.db().prepare("SELECT COUNT(*) AS n FROM reports WHERE listing_id = ?").get(id) as { n: number }).n;
+    expect(n).toBe(1);
+  });
+});
