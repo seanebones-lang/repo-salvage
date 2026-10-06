@@ -50,21 +50,37 @@ export async function summarizeRepo(repo: GhRepo, snap: RepoSnapshot, ownerNote:
   ].join("\n");
 
   // Sonnet 5.5 rejects forced tool_choice and non-default temperature, so use
-  // structured outputs for schema-valid JSON and keep effort low for stable, cheap runs.
-  const res = await client.messages.create({
+  // structured outputs for schema-valid JSON. Server-side fallback reroutes the call
+  // if the primary model's safety classifiers decline (Claude API only).
+  const res = await client.beta.messages.create({
     model: MODEL,
     max_tokens: 8000,
+    betas: ["server-side-fallback-2026-07-01"],
+    fallbacks: "default",
     system: SYSTEM,
     output_config: { effort: "medium", format: { type: "json_schema", schema: SCHEMA } },
     messages: [{ role: "user", content: body }],
   });
   if (res.stop_reason === "refusal") throw new Error("The model declined to summarize this repository.");
   if (res.stop_reason === "max_tokens") throw new Error("Summary was cut off; try again.");
-  const text = res.content.find((c): c is Anthropic.TextBlock => c.type === "text");
-  if (!text) throw new Error("Model returned no summary");
-  const s = JSON.parse(text.text) as Summary;
-  const known = new Set(snap.tree);
-  // Drop pieces pointing at paths that do not exist in the repo.
-  s.reusable_pieces = (s.reusable_pieces ?? []).filter((p) => known.has(p.path)).slice(0, 6);
-  return s;
+  const text = res.content.find((c) => c.type === "text");
+  if (!text || text.type !== "text") throw new Error("Model returned no summary");
+  return parseSummary(text.text, snap.tree);
+}
+
+/** Parse model JSON and drop pieces pointing at paths that do not exist in the repo. */
+export function parseSummary(raw: string, tree: string[]): Summary {
+  let s: Partial<Summary>;
+  try {
+    s = JSON.parse(raw);
+  } catch {
+    throw new Error("Model returned malformed JSON");
+  }
+  const known = new Set(tree);
+  return {
+    overview: String(s.overview ?? ""),
+    languages: (s.languages ?? []).map(String),
+    frameworks: (s.frameworks ?? []).map(String),
+    reusable_pieces: (s.reusable_pieces ?? []).filter((p) => known.has(p.path)).slice(0, 6),
+  };
 }

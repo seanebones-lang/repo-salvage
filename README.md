@@ -33,4 +33,5 @@ Next.js (App Router) · Auth.js v5 · SQLite (`better-sqlite3`, file at `data/sa
 - SQLite needs a persistent disk (Fly, Railway, a VPS). On Vercel/serverless swap `src/lib/db.ts` for Postgres/Turso.
 - Summaries are AI-generated from a sample and may miss things; the listing page says so.
 - The "used" counter is anonymous and only deduplicated client-side, so it is easy to inflate.
+- Tests: `npm test` (vitest; db, search, rate limit, GitHub helpers, summary parsing). CI runs typecheck, tests, audit and build.
 - Not in v1: payments, messaging, project transfer, re-sync when a repo changes (use "Re-summarize").
