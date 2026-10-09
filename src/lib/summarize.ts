@@ -149,13 +149,16 @@ export async function summarizeRepo(
 
 const clean = (v: unknown, max: number) => {
   const text = String(v ?? "")
+    .replace(/\[([^\]]*)\]\((?:https?:\/\/|www\.)[^)]*\)/gi, "$1")
     .replace(/https?:\/\/\S+|www\.\S+/gi, "")
-    .replace(/[`*#<>\[\]]/g, "")
+    .replace(/`/g, "")
+    .replace(/(^|\s)\*\*(\S(?:[^*]*\S)?)\*\*(?=$|\s|[.,;:!?])/g, "$1$2")
     .replace(/\s+/g, " ")
     .trim();
   if (text.length <= max) return text;
   const prefix = text.slice(0, max - 1);
   const boundary = prefix.lastIndexOf(" ");
+  // Free text is rendered as escaped React text, not HTML. Keep code punctuation.
   // Prefer a nearby word boundary; a long unbroken value still needs a hard cap.
   return (
     (boundary > max * 0.75 ? prefix.slice(0, boundary) : prefix).trimEnd() + "…"

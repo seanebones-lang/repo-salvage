@@ -89,9 +89,18 @@ and fixed identifier sanitization and undisclosed text truncation. All 102 app t
 the existing three consumer tests pass, with formatting, type checking and a production build.
 See [the pilot record](PILOT.md) for provider usage, estimated cost and extraction adaptations.
 Owner review remains pending; no owner confirmation or independent-test badge was fabricated.
-This single-repository local pilot establishes provider operation and one working adaptation,
-not general summary quality or a public deployment. No paid analysis occurred during the
-earlier OAuth-only verification.
+That initial pilot established provider operation and one working adaptation. No paid analysis
+occurred during the earlier OAuth-only verification.
+
+The expanded pilot completed nine real analyses across seven public repositories, leaving
+34 current candidates. Observed usage gives a cumulative $0.043581 estimate; the provider's
+balance was not verified. A complete pinned circuit-breaker extraction passed three additional
+checks in a fresh Node consumer. A live brief exposed removal of arrow/generic punctuation;
+the parser now preserves code syntax in escaped text, with regression coverage. All 103 app
+tests and the three existing example tests passed, along with formatting, TypeScript checks
+and a production build. The two additional isolated consumers passed six checks in total.
+See [the expanded pilot record](PILOT-MATRIX.md) for exact commits, usage, recording scope
+and source/licensing gaps. No owner reviews or catalog independent-test badges were added.
 
 The Docker daemon is unavailable. The supplied Dockerfile has not been executed in this
 review. Validate image build, unprivileged runtime, a mounted persistent database and restart
@@ -103,10 +112,12 @@ and GitHub allowance consumption with a real pilot is required before expanding 
 
 ## Next product evidence
 
-The pilot completed a licensed contribution and one independent parser adaptation. The
-highest-value next evidence is the author's review of these briefs, followed by a pilot on
-a different codebase. Improve sampling of complete functions and their local dependencies:
-the current prefix samples often exclude the actual candidate implementation. Record what
-imports were missed, what adaptation was needed and whether owner review improves the brief.
+The pilot completed contributions across seven codebases and two independent consumer
+adaptations. The next evidence is the author's review and a machine-readable discovery-to-fetch
+exercise, following [the agent interface proposal](AGENT-INTERFACE.md). Improve sampling of
+complete functions and their local dependencies: current prefix samples can exclude the actual
+candidate implementation. Add precise coverage and component-license context before default
+automatic extraction; the expanded pilot exposed vendored licensing and omitted-file claims.
+Record what imports were missed, what adaptation was needed and whether owner review improves the brief.
 Downloads, copied briefs, owner review and anonymous reuse counters alone do not establish
 successful reuse.

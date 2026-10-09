@@ -66,12 +66,19 @@ describe("parseSummary sanitizing", () => {
       }),
       tree,
     );
-    expect(out.overview).toBe("Uses table_info and repo_data.");
+    expect(out.overview).toBe("Uses table_info and <repo_data>.");
     expect(out.reusable_pieces[0]).toMatchObject({
       name: "parse_summary",
       description: "Inspect cache_creation_input_tokens.",
       integration_notes: "Run PRAGMA table_info before adapting the schema.",
     });
+  });
+
+  it("preserves arrow functions, generics, arrays, language names and arithmetic", () => {
+    const instructions =
+      "Wrap calls with `breaker.execute(() => yourPromise)`; keep `Array<T>`, `T[]`, C#, `x * y` and `x**y**z`.";
+    const out = parseSummary(JSON.stringify({ overview: instructions }), tree);
+    expect(out.overview).toBe(instructions.replace(/`/g, ""));
   });
 
   it("discloses truncation and keeps a nearby word boundary", () => {
