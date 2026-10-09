@@ -187,7 +187,7 @@ The app emits a Next.js standalone build. The supplied container runs as an unpr
 ```sh
 docker build -t repo-salvage .
 docker volume create repo-salvage-data
-docker run --rm -p 3000:3000 --env-file .env.local \
+docker run --rm -p 3000:3000 --env-file .env.production \
   --mount source=repo-salvage-data,target=/app/data repo-salvage
 ```
 
@@ -196,6 +196,14 @@ runtime, keep them out of image build arguments, and mount persistent storage at
 Use a single application instance with SQLite, back up the database with SQLite's backup API,
 and retain backups across releases. Multi-instance/serverless deployment needs a different
 storage strategy. Database migrations are additive; back up the database before upgrades.
+
+Prepare `.env.production` from the documented settings, with a fresh persistent auth secret,
+canonical origin and conservative allowances. The container startup checks configuration,
+storage permissions and SQLite integrity before listening. Root-owned host mounts are initialized
+only through the image's optional root bootstrap, which drops to UID 1000 before loading the app.
+An online backup command and disposable crash/restore smoke drill are included; CI executes the
+container on Linux amd64. See [hosting and readiness](docs/HOSTING.md) for the runbook, current
+Railway/Render costs, volume ownership, private backups and remaining public-host gates.
 
 Public source reads never use a user's bearer token. When OAuth app credentials are configured,
 public REST reads use the app's public-data authentication, increasing the public API allowance
