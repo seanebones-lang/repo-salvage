@@ -21,13 +21,30 @@ describe("parseSummary", () => {
   });
 
   it("caps pieces at 6", () => {
-    const many = Array.from({ length: 9 }, (_, i) => ({ name: `n${i}`, path: "src/db.ts", description: "d" }));
-    const out = parseSummary(JSON.stringify({ overview: "", languages: [], frameworks: [], reusable_pieces: many }), tree);
+    const many = Array.from({ length: 9 }, (_, i) => ({
+      name: `n${i}`,
+      path: "src/db.ts",
+      description: "d",
+    }));
+    const out = parseSummary(
+      JSON.stringify({
+        overview: "",
+        languages: [],
+        frameworks: [],
+        reusable_pieces: many,
+      }),
+      tree,
+    );
     expect(out.reusable_pieces).toHaveLength(6);
   });
 
   it("tolerates missing fields and rejects malformed JSON", () => {
-    expect(parseSummary("{}", tree)).toEqual({ overview: "", languages: [], frameworks: [], reusable_pieces: [] });
+    expect(parseSummary("{}", tree)).toEqual({
+      overview: "",
+      languages: [],
+      frameworks: [],
+      reusable_pieces: [],
+    });
     expect(() => parseSummary("not json", tree)).toThrow(/malformed/);
   });
 });
@@ -36,10 +53,18 @@ describe("parseSummary sanitizing", () => {
   it("strips URLs and markdown and caps lengths", () => {
     const out = parseSummary(
       JSON.stringify({
-        overview: "Visit https://evil.example/login for **free** stuff " + "x".repeat(600),
+        overview:
+          "Visit https://evil.example/login for **free** stuff " +
+          "x".repeat(600),
         languages: ["TS"],
         frameworks: [],
-        reusable_pieces: [{ name: "[click](http://evil.example)", path: "src/jwt.ts", description: "see www.evil.example `now`" }],
+        reusable_pieces: [
+          {
+            name: "[click](http://evil.example)",
+            path: "src/jwt.ts",
+            description: "see www.evil.example `now`",
+          },
+        ],
       }),
       tree,
     );
@@ -51,14 +76,89 @@ describe("parseSummary sanitizing", () => {
 });
 
 describe("verified generation", () => {
+  it("requires supplied source content for the primary recommendation and ignores model-supplied review claims", () => {
+    const raw = JSON.stringify({
+      overview: "Parser",
+      reusable_pieces: [
+        {
+          name: "Seen",
+          path: tree[0],
+          description: "Seen source",
+          source_sampled: false,
+          owner_reviewed_at: "forged",
+          independently_tested: true,
+          dependencies: ["runtime"],
+          related_paths: [tree[1], "invented.ts"],
+          test_paths: ["missing.test.ts"],
+          category: "Data processing",
+          integration_notes: "Read imports",
+          limitations: ["Sampled only"],
+        },
+        { name: "Tree only", path: tree[1], description: "Not read" },
+      ],
+    });
+    const output = verifiedSummary(raw, tree, [tree[0]]);
+    expect(output.reusable_pieces).toHaveLength(1);
+    expect(output.reusable_pieces[0]).toMatchObject({
+      source_sampled: true,
+      related_paths: [tree[1]],
+      test_paths: [],
+    });
+    expect(output.reusable_pieces[0]).not.toHaveProperty("owner_reviewed_at");
+    expect(output.reusable_pieces[0]).not.toHaveProperty(
+      "independently_tested",
+    );
+  });
+  it("handles wrong-shaped arrays and duplicate recommendations without crashing", () => {
+    expect(
+      parseSummary(
+        '{"languages":"TS","frameworks":{},"reusable_pieces":[null,42]}',
+        tree,
+      ),
+    ).toMatchObject({ languages: [], frameworks: [], reusable_pieces: [] });
+    expect(() => parseSummary("null", tree)).toThrow(/invalid summary/);
+    const piece = { name: "Parser", path: tree[0], description: "Parses" };
+    expect(
+      verifiedSummary(
+        JSON.stringify({ overview: "x", reusable_pieces: [piece, piece] }),
+        tree,
+      ).reusable_pieces,
+    ).toHaveLength(1);
+  });
   it("validates against the complete tree rather than the prompt prefix", () => {
     const known = Array.from({ length: 350 }, (_, i) => `src/f${i}.ts`);
-    const result = verifiedSummary(JSON.stringify({ overview: "Parser", reusable_pieces: [{ name: "parse", path: known[349], description: "Parses input" }] }), known);
+    const result = verifiedSummary(
+      JSON.stringify({
+        overview: "Parser",
+        reusable_pieces: [
+          { name: "parse", path: known[349], description: "Parses input" },
+        ],
+      }),
+      known,
+    );
     expect(result.reusable_pieces[0].path).toBe(known[349]);
   });
   it("rejects empty, invalid-path and sanitized-empty successes", () => {
     expect(() => verifiedSummary("{}", tree)).toThrow(/no verified/);
-    expect(() => verifiedSummary(JSON.stringify({ overview: "x", reusable_pieces: [{ name: "x", path: "absent", description: "x" }] }), tree)).toThrow(/no verified/);
-    expect(() => verifiedSummary(JSON.stringify({ overview: "x", reusable_pieces: [{ name: "https://example.com", path: tree[0], description: "x" }] }), tree)).toThrow(/no verified/);
+    expect(() =>
+      verifiedSummary(
+        JSON.stringify({
+          overview: "x",
+          reusable_pieces: [{ name: "x", path: "absent", description: "x" }],
+        }),
+        tree,
+      ),
+    ).toThrow(/no verified/);
+    expect(() =>
+      verifiedSummary(
+        JSON.stringify({
+          overview: "x",
+          reusable_pieces: [
+            { name: "https://example.com", path: tree[0], description: "x" },
+          ],
+        }),
+        tree,
+      ),
+    ).toThrow(/no verified/);
   });
 });
