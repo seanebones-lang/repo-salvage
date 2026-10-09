@@ -18,6 +18,9 @@ export default function Agents() {
           <a className="button button-primary" href="/repo-salvage-cli.tgz">
             Download the CLI <Icon name="arrow" />
           </a>
+          <a className="button button-secondary" href="/repo-salvage-mcp.tgz">
+            Download MCP server <Icon name="arrow" />
+          </a>
           <a className="text-link" href="/openapi.json">
             OpenAPI contract <Icon name="arrow" />
           </a>
@@ -58,6 +61,46 @@ export default function Agents() {
           <code>repo-salvage fetch LISTING PART --out ./new-part</code>
         </section>
       </div>
+      <section className="detail-section agent-commands">
+        <span className="eyebrow">MCP · local stdio · Node.js 22+</span>
+        <h2>Give your agent native tools.</h2>
+        <p>
+          Install the MCP archive in your agent workspace, then configure your
+          MCP host to launch the installed server with your catalog origin. The
+          default tools search, inspect and read verified source text. They
+          write no files and run no source.
+        </p>
+        <pre>
+          <code>{`npm install ./repo-salvage-mcp.tgz --ignore-scripts
+{
+  "command": "node",
+  "args": [
+    "/absolute/workspace/node_modules/@repo-salvage/mcp/dist/index.js",
+    "--base", "ORIGIN"
+  ]
+}`}</code>
+        </pre>
+        <p>
+          Translate the command and arguments into your host's configuration
+          format. Use this application's loopback origin locally or your
+          deployed HTTPS origin. The host owns stdin and stdout; starting the
+          command by itself waits for MCP input.
+        </p>
+        <p>
+          Source reads check the whole file's Git hash before returning bounded
+          UTF-8 text. Read notice paths as well, and use CLI fetch to retain
+          original bytes and notices in a new directory.
+        </p>
+        <p>
+          Private draft tools require both <code>--enable-drafts</code> and{" "}
+          <code>REPO_SALVAGE_TOKEN</code> in the host's secret environment. They
+          prepare proposals for owner review; they cannot publish or invoke paid
+          analysis.
+        </p>
+        <a className="text-link" href="/repo-salvage-mcp.tgz">
+          Download the installable MCP archive <Icon name="arrow" />
+        </a>
+      </section>
       <section className="detail-section agent-commands">
         <span className="eyebrow">Node.js 22+ · no runtime dependencies</span>
         <h2>A small client for your workspace.</h2>
@@ -124,7 +167,8 @@ npx --no-install repo-salvage drafts --base ORIGIN`}</code>
           Follow the returned next-page URL to retain the catalog revision. A
           changed catalog returns 409; restart from page 1. Verification outages
           return 503. The API and CLI support discovery, retrieval and private
-          contribution drafts. MCP support is planned.
+          contribution drafts. The local MCP adapter exposes the same checks
+          through native tools.
         </p>
         <Link className="text-link" href="/examples">
           Explore tested adaptations <Icon name="arrow" />

@@ -388,3 +388,106 @@ test("private draft commands keep credentials at the configured origin and out o
     /requires/,
   );
 });
+
+test("memory source reads verify complete bytes and preserve Unicode across bounded windows", async () => {
+  const { readPartFile } = await import("../lib/client.mjs");
+  const value = brief();
+  const text = "A😀B";
+  value.files[0].git_blob_sha = blob(text);
+  value.files[0].size_bytes = Buffer.byteLength(text);
+  const raw = { ...content, "src/breaker.ts": text };
+  const transport = transportFor(value, raw);
+  const first = await readPartFile({
+    base: "http://127.0.0.1",
+    listing: 1,
+    part,
+    filePath: "src/breaker.ts",
+    maxCharacters: 2,
+    transport,
+  });
+  assert.equal(first.text, "A");
+  assert.equal(first.next_offset, 1);
+  const second = await readPartFile({
+    base: "http://127.0.0.1",
+    listing: 1,
+    part,
+    filePath: "src/breaker.ts",
+    offset: first.next_offset,
+    maxCharacters: 2,
+    transport,
+  });
+  assert.equal(second.text, "😀");
+  assert.equal(second.next_offset, 3);
+  const last = await readPartFile({
+    base: "http://127.0.0.1",
+    listing: 1,
+    part,
+    filePath: "src/breaker.ts",
+    offset: 3,
+    transport,
+  });
+  assert.equal(last.text, "B");
+  assert.equal(last.next_offset, null);
+  await assert.rejects(
+    readPartFile({
+      base: "http://127.0.0.1",
+      listing: 1,
+      part,
+      filePath: "src/breaker.ts",
+      offset: 1,
+      maxCharacters: 1,
+      transport,
+    }),
+    /Unicode/,
+  );
+  const adjusted = await readPartFile({
+    base: "http://127.0.0.1",
+    listing: 1,
+    part,
+    filePath: "src/breaker.ts",
+    offset: 2,
+    maxCharacters: 2,
+    transport,
+  });
+  assert.equal(adjusted.offset, 1);
+  assert.equal(adjusted.text, "😀");
+  assert.equal(
+    first.file.sha256,
+    createHash("sha256").update(text).digest("hex"),
+  );
+  assert.equal(first.independently_tested, false);
+});
+test("memory source reads reject wrong hashes, unsupported encodings and arbitrary paths", async () => {
+  const { readPartFile } = await import("../lib/client.mjs");
+  const base = "http://127.0.0.1";
+  const run = (value, raw, path = "src/breaker.ts") =>
+    readPartFile({
+      base,
+      listing: 1,
+      part,
+      filePath: path,
+      transport: transportFor(value, raw),
+    });
+  await assert.rejects(run(brief(), content, "../escape"), /Unsafe/);
+  await assert.rejects(run(brief(), content, "missing.ts"), /manifest/);
+  const value = brief();
+  value.files[0].git_blob_sha = "a".repeat(40);
+  await assert.rejects(run(value, content), /Git blob/);
+  const binary = Buffer.from([255, 254]);
+  value.files[0].git_blob_sha = createHash("sha1")
+    .update(`blob ${binary.length}\0`)
+    .update(binary)
+    .digest("hex");
+  value.files[0].size_bytes = binary.length;
+  await assert.rejects(
+    run(value, { ...content, "src/breaker.ts": binary }),
+    /UTF-8/,
+  );
+  const nul = "hello\0source";
+  value.files[0].git_blob_sha = blob(nul);
+  value.files[0].size_bytes = Buffer.byteLength(nul);
+  await assert.rejects(
+    run(value, { ...content, "src/breaker.ts": nul }),
+    /Binary/,
+  );
+});

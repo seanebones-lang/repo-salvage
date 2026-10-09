@@ -78,7 +78,8 @@ Existing pilot listings lack persisted coverage detail and correctly report unkn
 sample extent. New analyses record server-observed coverage; no extra paid analysis
 was used to backfill old records. Declaration coverage, complete dependency graphs
 and component license audits remain unverified. Notice discovery is heuristic.
-Agent contribution credentials, draft publication and the MCP adapter remain planned.
+At the discovery milestone, agent contribution credentials, draft publication and
+the MCP adapter remained planned; subsequent milestones are recorded below.
 Container execution and public deployment gates from [the review record](REVIEW.md)
 remain open.
 
@@ -121,6 +122,72 @@ SHA-256 is `017275ac7e258c32eccaf4b9a5b7ee5dfb9b8ec3bc041b8a5f7ae8155cbc0342`.
 All new live checks incurred **zero paid model calls**, created no new public
 listing, and issued no credential in the owner's live database. These are local
 HTTP/CLI and test-provider results, not public deployment, an external model-agent
-trial, or certification of downstream adaptations. The MCP adapter and automatic
-agent publication remain future work. Raw local proofs are retained under ignored
+trial, or certification of downstream adaptations. At this milestone the MCP adapter and automatic
+agent publication remained future work; MCP validation follows below. Raw local proofs are retained under ignored
 `artifacts/draft-consumer-proof.json` and `artifacts/agent-consumer-proof.json`.
+
+## MCP milestone — 2026-10-08
+
+The downloadable local stdio adapter is `@repo-salvage/mcp@0.1.0`, Node.js 22+,
+with pinned official server SDK 2.3.1 and Zod 4.6.5. Its archive SHA-256 is
+`1a1c9658646e5bbeb4e42a77ebc06711aa488505fecf736b4edf820e9f8e9a36`.
+The shared CLI client is now 0.3.0; its archive SHA-256 is
+`8d111e3a2c8702baa50f680e257d84fcf58fd8c046e9ce9eca77c3664ee8b91f`.
+Previous hashes above remain evidence of their dated milestones.
+
+- **182 offline checks pass:** 144 app, 3 parser consumer, 12 CLI, 13 MCP protocol
+  and 10 frozen evaluation evidence replays. Actual stdio processes negotiate both
+  modern and legacy protocol with the official client. Checks cover strict inputs,
+  structured output schemas, HTTP/rate/revision errors, bounded malformed/oversized
+  responses, explicit draft enablement, credential reflection, revocation, verified
+  whole-file reads, Unicode paging, hash failures, traversal and clean stdout.
+- A fresh independent workspace installed the served MCP archive with
+  `--ignore-scripts` and launched its installed executable through the official
+  SDK client. Against the ordinary production standalone catalog, it searched and
+  inspected Brainstormin-System's circuit breaker, reconstructed **5552 source
+  bytes in eight text windows**, verified the Git blob and SHA-256, read its pinned
+  LICENSE, and rejected a missing manifest path. Source commit remains
+  `120f8b40de0446fe98c13c604ec4281d0f83185d`; source SHA-256 is
+  `4f23280d8ba2364a8a20d660c517c7c272e24ed894205c3961b8f9995c12fd4a`.
+- The same installed executable exercised both opt-in private tools against a
+  second production standalone instance with a disposable SQLite database, no AI
+  credential and zero paid quota. Real GitHub public owner/license/tree verification,
+  persistence, identical replay, conflict and scope rejection, private list and
+  revocation passed. Credentials were hash-only in storage; test rows and the
+  disposable database were removed. No credential was issued in the owner's live DB.
+- MCP Inspector 2.10.1 passed strict tool discovery with **zero errors and ten
+  advisory warnings** about legal JSON Schema nullable type arrays. Its search
+  call and static guide-resource read passed. These advisories flag compatibility
+  with hosts translating schemas into narrower provider dialects; they are not a
+  claim that every third-party host has been tested. Both protocol eras are tested
+  with the official SDK. A separate host/model pilot remains an open gate.
+- Ten independent, read-only, multi-hop evaluation questions span the seven
+  approved repositories. All **31 recorded search/inspection calls** replay through
+  the actual MCP server and match recorded evidence. The snapshot revision is
+  `984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48`.
+  Questions, exact answers and reproducible calls are committed under
+  `examples/mcp-evaluation`. This checks evidence replay, not scored model-agent
+  accuracy; generated guidance remains untrusted. Replay filtering/order is a
+  documented fixture simplification, not production search validation.
+- A fresh installation of CLI 0.3.0 repeated search/inspect/fetch and passed the
+  three explicit circuit-breaker consumer checks. Production build, typecheck,
+  formatting and full dependency audit pass with zero reported vulnerabilities.
+  The new guide had no browser warnings/errors or page overflow at widths 375,
+  639 and 1280. Normal viewport restored; two additional raw browser recording
+  segments and a guide screenshot retained locally.
+
+New verification used **zero paid model calls** and created no public listing or
+live-owner credential. Public mode exposes three tools; explicit draft mode adds
+only prepare/list. Reading a draft inbox is conservatively marked non-read-only
+because the HTTP service can recover expired reservations. No MCP tool publishes,
+charges for analysis, issues credentials or executes retrieved source. Successful
+JSON output is limited to 64 KiB before its two protocol representations; source
+files to 1 MiB, UTF-8 windows to 12000 UTF-16 code units. Each window rechecks the
+whole file. Use the CLI for retained original bytes and notices.
+
+This adapter is a downloadable local process, not a public remote MCP deployment
+or an npm-registry publication. Public deployment, container validation, larger
+catalog/load behavior, actual external model-agent use and automated publication
+remain outside these results. Raw live proofs are retained under ignored
+`artifacts/mcp-consumer-proof.json`, `artifacts/agent-consumer-proof.json` and
+`artifacts/mcp-inspector-*.json`.

@@ -1,0 +1,2628 @@
+[
+  {
+    "question": "Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A reuse review is comparing the vendored optional-value utility with the JavaScript client for the local enforcement sidecar in the same repository. Which repo-relative license notice path is discovered for the utility but absent from the client's notice list? Return only the exact path; repository Apache-2.0 metadata is not a component audit.",
+    "answer": "third-party/option-ext-0.2.0/LICENSE.txt",
+    "calls": [
+      {
+        "tool": "repo_salvage_search_parts",
+        "arguments": {
+          "q": "deadbolt",
+          "limit": 10,
+          "page": 1,
+          "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 8,
+          "part_id": "6d0917a422af8015"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 8,
+          "part_id": "7eae5e4fa55ea1e3"
+        }
+      }
+    ],
+    "evidence": {
+      "catalog_revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+      "basis": "The utility's notice_paths includes the vendored LICENSE.txt alongside root LICENSE and NOTICE. The Node client's notice_paths contains only root LICENSE and NOTICE. Both component licenses remain not_audited.",
+      "searches": [
+        {
+          "query": {
+            "q": "deadbolt",
+            "language": "",
+            "license": "",
+            "category": "",
+            "sort": "relevance"
+          },
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "total": 5,
+            "next": null
+          },
+          "matched_parts": [
+            {
+              "listing_id": 8,
+              "part_id": "7eae5e4fa55ea1e3",
+              "name": "Node sidecar client",
+              "primary_path": "examples/deadbolt_client.js",
+              "languages": ["Rust", "Python", "JavaScript"]
+            },
+            {
+              "listing_id": 8,
+              "part_id": "6d0917a422af8015",
+              "name": "Option extension trait",
+              "primary_path": "third-party/option-ext-0.2.0/src/lib.rs",
+              "languages": ["Rust", "Python", "JavaScript"]
+            },
+            {
+              "listing_id": 8,
+              "part_id": "dcd37dda4bd28169",
+              "name": "Python stdlib HTTP sidecar client",
+              "primary_path": "examples/deadbolt_client.py",
+              "languages": ["Rust", "Python", "JavaScript"]
+            },
+            {
+              "listing_id": 8,
+              "part_id": "a723886d1a32c8bc",
+              "name": "Sample agent admission loop",
+              "primary_path": "examples/deadbolt_sample_agent.py",
+              "languages": ["Rust", "Python", "JavaScript"]
+            },
+            {
+              "listing_id": 8,
+              "part_id": "224b2c8c7aa67266",
+              "name": "Witness-format evidence sink",
+              "primary_path": "src/witness.rs",
+              "languages": ["Rust", "Python", "JavaScript"]
+            }
+          ]
+        }
+      ],
+      "parts": [
+        {
+          "listing_id": 8,
+          "part_id": "6d0917a422af8015",
+          "name": "Option extension trait",
+          "repository": "seanebones-lang/deadbolt",
+          "source_commit": "71f2083062d4eed6874a35fff967c38b0d78306f",
+          "source_url": "https://github.com/seanebones-lang/deadbolt/blob/71f2083062d4eed6874a35fff967c38b0d78306f/third-party/option-ext-0.2.0/src/lib.rs",
+          "description": "Vendored option-ext 0.2.0 crate defining the OptionExt trait with contains, map_or2 and map_or_else2 methods for Option.",
+          "files": [
+            {
+              "path": "third-party/option-ext-0.2.0/src/lib.rs",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "b4e6e26371313f29c68afad024baa03d96642e4f",
+              "size_bytes": 2397,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/third-party/option-ext-0.2.0/src/lib.rs"
+            },
+            {
+              "path": "third-party/option-ext-0.2.0/src/impl.rs",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "d23209260d6b4eaf0701091f395c4ea0f7d8cdaa",
+              "size_bytes": 490,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/third-party/option-ext-0.2.0/src/impl.rs"
+            },
+            {
+              "path": "third-party/option-ext-0.2.0/Cargo.toml",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "f0726dfa80736e5b609b862d00ba5c5130f5e210",
+              "size_bytes": 866,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/third-party/option-ext-0.2.0/Cargo.toml"
+            },
+            {
+              "path": "third-party/option-ext-0.2.0/LICENSE.txt",
+              "roles": ["supporting", "notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "ee6256cdb62a765749a71aae3abea32884301cd1",
+              "size_bytes": 16727,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/third-party/option-ext-0.2.0/LICENSE.txt"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+              "size_bytes": 11358,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/LICENSE"
+            },
+            {
+              "path": "NOTICE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "36edee23138889395b30db00966df109fda9b564",
+              "size_bytes": 372,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/NOTICE"
+            }
+          ],
+          "dependencies": ["option-ext 0.2.0 (MPL-2.0)"],
+          "integration_notes": "Vendored third-party code under MPL-2.0. Take it from the upstream crate or from this directory with its license file. The implementation file impl.rs was listed but not supplied, so the trait's implementation was not reviewed.",
+          "limitations": [
+            "Only the trait declaration was supplied; impl.rs contents were not shown.",
+            "Licensed under MPL-2.0, which carries file-level copyleft obligations.",
+            "Small utility with no evidence of use within the sampled Deadbolt source."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": [],
+            "analyzed_at": "2026-10-09T02:06:36.553Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "Apache-2.0",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": [
+              "LICENSE",
+              "NOTICE",
+              "third-party/option-ext-0.2.0/LICENSE.txt"
+            ],
+            "third_party_paths": [
+              "third-party/option-ext-0.2.0/src/lib.rs",
+              "third-party/option-ext-0.2.0/src/impl.rs",
+              "third-party/option-ext-0.2.0/Cargo.toml",
+              "third-party/option-ext-0.2.0/LICENSE.txt"
+            ],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        },
+        {
+          "listing_id": 8,
+          "part_id": "7eae5e4fa55ea1e3",
+          "name": "Node sidecar client",
+          "repository": "seanebones-lang/deadbolt",
+          "source_commit": "71f2083062d4eed6874a35fff967c38b0d78306f",
+          "source_url": "https://github.com/seanebones-lang/deadbolt/blob/71f2083062d4eed6874a35fff967c38b0d78306f/examples/deadbolt_client.js",
+          "description": "Dependency-free Node.js client for the Deadbolt HTTP sidecar supporting Unix socket and loopback TCP, exporting ensure, admit, registerChild, status, policy and spend, with deny-by-default error handling.",
+          "files": [
+            {
+              "path": "examples/deadbolt_client.js",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "a3b6a42d4b6423af6f6ccfd18dfa519b297117d1",
+              "size_bytes": 4955,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/examples/deadbolt_client.js"
+            },
+            {
+              "path": "src/serve.rs",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "46727cc5839797caf1e349cde01cb2865f0aadae",
+              "size_bytes": 45025,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/src/serve.rs"
+            },
+            {
+              "path": "examples/deadbolt_client.py",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "fbd2e599f64ee170bf08e15c91eab41214237398",
+              "size_bytes": 4722,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/examples/deadbolt_client.py"
+            },
+            {
+              "path": "tests/client_contract.py",
+              "roles": ["test"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "2fc56a06d3bfba44aa00bf1e92af36f9ebbc8b19",
+              "size_bytes": 6806,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/tests/client_contract.py"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+              "size_bytes": 11358,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/LICENSE"
+            },
+            {
+              "path": "NOTICE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "36edee23138889395b30db00966df109fda9b564",
+              "size_bytes": 372,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/NOTICE"
+            }
+          ],
+          "dependencies": ["Node.js core modules (http, net, os, path)"],
+          "integration_notes": "Require the module from a Node project with DEADBOLT_SOCK and DEADBOLT_TOKEN set. Gate execution on the resolved value of admit and proceed only when decision is allow. Any non-2xx response, empty body or parse failure is converted to a deny-like object.",
+          "limitations": [
+            "Only the client file was supplied; server-side behaviour in src/serve.rs was not shown.",
+            "The module rejects https:// and non-loopback TCP hosts by throwing, which is caught and converted to a down result.",
+            "Socket timeouts are fixed at 5000 ms in the sample."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": ["tests/client_contract.py"],
+            "analyzed_at": "2026-10-09T02:06:36.553Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "Apache-2.0",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE", "NOTICE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        }
+      ]
+    }
+  },
+  {
+    "question": "Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. The enforcement repository's search results label both its sidecar clients with Rust, Python and JavaScript. For a Node runtime integration, compare the two clients' primary file paths and observed dependencies rather than treating repository languages as per-file languages. How many of these two clients have a .js primary file and dependencies described solely as Node.js core modules? Return only the integer.",
+    "answer": "1",
+    "calls": [
+      {
+        "tool": "repo_salvage_search_parts",
+        "arguments": {
+          "q": "deadbolt",
+          "limit": 10,
+          "page": 1,
+          "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 8,
+          "part_id": "7eae5e4fa55ea1e3"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 8,
+          "part_id": "dcd37dda4bd28169"
+        }
+      }
+    ],
+    "evidence": {
+      "catalog_revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+      "basis": "Node sidecar client has primary examples/deadbolt_client.js and Node core modules. Python stdlib HTTP sidecar client has primary examples/deadbolt_client.py and Python standard-library dependencies. Search language arrays are identical repository metadata.",
+      "searches": [
+        {
+          "query": {
+            "q": "deadbolt",
+            "language": "",
+            "license": "",
+            "category": "",
+            "sort": "relevance"
+          },
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "total": 5,
+            "next": null
+          },
+          "matched_parts": [
+            {
+              "listing_id": 8,
+              "part_id": "7eae5e4fa55ea1e3",
+              "name": "Node sidecar client",
+              "primary_path": "examples/deadbolt_client.js",
+              "languages": ["Rust", "Python", "JavaScript"]
+            },
+            {
+              "listing_id": 8,
+              "part_id": "6d0917a422af8015",
+              "name": "Option extension trait",
+              "primary_path": "third-party/option-ext-0.2.0/src/lib.rs",
+              "languages": ["Rust", "Python", "JavaScript"]
+            },
+            {
+              "listing_id": 8,
+              "part_id": "dcd37dda4bd28169",
+              "name": "Python stdlib HTTP sidecar client",
+              "primary_path": "examples/deadbolt_client.py",
+              "languages": ["Rust", "Python", "JavaScript"]
+            },
+            {
+              "listing_id": 8,
+              "part_id": "a723886d1a32c8bc",
+              "name": "Sample agent admission loop",
+              "primary_path": "examples/deadbolt_sample_agent.py",
+              "languages": ["Rust", "Python", "JavaScript"]
+            },
+            {
+              "listing_id": 8,
+              "part_id": "224b2c8c7aa67266",
+              "name": "Witness-format evidence sink",
+              "primary_path": "src/witness.rs",
+              "languages": ["Rust", "Python", "JavaScript"]
+            }
+          ]
+        }
+      ],
+      "parts": [
+        {
+          "listing_id": 8,
+          "part_id": "7eae5e4fa55ea1e3",
+          "name": "Node sidecar client",
+          "repository": "seanebones-lang/deadbolt",
+          "source_commit": "71f2083062d4eed6874a35fff967c38b0d78306f",
+          "source_url": "https://github.com/seanebones-lang/deadbolt/blob/71f2083062d4eed6874a35fff967c38b0d78306f/examples/deadbolt_client.js",
+          "description": "Dependency-free Node.js client for the Deadbolt HTTP sidecar supporting Unix socket and loopback TCP, exporting ensure, admit, registerChild, status, policy and spend, with deny-by-default error handling.",
+          "files": [
+            {
+              "path": "examples/deadbolt_client.js",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "a3b6a42d4b6423af6f6ccfd18dfa519b297117d1",
+              "size_bytes": 4955,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/examples/deadbolt_client.js"
+            },
+            {
+              "path": "src/serve.rs",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "46727cc5839797caf1e349cde01cb2865f0aadae",
+              "size_bytes": 45025,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/src/serve.rs"
+            },
+            {
+              "path": "examples/deadbolt_client.py",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "fbd2e599f64ee170bf08e15c91eab41214237398",
+              "size_bytes": 4722,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/examples/deadbolt_client.py"
+            },
+            {
+              "path": "tests/client_contract.py",
+              "roles": ["test"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "2fc56a06d3bfba44aa00bf1e92af36f9ebbc8b19",
+              "size_bytes": 6806,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/tests/client_contract.py"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+              "size_bytes": 11358,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/LICENSE"
+            },
+            {
+              "path": "NOTICE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "36edee23138889395b30db00966df109fda9b564",
+              "size_bytes": 372,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/NOTICE"
+            }
+          ],
+          "dependencies": ["Node.js core modules (http, net, os, path)"],
+          "integration_notes": "Require the module from a Node project with DEADBOLT_SOCK and DEADBOLT_TOKEN set. Gate execution on the resolved value of admit and proceed only when decision is allow. Any non-2xx response, empty body or parse failure is converted to a deny-like object.",
+          "limitations": [
+            "Only the client file was supplied; server-side behaviour in src/serve.rs was not shown.",
+            "The module rejects https:// and non-loopback TCP hosts by throwing, which is caught and converted to a down result.",
+            "Socket timeouts are fixed at 5000 ms in the sample."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": ["tests/client_contract.py"],
+            "analyzed_at": "2026-10-09T02:06:36.553Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "Apache-2.0",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE", "NOTICE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        },
+        {
+          "listing_id": 8,
+          "part_id": "dcd37dda4bd28169",
+          "name": "Python stdlib HTTP sidecar client",
+          "repository": "seanebones-lang/deadbolt",
+          "source_commit": "71f2083062d4eed6874a35fff967c38b0d78306f",
+          "source_url": "https://github.com/seanebones-lang/deadbolt/blob/71f2083062d4eed6874a35fff967c38b0d78306f/examples/deadbolt_client.py",
+          "description": "Stdlib-only Python client that calls a local deadbolt serve sidecar over Unix socket or loopback TCP, with ensure, admit, policy, spend, register_child and status functions that deny on any failure.",
+          "files": [
+            {
+              "path": "examples/deadbolt_client.py",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "fbd2e599f64ee170bf08e15c91eab41214237398",
+              "size_bytes": 4722,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/examples/deadbolt_client.py"
+            },
+            {
+              "path": "src/serve.rs",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "46727cc5839797caf1e349cde01cb2865f0aadae",
+              "size_bytes": 45025,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/src/serve.rs"
+            },
+            {
+              "path": "docs/INTEGRATION.md",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "dd2a24fd94ce34951d00c111acdf181763b0a1f2",
+              "size_bytes": 9283,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/docs/INTEGRATION.md"
+            },
+            {
+              "path": "tests/client_contract.py",
+              "roles": ["test"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "2fc56a06d3bfba44aa00bf1e92af36f9ebbc8b19",
+              "size_bytes": 6806,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/tests/client_contract.py"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+              "size_bytes": 11358,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/LICENSE"
+            },
+            {
+              "path": "NOTICE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "36edee23138889395b30db00966df109fda9b564",
+              "size_bytes": 372,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/deadbolt/71f2083062d4eed6874a35fff967c38b0d78306f/NOTICE"
+            }
+          ],
+          "dependencies": [
+            "Python standard library (http.client, socket, json, os, urllib.parse)"
+          ],
+          "integration_notes": "Copy the module into a Python project and set DEADBOLT_SOCK and DEADBOLT_TOKEN in the environment. Call admit(agent_id, tool, dest) immediately before each side effect and execute only when the result decision equals allow. The sidecar server side is not in the supplied source; its endpoints are inferred from the client paths.",
+          "limitations": [
+            "Only examples/deadbolt_client.py content was supplied; src/serve.rs is listed in the tree but its contents were not shown.",
+            "Fail-closed behaviour is implemented by _down, which returns deny or store_unavailable for any exception.",
+            "Tokens are read from the DEADBOLT_TOKEN environment variable; the sample does not show secure storage of tokens.",
+            "Windows default endpoint is hard-coded to 127.0.0.1:9782."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": ["tests/client_contract.py"],
+            "analyzed_at": "2026-10-09T02:06:36.553Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "Apache-2.0",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE", "NOTICE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        }
+      ]
+    }
+  },
+  {
+    "question": "Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. Compare the brainstorming application's standalone upstream-failure helper and its streamed idea-generation wrapper. A service needs failures from successive requests to affect the same breaker. Which plan agrees with both inspected records? A: copy the generation wrapper unchanged because its breaker is shared; B: reuse one standalone breaker instance per upstream service, because the wrapper creates a new breaker per call; C: rely on independent concurrency test evidence for the wrapper. Return only A, B or C.",
+    "answer": "B",
+    "calls": [
+      {
+        "tool": "repo_salvage_search_parts",
+        "arguments": {
+          "q": "Brainstormin-System",
+          "limit": 10,
+          "page": 1,
+          "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 3,
+          "part_id": "01a762bc95837106"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 3,
+          "part_id": "c4bd04c559ce9bac"
+        }
+      }
+    ],
+    "evidence": {
+      "catalog_revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+      "basis": "CircuitBreaker notes say state is per instance and recommend sharing an instance per upstream service. Both records say generateIdeas creates a breaker per call; neither is independently tested.",
+      "searches": [
+        {
+          "query": {
+            "q": "Brainstormin-System",
+            "language": "",
+            "license": "",
+            "category": "",
+            "sort": "relevance"
+          },
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "total": 6,
+            "next": null
+          },
+          "matched_parts": [
+            {
+              "listing_id": 3,
+              "part_id": "01a762bc95837106",
+              "name": "CircuitBreaker class",
+              "primary_path": "src/lib/circuitBreaker.ts",
+              "languages": ["TypeScript", "TSX", "CSS"]
+            },
+            {
+              "listing_id": 3,
+              "part_id": "5882553f89e2ff0e",
+              "name": "Next.js security headers and PWA config",
+              "primary_path": "next.config.mjs",
+              "languages": ["TypeScript", "TSX", "CSS"]
+            },
+            {
+              "listing_id": 3,
+              "part_id": "c4bd04c559ce9bac",
+              "name": "Retry and AI generation pattern",
+              "primary_path": "src/lib/ai.ts",
+              "languages": ["TypeScript", "TSX", "CSS"]
+            },
+            {
+              "listing_id": 3,
+              "part_id": "8431493db61a00e6",
+              "name": "Session storage helpers",
+              "primary_path": "src/lib/sessionManager.ts",
+              "languages": ["TypeScript", "TSX", "CSS"]
+            },
+            {
+              "listing_id": 3,
+              "part_id": "a415179d1e4c281c",
+              "name": "Template catalogue",
+              "primary_path": "src/lib/templates.ts",
+              "languages": ["TypeScript", "TSX", "CSS"]
+            },
+            {
+              "listing_id": 3,
+              "part_id": "b93a4b052bca0a2f",
+              "name": "useSSEFetch hook",
+              "primary_path": "src/hooks/useSSE.ts",
+              "languages": ["TypeScript", "TSX", "CSS"]
+            }
+          ]
+        }
+      ],
+      "parts": [
+        {
+          "listing_id": 3,
+          "part_id": "01a762bc95837106",
+          "name": "CircuitBreaker class",
+          "repository": "seanebones-lang/Brainstormin-System",
+          "source_commit": "120f8b40de0446fe98c13c604ec4281d0f83185d",
+          "source_url": "https://github.com/seanebones-lang/Brainstormin-System/blob/120f8b40de0446fe98c13c604ec4281d0f83185d/src/lib/circuitBreaker.ts",
+          "description": "Self-contained in-memory circuit breaker with CLOSED, OPEN and HALF_OPEN states, configurable failure threshold, reset timeout and monitoring window, plus execute, getState, getStats and reset methods.",
+          "files": [
+            {
+              "path": "src/lib/circuitBreaker.ts",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "ba3a3ac6823b6f61144db4590dd028acd5c63b5f",
+              "size_bytes": 5552,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/Brainstormin-System/120f8b40de0446fe98c13c604ec4281d0f83185d/src/lib/circuitBreaker.ts"
+            },
+            {
+              "path": "src/lib/ai.ts",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "47e6a25e323770d191bdfd861af8ae7f4a7e47d0",
+              "size_bytes": 7075,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/Brainstormin-System/120f8b40de0446fe98c13c604ec4281d0f83185d/src/lib/ai.ts"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "4d77f0792f67b11bee051f0d485af4d7c337caa7",
+              "size_bytes": 1071,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/Brainstormin-System/120f8b40de0446fe98c13c604ec4281d0f83185d/LICENSE"
+            }
+          ],
+          "dependencies": [],
+          "integration_notes": "Copy the file as-is; it has no imports. Create instances with createCircuitBreaker(options) or new CircuitBreaker(options), then wrap async calls with execute(() => yourPromise). Tune failureThreshold, resetTimeout, monitoringWindow and halfOpenMaxAttempts for your service. State is per instance, so share one instance per upstream service if you want shared protection. Note that src/lib/ai.ts creates a new breaker on every generateIdeas call, which means that code does not share state across requests.",
+          "limitations": [
+            "No unit tests were found for this file in the supplied tree.",
+            "Uses Date.now() and in-memory state only; state is lost on process restart and is not shared across server instances.",
+            "HALF_OPEN handling is simplified and was not verified under concurrent load."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": [],
+            "analyzed_at": "2026-10-09T01:54:39.654Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MIT",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        },
+        {
+          "listing_id": 3,
+          "part_id": "c4bd04c559ce9bac",
+          "name": "Retry and AI generation pattern",
+          "repository": "seanebones-lang/Brainstormin-System",
+          "source_commit": "120f8b40de0446fe98c13c604ec4281d0f83185d",
+          "source_url": "https://github.com/seanebones-lang/Brainstormin-System/blob/120f8b40de0446fe98c13c604ec4281d0f83185d/src/lib/ai.ts",
+          "description": "Provider-agnostic generateIdeas async generator that builds an OpenAI-compatible client from baseURL, apiKey and model, wraps calls with a circuit breaker and retryWithBackoff, and parses streamed newline-delimited JSON into validated ideas.",
+          "files": [
+            {
+              "path": "src/lib/ai.ts",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "47e6a25e323770d191bdfd861af8ae7f4a7e47d0",
+              "size_bytes": 7075,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/Brainstormin-System/120f8b40de0446fe98c13c604ec4281d0f83185d/src/lib/ai.ts"
+            },
+            {
+              "path": "src/lib/circuitBreaker.ts",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "ba3a3ac6823b6f61144db4590dd028acd5c63b5f",
+              "size_bytes": 5552,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/Brainstormin-System/120f8b40de0446fe98c13c604ec4281d0f83185d/src/lib/circuitBreaker.ts"
+            },
+            {
+              "path": "src/lib/retry.ts",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "f33476637e7218b34a0a685a0f8c7c7b1a38fb67",
+              "size_bytes": 2451,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/Brainstormin-System/120f8b40de0446fe98c13c604ec4281d0f83185d/src/lib/retry.ts"
+            },
+            {
+              "path": "src/lib/logger.ts",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "6cbbd3df2aac5b52fd6951da97bf8578a335ccc2",
+              "size_bytes": 4053,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/Brainstormin-System/120f8b40de0446fe98c13c604ec4281d0f83185d/src/lib/logger.ts"
+            },
+            {
+              "path": "src/types/index.ts",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "bfeee4fd476f78665020c7744270535b95e7e5a1",
+              "size_bytes": 5055,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/Brainstormin-System/120f8b40de0446fe98c13c604ec4281d0f83185d/src/types/index.ts"
+            },
+            {
+              "path": "src/__tests__/lib/ai.test.ts",
+              "roles": ["test"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "8c75319193396b2a9a815188de7b3813349580d9",
+              "size_bytes": 2917,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/Brainstormin-System/120f8b40de0446fe98c13c604ec4281d0f83185d/src/__tests__/lib/ai.test.ts"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "4d77f0792f67b11bee051f0d485af4d7c337caa7",
+              "size_bytes": 1071,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/Brainstormin-System/120f8b40de0446fe98c13c604ec4281d0f83185d/LICENSE"
+            }
+          ],
+          "dependencies": ["openai", "zod"],
+          "integration_notes": "Adapt by taking the createClient pattern (new OpenAI with apiKey and baseURL) and the streaming line-buffer loop. Retry and circuit breaker come from ./retry and ./circuitBreaker; retry.ts was not included in the sample, so its signature is only inferred from calls. The ideaSchema, AIServiceError and types are imported from @/types, which was not supplied.",
+          "limitations": [
+            "The retry module and @/types contents were not supplied in the sample, so behaviour of retryWithBackoff and isRetryableError is unverified.",
+            "The prompt and idea schema are specific to this app.",
+            "A new circuit breaker is created per call, so it does not protect across requests.",
+            "Existence of test file ai.test.ts is seen but its content and pass status were not reviewed.",
+            "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": ["src/__tests__/lib/ai.test.ts"],
+            "analyzed_at": "2026-10-09T01:54:39.654Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MIT",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        }
+      ]
+    }
+  },
+  {
+    "question": "Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. An archival workflow compares the river-gauge bundle checker and its preservation-event recorder. Which statement agrees with both records? A: checking listed digests establishes the manifest's own integrity; B: the checker establishes publisher identity and measurement accuracy; C: the recorder's sorted, two-space-indented JSON is a local convention, while the checker explicitly leaves publisher identity and accuracy unverified. Return only A, B or C.",
+    "answer": "C",
+    "calls": [
+      {
+        "tool": "repo_salvage_search_parts",
+        "arguments": {
+          "q": "USGS",
+          "limit": 10,
+          "page": 1,
+          "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 9,
+          "part_id": "f6e8f858028272b0"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 9,
+          "part_id": "322e4d35c029cee7"
+        }
+      }
+    ],
+    "evidence": {
+      "catalog_revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+      "basis": "The recorder describes json.dumps sort_keys and indent=2 as local rather than a published standard. The bundle checker description explicitly says NOT VERIFIED for publisher identity and accuracy, and its limitations say manifest integrity itself is not established.",
+      "searches": [
+        {
+          "query": {
+            "q": "USGS",
+            "language": "",
+            "license": "",
+            "category": "",
+            "sort": "relevance"
+          },
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "total": 2,
+            "next": null
+          },
+          "matched_parts": [
+            {
+              "listing_id": 9,
+              "part_id": "322e4d35c029cee7",
+              "name": "Canonical JSON fixity recorder",
+              "primary_path": "reference/usgs-river-gauge/tools/record_fixity_check.py",
+              "languages": ["Rust", "Python", "SQL", "Shell"]
+            },
+            {
+              "listing_id": 9,
+              "part_id": "f6e8f858028272b0",
+              "name": "USGS bundle extraction and verification scripts",
+              "primary_path": "reference/usgs-river-gauge/tools/verify.py",
+              "languages": ["Rust", "Python", "SQL", "Shell"]
+            }
+          ]
+        }
+      ],
+      "parts": [
+        {
+          "listing_id": 9,
+          "part_id": "f6e8f858028272b0",
+          "name": "USGS bundle extraction and verification scripts",
+          "repository": "seanebones-lang/witness",
+          "source_commit": "482ce52011d55c4991cd7dc73fa103c9527c43ab",
+          "source_url": "https://github.com/seanebones-lang/witness/blob/482ce52011d55c4991cd7dc73fa103c9527c43ab/reference/usgs-river-gauge/tools/verify.py",
+          "description": "Python script that checks manifest.json artifact byte sizes and SHA-256 digests, and confirms that an extracted point's timestamp, exact value text and qualifiers occur in the raw response.json. It prints explicit NOT VERIFIED lines for publisher identity and accuracy.",
+          "files": [
+            {
+              "path": "reference/usgs-river-gauge/tools/verify.py",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "bba270216095a07adbc8400e7ffd772eab959f8d",
+              "size_bytes": 2341,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/reference/usgs-river-gauge/tools/verify.py"
+            },
+            {
+              "path": "reference/usgs-river-gauge/tools/extract.py",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "3d1a6d06682e31a499129371bb8a77e8774b66a5",
+              "size_bytes": 4219,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/reference/usgs-river-gauge/tools/extract.py"
+            },
+            {
+              "path": "reference/usgs-river-gauge/tools/record_fixity_check.py",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "08721938b48bfc596e0b8fa77ca17d9a709ba04e",
+              "size_bytes": 2676,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/reference/usgs-river-gauge/tools/record_fixity_check.py"
+            },
+            {
+              "path": "reference/usgs-river-gauge/tools/retrieve.py",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "b258e6103b69a14b4ca09b589cfee85db5735727",
+              "size_bytes": 6277,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/reference/usgs-river-gauge/tools/retrieve.py"
+            },
+            {
+              "path": "reference/usgs-river-gauge/snapshot/manifest.json",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "3cb9ea6e941b95843925f5aa8b349d250702dbd9",
+              "size_bytes": 2083,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/reference/usgs-river-gauge/snapshot/manifest.json"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "d0a1fa1482eea82e19510e7920cbe3a03e41f691",
+              "size_bytes": 16726,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/LICENSE"
+            },
+            {
+              "path": "LICENSE-POLICY.md",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "ed216d0ef6d49003a907840704e4d64c9e67a0e1",
+              "size_bytes": 915,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/LICENSE-POLICY.md"
+            },
+            {
+              "path": "NOTICE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "40a78b7a466cec496b07d245487d4c8a6e2cf2b9",
+              "size_bytes": 751,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/NOTICE"
+            }
+          ],
+          "dependencies": [
+            "Python 3 standard library (argparse, hashlib, json, pathlib)"
+          ],
+          "integration_notes": "Run against a bundle directory containing manifest.json and response.json. The script assumes the USGS WaterML 1.1 JSON structure (value.timeSeries[0].values[0].value). For reuse with another source, the path-walking and point-matching logic must be rewritten for that schema while keeping the digest comparison loop.",
+          "limitations": [
+            "Hard-coded to the USGS WaterML JSON layout and only checks the first time series.",
+            "Digest checks cover only artifacts listed in manifest.json; manifest integrity itself is not established.",
+            "No tests were seen in the sample."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": [],
+            "analyzed_at": "2026-10-09T02:07:50.437Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MPL-2.0",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE", "LICENSE-POLICY.md", "NOTICE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        },
+        {
+          "listing_id": 9,
+          "part_id": "322e4d35c029cee7",
+          "name": "Canonical JSON fixity recorder",
+          "repository": "seanebones-lang/witness",
+          "source_commit": "482ce52011d55c4991cd7dc73fa103c9527c43ab",
+          "source_url": "https://github.com/seanebones-lang/witness/blob/482ce52011d55c4991cd7dc73fa103c9527c43ab/reference/usgs-river-gauge/tools/record_fixity_check.py",
+          "description": "Compares each manifest artifact digest with the file on disk, appends a fixity-check event to preservation-events.json, updates the manifest's digest for that events file, and writes canonical JSON using sorted keys and two-space indentation.",
+          "files": [
+            {
+              "path": "reference/usgs-river-gauge/tools/record_fixity_check.py",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "08721938b48bfc596e0b8fa77ca17d9a709ba04e",
+              "size_bytes": 2676,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/reference/usgs-river-gauge/tools/record_fixity_check.py"
+            },
+            {
+              "path": "reference/usgs-river-gauge/tools/verify.py",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "bba270216095a07adbc8400e7ffd772eab959f8d",
+              "size_bytes": 2341,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/reference/usgs-river-gauge/tools/verify.py"
+            },
+            {
+              "path": "reference/usgs-river-gauge/tools/retrieve.py",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "b258e6103b69a14b4ca09b589cfee85db5735727",
+              "size_bytes": 6277,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/reference/usgs-river-gauge/tools/retrieve.py"
+            },
+            {
+              "path": "reference/usgs-river-gauge/snapshot/preservation-events.json",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "03735567dd651e32a468a0c6fc4496885a9f2023",
+              "size_bytes": 2577,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/reference/usgs-river-gauge/snapshot/preservation-events.json"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "d0a1fa1482eea82e19510e7920cbe3a03e41f691",
+              "size_bytes": 16726,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/LICENSE"
+            },
+            {
+              "path": "LICENSE-POLICY.md",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "ed216d0ef6d49003a907840704e4d64c9e67a0e1",
+              "size_bytes": 915,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/LICENSE-POLICY.md"
+            },
+            {
+              "path": "NOTICE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "40a78b7a466cec496b07d245487d4c8a6e2cf2b9",
+              "size_bytes": 751,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/NOTICE"
+            }
+          ],
+          "dependencies": [
+            "Python 3 standard library (argparse, hashlib, json, datetime, pathlib)"
+          ],
+          "integration_notes": "The canonical_json and digest helpers are small and can be copied into other archival scripts. The script expects a manifest.json with an artifacts map and an events file with an events list. Pass --checked-at for reproducible runs; otherwise the current UTC time is recorded.",
+          "limitations": [
+            "The canonical form is json.dumps with sort_keys and indent=2, which is local to this tool and not a published standard.",
+            "The tool records the outcome but the sample does not show how mismatches are handled beyond raising SystemExit.",
+            "No tests were seen in the sample."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": [],
+            "analyzed_at": "2026-10-09T02:07:50.437Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MPL-2.0",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE", "LICENSE-POLICY.md", "NOTICE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        }
+      ]
+    }
+  },
+  {
+    "question": "Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A Rust reuse review compares the provenance project's batch importer with its identifier-and-signature helper. Both depend on project node/type definitions that were not supplied completely in their samples. Which shared supporting Rust file in both inspected file lists holds those definitions? Return only the exact repo-relative path.",
+    "answer": "core/src/types.rs",
+    "calls": [
+      {
+        "tool": "repo_salvage_search_parts",
+        "arguments": {
+          "q": "witness",
+          "limit": 10,
+          "page": 1,
+          "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 9,
+          "part_id": "3c004d393d45be75"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 9,
+          "part_id": "0cbfc41e1a97c092"
+        }
+      }
+    ],
+    "evidence": {
+      "catalog_revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+      "basis": "Both files lists identify core/src/types.rs as supporting. The signing integration notes require ProvenanceNode and associated definitions from it; the importer's limitations and supporting files record dependence on project types.",
+      "searches": [
+        {
+          "query": {
+            "q": "witness",
+            "language": "",
+            "license": "",
+            "category": "",
+            "sort": "relevance"
+          },
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "total": 7,
+            "next": null
+          },
+          "matched_parts": [
+            {
+              "listing_id": 9,
+              "part_id": "4a8a7419608ee74f",
+              "name": "Append-only provenance schema",
+              "primary_path": "core/migrations/001_initial_schema.sql",
+              "languages": ["Rust", "Python", "SQL", "Shell"]
+            },
+            {
+              "listing_id": 9,
+              "part_id": "1f3a4a236c9b936e",
+              "name": "Append-only SQLite node store",
+              "primary_path": "core/src/storage.rs",
+              "languages": ["Rust", "Python", "SQL", "Shell"]
+            },
+            {
+              "listing_id": 9,
+              "part_id": "322e4d35c029cee7",
+              "name": "Canonical JSON fixity recorder",
+              "primary_path": "reference/usgs-river-gauge/tools/record_fixity_check.py",
+              "languages": ["Rust", "Python", "SQL", "Shell"]
+            },
+            {
+              "listing_id": 9,
+              "part_id": "0cbfc41e1a97c092",
+              "name": "CID and Ed25519 sign/verify helpers",
+              "primary_path": "core/src/signing.rs",
+              "languages": ["Rust", "Python", "SQL", "Shell"]
+            },
+            {
+              "listing_id": 9,
+              "part_id": "3c004d393d45be75",
+              "name": "JSONL and CSV batch ingestion service",
+              "primary_path": "core/src/ingestion.rs",
+              "languages": ["Rust", "Python", "SQL", "Shell"]
+            },
+            {
+              "listing_id": 9,
+              "part_id": "f6e8f858028272b0",
+              "name": "USGS bundle extraction and verification scripts",
+              "primary_path": "reference/usgs-river-gauge/tools/verify.py",
+              "languages": ["Rust", "Python", "SQL", "Shell"]
+            },
+            {
+              "listing_id": 8,
+              "part_id": "224b2c8c7aa67266",
+              "name": "Witness-format evidence sink",
+              "primary_path": "src/witness.rs",
+              "languages": ["Rust", "Python", "JavaScript"]
+            }
+          ]
+        }
+      ],
+      "parts": [
+        {
+          "listing_id": 9,
+          "part_id": "3c004d393d45be75",
+          "name": "JSONL and CSV batch ingestion service",
+          "repository": "seanebones-lang/witness",
+          "source_commit": "482ce52011d55c4991cd7dc73fa103c9527c43ab",
+          "source_url": "https://github.com/seanebones-lang/witness/blob/482ce52011d55c4991cd7dc73fa103c9527c43ab/core/src/ingestion.rs",
+          "description": "IngestionService that validates premises, imports JSONL nodes after checking parent existence, CID match and optional signature, and imports CSV rows as observations via a column mapping.",
+          "files": [
+            {
+              "path": "core/src/ingestion.rs",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "c0c374c8cef41e5a3217ff8acf8496b0b8d3c4b4",
+              "size_bytes": 17339,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/core/src/ingestion.rs"
+            },
+            {
+              "path": "core/src/storage.rs",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "45bb0542740cc692525142fafee940db1200b542",
+              "size_bytes": 16564,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/core/src/storage.rs"
+            },
+            {
+              "path": "core/src/signing.rs",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "5f4dc1e7a5cd1233845fa045de212a4dc83b3b49",
+              "size_bytes": 5841,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/core/src/signing.rs"
+            },
+            {
+              "path": "core/src/types.rs",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "0d52ab877e2f2a8d98bbbe489846a978f74aff97",
+              "size_bytes": 9564,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/core/src/types.rs"
+            },
+            {
+              "path": "ingestion/src/main.rs",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "4495f237381185d8fa74ade441426237073c1564",
+              "size_bytes": 11800,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/ingestion/src/main.rs"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "d0a1fa1482eea82e19510e7920cbe3a03e41f691",
+              "size_bytes": 16726,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/LICENSE"
+            },
+            {
+              "path": "LICENSE-POLICY.md",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "ed216d0ef6d49003a907840704e4d64c9e67a0e1",
+              "size_bytes": 915,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/LICENSE-POLICY.md"
+            },
+            {
+              "path": "NOTICE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "40a78b7a466cec496b07d245487d4c8a6e2cf2b9",
+              "size_bytes": 751,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/NOTICE"
+            }
+          ],
+          "dependencies": [
+            "tokio (fs and io)",
+            "csv 1.3",
+            "serde_json",
+            "chrono"
+          ],
+          "integration_notes": "The JSONL import pattern (read lines with BufReader, skip blank lines, verify CID and signature before storing) can be lifted independently of the rest of the service. Replace the Storage dependency with your own existence check for parent IDs. The CSV path depends on a CsvColumnMapping type and a csv_record_to_measurement helper whose full source was not supplied in the sample.",
+          "limitations": [
+            "The file is truncated in the sample; CsvColumnMapping, csv_record_to_measurement and the rest of the service are not visible.",
+            "The import path depends on Storage and the project's WitnessError type.",
+            "No tests for ingestion were seen in the sample.",
+            "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": [],
+            "analyzed_at": "2026-10-09T02:07:50.437Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MPL-2.0",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE", "LICENSE-POLICY.md", "NOTICE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        },
+        {
+          "listing_id": 9,
+          "part_id": "0cbfc41e1a97c092",
+          "name": "CID and Ed25519 sign/verify helpers",
+          "repository": "seanebones-lang/witness",
+          "source_commit": "482ce52011d55c4991cd7dc73fa103c9527c43ab",
+          "source_url": "https://github.com/seanebones-lang/witness/blob/482ce52011d55c4991cd7dc73fa103c9527c43ab/core/src/signing.rs",
+          "description": "Provides SigningKeypair generation and hex I/O, sign_node and verify_node over a canonicalized node excluding the signature field, plus compute_cid and verify_cid over serde JSON bytes. Includes unit tests for an unchanged node and a tampered payload.",
+          "files": [
+            {
+              "path": "core/src/signing.rs",
+              "roles": ["primary", "test"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "5f4dc1e7a5cd1233845fa045de212a4dc83b3b49",
+              "size_bytes": 5841,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/core/src/signing.rs"
+            },
+            {
+              "path": "core/src/types.rs",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "0d52ab877e2f2a8d98bbbe489846a978f74aff97",
+              "size_bytes": 9564,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/core/src/types.rs"
+            },
+            {
+              "path": "core/src/lib.rs",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "6a64ce0991b97032bc1de33f37862e239ec057bc",
+              "size_bytes": 844,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/core/src/lib.rs"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "d0a1fa1482eea82e19510e7920cbe3a03e41f691",
+              "size_bytes": 16726,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/LICENSE"
+            },
+            {
+              "path": "LICENSE-POLICY.md",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "ed216d0ef6d49003a907840704e4d64c9e67a0e1",
+              "size_bytes": 915,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/LICENSE-POLICY.md"
+            },
+            {
+              "path": "NOTICE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "40a78b7a466cec496b07d245487d4c8a6e2cf2b9",
+              "size_bytes": 751,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/witness/482ce52011d55c4991cd7dc73fa103c9527c43ab/NOTICE"
+            }
+          ],
+          "dependencies": [
+            "ed25519-dalek 2.x",
+            "sha2 0.10",
+            "hex 0.4",
+            "rand 0.8",
+            "serde",
+            "serde_json",
+            "chrono",
+            "uuid"
+          ],
+          "integration_notes": "Copy the signing module together with the ProvenanceNode, Author, Signature, CID and EpistemicType definitions from core/src/types.rs, or adapt the CanonicalNode struct to your own node type. Export or re-create the Result alias and WitnessError variants used for Crypto and Serialization errors. The canonical form is serde_json output of a private struct, so the field order and serialization must be kept identical on signing and verifying sides.",
+          "limitations": [
+            "Canonicalization relies on serde_json serialization of struct fields and serde_json::Value payloads, not a formal canonical JSON standard; byte stability across serde_json versions is not established by the sample.",
+            "Depends on types from core/src/types.rs that were only partially supplied.",
+            "The tests shown only cover unchanged and tampered-payload cases; the sample does not show tests for other failure modes.",
+            "Signing proves key possession and non-modification only, not source honesty."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": ["core/src/signing.rs"],
+            "analyzed_at": "2026-10-09T02:07:50.437Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MPL-2.0",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE", "LICENSE-POLICY.md", "NOTICE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        }
+      ]
+    }
+  },
+  {
+    "question": "Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A source-evidence application offers one packet-structure validator and one case/partition-isolation validator. Compare their inspected records before calling either validated in your own project. Across these two parts, how many distinct linked files have the test role, while both records still report independently_tested=false? Return only the integer; linked tests do not establish a passing result.",
+    "answer": "2",
+    "calls": [
+      {
+        "tool": "repo_salvage_search_parts",
+        "arguments": {
+          "q": "evidencelens",
+          "limit": 10,
+          "page": 1,
+          "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 6,
+          "part_id": "6dcfd68c83d19424"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 6,
+          "part_id": "f3b6e4831cca1def"
+        }
+      }
+    ],
+    "evidence": {
+      "catalog_revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+      "basis": "Ajv validator links packages/evidence-schema/test/validate.test.mjs with role test. Semantic validator links packages/semantic-evaluation/test/semantic-evaluation.test.mjs with role test. Both independently_tested flags are false.",
+      "searches": [
+        {
+          "query": {
+            "q": "evidencelens",
+            "language": "",
+            "license": "",
+            "category": "",
+            "sort": "relevance"
+          },
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "total": 4,
+            "next": null
+          },
+          "matched_parts": [
+            {
+              "listing_id": 6,
+              "part_id": "6dcfd68c83d19424",
+              "name": "Evidence packet Ajv validator",
+              "primary_path": "packages/evidence-schema/src/validate.ts",
+              "languages": ["TypeScript", "JavaScript", "Python"]
+            },
+            {
+              "listing_id": 6,
+              "part_id": "b9a7e9cfdef82ede",
+              "name": "Frozen-label mapping and per-class metrics script",
+              "primary_path": "research/EXP-EL004-expanded-semantic-relation/scripts/score-development.py",
+              "languages": ["TypeScript", "JavaScript", "Python"]
+            },
+            {
+              "listing_id": 6,
+              "part_id": "e2ee88f5ab047987",
+              "name": "Packet snapshot preservation and fail-closed source resolution",
+              "primary_path": "packages/packet-builder/src/index.ts",
+              "languages": ["TypeScript", "JavaScript", "Python"]
+            },
+            {
+              "listing_id": 6,
+              "part_id": "f3b6e4831cca1def",
+              "name": "Semantic case and partition validators",
+              "primary_path": "packages/semantic-evaluation/src/index.ts",
+              "languages": ["TypeScript", "JavaScript", "Python"]
+            }
+          ]
+        }
+      ],
+      "parts": [
+        {
+          "listing_id": 6,
+          "part_id": "6dcfd68c83d19424",
+          "name": "Evidence packet Ajv validator",
+          "repository": "seanebones-lang/evidencelens",
+          "source_commit": "49acea5a30a5a94b0961d89c9c8c0a450d355615",
+          "source_url": "https://github.com/seanebones-lang/evidencelens/blob/49acea5a30a5a94b0961d89c9c8c0a450d355615/packages/evidence-schema/src/validate.ts",
+          "description": "Compiles the packet JSON Schema with Ajv 2020 in strict mode with allErrors and ajv-formats, then adds runtime checks for source identifiers, sha256 hash format, RFC 3339 timestamps, span locators, verifiedAgainstSource, OBSERVED epistemic class, and deterministic assertion inputRefs.",
+          "files": [
+            {
+              "path": "packages/evidence-schema/src/validate.ts",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "71bb0acff23ee9e78719ddb71f52d105e1967e50",
+              "size_bytes": 10485,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/evidencelens/49acea5a30a5a94b0961d89c9c8c0a450d355615/packages/evidence-schema/src/validate.ts"
+            },
+            {
+              "path": "packages/evidence-schema/src/types.ts",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "452f1ff7cbb07e8d36c4c63c2f1733cfabfe77a7",
+              "size_bytes": 2840,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/evidencelens/49acea5a30a5a94b0961d89c9c8c0a450d355615/packages/evidence-schema/src/types.ts"
+            },
+            {
+              "path": "packages/evidence-schema/schema/evidence-packet.schema.json",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "3de1943b85c14b9e6881d3b42e99d7b0b578ed89",
+              "size_bytes": 6180,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/evidencelens/49acea5a30a5a94b0961d89c9c8c0a450d355615/packages/evidence-schema/schema/evidence-packet.schema.json"
+            },
+            {
+              "path": "packages/evidence-schema/test/validate.test.mjs",
+              "roles": ["test"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "cda6fde4a292366584745be6a10e427489ce7a57",
+              "size_bytes": 3806,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/evidencelens/49acea5a30a5a94b0961d89c9c8c0a450d355615/packages/evidence-schema/test/validate.test.mjs"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "31a4af5fd2538407f5de590ffa20a5308589351c",
+              "size_bytes": 1088,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/evidencelens/49acea5a30a5a94b0961d89c9c8c0a450d355615/LICENSE"
+            }
+          ],
+          "dependencies": [
+            "ajv ^8.17.1",
+            "ajv-formats ^3.0.1",
+            "Node.js node:fs"
+          ],
+          "integration_notes": "Copy validate.ts with types.ts and the packet schema JSON. The schema is read at module load via new URL with import.meta.url relative to src/, so keep the same relative layout or change that path. Install ajv and ajv-formats at the versions listed in the package manifest.",
+          "limitations": [
+            "The supplied excerpt ends mid-file, so the exported validation function and the remaining checks were not visible.",
+            "The schema is read from disk at module load, which assumes ESM and a fixed file layout.",
+            "Covers structural and invariant checks only and does not verify source content or hashes against retrieved data.",
+            "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": ["packages/evidence-schema/test/validate.test.mjs"],
+            "analyzed_at": "2026-10-09T02:05:29.435Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MIT",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        },
+        {
+          "listing_id": 6,
+          "part_id": "f3b6e4831cca1def",
+          "name": "Semantic case and partition validators",
+          "repository": "seanebones-lang/evidencelens",
+          "source_commit": "49acea5a30a5a94b0961d89c9c8c0a450d355615",
+          "source_url": "https://github.com/seanebones-lang/evidencelens/blob/49acea5a30a5a94b0961d89c9c8c0a450d355615/packages/semantic-evaluation/src/index.ts",
+          "description": "Exports validateSemanticCases, which checks required string fields, a sha256 packetHash format, non-empty evidence spans, partition and origin values, excludedContextConfirmed, and duplicate caseIds, and validatePartitionIsolation, which rejects source or near-duplicate groups that cross partitions. The excerpt also shows createBlindedAssignments, whose body is truncated.",
+          "files": [
+            {
+              "path": "packages/semantic-evaluation/src/index.ts",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "a05622119677164fb4004c874a96e1cb5f4bc2de",
+              "size_bytes": 14523,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/evidencelens/49acea5a30a5a94b0961d89c9c8c0a450d355615/packages/semantic-evaluation/src/index.ts"
+            },
+            {
+              "path": "packages/semantic-evaluation/test/semantic-evaluation.test.mjs",
+              "roles": ["test"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "4791cdf7f5a2b56bb68f4651d7161311e745a9ee",
+              "size_bytes": 6985,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/evidencelens/49acea5a30a5a94b0961d89c9c8c0a450d355615/packages/semantic-evaluation/test/semantic-evaluation.test.mjs"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "31a4af5fd2538407f5de590ffa20a5308589351c",
+              "size_bytes": 1088,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/evidencelens/49acea5a30a5a94b0961d89c9c8c0a450d355615/LICENSE"
+            }
+          ],
+          "dependencies": [
+            "Node.js node:crypto (createHash is called but its import is not visible in the supplied excerpt)"
+          ],
+          "integration_notes": "Copy the SemanticCase and BlindedEvidence types, the SemanticEvaluationError class, the isRecord and requireNonEmptyString helpers, and the two validator functions. Call validateSemanticCases before validatePartitionIsolation as the file does. If you copy createBlindedAssignments, add a createHash import from node:crypto.",
+          "limitations": [
+            "The supplied excerpt is truncated; the createBlindedAssignments body and the createHash import were not shown.",
+            "Validators check shape and partition rules only and do not verify packet content or claim truth.",
+            "Partition values are hard-coded to DEVELOPMENT, BLIND_HOLDOUT and TRANSFER, and origin to NATURAL or SYNTHETIC.",
+            "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": [
+              "packages/semantic-evaluation/test/semantic-evaluation.test.mjs"
+            ],
+            "analyzed_at": "2026-10-09T02:05:29.435Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MIT",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        }
+      ]
+    }
+  },
+  {
+    "question": "Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A repository-brief integration is separating the model-output parser from the provider-facing prompt wrapper. Their dependency descriptions differ, but compare their primary-file provenance to identify the frozen file they actually share. What is the common primary file's git_blob_sha? Return only the 40-character SHA.",
+    "answer": "00aed189d6500fedd3acf07828ee70a4510e63a2",
+    "calls": [
+      {
+        "tool": "repo_salvage_search_parts",
+        "arguments": {
+          "q": "summar",
+          "limit": 10,
+          "page": 1,
+          "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 1,
+          "part_id": "7e77a9eb7d34fe85"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 1,
+          "part_id": "e7bbc288c6315dee"
+        }
+      }
+    ],
+    "evidence": {
+      "catalog_revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+      "basis": "Both primary files are src/lib/summarize.ts at source commit b53bb1be0aaed349b86f971f854cdcd529b0371b with this same blob SHA. The parser says no external package is used by the routine itself, while the same module/wrapper imports @anthropic-ai/sdk.",
+      "searches": [
+        {
+          "query": {
+            "q": "summar",
+            "language": "",
+            "license": "",
+            "category": "",
+            "sort": "relevance"
+          },
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "total": 3,
+            "next": null
+          },
+          "matched_parts": [
+            {
+              "listing_id": 1,
+              "part_id": "7e77a9eb7d34fe85",
+              "name": "parseSummary model-output parser",
+              "primary_path": "src/lib/summarize.ts",
+              "languages": ["TypeScript", "JavaScript"]
+            },
+            {
+              "listing_id": 1,
+              "part_id": "660817c3d6660356",
+              "name": "SQLite schema bootstrap and listing upsert",
+              "primary_path": "src/lib/db.ts",
+              "languages": ["TypeScript", "JavaScript"]
+            },
+            {
+              "listing_id": 1,
+              "part_id": "e7bbc288c6315dee",
+              "name": "summarizeRepo prompt wrapper and output schema",
+              "primary_path": "src/lib/summarize.ts",
+              "languages": ["TypeScript", "JavaScript"]
+            }
+          ]
+        }
+      ],
+      "parts": [
+        {
+          "listing_id": 1,
+          "part_id": "7e77a9eb7d34fe85",
+          "name": "parseSummary model-output parser",
+          "repository": "seanebones-lang/repo-salvage",
+          "source_commit": "b53bb1be0aaed349b86f971f854cdcd529b0371b",
+          "source_url": "https://github.com/seanebones-lang/repo-salvage/blob/b53bb1be0aaed349b86f971f854cdcd529b0371b/src/lib/summarize.ts",
+          "description": "Parses model JSON text, drops reusable pieces whose path is not in the supplied tree, sanitizes free text (strips URLs and markdown characters, collapses whitespace) and caps lengths and piece count at 6.",
+          "files": [
+            {
+              "path": "src/lib/summarize.ts",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "00aed189d6500fedd3acf07828ee70a4510e63a2",
+              "size_bytes": 9219,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/src/lib/summarize.ts"
+            },
+            {
+              "path": "src/lib/components.ts",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "8ff5f9c5069aa9c926e7346182b6b8f0e190d8ca",
+              "size_bytes": 3801,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/src/lib/components.ts"
+            },
+            {
+              "path": "src/lib/db.ts",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "3f70d2fa1dfa222c603d16bed452f0b745255123",
+              "size_bytes": 15124,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/src/lib/db.ts"
+            },
+            {
+              "path": "src/lib/github.ts",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "44e738ef47b33e3522710ffb7dbd2ac9f29c8448",
+              "size_bytes": 9452,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/src/lib/github.ts"
+            },
+            {
+              "path": "tests/summarize.test.ts",
+              "roles": ["test"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "e25d6e0dd2155250722414b6f88c3070d1ac89f9",
+              "size_bytes": 5172,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/tests/summarize.test.ts"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "90a8947bcc2c6f0995518ce55bad469c165b6ec4",
+              "size_bytes": 1067,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/LICENSE"
+            }
+          ],
+          "dependencies": [
+            "No external package is used by parseSummary itself; the same module imports @anthropic-ai/sdk for summarizeRepo"
+          ],
+          "integration_notes": "Copy the parseSummary and clean helpers together, then supply a repository tree string array and the raw model text. Replace the CATEGORIES import with your own category list, since the sample shows the parser depends on it. Review the sanitization regexes against your own content rules before reuse.",
+          "limitations": [
+            "verifiedSummary is referenced by summarizeRepo and by tests but its body was not in the sample, so path verification behavior beyond parseSummary is unknown.",
+            "The sampled test file was partially visible; full test coverage and pass status were not verified.",
+            "The clean regexes are project-specific choices and were not evaluated against adversarial input.",
+            "CATEGORIES and the Summary and ReusablePiece types are imported from other project files that were not fully sampled.",
+            "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": ["tests/summarize.test.ts"],
+            "analyzed_at": "2026-10-09T01:42:08.228Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MIT",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        },
+        {
+          "listing_id": 1,
+          "part_id": "e7bbc288c6315dee",
+          "name": "summarizeRepo prompt wrapper and output schema",
+          "repository": "seanebones-lang/repo-salvage",
+          "source_commit": "b53bb1be0aaed349b86f971f854cdcd529b0371b",
+          "source_url": "https://github.com/seanebones-lang/repo-salvage/blob/b53bb1be0aaed349b86f971f854cdcd529b0371b/src/lib/summarize.ts",
+          "description": "Builds a repository brief request that wraps supplied repository files in a repo_data tag with an untrusted-data instruction, and requests JSON matching a strict schema with additionalProperties false through the beta messages API.",
+          "files": [
+            {
+              "path": "src/lib/summarize.ts",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "00aed189d6500fedd3acf07828ee70a4510e63a2",
+              "size_bytes": 9219,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/src/lib/summarize.ts"
+            },
+            {
+              "path": "src/lib/github.ts",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "44e738ef47b33e3522710ffb7dbd2ac9f29c8448",
+              "size_bytes": 9452,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/src/lib/github.ts"
+            },
+            {
+              "path": "src/lib/components.ts",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "8ff5f9c5069aa9c926e7346182b6b8f0e190d8ca",
+              "size_bytes": 3801,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/src/lib/components.ts"
+            },
+            {
+              "path": "tests/summarize.test.ts",
+              "roles": ["test"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "e25d6e0dd2155250722414b6f88c3070d1ac89f9",
+              "size_bytes": 5172,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/tests/summarize.test.ts"
+            },
+            {
+              "path": "tests/flow.test.tsx",
+              "roles": ["test"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "fb71ad6b0969b2933f10eed031451368e6761a66",
+              "size_bytes": 10218,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/tests/flow.test.tsx"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "90a8947bcc2c6f0995518ce55bad469c165b6ec4",
+              "size_bytes": 1067,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/LICENSE"
+            }
+          ],
+          "dependencies": [
+            "@anthropic-ai/sdk",
+            "Anthropic beta feature server-side-fallback-2026-07-01 as used in the sampled call"
+          ],
+          "integration_notes": "Adapt the SYSTEM text, the SCHEMA object and the body assembly from the sample to your own provider and file set. Keep the timeout and maxRetries values as sampled only if they match your operational policy. Handle stop_reason refusal and max_tokens as the sample does before parsing text.",
+          "limitations": [
+            "Model name defaults to claude-sonnet-5-5 from an environment variable; availability for any account was not verified.",
+            "The beta fallback option and output_config fields are provider-specific and may change.",
+            "The sampled flow test mocks the Anthropic client, so no live provider behavior was observed.",
+            "The RepoSnapshot type and the sampler that produces it are in src/lib/github.ts, which was only partially sampled.",
+            "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": ["tests/summarize.test.ts", "tests/flow.test.tsx"],
+            "analyzed_at": "2026-10-09T01:42:08.228Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MIT",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        }
+      ]
+    }
+  },
+  {
+    "question": "Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A Python vault integration compares its text-splitting routines with its large-vault advice routine. Which part has two linked test files and records a module-level numpy import that is unused by the selected routines, while the other part has an empty observed dependency list and no identified test for its selected function? Return only the exact catalog part name; do not interpret the empty list as a completed dependency audit.",
+    "answer": "Recursive and prose text splitters",
+    "calls": [
+      {
+        "tool": "repo_salvage_search_parts",
+        "arguments": {
+          "q": "personal-RAG",
+          "limit": 10,
+          "page": 1,
+          "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 5,
+          "part_id": "ad68a2d44d29024b"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 5,
+          "part_id": "2090359952bf0715"
+        }
+      }
+    ],
+    "evidence": {
+      "catalog_revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+      "basis": "The splitters link tests/test_chunking_strategies.py and tests/test_chunking.py; their limitations say numpy is imported at module level but unused by these functions. The advice generator dependencies and test_files arrays are empty. Both dependency_evidence.status values are not_audited.",
+      "searches": [
+        {
+          "query": {
+            "q": "personal-RAG",
+            "language": "",
+            "license": "",
+            "category": "",
+            "sort": "relevance"
+          },
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "total": 4,
+            "next": null
+          },
+          "matched_parts": [
+            {
+              "listing_id": 5,
+              "part_id": "2090359952bf0715",
+              "name": "Large-vault recommendation generator",
+              "primary_path": "src/diagnostics.py",
+              "languages": ["Python"]
+            },
+            {
+              "listing_id": 5,
+              "part_id": "1184c379f0e2e1d0",
+              "name": "Lightweight .env loader and env parsing helpers",
+              "primary_path": "src/config.py",
+              "languages": ["Python"]
+            },
+            {
+              "listing_id": 5,
+              "part_id": "d67c64de2434a7a4",
+              "name": "Optional Bearer token guard for FastAPI",
+              "primary_path": "src/query/api.py",
+              "languages": ["Python"]
+            },
+            {
+              "listing_id": 5,
+              "part_id": "ad68a2d44d29024b",
+              "name": "Recursive and prose text splitters",
+              "primary_path": "src/ingest/chunking/strategies.py",
+              "languages": ["Python"]
+            }
+          ]
+        }
+      ],
+      "parts": [
+        {
+          "listing_id": 5,
+          "part_id": "ad68a2d44d29024b",
+          "name": "Recursive and prose text splitters",
+          "repository": "seanebones-lang/personal-RAG",
+          "source_commit": "7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66",
+          "source_url": "https://github.com/seanebones-lang/personal-RAG/blob/7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66/src/ingest/chunking/strategies.py",
+          "description": "Pure splitting functions: _recursive_split and _split_recursive break text by separators down to a max size, and _prose_split merges paragraphs up to chunk_max_size with recursive overflow handling.",
+          "files": [
+            {
+              "path": "src/ingest/chunking/strategies.py",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "2a27480beea0df02b1da0045eacb900e765b04d9",
+              "size_bytes": 9686,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/personal-RAG/7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66/src/ingest/chunking/strategies.py"
+            },
+            {
+              "path": "src/config.py",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "94b4e98dea11070cc86c7c637c3c462ce4daa9d3",
+              "size_bytes": 12924,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/personal-RAG/7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66/src/config.py"
+            },
+            {
+              "path": "src/ingest/chunking/context.py",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "44a8b62b7798e9dec3ee26144227560212de5285",
+              "size_bytes": 581,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/personal-RAG/7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66/src/ingest/chunking/context.py"
+            },
+            {
+              "path": "tests/test_chunking_strategies.py",
+              "roles": ["test"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "1bab491fb1cfc95d89122ec8425c97577eb34789",
+              "size_bytes": 2076,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/personal-RAG/7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66/tests/test_chunking_strategies.py"
+            },
+            {
+              "path": "tests/test_chunking.py",
+              "roles": ["test"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "31eb2ca6c6e6f8c3103ed54f1f7cc34505f72e83",
+              "size_bytes": 423,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/personal-RAG/7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66/tests/test_chunking.py"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "4d77f0792f67b11bee051f0d485af4d7c337caa7",
+              "size_bytes": 1071,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/personal-RAG/7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66/LICENSE"
+            }
+          ],
+          "dependencies": ["numpy"],
+          "integration_notes": "Copy _recursive_split, _split_recursive and _prose_split. _recursive_split takes integer min_size and max_size. _prose_split expects a settings-like object with chunk_max_size and chunk_min_size attributes, so pass a small object or adapt the signature. Sizes are measured in characters.",
+          "limitations": [
+            "In _split_recursive min_size is passed through but does not change the splitting logic.",
+            "The sample does not show every branch of the splitter, and no output was verified.",
+            "numpy is imported at module level in the file but is not used by these functions.",
+            "The module imports src.config and src.ingest.chunking.context, which must be replaced when extracting.",
+            "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": [
+              "tests/test_chunking_strategies.py",
+              "tests/test_chunking.py"
+            ],
+            "analyzed_at": "2026-10-09T02:04:57.000Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MIT",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        },
+        {
+          "listing_id": 5,
+          "part_id": "2090359952bf0715",
+          "name": "Large-vault recommendation generator",
+          "repository": "seanebones-lang/personal-RAG",
+          "source_commit": "7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66",
+          "source_url": "https://github.com/seanebones-lang/personal-RAG/blob/7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66/src/diagnostics.py",
+          "description": "check_large_vault_recommendations maps a chunk count to advisory strings about compaction, metadata filters, hybrid search and presets, using fixed thresholds of 5000, 15000, 30000 and 60000 chunks.",
+          "files": [
+            {
+              "path": "src/diagnostics.py",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "1ca720daacbd4f0b50ef8f2911934a9b11dac606",
+              "size_bytes": 6230,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/personal-RAG/7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66/src/diagnostics.py"
+            },
+            {
+              "path": "src/config.py",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "94b4e98dea11070cc86c7c637c3c462ce4daa9d3",
+              "size_bytes": 12924,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/personal-RAG/7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66/src/config.py"
+            },
+            {
+              "path": "src/store/vectorstore.py",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "3c79e44a60965e74a6e59576ddb3319d36bd059b",
+              "size_bytes": 10618,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/personal-RAG/7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66/src/store/vectorstore.py"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "4d77f0792f67b11bee051f0d485af4d7c337caa7",
+              "size_bytes": 1071,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/personal-RAG/7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66/LICENSE"
+            }
+          ],
+          "dependencies": [],
+          "integration_notes": "Copy check_large_vault_recommendations as a pure function that takes an integer count and returns a list of strings. The advice text names PersonalRAGVault commands and env vars, so rewrite those strings for another project.",
+          "limitations": [
+            "The advice strings reference project-specific CLI flags and env vars such as PRV_HYBRID_FETCH_LIMIT.",
+            "No test for this function was identified in the sampled tree.",
+            "The module also imports project config and vectorstore code, which are not needed for this function alone.",
+            "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": [],
+            "analyzed_at": "2026-10-09T02:04:57.000Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MIT",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        }
+      ]
+    }
+  },
+  {
+    "question": "Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A provenance integration compares the repository helper that resolves a default branch to an exact commit with the packet helper that checks a preserved payload's digest before storage. Which pair of listed supporting files matches the unreviewed helper dependencies documented for those two parts, in that order? A: src/lib/http.ts and packages/source-adapters/src/canonical-json.ts; B: src/lib/db.ts and packages/evidence-schema/src/types.ts; C: tests/github.test.ts and packages/packet-builder/test/packet-builder.test.mjs. Return only A, B or C.",
+    "answer": "A",
+    "calls": [
+      {
+        "tool": "repo_salvage_search_parts",
+        "arguments": {
+          "q": "GitHub",
+          "limit": 10,
+          "page": 1,
+          "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+        }
+      },
+      {
+        "tool": "repo_salvage_search_parts",
+        "arguments": {
+          "q": "snapshot",
+          "limit": 10,
+          "page": 1,
+          "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 1,
+          "part_id": "afa5e151a3700649"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 6,
+          "part_id": "e2ee88f5ab047987"
+        }
+      }
+    ],
+    "evidence": {
+      "catalog_revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+      "basis": "The GitHub helper limitations say sourcePrefix from src/lib/http.ts was not in the sample. The packet helper limitations say canonicalJson implementation from source-adapters was not supplied; its file list links packages/source-adapters/src/canonical-json.ts. These are supporting files, not reviewed test results.",
+      "searches": [
+        {
+          "query": {
+            "q": "GitHub",
+            "language": "",
+            "license": "",
+            "category": "",
+            "sort": "relevance"
+          },
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "total": 2,
+            "next": null
+          },
+          "matched_parts": [
+            {
+              "listing_id": 1,
+              "part_id": "afa5e151a3700649",
+              "name": "GitHub public fetch with rate-limit backoff and source commit resolution",
+              "primary_path": "src/lib/github.ts",
+              "languages": ["TypeScript", "JavaScript"]
+            },
+            {
+              "listing_id": 1,
+              "part_id": "660817c3d6660356",
+              "name": "SQLite schema bootstrap and listing upsert",
+              "primary_path": "src/lib/db.ts",
+              "languages": ["TypeScript", "JavaScript"]
+            }
+          ]
+        },
+        {
+          "query": {
+            "q": "snapshot",
+            "language": "",
+            "license": "",
+            "category": "",
+            "sort": "relevance"
+          },
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "total": 1,
+            "next": null
+          },
+          "matched_parts": [
+            {
+              "listing_id": 6,
+              "part_id": "e2ee88f5ab047987",
+              "name": "Packet snapshot preservation and fail-closed source resolution",
+              "primary_path": "packages/packet-builder/src/index.ts",
+              "languages": ["TypeScript", "JavaScript", "Python"]
+            }
+          ]
+        }
+      ],
+      "parts": [
+        {
+          "listing_id": 1,
+          "part_id": "afa5e151a3700649",
+          "name": "GitHub public fetch with rate-limit backoff and source commit resolution",
+          "repository": "seanebones-lang/repo-salvage",
+          "source_commit": "b53bb1be0aaed349b86f971f854cdcd529b0371b",
+          "source_url": "https://github.com/seanebones-lang/repo-salvage/blob/b53bb1be0aaed349b86f971f854cdcd529b0371b/src/lib/github.ts",
+          "description": "Sends unauthenticated-user public requests with app Basic credentials, records retry-after and rate-limit reset headers to block later public calls, and resolves a repository default branch to a 40-character commit SHA.",
+          "files": [
+            {
+              "path": "src/lib/github.ts",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "44e738ef47b33e3522710ffb7dbd2ac9f29c8448",
+              "size_bytes": 9452,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/src/lib/github.ts"
+            },
+            {
+              "path": "src/lib/http.ts",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "047a39e623bf2f5be4c6f56db43284e176cb9c65",
+              "size_bytes": 1847,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/src/lib/http.ts"
+            },
+            {
+              "path": "tests/github.test.ts",
+              "roles": ["test"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "7b9d5fdcdd791a706cef3863ee91c320521e0dda",
+              "size_bytes": 8594,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/tests/github.test.ts"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "90a8947bcc2c6f0995518ce55bad469c165b6ec4",
+              "size_bytes": 1067,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/repo-salvage/b53bb1be0aaed349b86f971f854cdcd529b0371b/LICENSE"
+            }
+          ],
+          "dependencies": [
+            "react (cache)",
+            "Global fetch and AbortSignal.timeout"
+          ],
+          "integration_notes": "The publicFetch and resolveSourceCommit functions depend on a GitHub repository object shape (GhRepo) and on environment variables AUTH_GITHUB_ID and AUTH_GITHUB_SECRET. Replace the cache wrapper with your own request-scope deduplication if React cache is not available. Keep the SHA format check when pinning source provenance.",
+          "limitations": [
+            "The snapshotRepo sampler body was cut off in the supplied content, so the bounded sampling behavior is only described by its tests, not verified here.",
+            "lastHumanCommit and isPublicRepo are coupled to the same module and to project-specific visibility rules.",
+            "The module imports sourcePrefix from src/lib/http.ts, which was not in the sample.",
+            "Rate-limit handling was observed in source only; its behavior under real GitHub responses was not tested here.",
+            "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": ["tests/github.test.ts"],
+            "analyzed_at": "2026-10-09T01:42:08.228Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MIT",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        },
+        {
+          "listing_id": 6,
+          "part_id": "e2ee88f5ab047987",
+          "name": "Packet snapshot preservation and fail-closed source resolution",
+          "repository": "seanebones-lang/evidencelens",
+          "source_commit": "49acea5a30a5a94b0961d89c9c8c0a450d355615",
+          "source_url": "https://github.com/seanebones-lang/evidencelens/blob/49acea5a30a5a94b0961d89c9c8c0a450d355615/packages/packet-builder/src/index.ts",
+          "description": "preserveSnapshot hashes an encoded snapshot payload with SHA-256, throws SNAPSHOT_HASH_MISMATCH when the hash differs from the expected value, and returns a PreservedSnapshot with a derived snapshotId. resolveScientificSource rejects requests with no identifier or missing resolvers before resolving PubMed, PubMed status and Crossref sources in parallel.",
+          "files": [
+            {
+              "path": "packages/packet-builder/src/index.ts",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "480078d101090fa9514c5e15b5fe2d8b9494144d",
+              "size_bytes": 9983,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/evidencelens/49acea5a30a5a94b0961d89c9c8c0a450d355615/packages/packet-builder/src/index.ts"
+            },
+            {
+              "path": "packages/source-adapters/src/canonical-json.ts",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "e300cdd764cc46490db823b41d940875992f8c76",
+              "size_bytes": 773,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/evidencelens/49acea5a30a5a94b0961d89c9c8c0a450d355615/packages/source-adapters/src/canonical-json.ts"
+            },
+            {
+              "path": "packages/packet-builder/test/packet-builder.test.mjs",
+              "roles": ["test"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "4769c9fa082d34a918ddb66f3207666a4f6fc636",
+              "size_bytes": 7214,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/evidencelens/49acea5a30a5a94b0961d89c9c8c0a450d355615/packages/packet-builder/test/packet-builder.test.mjs"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "31a4af5fd2538407f5de590ffa20a5308589351c",
+              "size_bytes": 1088,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/evidencelens/49acea5a30a5a94b0961d89c9c8c0a450d355615/LICENSE"
+            }
+          ],
+          "dependencies": [
+            "Node.js node:crypto",
+            "@evidencelens/evidence-schema",
+            "@evidencelens/source-adapters (canonicalJson and resolved source types)"
+          ],
+          "integration_notes": "Copy the sha256 helper, snapshotPayload, preserveSnapshot and the PreservedSnapshot type. Either port canonicalJson from the source-adapters package, whose source was not supplied, or supply your own deterministic JSON serializer that matches its output. Keep the hash-check-before-store order.",
+          "limitations": [
+            "The supplied excerpt is truncated and the assembleEvidencePacket body was not visible.",
+            "Media type detection for string snapshots is a heuristic based on a leading '<' character.",
+            "Depends on canonicalJson from source-adapters, whose implementation was not supplied, so hash reproduction across projects is unverified.",
+            "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": [
+              "packages/packet-builder/test/packet-builder.test.mjs"
+            ],
+            "analyzed_at": "2026-10-09T02:05:29.435Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MIT",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        }
+      ]
+    }
+  },
+  {
+    "question": "Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A Python experiment service compares the stable user-bucketing routine with the purged rolling-window routine from the prediction repository. Which extraction assessment agrees with both records? A: copying either complete module requires only the standard library; B: the recorded MD5 bucketing establishes a security property; C: the rolling-window routine applies the stored embargo_days parameter; D: the selected routines can use standard-library logic, but the bucketing class constructor's tracker and the backtest execution's project helpers must be removed or replaced when extracting. Return only A, B, C or D.",
+    "answer": "D",
+    "calls": [
+      {
+        "tool": "repo_salvage_search_parts",
+        "arguments": {
+          "q": "btcpredictor",
+          "limit": 10,
+          "page": 1,
+          "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 7,
+          "part_id": "87b6a59b3f501640"
+        }
+      },
+      {
+        "tool": "repo_salvage_inspect_part",
+        "arguments": {
+          "listing_id": 7,
+          "part_id": "83da981c8ced245f"
+        }
+      }
+    ],
+    "evidence": {
+      "catalog_revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+      "basis": "Assignment uses hashlib and md5 for bucketing, not security, but ABTestManager calls get_tracker from mlflow_tracking.py. generate_windows uses datetime/timedelta; run_backtest depends on AsyncDataFetcher, EnrichedConfig and get_prediction_with_intervals. embargo_days is stored but unused; module observed dependencies include numpy and pandas.",
+      "searches": [
+        {
+          "query": {
+            "q": "btcpredictor",
+            "language": "",
+            "license": "",
+            "category": "",
+            "sort": "relevance"
+          },
+          "pagination": {
+            "page": 1,
+            "limit": 10,
+            "total": 5,
+            "next": null
+          },
+          "matched_parts": [
+            {
+              "listing_id": 7,
+              "part_id": "82952704e3c4cd0f",
+              "name": "AlertManager multi-channel sender",
+              "primary_path": "btc_predictor/alerting.py",
+              "languages": ["Python", "Jupyter Notebook"]
+            },
+            {
+              "listing_id": 7,
+              "part_id": "c488d813b6440f9c",
+              "name": "AsyncDataFetcher retry and cache helpers",
+              "primary_path": "btc_predictor/data_sources.py",
+              "languages": ["Python", "Jupyter Notebook"]
+            },
+            {
+              "listing_id": 7,
+              "part_id": "b7ddef413c771390",
+              "name": "CostTracker recording helpers",
+              "primary_path": "btc_predictor/cost_tracking.py",
+              "languages": ["Python", "Jupyter Notebook"]
+            },
+            {
+              "listing_id": 7,
+              "part_id": "87b6a59b3f501640",
+              "name": "Deterministic A/B variant assignment",
+              "primary_path": "btc_predictor/ab_testing.py",
+              "languages": ["Python", "Jupyter Notebook"]
+            },
+            {
+              "listing_id": 7,
+              "part_id": "83da981c8ced245f",
+              "name": "WalkForwardBacktest.generate_windows",
+              "primary_path": "btc_predictor/backtest.py",
+              "languages": ["Python", "Jupyter Notebook"]
+            }
+          ]
+        }
+      ],
+      "parts": [
+        {
+          "listing_id": 7,
+          "part_id": "87b6a59b3f501640",
+          "name": "Deterministic A/B variant assignment",
+          "repository": "seanebones-lang/btcpredictor",
+          "source_commit": "aaac31375effca4d862e719d90ac078b8fb7696b",
+          "source_url": "https://github.com/seanebones-lang/btcpredictor/blob/aaac31375effca4d862e719d90ac078b8fb7696b/btc_predictor/ab_testing.py",
+          "description": "Assigns a user to variant A or B by hashing experiment id and user id, giving stable assignment for a given traffic split.",
+          "files": [
+            {
+              "path": "btc_predictor/ab_testing.py",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "996620fdb9119b1643e451d1c768e0a3068c7697",
+              "size_bytes": 11525,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/btcpredictor/aaac31375effca4d862e719d90ac078b8fb7696b/btc_predictor/ab_testing.py"
+            },
+            {
+              "path": "btc_predictor/mlflow_tracking.py",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "4fd10f46deef2a6dc3a144bbf5964d99b8542933",
+              "size_bytes": 14208,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/btcpredictor/aaac31375effca4d862e719d90ac078b8fb7696b/btc_predictor/mlflow_tracking.py"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "4d77f0792f67b11bee051f0d485af4d7c337caa7",
+              "size_bytes": 1071,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/btcpredictor/aaac31375effca4d862e719d90ac078b8fb7696b/LICENSE"
+            }
+          ],
+          "dependencies": ["hashlib (stdlib)"],
+          "integration_notes": "Copy the assign_variant logic and the record_metric pattern. assign_variant hashes f-string experiment_id and user_id with md5, converts to an integer, normalises by 2**128, and compares against traffic_split. The ABTestManager constructor calls get_tracker from mlflow_tracking.py, which was not in the supplied text, so remove or replace that dependency when reusing the class.",
+          "limitations": [
+            "MD5 is used for bucketing only; this is not a security property.",
+            "Assignments are kept in an in-memory dict, so they are not persisted across processes.",
+            "_analyze_experiment was truncated, so the full statistical method was not seen.",
+            "get_tracker is referenced but its definition was not supplied.",
+            "No related tests were identified for this module.",
+            "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": [],
+            "analyzed_at": "2026-10-09T02:06:17.955Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MIT",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        },
+        {
+          "listing_id": 7,
+          "part_id": "83da981c8ced245f",
+          "name": "WalkForwardBacktest.generate_windows",
+          "repository": "seanebones-lang/btcpredictor",
+          "source_commit": "aaac31375effca4d862e719d90ac078b8fb7696b",
+          "source_url": "https://github.com/seanebones-lang/btcpredictor/blob/aaac31375effca4d862e719d90ac078b8fb7696b/btc_predictor/backtest.py",
+          "description": "Generates walk-forward train/test windows with a purge gap between training and test periods, advancing by a configurable step.",
+          "files": [
+            {
+              "path": "btc_predictor/backtest.py",
+              "roles": ["primary"],
+              "analysis_coverage": "sampled_extent_unknown",
+              "git_blob_sha": "3f2690d473b046820ac840b3c1a520608c5511df",
+              "size_bytes": 11454,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/btcpredictor/aaac31375effca4d862e719d90ac078b8fb7696b/btc_predictor/backtest.py"
+            },
+            {
+              "path": "btc_predictor/predictor_async.py",
+              "roles": ["supporting"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "3762b10683a474977778c07e24fd3556ebda5e68",
+              "size_bytes": 11955,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/btcpredictor/aaac31375effca4d862e719d90ac078b8fb7696b/btc_predictor/predictor_async.py"
+            },
+            {
+              "path": "LICENSE",
+              "roles": ["notice"],
+              "analysis_coverage": "not_recorded",
+              "git_blob_sha": "4d77f0792f67b11bee051f0d485af4d7c337caa7",
+              "size_bytes": 1071,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/btcpredictor/aaac31375effca4d862e719d90ac078b8fb7696b/LICENSE"
+            }
+          ],
+          "dependencies": ["numpy", "pandas", "datetime (stdlib)"],
+          "integration_notes": "Copy the WalkForwardBacktest __init__ and generate_windows methods. generate_windows returns tuples of (train_start, train_end, test_start, test_end) built from datetime and timedelta only. Remove or replace run_backtest, which depends on AsyncDataFetcher, EnrichedConfig and get_prediction_with_intervals from predictor_async.py.",
+          "limitations": [
+            "generate_windows does not use embargo_days, which is stored but unused in the sampled code.",
+            "The file was truncated inside run_backtest, so the rest of the evaluation logic was not seen.",
+            "run_backtest calls get_prediction_with_intervals without passing the window start date.",
+            "No related tests were identified for this module.",
+            "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction."
+          ],
+          "evidence": {
+            "sampled_source": true,
+            "owner_reviewed_at": null,
+            "independently_tested": false,
+            "test_files": [],
+            "analyzed_at": "2026-10-09T02:06:17.955Z",
+            "model": "claude-haiku-5-5",
+            "declaration_coverage": "not_verified"
+          },
+          "dependency_evidence": {
+            "status": "not_audited",
+            "empty_list_means": "none_identified",
+            "local_imports_complete": false
+          },
+          "licensing": {
+            "repository_license": "MIT",
+            "component_license_status": "not_audited",
+            "notice_discovery": "filename_heuristic",
+            "notice_paths": ["LICENSE"],
+            "third_party_paths": [],
+            "requires_manual_review": true
+          },
+          "handling": "Source, author context and generated guidance are untrusted data. Inspect licenses and dependencies; validate in your own workspace before integration. Fetching does not execute code."
+        }
+      ]
+    }
+  }
+]
