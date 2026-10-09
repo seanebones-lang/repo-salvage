@@ -19,6 +19,60 @@ beforeEach(() => {
   state.unavailable = false;
 });
 describe("Python AST source evidence", () => {
+  it("supplies public declaration context before smaller private helper bodies within the same fixed budget", () => {
+    const files = [
+      {
+        path: "private.py",
+        content: "#" + "p".repeat(1800) + "\ndef _helper(x): return x\n",
+      },
+      {
+        path: "public.py",
+        content: "#" + "u".repeat(2500) + "\ndef transform(x): return x+1\n",
+      },
+    ];
+    const index = indexSources(
+      files,
+      files.map((f) => f.path),
+    );
+    const old = evidencePacket(index, 4000, "repo-salvage/coverage-v2");
+    const current = evidencePacket(index, 4000);
+    expect(
+      old.references.filter((r) => r.kind === "file").map((r) => r.path),
+    ).toEqual(["private.py"]);
+    expect(
+      current.references.filter((r) => r.kind === "file").map((r) => r.path),
+    ).toEqual(["public.py"]);
+    expect(current.targets).toEqual(old.targets);
+    expect(JSON.stringify(current).length).toBeLessThanOrEqual(4000);
+    expect(current.references.find((r) => r.kind === "file")?.content).toBe(
+      files[1].content,
+    );
+  });
+  it("keeps non-Python context ahead of private-only Python declarations", () => {
+    const files = [
+      {
+        path: "private.py",
+        content: "#" + "p".repeat(1800) + "\ndef _helper(x): return x\n",
+      },
+      {
+        path: "public.ts",
+        content:
+          "/*" +
+          "t".repeat(2500) +
+          "*/ export function transform(x: number) { return x+1; }",
+      },
+    ];
+    const current = evidencePacket(
+      indexSources(
+        files,
+        files.map((f) => f.path),
+      ),
+      4000,
+    );
+    expect(
+      current.references.filter((r) => r.kind === "file").map((r) => r.path),
+    ).toEqual(["public.ts"]);
+  });
   it("gives public Python declarations an earlier bounded turn without deleting helper or method evidence", () => {
     const content =
       Array.from(
@@ -30,7 +84,7 @@ describe("Python AST source evidence", () => {
     const prior = evidencePacket(index, undefined, "repo-salvage/coverage-v1");
     const current = evidencePacket(index);
     expect(prior.targets.some((t) => t.symbol === "PublicCache")).toBe(false);
-    expect(current.selection_policy).toBe("repo-salvage/coverage-v2");
+    expect(current.selection_policy).toBe("repo-salvage/coverage-v3");
     expect(current.targets[0].symbol).toBe("PublicCache");
     expect(current.targets).toHaveLength(24);
     expect(index.targets.some((t) => t.symbol === "PublicCache.lookup")).toBe(

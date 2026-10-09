@@ -3,3 +3,5 @@ examples/competing-discovery-evaluation/catalog.json
 # Preserve exact post-analysis and pre-discovery generated record bytes.
 examples/full-chain-evaluation/catalog.json
 examples/full-chain-evaluation/summary.json
+# Preserve the exact native response records before the post-run review seal.
+examples/context-diversity-evaluation/results.json

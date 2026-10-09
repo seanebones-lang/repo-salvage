@@ -9,7 +9,7 @@ import {
   read,
   directory,
   sha256,
-} from "../examples/full-chain-evaluation/suite.mjs";
+} from "../examples/full-chain-evaluation/history/replay.mjs";
 import { loadEngine } from "../examples/analysis-evaluation/engine.mjs";
 
 test("full-chain source, production request and hidden acceptance tests retain their pre-run seal", async () => {

@@ -66,19 +66,27 @@ blocks, within a 70,000-character evidence allowance. A declaration that cannot
 fit is omitted, never cut into a prefix. Python public top-level declarations
 receive an earlier turn than private helpers and enclosed methods; this naming
 hint does not prove an API or dependency completeness. Private targets remain
-eligible. The earlier coverage-v1 ordering is retained for frozen evaluation
-replay. Policy `repo-salvage/coverage-v2` gives
+eligible. The earlier coverage-v1 and coverage-v2 ordering is retained for frozen evaluation
+replay. Policy `repo-salvage/coverage-v3` gives
 files one candidate turn at a time, preferring conventional library areas. Within
 a file, implementation shape, observed module dependencies, syntactic same-file
 binding references and declaration size affect scheduling. Binding observations
 are not a complete closure or scope analysis. Seventy percent of the allowance
 is reserved for primary selections; a single larger complete block may use the
 whole allowance. Notices precede complete same-file context, then supporting/test
-files and manifests. Every JSON field and escape counts toward the allowance.
+files and manifests. For same-file context, coverage-v3 defers private-only Python
+declaration files; selected public Python declarations and other languages retain
+normal turns, with size breaking ties. This does not remove private targets or
+prove an API. Every JSON field and escape counts toward the allowance.
 
 Each selected target has a `contexts` entry identifying its complete same-file
 reference, or null when that body did not fit. The prompt requires checking
 helpers, types, constants, early returns and side effects in available context.
+The distinct-capabilities-v1 instruction prefers distinct extraction capabilities
+and avoids filling slots with thin wrappers when broader implementations are
+evidenced. Six is a maximum, not a quota. This instruction is not a server-enforced
+quality score or publication authority; the previous prompt remains available for
+frozen replay.
 The server adds a missing-context limitation independently of model prose when
 that context is absent. Legacy saved packets remain valid. Indexing a dependency
 does not imply its body was supplied to the model; complete-file context still

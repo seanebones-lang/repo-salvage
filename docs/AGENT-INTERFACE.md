@@ -106,7 +106,7 @@ stored commit. Numeric public ownership, current repository name, local moderati
 and analysis identity are rechecked after inspection, including cache hits.
 
 This is a fresh source inspection with `interpretation: "none"`, not a model call,
-new recommendation or publication. It returns the coverage-v2 packet, complete
+new recommendation or publication. It returns the coverage-v3 packet, complete
 blocks and same-file context, file inventory with Git hashes and pinned download
 URLs, inspection/packet omissions and observed import gaps. `not_indexed` means no
 indexed declaration matched; available complete-file context can still expose a

@@ -1,0 +1,30 @@
+{
+  "format": "repo-salvage/context-diversity-review-v1",
+  "reviewer": "Implementing operator, not independent review",
+  "scope": "One run per profile; two profiles use previously seen cachetools source. The schedule corpus was frozen before its first model call. No causal effect, model-training holdout or general recall claim.",
+  "cases": [
+    {
+      "id": "cache-context-only",
+      "passed": true,
+      "sourceReview": "LRU and FIFO explanations cite the full module and correctly describe Cache/_DefaultSize coupling, validation, class-definition-time bindings, recency and replacement behavior. Key builders name their supplied tuple/sentinel helpers. The locked helper correctly states that its full module context is absent and that duplicate concurrent computations remain possible.",
+      "limits": "Six selections include a private supporting hash class. Selection breadth is an authored grouping, not a usefulness ranking or extraction certification."
+    },
+    {
+      "id": "cache-distinct-capabilities",
+      "passed": true,
+      "sourceReview": "Five candidates cover cache policy, argument-key policy and memoization. The LRU explanation names the Cache base and _DefaultSize, correctly handles missing-key overrides and cites supplied module evidence. The locked helper's missing context remains explicit. Neither test paths nor the supplied Cache test excerpt become a passing-test claim.",
+      "limits": "One known-source diagnostic per prompt. The old prompt also succeeds with the improved context; this does not isolate or establish a statistical benefit from the diversity instruction."
+    },
+    {
+      "id": "schedule-fresh",
+      "passed": true,
+      "sourceReview": "Scheduler correctly distinguishes due execution from replaying missed intervals and describes copied-list run_all, tag filtering, cancellation markers and missing Job construction/execution. Weekday adjustment retains same-day behavior and names its supplied exception hierarchy. The format parser is an enclosed method needing adaptation; it catches only ValueError. Repeat returns the original decorated function and delegates registration to an unsupplied do implementation.",
+      "limits": "The complete Job class and module context remain absent, although individual Job method snippets are supplied. No upstream scheduler, helper, test or consumer was executed."
+    }
+  ],
+  "decision": "Keep bounded coverage-v3 context ordering and the distinct-capabilities-v1 instruction. Preserve the prior LRU miss, public declaration ordering and older prompts for replay. Missing full context remains a visible extraction gate.",
+  "publicCatalogWrites": 0,
+  "apiKeyModelCalls": 0,
+  "upstreamCodeExecuted": false,
+  "nextQuestion": "Large single-file modules still exceed the bounded packet. Measure scoped supporting-definition evidence or targeted follow-up without treating partial context as complete."
+}

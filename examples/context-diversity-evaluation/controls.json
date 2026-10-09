@@ -1,0 +1,100 @@
+{
+  "format": "repo-salvage/context-diversity-controls-v1",
+  "scope": "Two diagnostic profiles on known cachetools source and one fresh schedule corpus; implementing-operator controls, not independent review, causal effect or general recall.",
+  "cases": [
+    {
+      "id": "cache-context-only",
+      "repository": "tkem/cachetools",
+      "packetPolicy": "repo-salvage/coverage-v3",
+      "interpretation": "legacy",
+      "requiredSymbols": ["LRUCache"],
+      "minimumGroups": 3,
+      "groups": {
+        "cache-mappings": ["LRUCache", "FIFOCache"],
+        "argument-keys": ["hashkey", "typedkey", "methodkey", "typedmethodkey"],
+        "memoization": [
+          "cached",
+          "cachedmethod",
+          "lru_cache",
+          "lfu_cache",
+          "fifo_cache",
+          "rr_cache",
+          "_locked",
+          "_unlocked_info"
+        ]
+      },
+      "wrapperPairs": [
+        ["methodkey", "hashkey"],
+        ["typedmethodkey", "typedkey"]
+      ],
+      "maxRedundantPairs": 0,
+      "reviewRequirements": [
+        "LRU selected and full module reference cited",
+        "Cache base, OrderedDict and default item counting evidenced; size policy and coupling explained",
+        "No safety, standalone, threading or executed-test claims"
+      ]
+    },
+    {
+      "id": "cache-distinct-capabilities",
+      "repository": "tkem/cachetools",
+      "packetPolicy": "repo-salvage/coverage-v3",
+      "interpretation": "distinct-capabilities-v1",
+      "requiredSymbols": ["LRUCache"],
+      "minimumGroups": 3,
+      "groups": {
+        "cache-mappings": ["LRUCache", "FIFOCache"],
+        "argument-keys": ["hashkey", "typedkey", "methodkey", "typedmethodkey"],
+        "memoization": [
+          "cached",
+          "cachedmethod",
+          "lru_cache",
+          "lfu_cache",
+          "fifo_cache",
+          "rr_cache",
+          "_locked",
+          "_unlocked_info"
+        ]
+      },
+      "wrapperPairs": [
+        ["methodkey", "hashkey"],
+        ["typedmethodkey", "typedkey"]
+      ],
+      "maxRedundantPairs": 0,
+      "reviewRequirements": [
+        "LRU selected and full module reference cited",
+        "Cache base, OrderedDict and default item counting evidenced; size policy and coupling explained",
+        "No safety, standalone, threading or executed-test claims"
+      ]
+    },
+    {
+      "id": "schedule-fresh",
+      "repository": "dbader/schedule",
+      "packetPolicy": "repo-salvage/coverage-v3",
+      "interpretation": "distinct-capabilities-v1",
+      "requiredSymbols": ["Scheduler"],
+      "minimumGroups": 2,
+      "groups": {
+        "scheduler": ["Scheduler"],
+        "weekday-transform": ["_move_to_next_weekday", "_weekday_index"],
+        "registration-decorator": ["repeat"]
+      },
+      "wrapperPairs": [
+        ["every", "Scheduler"],
+        ["run_pending", "Scheduler"],
+        ["run_all", "Scheduler"],
+        ["get_jobs", "Scheduler"],
+        ["clear", "Scheduler"],
+        ["cancel_job", "Scheduler"],
+        ["next_run", "Scheduler"],
+        ["idle_seconds", "Scheduler"]
+      ],
+      "maxRedundantPairs": 1,
+      "reviewRequirements": [
+        "Scheduler.run_pending runs due jobs once rather than replaying missed intervals",
+        "Job implementation and module globals lack supplied full context; no runnable-isolation claim",
+        "Weekday helpers preserve same-day behavior and rely on ScheduleValueError/datetime",
+        "Repeat returns the decorated function and requires the supplied Job-like object's do method; it is not an execution loop"
+      ]
+    }
+  ]
+}

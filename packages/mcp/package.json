@@ -1,6 +1,6 @@
 {
   "name": "@repo-salvage/mcp",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Local MCP adapter for Repo Salvage discovery, inspection and owner-reviewed drafts",
   "type": "module",
   "bin": {

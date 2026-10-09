@@ -1,0 +1,4404 @@
+{
+  "format": "repo-salvage/context-diversity-results-v1",
+  "scope": "Two diagnostic profiles on known cachetools source and one fresh schedule corpus; implementing-operator controls, not independent review, causal effect or general recall.",
+  "inputSealSha256": "f0c157ab075746281cb4a4d78d9638ac0b54b5ed8a9aef824299a615724c44e7",
+  "billing": "Existing Codex account allowance; no API-key model calls",
+  "results": [
+    {
+      "id": "cache-context-only",
+      "model": "gpt-6.1-sol",
+      "effort": "low",
+      "cliVersion": "codex-cli 0.160.0",
+      "promptSha256": "98d1c7968baed8ff99de32d06e4dd5f315b7f3bf4430336769aba892f74efa8f",
+      "trace": {
+        "sha256": "5b42ec2d47500bca8d3c920bcf4e484a6ab4e2a40620b9d5a6c870e6e649aef5"
+      },
+      "latencyMs": 58749,
+      "billing": "Existing Codex account allowance; no API-key model call",
+      "transportSuccess": true,
+      "failure": null,
+      "prohibitedEvents": [],
+      "usage": {
+        "input_tokens": 31515,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1817,
+        "reasoning_output_tokens": 49
+      },
+      "requestSha256": "1aab786291a44ea14e811fa0d461bc0e18299f17bf0bf4ada25e5aa8748fb120",
+      "structurallyAccepted": true,
+      "response": {
+        "overview": "Six candidates cover cache keys, eviction policies and a locking wrapper. Supplied references establish inspected source only. Test bodies for these targets are absent; no tests were run. The supplied LICENSE requires retaining its copyright and permission notices in copies or substantial portions.",
+        "outcome": "candidates",
+        "reusable_pieces": [
+          {
+            "target_id": "fdbd22fda46cbec6",
+            "name": "hashkey: positional and keyword cache keys",
+            "description": "Builds tuple-based keys from positional arguments and sorted keyword pairs, using a sentinel to separate the two.",
+            "category": "Data processing",
+            "integration_notes": "The supplied file context defines _HashedTuple and _kwmark = (_HashedTuple,). Preserve these supporting definitions and their identity relationship. With keywords, hashkey sorts their items and inserts the sentinel; without keywords, it returns _HashedTuple(args) directly. It does not validate hashability; hashing later can raise. Retain the supplied copyright and permission notices when applicable.",
+            "limitations": [
+              "Arguments and keyword values must support hashing when the resulting key is hashed.",
+              "Does not normalize equivalent positional and keyword calling forms.",
+              "Indexed key tests have no supplied bodies; behavior has not been verified by tests here."
+            ],
+            "explanation_refs": [
+              "433ccf3484a06fff99565506",
+              "b60a69108671d9450ad69153",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "target_id": "f88d86c2f0d64cfa",
+            "name": "typedkey: cache keys with argument types",
+            "description": "Extends tuple-based argument keys with the immediate types of positional arguments and keyword values.",
+            "category": "Data processing",
+            "integration_notes": "The supplied file context defines _HashedTuple and _kwmark. Keyword items are sorted, their values' types are appended, and positional types are appended afterward. Without keywords, the keyword branch is skipped. _HashedTuple.__add__ preserves the tuple subclass during these additions. There is no explicit hashability validation. Preserve supporting definitions and the supplied license notices.",
+            "limitations": [
+              "Type tagging covers immediate values, not recursively nested contents.",
+              "Hashability remains a caller assumption; key hashing may raise.",
+              "Indexed test bodies are absent, so type-separation behavior is not test-verified here."
+            ],
+            "explanation_refs": [
+              "fa394c267c4c21d8459ffc36",
+              "b60a69108671d9450ad69153",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "target_id": "d2df2c36277e054e",
+            "name": "_HashedTuple: tuple keys with a stored hash",
+            "description": "Stores a tuple hash after its first successful computation, preserves the subclass during addition and omits stored state through __getstate__.",
+            "category": "Data processing",
+            "integration_notes": "The supplied file context shows hashkey and typedkey constructing this class, and _kwmark using the class as a sentinel. __hash__ returns the stored value when present; otherwise it computes tuple.__hash__ and writes instance state. Addition constructs another _HashedTuple, and __getstate__ returns an empty dictionary. No explicit element validation is present. Preserve these semantics and supplied license notices when extracting it.",
+            "limitations": [
+              "Requires hashable elements whose hash and equality behavior remain suitable for cache keys.",
+              "The first hash mutates instance state; concurrency and serialization behavior have not been verified here.",
+              "It is a private supporting class; integration must supply and review its consumers."
+            ],
+            "explanation_refs": [
+              "a6b321242b7b380db9656a2e",
+              "b60a69108671d9450ad69153",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "target_id": "f07b15c39c2516d7",
+            "name": "LRUCache: size-bounded least recently used mapping",
+            "description": "Tracks access and insertion order with OrderedDict and evicts the least recently used entry through its Cache base.",
+            "category": "Storage",
+            "integration_notes": "Supplied file context includes Cache, _DefaultSize and collections imports. Extract with the relevant base implementation: it validates nonnegative maxsize and value sizes, rejects oversized values, and evicts through self.popitem() before storing. LRUCache touches reads only when the key remains present, accounting for __missing__ overrides. Writes update recency; deletion and clear update both storage and order. Empty popitem raises KeyError. Default method arguments bind Cache methods at class definition, so extraction order matters. Retain supplied license notices.",
+            "limitations": [
+              "Cache and _DefaultSize are required supporting definitions; the declaration alone is insufficient.",
+              "No locking is visible in these mapping methods; concurrent-use assumptions remain unresolved.",
+              "Custom sizing is evaluated on assignment; later mutation of stored values is not remeasured by the shown code."
+            ],
+            "explanation_refs": [
+              "9c57330f2ae51f006b0db0e2",
+              "34061c40ba55ebb4858114d8",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "target_id": "643d11dc643f94e7",
+            "name": "FIFOCache: size-bounded insertion-order mapping",
+            "description": "Maintains an OrderedDict alongside Cache storage and removes the first ordered entry when eviction is requested.",
+            "category": "Storage",
+            "integration_notes": "Supplied file context defines Cache and _DefaultSize and imports collections. Cache validates maxsize and assigned value sizes, rejects oversized values, and calls the subclass's popitem while making room. FIFOCache updates order only after base assignment succeeds; overwriting an existing key moves it to the end. Deletion and clear mutate both structures. Empty popitem raises KeyError. Preserve the base's pop behavior and class-definition-time bindings to Cache methods. Retain supplied license notices.",
+            "limitations": [
+              "Overwriting an existing key changes its eviction position; consumers must account for this behavior.",
+              "Extraction requires Cache and _DefaultSize, not just this subclass.",
+              "No locking is visible; indexed FIFO tests have no supplied bodies."
+            ],
+            "explanation_refs": [
+              "6fef0729459a9bdae1b65074",
+              "34061c40ba55ebb4858114d8",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "target_id": "a78c6a3d0fdf9376",
+            "name": "_locked: memoization with locked mapping access",
+            "description": "Locks cache lookup, insertion and clearing while computing misses outside the lock; setdefault prefers an entry stored during computation.",
+            "category": "Data processing",
+            "integration_notes": "No same_file_reference is supplied: surrounding helpers, imports, constants and wrapper setup may be absent. The declaration takes func, cache, key and lock from its caller. It computes the key before locking and returns hits early. Only lookup KeyError triggers computation. After computing outside the lock, it uses setdefault under the lock; insertion ValueError returns the computed value. cache_clear clears the mapping under the lock. Review mapping and lock contracts and surrounding decorator integration before extraction; preserve supplied license notices.",
+            "limitations": [
+              "Concurrent misses can compute the same key more than once.",
+              "Requires a compatible mapping, key function and context-manager lock; those contracts are not validated here.",
+              "Same-file context and test bodies are absent; surrounding metadata and wrapper behavior remain unresolved."
+            ],
+            "explanation_refs": [
+              "a86ca447487ee51b266a975e",
+              "36472030b8a86c02df5e352a"
+            ]
+          }
+        ]
+      },
+      "summary": {
+        "overview": "Six candidates cover cache keys, eviction policies and a locking wrapper. Supplied references establish inspected source only. Test bodies for these targets are absent; no tests were run. The supplied LICENSE requires retaining its copyright and permission notices in copies or substantial portions.",
+        "languages": [
+          "Python"
+        ],
+        "frameworks": [],
+        "reusable_pieces": [
+          {
+            "name": "hashkey: positional and keyword cache keys",
+            "path": "src/cachetools/keys.py",
+            "description": "Builds tuple-based keys from positional arguments and sorted keyword pairs, using a sentinel to separate the two.",
+            "category": "Data processing",
+            "integration_notes": "The supplied file context defines _HashedTuple and _kwmark = (_HashedTuple,). Preserve these supporting definitions and their identity relationship. With keywords, hashkey sorts their items and inserts the sentinel; without keywords, it returns _HashedTuple(args) directly. It does not validate hashability; hashing later can raise. Retain the supplied copyright and permission notices when applicable.",
+            "limitations": [
+              "Arguments and keyword values must support hashing when the resulting key is hashed.",
+              "Does not normalize equivalent positional and keyword calling forms.",
+              "Indexed key tests have no supplied bodies; behavior has not been verified by tests here.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "fdbd22fda46cbec6",
+            "dependencies": [],
+            "related_paths": [],
+            "test_paths": [
+              "tests/test_cached.py",
+              "tests/test_keys.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "fdbd22fda46cbec6",
+              "path": "src/cachetools/keys.py",
+              "symbol": "hashkey",
+              "kind": "declaration",
+              "imports": [],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [
+                "tests/test_cached.py",
+                "tests/test_keys.py"
+              ],
+              "notice_paths": [
+                "LICENSE"
+              ],
+              "reference": {
+                "id": "433ccf3484a06fff99565506",
+                "path": "src/cachetools/keys.py",
+                "start_line": 37,
+                "end_line": 43,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "433ccf3484a06fff99565506",
+              "b60a69108671d9450ad69153",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "name": "typedkey: cache keys with argument types",
+            "path": "src/cachetools/keys.py",
+            "description": "Extends tuple-based argument keys with the immediate types of positional arguments and keyword values.",
+            "category": "Data processing",
+            "integration_notes": "The supplied file context defines _HashedTuple and _kwmark. Keyword items are sorted, their values' types are appended, and positional types are appended afterward. Without keywords, the keyword branch is skipped. _HashedTuple.__add__ preserves the tuple subclass during these additions. There is no explicit hashability validation. Preserve supporting definitions and the supplied license notices.",
+            "limitations": [
+              "Type tagging covers immediate values, not recursively nested contents.",
+              "Hashability remains a caller assumption; key hashing may raise.",
+              "Indexed test bodies are absent, so type-separation behavior is not test-verified here.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "f88d86c2f0d64cfa",
+            "dependencies": [],
+            "related_paths": [],
+            "test_paths": [
+              "tests/test_cached.py",
+              "tests/test_keys.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "f88d86c2f0d64cfa",
+              "path": "src/cachetools/keys.py",
+              "symbol": "typedkey",
+              "kind": "declaration",
+              "imports": [],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [
+                "tests/test_cached.py",
+                "tests/test_keys.py"
+              ],
+              "notice_paths": [
+                "LICENSE"
+              ],
+              "reference": {
+                "id": "fa394c267c4c21d8459ffc36",
+                "path": "src/cachetools/keys.py",
+                "start_line": 51,
+                "end_line": 61,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "fa394c267c4c21d8459ffc36",
+              "b60a69108671d9450ad69153",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "name": "_HashedTuple: tuple keys with a stored hash",
+            "path": "src/cachetools/keys.py",
+            "description": "Stores a tuple hash after its first successful computation, preserves the subclass during addition and omits stored state through __getstate__.",
+            "category": "Data processing",
+            "integration_notes": "The supplied file context shows hashkey and typedkey constructing this class, and _kwmark using the class as a sentinel. __hash__ returns the stored value when present; otherwise it computes tuple.__hash__ and writes instance state. Addition constructs another _HashedTuple, and __getstate__ returns an empty dictionary. No explicit element validation is present. Preserve these semantics and supplied license notices when extracting it.",
+            "limitations": [
+              "Requires hashable elements whose hash and equality behavior remain suitable for cache keys.",
+              "The first hash mutates instance state; concurrency and serialization behavior have not been verified here.",
+              "It is a private supporting class; integration must supply and review its consumers.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "d2df2c36277e054e",
+            "dependencies": [],
+            "related_paths": [],
+            "test_paths": [
+              "tests/test_cached.py",
+              "tests/test_keys.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "d2df2c36277e054e",
+              "path": "src/cachetools/keys.py",
+              "symbol": "_HashedTuple",
+              "kind": "declaration",
+              "imports": [],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [
+                "tests/test_cached.py",
+                "tests/test_keys.py"
+              ],
+              "notice_paths": [
+                "LICENSE"
+              ],
+              "reference": {
+                "id": "a6b321242b7b380db9656a2e",
+                "path": "src/cachetools/keys.py",
+                "start_line": 6,
+                "end_line": 29,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "a6b321242b7b380db9656a2e",
+              "b60a69108671d9450ad69153",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "name": "LRUCache: size-bounded least recently used mapping",
+            "path": "src/cachetools/__init__.py",
+            "description": "Tracks access and insertion order with OrderedDict and evicts the least recently used entry through its Cache base.",
+            "category": "Storage",
+            "integration_notes": "Supplied file context includes Cache, _DefaultSize and collections imports. Extract with the relevant base implementation: it validates nonnegative maxsize and value sizes, rejects oversized values, and evicts through self.popitem() before storing. LRUCache touches reads only when the key remains present, accounting for __missing__ overrides. Writes update recency; deletion and clear update both storage and order. Empty popitem raises KeyError. Default method arguments bind Cache methods at class definition, so extraction order matters. Retain supplied license notices.",
+            "limitations": [
+              "Cache and _DefaultSize are required supporting definitions; the declaration alone is insufficient.",
+              "No locking is visible in these mapping methods; concurrent-use assumptions remain unresolved.",
+              "Custom sizing is evaluated on assignment; later mutation of stored values is not remeasured by the shown code.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "f07b15c39c2516d7",
+            "dependencies": [
+              "collections",
+              "collections.abc",
+              "functools",
+              "heapq",
+              "random",
+              "time",
+              "warnings",
+              "weakref"
+            ],
+            "related_paths": [
+              "src/cachetools/_cached.py",
+              "src/cachetools/_cachedmethod.py",
+              "src/cachetools/keys.py"
+            ],
+            "test_paths": [
+              "tests/__init__.py",
+              "tests/test_cache.py",
+              "tests/test_cached.py",
+              "tests/test_cachedmethod.py",
+              "tests/test_classmethod.py",
+              "tests/test_fifo.py",
+              "tests/test_lfu.py",
+              "tests/test_lru.py",
+              "tests/test_rr.py",
+              "tests/test_threading.py",
+              "tests/test_tlru.py",
+              "tests/test_ttl.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "f07b15c39c2516d7",
+              "path": "src/cachetools/__init__.py",
+              "symbol": "LRUCache",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "collections",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "collections.abc",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "heapq",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "random",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "time",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": ".keys",
+                  "kind": "local",
+                  "resolved_path": "src/cachetools/keys.py"
+                },
+                {
+                  "specifier": "._cached",
+                  "kind": "local",
+                  "resolved_path": "src/cachetools/_cached.py"
+                },
+                {
+                  "specifier": "._cachedmethod",
+                  "kind": "local",
+                  "resolved_path": "src/cachetools/_cachedmethod.py"
+                }
+              ],
+              "supporting_paths": [
+                "src/cachetools/_cached.py",
+                "src/cachetools/_cachedmethod.py",
+                "src/cachetools/keys.py"
+              ],
+              "unresolved": [],
+              "test_paths": [
+                "tests/__init__.py",
+                "tests/test_cache.py",
+                "tests/test_cached.py",
+                "tests/test_cachedmethod.py",
+                "tests/test_classmethod.py",
+                "tests/test_fifo.py",
+                "tests/test_lfu.py",
+                "tests/test_lru.py",
+                "tests/test_rr.py",
+                "tests/test_threading.py",
+                "tests/test_tlru.py",
+                "tests/test_ttl.py"
+              ],
+              "notice_paths": [
+                "LICENSE"
+              ],
+              "reference": {
+                "id": "9c57330f2ae51f006b0db0e2",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 287,
+                "end_line": 326,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "9c57330f2ae51f006b0db0e2",
+              "34061c40ba55ebb4858114d8",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "name": "FIFOCache: size-bounded insertion-order mapping",
+            "path": "src/cachetools/__init__.py",
+            "description": "Maintains an OrderedDict alongside Cache storage and removes the first ordered entry when eviction is requested.",
+            "category": "Storage",
+            "integration_notes": "Supplied file context defines Cache and _DefaultSize and imports collections. Cache validates maxsize and assigned value sizes, rejects oversized values, and calls the subclass's popitem while making room. FIFOCache updates order only after base assignment succeeds; overwriting an existing key moves it to the end. Deletion and clear mutate both structures. Empty popitem raises KeyError. Preserve the base's pop behavior and class-definition-time bindings to Cache methods. Retain supplied license notices.",
+            "limitations": [
+              "Overwriting an existing key changes its eviction position; consumers must account for this behavior.",
+              "Extraction requires Cache and _DefaultSize, not just this subclass.",
+              "No locking is visible; indexed FIFO tests have no supplied bodies.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "643d11dc643f94e7",
+            "dependencies": [
+              "collections",
+              "collections.abc",
+              "functools",
+              "heapq",
+              "random",
+              "time",
+              "warnings",
+              "weakref"
+            ],
+            "related_paths": [
+              "src/cachetools/_cached.py",
+              "src/cachetools/_cachedmethod.py",
+              "src/cachetools/keys.py"
+            ],
+            "test_paths": [
+              "tests/__init__.py",
+              "tests/test_cache.py",
+              "tests/test_cached.py",
+              "tests/test_cachedmethod.py",
+              "tests/test_classmethod.py",
+              "tests/test_fifo.py",
+              "tests/test_lfu.py",
+              "tests/test_lru.py",
+              "tests/test_rr.py",
+              "tests/test_threading.py",
+              "tests/test_tlru.py",
+              "tests/test_ttl.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "643d11dc643f94e7",
+              "path": "src/cachetools/__init__.py",
+              "symbol": "FIFOCache",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "collections",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "collections.abc",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "heapq",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "random",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "time",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": ".keys",
+                  "kind": "local",
+                  "resolved_path": "src/cachetools/keys.py"
+                },
+                {
+                  "specifier": "._cached",
+                  "kind": "local",
+                  "resolved_path": "src/cachetools/_cached.py"
+                },
+                {
+                  "specifier": "._cachedmethod",
+                  "kind": "local",
+                  "resolved_path": "src/cachetools/_cachedmethod.py"
+                }
+              ],
+              "supporting_paths": [
+                "src/cachetools/_cached.py",
+                "src/cachetools/_cachedmethod.py",
+                "src/cachetools/keys.py"
+              ],
+              "unresolved": [],
+              "test_paths": [
+                "tests/__init__.py",
+                "tests/test_cache.py",
+                "tests/test_cached.py",
+                "tests/test_cachedmethod.py",
+                "tests/test_classmethod.py",
+                "tests/test_fifo.py",
+                "tests/test_lfu.py",
+                "tests/test_lru.py",
+                "tests/test_rr.py",
+                "tests/test_threading.py",
+                "tests/test_tlru.py",
+                "tests/test_ttl.py"
+              ],
+              "notice_paths": [
+                "LICENSE"
+              ],
+              "reference": {
+                "id": "6fef0729459a9bdae1b65074",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 171,
+                "end_line": 200,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "6fef0729459a9bdae1b65074",
+              "34061c40ba55ebb4858114d8",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "name": "_locked: memoization with locked mapping access",
+            "path": "src/cachetools/_cached.py",
+            "description": "Locks cache lookup, insertion and clearing while computing misses outside the lock; setdefault prefers an entry stored during computation.",
+            "category": "Data processing",
+            "integration_notes": "No same_file_reference is supplied: surrounding helpers, imports, constants and wrapper setup may be absent. The declaration takes func, cache, key and lock from its caller. It computes the key before locking and returns hits early. Only lookup KeyError triggers computation. After computing outside the lock, it uses setdefault under the lock; insertion ValueError returns the computed value. cache_clear clears the mapping under the lock. Review mapping and lock contracts and surrounding decorator integration before extraction; preserve supplied license notices.",
+            "limitations": [
+              "Concurrent misses can compute the same key more than once.",
+              "Requires a compatible mapping, key function and context-manager lock; those contracts are not validated here.",
+              "Same-file context and test bodies are absent; surrounding metadata and wrapper behavior remain unresolved.",
+              "Same-file context was omitted from the model's bounded evidence packet; helper, type, constant and enclosing-scope requirements need further review.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "a78c6a3d0fdf9376",
+            "dependencies": [
+              "functools",
+              "warnings"
+            ],
+            "related_paths": [],
+            "test_paths": [],
+            "source_sampled": true,
+            "source_target": {
+              "id": "a78c6a3d0fdf9376",
+              "path": "src/cachetools/_cached.py",
+              "symbol": "_locked",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "warnings",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [],
+              "notice_paths": [
+                "LICENSE"
+              ],
+              "reference": {
+                "id": "a86ca447487ee51b266a975e",
+                "path": "src/cachetools/_cached.py",
+                "start_line": 180,
+                "end_line": 203,
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "a86ca447487ee51b266a975e",
+              "36472030b8a86c02df5e352a"
+            ]
+          }
+        ],
+        "analysis": {
+          "format": "repo-salvage/analysis-v2",
+          "outcome": "candidates",
+          "index": {
+            "format": "repo-salvage/source-index-v2",
+            "limits": {
+              "files": 64,
+              "initialFiles": 48,
+              "initialMetadataFiles": 12,
+              "initialLibraryFiles": 24,
+              "followupFiles": 16,
+              "initialBytes": 1500000,
+              "inspectionMilliseconds": 120000,
+              "fileBytes": 128000,
+              "totalBytes": 2000000,
+              "promptCharacters": 70000,
+              "candidates": 24
+            },
+            "files": [
+              {
+                "path": "docs/conf.py",
+                "sha256": "f68affa8dfcf4a20d5fe872cfb0e19f9b284f8feda563dd8e8e23eafe75cd4eb",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "importlib.metadata",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "LICENSE",
+                "sha256": "28c000b52b0ee27138a68ef778227e4057046e86b65f62f1cacb99b0cc49e0d2",
+                "coverage": "complete",
+                "parser": "file",
+                "imports": []
+              },
+              {
+                "path": "pyproject.toml",
+                "sha256": "bb02a66397173399a9bcab7de0b1f0a34f7d6df83e357f94b52bd45b08f22cea",
+                "coverage": "complete",
+                "parser": "file",
+                "imports": []
+              },
+              {
+                "path": "src/cachetools/__init__.py",
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "collections",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "collections.abc",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "functools",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "heapq",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "random",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "time",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".keys",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/keys.py"
+                  },
+                  {
+                    "specifier": "._cached",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/_cached.py"
+                  },
+                  {
+                    "specifier": "._cachedmethod",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/_cachedmethod.py"
+                  }
+                ]
+              },
+              {
+                "path": "src/cachetools/_cached.py",
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "functools",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "warnings",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "src/cachetools/_cachedmethod.py",
+                "sha256": "d02cd5a8c33e8b244f78c6ce26580dbfb89ed521fb25b637d5cec6070e390ce0",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "functools",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "warnings",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "weakref",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "src/cachetools/func.py",
+                "sha256": "87724e4fc82303fd5172cc9fd03c7aaf6a767c6c477f3cb74a245fc45ebf7816",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "math",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "random",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "time",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "threading",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".FIFOCache",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".LFUCache",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".LRUCache",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".RRCache",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".TTLCache",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".cached",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".keys",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/keys.py"
+                  }
+                ]
+              },
+              {
+                "path": "src/cachetools/keys.py",
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": []
+              },
+              {
+                "path": "tests/__init__.py",
+                "sha256": "72d99005a5d409aa14990b42b54646b726a4f3ca7a091a6f4831ff7701293eb8",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "math",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "collections.abc",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "typing",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": "pickle",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "sys",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_cache.py",
+                "sha256": "dbdf81b02f344a0e62a5dcf2364be7e135e2511e765e93b43864aeb7aa3b115c",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_cached.py",
+                "sha256": "27097d0df26efd2e6f72d03e5a8c9cdd7c4b5545ecee38aa439a78538c72fb0a",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "warnings",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": "cachetools.keys",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/keys.py"
+                  },
+                  {
+                    "specifier": ".CountedCondition",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".CountedLock",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "._TestCaseProtocol",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_cachedmethod.py",
+                "sha256": "d5b131d062ef613bbbcaaf107b4ab0a2f28f4bf505dd00964d2c46cf5ac757bf",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest.mock",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "warnings",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CountedCondition",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".CountedLock",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "._TestCaseProtocol",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "fractions",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "gc",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "weakref",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_classmethod.py",
+                "sha256": "465e882cf15481277cef959eb5d4ec0072d61c342079cac05684da55fe543851",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "threading",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "warnings",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "typing",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_fifo.py",
+                "sha256": "c6134627b4d9daab20e67b27fe2ff8d7e225116ae46d6a0e79b2c9b620d25941",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_func.py",
+                "sha256": "668e212d3a49b5442578e1a77579bacd20bbd466a8ea4a18ac04969fa4e75827",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "collections.abc",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "typing",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools.func",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/func.py"
+                  },
+                  {
+                    "specifier": "._TestCaseProtocol",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "datetime",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_keys.py",
+                "sha256": "c6e39d6e781cb737159b43d725c4a0f00ce6f2885376fb6efd01c5d59e196064",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools.keys",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/keys.py"
+                  },
+                  {
+                    "specifier": "pickle",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_lfu.py",
+                "sha256": "11981704035d965ae733140734efb7cd30615ef492cfeeb464f63992db59b404",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_lru.py",
+                "sha256": "dbfd53eb372f24571f70d739faeb6c4963f79c80ef18228f44b38b1112bf1a6c",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_rr.py",
+                "sha256": "995ee7555ebe96c8b4f988c23a8923de980b5f0c42ca073906988e28dd773ec2",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "random",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_threading.py",
+                "sha256": "fd6bfb6b3d0b4c650a1786381ab4c33d04ff348cd5d1e91d8014239df111c165",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "threading",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "time",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "typing",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_tlru.py",
+                "sha256": "461fd80337d3e4a7fba830b30765cce19666611f797568f18740e4f6eea98199",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "math",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "datetime",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_ttl.py",
+                "sha256": "dad8f3e725176a39a487d23bd4a25930db05380ce0b452f73485506dbe5284d1",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "math",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "datetime",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              }
+            ],
+            "skipped": [
+              {
+                "path": ".github/FUNDING.yml",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/ISSUE_TEMPLATE/bug_report.md",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/ISSUE_TEMPLATE/config.yml",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/ISSUE_TEMPLATE/feature_request.md",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/PULL_REQUEST_TEMPLATE.md",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/SECURITY.md",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/copilot-instructions.md",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/copilot-review.md",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/dependabot.yml",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/workflows/ci.yml",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".gitignore",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".readthedocs.yaml",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "CHANGELOG.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "MANIFEST.in",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "README.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/index.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "src/cachetools/__init__.pyi",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "src/cachetools/func.pyi",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "src/cachetools/keys.pyi",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "src/cachetools/py.typed",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "tox.ini",
+                "reason": "unsupported_file_type"
+              }
+            ],
+            "inspection": {
+              "initial_paths": [
+                "LICENSE",
+                "pyproject.toml",
+                "docs/conf.py",
+                "src/cachetools/_cached.py",
+                "src/cachetools/_cachedmethod.py",
+                "src/cachetools/func.py",
+                "src/cachetools/keys.py",
+                "src/cachetools/__init__.py",
+                "tests/__init__.py",
+                "tests/test_cache.py",
+                "tests/test_cached.py",
+                "tests/test_cachedmethod.py",
+                "tests/test_classmethod.py",
+                "tests/test_fifo.py",
+                "tests/test_func.py",
+                "tests/test_keys.py",
+                "tests/test_lfu.py",
+                "tests/test_lru.py",
+                "tests/test_rr.py",
+                "tests/test_threading.py",
+                "tests/test_tlru.py",
+                "tests/test_ttl.py"
+              ],
+              "followup_paths": [],
+              "fill_paths": [],
+              "deadline_reached": false
+            },
+            "targets_indexed": 144,
+            "targets_supplied": 24,
+            "omitted_targets": 120,
+            "references": [
+              {
+                "id": "546a9dcd66164f90d4179f56",
+                "path": "docs/conf.py",
+                "start_line": 1,
+                "end_line": 19,
+                "sha256": "f68affa8dfcf4a20d5fe872cfb0e19f9b284f8feda563dd8e8e23eafe75cd4eb",
+                "kind": "file"
+              },
+              {
+                "id": "90cf6f348c5588b2a8e9fa07",
+                "path": "src/cachetools/_cachedmethod.py",
+                "start_line": 28,
+                "end_line": 29,
+                "sha256": "d02cd5a8c33e8b244f78c6ce26580dbfb89ed521fb25b637d5cec6070e390ce0",
+                "kind": "declaration"
+              },
+              {
+                "id": "05a7c4401a3b72130d06ef30",
+                "path": "src/cachetools/keys.py",
+                "start_line": 46,
+                "end_line": 48,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              },
+              {
+                "id": "2183a76cb08e486a3caf09ab",
+                "path": "src/cachetools/_cached.py",
+                "start_line": 224,
+                "end_line": 229,
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "kind": "declaration"
+              },
+              {
+                "id": "8487a84b4550dcf1abbc4846",
+                "path": "src/cachetools/func.py",
+                "start_line": 63,
+                "end_line": 74,
+                "sha256": "87724e4fc82303fd5172cc9fd03c7aaf6a767c6c477f3cb74a245fc45ebf7816",
+                "kind": "declaration"
+              },
+              {
+                "id": "ac4e85d5556872cc7b19c929",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 768,
+                "end_line": 790,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "declaration"
+              },
+              {
+                "id": "608b4085e8594e6d0b05196f",
+                "path": "src/cachetools/_cachedmethod.py",
+                "start_line": 125,
+                "end_line": 141,
+                "sha256": "d02cd5a8c33e8b244f78c6ce26580dbfb89ed521fb25b637d5cec6070e390ce0",
+                "kind": "declaration"
+              },
+              {
+                "id": "69fbe48dacd8fb49bd51a5b0",
+                "path": "src/cachetools/keys.py",
+                "start_line": 64,
+                "end_line": 66,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              },
+              {
+                "id": "75acc2fd227ccc8ccea6e08a",
+                "path": "src/cachetools/_cached.py",
+                "start_line": 130,
+                "end_line": 144,
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "kind": "declaration"
+              },
+              {
+                "id": "1669aa424f0390868b432445",
+                "path": "src/cachetools/func.py",
+                "start_line": 49,
+                "end_line": 60,
+                "sha256": "87724e4fc82303fd5172cc9fd03c7aaf6a767c6c477f3cb74a245fc45ebf7816",
+                "kind": "declaration"
+              },
+              {
+                "id": "98ecf5f1b6d3a941e4b78dd4",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 737,
+                "end_line": 765,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "declaration"
+              },
+              {
+                "id": "e561245f8205274237ddf0c8",
+                "path": "src/cachetools/_cachedmethod.py",
+                "start_line": 361,
+                "end_line": 392,
+                "sha256": "d02cd5a8c33e8b244f78c6ce26580dbfb89ed521fb25b637d5cec6070e390ce0",
+                "kind": "declaration"
+              },
+              {
+                "id": "433ccf3484a06fff99565506",
+                "path": "src/cachetools/keys.py",
+                "start_line": 37,
+                "end_line": 43,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              },
+              {
+                "id": "8ab690b400969ca000b31fa3",
+                "path": "src/cachetools/_cached.py",
+                "start_line": 206,
+                "end_line": 221,
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "kind": "declaration"
+              },
+              {
+                "id": "5fea7ebdd72e061771d3e93f",
+                "path": "src/cachetools/func.py",
+                "start_line": 35,
+                "end_line": 46,
+                "sha256": "87724e4fc82303fd5172cc9fd03c7aaf6a767c6c477f3cb74a245fc45ebf7816",
+                "kind": "declaration"
+              },
+              {
+                "id": "6fef0729459a9bdae1b65074",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 171,
+                "end_line": 200,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "declaration"
+              },
+              {
+                "id": "f9ee0e7efa2ae244e305c033",
+                "path": "src/cachetools/_cachedmethod.py",
+                "start_line": 32,
+                "end_line": 65,
+                "sha256": "d02cd5a8c33e8b244f78c6ce26580dbfb89ed521fb25b637d5cec6070e390ce0",
+                "kind": "declaration"
+              },
+              {
+                "id": "fa394c267c4c21d8459ffc36",
+                "path": "src/cachetools/keys.py",
+                "start_line": 51,
+                "end_line": 61,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              },
+              {
+                "id": "2b7e8cddc2dd4e9f43ec4331",
+                "path": "src/cachetools/_cached.py",
+                "start_line": 98,
+                "end_line": 127,
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "kind": "declaration"
+              },
+              {
+                "id": "07343bc68b91944ed93cd98d",
+                "path": "src/cachetools/func.py",
+                "start_line": 77,
+                "end_line": 88,
+                "sha256": "87724e4fc82303fd5172cc9fd03c7aaf6a767c6c477f3cb74a245fc45ebf7816",
+                "kind": "declaration"
+              },
+              {
+                "id": "9c57330f2ae51f006b0db0e2",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 287,
+                "end_line": 326,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "declaration"
+              },
+              {
+                "id": "7debe8ba9da439568cee9acf",
+                "path": "src/cachetools/_cachedmethod.py",
+                "start_line": 238,
+                "end_line": 268,
+                "sha256": "d02cd5a8c33e8b244f78c6ce26580dbfb89ed521fb25b637d5cec6070e390ce0",
+                "kind": "declaration"
+              },
+              {
+                "id": "a6b321242b7b380db9656a2e",
+                "path": "src/cachetools/keys.py",
+                "start_line": 6,
+                "end_line": 29,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              },
+              {
+                "id": "a86ca447487ee51b266a975e",
+                "path": "src/cachetools/_cached.py",
+                "start_line": 180,
+                "end_line": 203,
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "kind": "declaration"
+              },
+              {
+                "id": "36472030b8a86c02df5e352a",
+                "path": "LICENSE",
+                "start_line": 1,
+                "end_line": 21,
+                "sha256": "28c000b52b0ee27138a68ef778227e4057046e86b65f62f1cacb99b0cc49e0d2",
+                "kind": "file"
+              },
+              {
+                "id": "b60a69108671d9450ad69153",
+                "path": "src/cachetools/keys.py",
+                "start_line": 1,
+                "end_line": 67,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "file"
+              },
+              {
+                "id": "3cbc311b5260ab8bf7299d98",
+                "path": "src/cachetools/func.py",
+                "start_line": 1,
+                "end_line": 103,
+                "sha256": "87724e4fc82303fd5172cc9fd03c7aaf6a767c6c477f3cb74a245fc45ebf7816",
+                "kind": "file"
+              },
+              {
+                "id": "34061c40ba55ebb4858114d8",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 1,
+                "end_line": 791,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "file"
+              },
+              {
+                "id": "ce0d2ec2393f5f544dafb559",
+                "path": "tests/test_cache.py",
+                "start_line": 1,
+                "end_line": 10,
+                "sha256": "dbdf81b02f344a0e62a5dcf2364be7e135e2511e765e93b43864aeb7aa3b115c",
+                "kind": "file"
+              }
+            ],
+            "selection_policy": "repo-salvage/coverage-v3"
+          }
+        },
+        "source_files": [
+          {
+            "path": "docs/conf.py",
+            "coverage": "complete",
+            "sampled_characters": 471
+          },
+          {
+            "path": "LICENSE",
+            "coverage": "complete",
+            "sampled_characters": 1085
+          },
+          {
+            "path": "src/cachetools/keys.py",
+            "coverage": "complete",
+            "sampled_characters": 1967
+          },
+          {
+            "path": "src/cachetools/func.py",
+            "coverage": "complete",
+            "sampled_characters": 3275
+          },
+          {
+            "path": "src/cachetools/__init__.py",
+            "coverage": "complete",
+            "sampled_characters": 23791
+          },
+          {
+            "path": "tests/test_cache.py",
+            "coverage": "complete",
+            "sampled_characters": 148
+          }
+        ]
+      },
+      "selection": {
+        "symbols": [
+          "hashkey",
+          "typedkey",
+          "_HashedTuple",
+          "LRUCache",
+          "FIFOCache",
+          "_locked"
+        ],
+        "groups": [
+          "cache-mappings",
+          "argument-keys",
+          "memoization"
+        ],
+        "redundantPairs": [],
+        "requiredSelected": true,
+        "enoughGroups": true,
+        "redundancyWithinLimit": true,
+        "context": [
+          {
+            "symbol": "LRUCache",
+            "supplied": true,
+            "sameFileContext": true,
+            "contextCited": true
+          }
+        ],
+        "passed": true
+      },
+      "manualReview": "pending"
+    },
+    {
+      "id": "cache-distinct-capabilities",
+      "model": "gpt-6.1-sol",
+      "effort": "low",
+      "cliVersion": "codex-cli 0.160.0",
+      "promptSha256": "5a3f6188fe92def8cc69b999138f3d76ac0f0c702e88b09ab282ba5f497f1a45",
+      "trace": {
+        "sha256": "253d3a9f9b60da7794be087682363cf92fb8ae6e9b7e6add66e33b823b5c44eb"
+      },
+      "latencyMs": 50749,
+      "billing": "Existing Codex account allowance; no API-key model call",
+      "transportSuccess": true,
+      "failure": null,
+      "prohibitedEvents": [],
+      "usage": {
+        "input_tokens": 31590,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1684,
+        "reasoning_output_tokens": 118
+      },
+      "requestSha256": "7e9f98b21bac96a792ac2cd1fd98b093d6186c186bb65ea9b365c4c0fde405e3",
+      "structurallyAccepted": true,
+      "response": {
+        "overview": "Five candidates cover FIFO and LRU eviction, two cache-key policies, and locked memoization. Supporting file context is supplied for the public classes and key functions; the private wrapper has incomplete context. References show inspected source, not correctness. No tests were run.",
+        "outcome": "candidates",
+        "reusable_pieces": [
+          {
+            "target_id": "f07b15c39c2516d7",
+            "name": "LRUCache",
+            "description": "Size-bounded mapping that tracks recency on stored-key reads and writes, then evicts the least recently used entry.",
+            "category": "Storage",
+            "integration_notes": "Extract with the observed Cache base, _DefaultSize helper, and collections.OrderedDict usage. Cache rejects negative maxsize, negative value sizes, and oversized values; insertion may evict entries before storing. LRUCache.__getitem__ returns the base result and touches only keys actually stored, accommodating __missing__ overrides. __touch updates ordering; deletion and clear update both storage and ordering. Empty popitem raises KeyError. Preserve these interactions when adapting the class.",
+            "limitations": [
+              "Custom getsizeof behavior and subclass __missing__ assumptions need review for the destination.",
+              "The supplied test excerpt concerns Cache and depends on an unsupplied CacheTestMixin; it does not establish LRU correctness.",
+              "The supplied MIT notice requires retaining copyright and permission notices in copies or substantial portions."
+            ],
+            "explanation_refs": [
+              "9c57330f2ae51f006b0db0e2",
+              "34061c40ba55ebb4858114d8",
+              "ce0d2ec2393f5f544dafb559",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "target_id": "643d11dc643f94e7",
+            "name": "FIFOCache",
+            "description": "Size-bounded mapping with insertion-order eviction. Replacing an existing entry moves it to the end of the eviction order.",
+            "category": "Storage",
+            "integration_notes": "Extract with the observed Cache base, _DefaultSize helper, and collections.OrderedDict usage. Base initialization rejects negative maxsize; writes reject negative or oversized value sizes and may evict entries. FIFOCache updates ordering only after the base write returns. Reads do not update its ordering, while replacement writes move an existing key to the end. popitem removes the first ordered key through Cache.pop and raises KeyError when empty. Deletion and clear synchronize ordering with base storage.",
+            "limitations": [
+              "Replacement writes renew ordering, which must match the destination's intended FIFO policy.",
+              "Size accounting depends on Cache and the supplied getsizeof callback; the declaration is not a standalone mapping implementation.",
+              "The supplied MIT notice requires retaining copyright and permission notices in copies or substantial portions."
+            ],
+            "explanation_refs": [
+              "6fef0729459a9bdae1b65074",
+              "34061c40ba55ebb4858114d8",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "target_id": "fdbd22fda46cbec6",
+            "name": "hashkey",
+            "description": "Builds tuple-based cache keys from positional arguments and sorted keyword pairs, with a separator and cached tuple hashing.",
+            "category": "Data processing",
+            "integration_notes": "The supplied keys.py context defines both supporting pieces: _HashedTuple and _kwmark. Preserve the sentinel separating positional arguments from keywords. With no keywords, hashkey returns _HashedTuple(args) directly; otherwise it appends the sentinel and sorted keyword pairs. _HashedTuple stores its hash on first hashing and returns the same tuple subclass on concatenation. Key construction does not validate hashability; failure can occur when the resulting key is hashed.",
+            "limitations": [
+              "Arguments and keyword values must support hashing when the key is used in a hash-based mapping.",
+              "This policy does not append argument types; equal values of different types can share keys.",
+              "Indexed key tests have no supplied test content. Retain the supplied MIT copyright and permission notices when applicable."
+            ],
+            "explanation_refs": [
+              "433ccf3484a06fff99565506",
+              "b60a69108671d9450ad69153",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "target_id": "f88d86c2f0d64cfa",
+            "name": "typedkey",
+            "description": "Builds cache keys that include the types of positional arguments and keyword values, distinguishing otherwise equal values with different immediate types.",
+            "category": "Data processing",
+            "integration_notes": "Extract with the observed _HashedTuple and _kwmark definitions from keys.py. The keyword branch sorts pairs, builds the value portion, then appends keyword-value types. Both branches append positional-argument types before returning. _HashedTuple.__add__ preserves the subclass while these portions are assembled; its hash is cached on first use. No explicit argument validation occurs. This is a distinct key policy from hashkey, rather than a separate memoization implementation.",
+            "limitations": [
+              "Type information covers immediate argument values, not recursively nested contents.",
+              "Included values must be hashable when the resulting key is hashed; construction alone does not establish that.",
+              "Indexed tests are not supplied. Retain the supplied MIT copyright and permission notices when applicable."
+            ],
+            "explanation_refs": [
+              "fa394c267c4c21d8459ffc36",
+              "b60a69108671d9450ad69153",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "target_id": "a78c6a3d0fdf9376",
+            "name": "_locked memoization wrapper",
+            "description": "Locks cache lookup, insertion, and clearing while computing misses outside the lock. A concurrent cached value takes precedence through setdefault.",
+            "category": "Data processing",
+            "integration_notes": "The declaration accepts func, cache, key, and a context-manager lock. Key generation occurs before locking. A cache hit returns immediately; KeyError triggers computation outside the lock. The second locked section uses cache.setdefault(k, v), returning an existing value if another caller inserted one. ValueError from that operation returns the computed value. cache_clear clears under the lock. Its contexts entry has no same_file_reference, so enclosing helpers, imports, and wrapper dispatch are not fully supplied; adapt it as an internal component with explicit contracts.",
+            "limitations": [
+              "Concurrent misses can compute the same key more than once; this wrapper does not coordinate in-flight computations.",
+              "Same-file context is absent. Mapping setdefault semantics, key behavior, and lock compatibility remain integration assumptions.",
+              "ValueError during setdefault is suppressed regardless of its cause. Retain the supplied MIT notices when applicable."
+            ],
+            "explanation_refs": [
+              "a86ca447487ee51b266a975e",
+              "36472030b8a86c02df5e352a"
+            ]
+          }
+        ]
+      },
+      "summary": {
+        "overview": "Five candidates cover FIFO and LRU eviction, two cache-key policies, and locked memoization. Supporting file context is supplied for the public classes and key functions; the private wrapper has incomplete context. References show inspected source, not correctness. No tests were run.",
+        "languages": [
+          "Python"
+        ],
+        "frameworks": [],
+        "reusable_pieces": [
+          {
+            "name": "LRUCache",
+            "path": "src/cachetools/__init__.py",
+            "description": "Size-bounded mapping that tracks recency on stored-key reads and writes, then evicts the least recently used entry.",
+            "category": "Storage",
+            "integration_notes": "Extract with the observed Cache base, _DefaultSize helper, and collections.OrderedDict usage. Cache rejects negative maxsize, negative value sizes, and oversized values; insertion may evict entries before storing. LRUCache.__getitem__ returns the base result and touches only keys actually stored, accommodating __missing__ overrides. __touch updates ordering; deletion and clear update both storage and ordering. Empty popitem raises KeyError. Preserve these interactions when adapting the class.",
+            "limitations": [
+              "Custom getsizeof behavior and subclass __missing__ assumptions need review for the destination.",
+              "The supplied test excerpt concerns Cache and depends on an unsupplied CacheTestMixin; it does not establish LRU correctness.",
+              "The supplied MIT notice requires retaining copyright and permission notices in copies or substantial portions.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "f07b15c39c2516d7",
+            "dependencies": [
+              "collections",
+              "collections.abc",
+              "functools",
+              "heapq",
+              "random",
+              "time",
+              "warnings",
+              "weakref"
+            ],
+            "related_paths": [
+              "src/cachetools/_cached.py",
+              "src/cachetools/_cachedmethod.py",
+              "src/cachetools/keys.py"
+            ],
+            "test_paths": [
+              "tests/__init__.py",
+              "tests/test_cache.py",
+              "tests/test_cached.py",
+              "tests/test_cachedmethod.py",
+              "tests/test_classmethod.py",
+              "tests/test_fifo.py",
+              "tests/test_lfu.py",
+              "tests/test_lru.py",
+              "tests/test_rr.py",
+              "tests/test_threading.py",
+              "tests/test_tlru.py",
+              "tests/test_ttl.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "f07b15c39c2516d7",
+              "path": "src/cachetools/__init__.py",
+              "symbol": "LRUCache",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "collections",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "collections.abc",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "heapq",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "random",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "time",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": ".keys",
+                  "kind": "local",
+                  "resolved_path": "src/cachetools/keys.py"
+                },
+                {
+                  "specifier": "._cached",
+                  "kind": "local",
+                  "resolved_path": "src/cachetools/_cached.py"
+                },
+                {
+                  "specifier": "._cachedmethod",
+                  "kind": "local",
+                  "resolved_path": "src/cachetools/_cachedmethod.py"
+                }
+              ],
+              "supporting_paths": [
+                "src/cachetools/_cached.py",
+                "src/cachetools/_cachedmethod.py",
+                "src/cachetools/keys.py"
+              ],
+              "unresolved": [],
+              "test_paths": [
+                "tests/__init__.py",
+                "tests/test_cache.py",
+                "tests/test_cached.py",
+                "tests/test_cachedmethod.py",
+                "tests/test_classmethod.py",
+                "tests/test_fifo.py",
+                "tests/test_lfu.py",
+                "tests/test_lru.py",
+                "tests/test_rr.py",
+                "tests/test_threading.py",
+                "tests/test_tlru.py",
+                "tests/test_ttl.py"
+              ],
+              "notice_paths": [
+                "LICENSE"
+              ],
+              "reference": {
+                "id": "9c57330f2ae51f006b0db0e2",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 287,
+                "end_line": 326,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "9c57330f2ae51f006b0db0e2",
+              "34061c40ba55ebb4858114d8",
+              "ce0d2ec2393f5f544dafb559",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "name": "FIFOCache",
+            "path": "src/cachetools/__init__.py",
+            "description": "Size-bounded mapping with insertion-order eviction. Replacing an existing entry moves it to the end of the eviction order.",
+            "category": "Storage",
+            "integration_notes": "Extract with the observed Cache base, _DefaultSize helper, and collections.OrderedDict usage. Base initialization rejects negative maxsize; writes reject negative or oversized value sizes and may evict entries. FIFOCache updates ordering only after the base write returns. Reads do not update its ordering, while replacement writes move an existing key to the end. popitem removes the first ordered key through Cache.pop and raises KeyError when empty. Deletion and clear synchronize ordering with base storage.",
+            "limitations": [
+              "Replacement writes renew ordering, which must match the destination's intended FIFO policy.",
+              "Size accounting depends on Cache and the supplied getsizeof callback; the declaration is not a standalone mapping implementation.",
+              "The supplied MIT notice requires retaining copyright and permission notices in copies or substantial portions.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "643d11dc643f94e7",
+            "dependencies": [
+              "collections",
+              "collections.abc",
+              "functools",
+              "heapq",
+              "random",
+              "time",
+              "warnings",
+              "weakref"
+            ],
+            "related_paths": [
+              "src/cachetools/_cached.py",
+              "src/cachetools/_cachedmethod.py",
+              "src/cachetools/keys.py"
+            ],
+            "test_paths": [
+              "tests/__init__.py",
+              "tests/test_cache.py",
+              "tests/test_cached.py",
+              "tests/test_cachedmethod.py",
+              "tests/test_classmethod.py",
+              "tests/test_fifo.py",
+              "tests/test_lfu.py",
+              "tests/test_lru.py",
+              "tests/test_rr.py",
+              "tests/test_threading.py",
+              "tests/test_tlru.py",
+              "tests/test_ttl.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "643d11dc643f94e7",
+              "path": "src/cachetools/__init__.py",
+              "symbol": "FIFOCache",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "collections",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "collections.abc",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "heapq",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "random",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "time",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": ".keys",
+                  "kind": "local",
+                  "resolved_path": "src/cachetools/keys.py"
+                },
+                {
+                  "specifier": "._cached",
+                  "kind": "local",
+                  "resolved_path": "src/cachetools/_cached.py"
+                },
+                {
+                  "specifier": "._cachedmethod",
+                  "kind": "local",
+                  "resolved_path": "src/cachetools/_cachedmethod.py"
+                }
+              ],
+              "supporting_paths": [
+                "src/cachetools/_cached.py",
+                "src/cachetools/_cachedmethod.py",
+                "src/cachetools/keys.py"
+              ],
+              "unresolved": [],
+              "test_paths": [
+                "tests/__init__.py",
+                "tests/test_cache.py",
+                "tests/test_cached.py",
+                "tests/test_cachedmethod.py",
+                "tests/test_classmethod.py",
+                "tests/test_fifo.py",
+                "tests/test_lfu.py",
+                "tests/test_lru.py",
+                "tests/test_rr.py",
+                "tests/test_threading.py",
+                "tests/test_tlru.py",
+                "tests/test_ttl.py"
+              ],
+              "notice_paths": [
+                "LICENSE"
+              ],
+              "reference": {
+                "id": "6fef0729459a9bdae1b65074",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 171,
+                "end_line": 200,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "6fef0729459a9bdae1b65074",
+              "34061c40ba55ebb4858114d8",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "name": "hashkey",
+            "path": "src/cachetools/keys.py",
+            "description": "Builds tuple-based cache keys from positional arguments and sorted keyword pairs, with a separator and cached tuple hashing.",
+            "category": "Data processing",
+            "integration_notes": "The supplied keys.py context defines both supporting pieces: _HashedTuple and _kwmark. Preserve the sentinel separating positional arguments from keywords. With no keywords, hashkey returns _HashedTuple(args) directly; otherwise it appends the sentinel and sorted keyword pairs. _HashedTuple stores its hash on first hashing and returns the same tuple subclass on concatenation. Key construction does not validate hashability; failure can occur when the resulting key is hashed.",
+            "limitations": [
+              "Arguments and keyword values must support hashing when the key is used in a hash-based mapping.",
+              "This policy does not append argument types; equal values of different types can share keys.",
+              "Indexed key tests have no supplied test content. Retain the supplied MIT copyright and permission notices when applicable.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "fdbd22fda46cbec6",
+            "dependencies": [],
+            "related_paths": [],
+            "test_paths": [
+              "tests/test_cached.py",
+              "tests/test_keys.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "fdbd22fda46cbec6",
+              "path": "src/cachetools/keys.py",
+              "symbol": "hashkey",
+              "kind": "declaration",
+              "imports": [],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [
+                "tests/test_cached.py",
+                "tests/test_keys.py"
+              ],
+              "notice_paths": [
+                "LICENSE"
+              ],
+              "reference": {
+                "id": "433ccf3484a06fff99565506",
+                "path": "src/cachetools/keys.py",
+                "start_line": 37,
+                "end_line": 43,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "433ccf3484a06fff99565506",
+              "b60a69108671d9450ad69153",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "name": "typedkey",
+            "path": "src/cachetools/keys.py",
+            "description": "Builds cache keys that include the types of positional arguments and keyword values, distinguishing otherwise equal values with different immediate types.",
+            "category": "Data processing",
+            "integration_notes": "Extract with the observed _HashedTuple and _kwmark definitions from keys.py. The keyword branch sorts pairs, builds the value portion, then appends keyword-value types. Both branches append positional-argument types before returning. _HashedTuple.__add__ preserves the subclass while these portions are assembled; its hash is cached on first use. No explicit argument validation occurs. This is a distinct key policy from hashkey, rather than a separate memoization implementation.",
+            "limitations": [
+              "Type information covers immediate argument values, not recursively nested contents.",
+              "Included values must be hashable when the resulting key is hashed; construction alone does not establish that.",
+              "Indexed tests are not supplied. Retain the supplied MIT copyright and permission notices when applicable.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "f88d86c2f0d64cfa",
+            "dependencies": [],
+            "related_paths": [],
+            "test_paths": [
+              "tests/test_cached.py",
+              "tests/test_keys.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "f88d86c2f0d64cfa",
+              "path": "src/cachetools/keys.py",
+              "symbol": "typedkey",
+              "kind": "declaration",
+              "imports": [],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [
+                "tests/test_cached.py",
+                "tests/test_keys.py"
+              ],
+              "notice_paths": [
+                "LICENSE"
+              ],
+              "reference": {
+                "id": "fa394c267c4c21d8459ffc36",
+                "path": "src/cachetools/keys.py",
+                "start_line": 51,
+                "end_line": 61,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "fa394c267c4c21d8459ffc36",
+              "b60a69108671d9450ad69153",
+              "36472030b8a86c02df5e352a"
+            ]
+          },
+          {
+            "name": "_locked memoization wrapper",
+            "path": "src/cachetools/_cached.py",
+            "description": "Locks cache lookup, insertion, and clearing while computing misses outside the lock. A concurrent cached value takes precedence through setdefault.",
+            "category": "Data processing",
+            "integration_notes": "The declaration accepts func, cache, key, and a context-manager lock. Key generation occurs before locking. A cache hit returns immediately; KeyError triggers computation outside the lock. The second locked section uses cache.setdefault(k, v), returning an existing value if another caller inserted one. ValueError from that operation returns the computed value. cache_clear clears under the lock. Its contexts entry has no same_file_reference, so enclosing helpers, imports, and wrapper dispatch are not fully supplied; adapt it as an internal component with explicit contracts.",
+            "limitations": [
+              "Concurrent misses can compute the same key more than once; this wrapper does not coordinate in-flight computations.",
+              "Same-file context is absent. Mapping setdefault semantics, key behavior, and lock compatibility remain integration assumptions.",
+              "ValueError during setdefault is suppressed regardless of its cause. Retain the supplied MIT notices when applicable.",
+              "Same-file context was omitted from the model's bounded evidence packet; helper, type, constant and enclosing-scope requirements need further review.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "a78c6a3d0fdf9376",
+            "dependencies": [
+              "functools",
+              "warnings"
+            ],
+            "related_paths": [],
+            "test_paths": [],
+            "source_sampled": true,
+            "source_target": {
+              "id": "a78c6a3d0fdf9376",
+              "path": "src/cachetools/_cached.py",
+              "symbol": "_locked",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "warnings",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [],
+              "notice_paths": [
+                "LICENSE"
+              ],
+              "reference": {
+                "id": "a86ca447487ee51b266a975e",
+                "path": "src/cachetools/_cached.py",
+                "start_line": 180,
+                "end_line": 203,
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "a86ca447487ee51b266a975e",
+              "36472030b8a86c02df5e352a"
+            ]
+          }
+        ],
+        "analysis": {
+          "format": "repo-salvage/analysis-v2",
+          "outcome": "candidates",
+          "index": {
+            "format": "repo-salvage/source-index-v2",
+            "limits": {
+              "files": 64,
+              "initialFiles": 48,
+              "initialMetadataFiles": 12,
+              "initialLibraryFiles": 24,
+              "followupFiles": 16,
+              "initialBytes": 1500000,
+              "inspectionMilliseconds": 120000,
+              "fileBytes": 128000,
+              "totalBytes": 2000000,
+              "promptCharacters": 70000,
+              "candidates": 24
+            },
+            "files": [
+              {
+                "path": "docs/conf.py",
+                "sha256": "f68affa8dfcf4a20d5fe872cfb0e19f9b284f8feda563dd8e8e23eafe75cd4eb",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "importlib.metadata",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "LICENSE",
+                "sha256": "28c000b52b0ee27138a68ef778227e4057046e86b65f62f1cacb99b0cc49e0d2",
+                "coverage": "complete",
+                "parser": "file",
+                "imports": []
+              },
+              {
+                "path": "pyproject.toml",
+                "sha256": "bb02a66397173399a9bcab7de0b1f0a34f7d6df83e357f94b52bd45b08f22cea",
+                "coverage": "complete",
+                "parser": "file",
+                "imports": []
+              },
+              {
+                "path": "src/cachetools/__init__.py",
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "collections",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "collections.abc",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "functools",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "heapq",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "random",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "time",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".keys",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/keys.py"
+                  },
+                  {
+                    "specifier": "._cached",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/_cached.py"
+                  },
+                  {
+                    "specifier": "._cachedmethod",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/_cachedmethod.py"
+                  }
+                ]
+              },
+              {
+                "path": "src/cachetools/_cached.py",
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "functools",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "warnings",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "src/cachetools/_cachedmethod.py",
+                "sha256": "d02cd5a8c33e8b244f78c6ce26580dbfb89ed521fb25b637d5cec6070e390ce0",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "functools",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "warnings",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "weakref",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "src/cachetools/func.py",
+                "sha256": "87724e4fc82303fd5172cc9fd03c7aaf6a767c6c477f3cb74a245fc45ebf7816",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "math",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "random",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "time",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "threading",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".FIFOCache",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".LFUCache",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".LRUCache",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".RRCache",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".TTLCache",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".cached",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".keys",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/keys.py"
+                  }
+                ]
+              },
+              {
+                "path": "src/cachetools/keys.py",
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": []
+              },
+              {
+                "path": "tests/__init__.py",
+                "sha256": "72d99005a5d409aa14990b42b54646b726a4f3ca7a091a6f4831ff7701293eb8",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "math",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "collections.abc",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "typing",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": "pickle",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "sys",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_cache.py",
+                "sha256": "dbdf81b02f344a0e62a5dcf2364be7e135e2511e765e93b43864aeb7aa3b115c",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_cached.py",
+                "sha256": "27097d0df26efd2e6f72d03e5a8c9cdd7c4b5545ecee38aa439a78538c72fb0a",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "warnings",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": "cachetools.keys",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/keys.py"
+                  },
+                  {
+                    "specifier": ".CountedCondition",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".CountedLock",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "._TestCaseProtocol",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_cachedmethod.py",
+                "sha256": "d5b131d062ef613bbbcaaf107b4ab0a2f28f4bf505dd00964d2c46cf5ac757bf",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest.mock",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "warnings",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CountedCondition",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".CountedLock",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "._TestCaseProtocol",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "fractions",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "gc",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "weakref",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_classmethod.py",
+                "sha256": "465e882cf15481277cef959eb5d4ec0072d61c342079cac05684da55fe543851",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "threading",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "warnings",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "typing",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_fifo.py",
+                "sha256": "c6134627b4d9daab20e67b27fe2ff8d7e225116ae46d6a0e79b2c9b620d25941",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_func.py",
+                "sha256": "668e212d3a49b5442578e1a77579bacd20bbd466a8ea4a18ac04969fa4e75827",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "collections.abc",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "typing",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools.func",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/func.py"
+                  },
+                  {
+                    "specifier": "._TestCaseProtocol",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "datetime",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_keys.py",
+                "sha256": "c6e39d6e781cb737159b43d725c4a0f00ce6f2885376fb6efd01c5d59e196064",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools.keys",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/keys.py"
+                  },
+                  {
+                    "specifier": "pickle",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_lfu.py",
+                "sha256": "11981704035d965ae733140734efb7cd30615ef492cfeeb464f63992db59b404",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_lru.py",
+                "sha256": "dbfd53eb372f24571f70d739faeb6c4963f79c80ef18228f44b38b1112bf1a6c",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_rr.py",
+                "sha256": "995ee7555ebe96c8b4f988c23a8923de980b5f0c42ca073906988e28dd773ec2",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "random",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_threading.py",
+                "sha256": "fd6bfb6b3d0b4c650a1786381ab4c33d04ff348cd5d1e91d8014239df111c165",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "threading",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "time",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "typing",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_tlru.py",
+                "sha256": "461fd80337d3e4a7fba830b30765cce19666611f797568f18740e4f6eea98199",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "math",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "datetime",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_ttl.py",
+                "sha256": "dad8f3e725176a39a487d23bd4a25930db05380ce0b452f73485506dbe5284d1",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "math",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "cachetools",
+                    "kind": "local",
+                    "resolved_path": "src/cachetools/__init__.py"
+                  },
+                  {
+                    "specifier": ".CacheTestMixin",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "datetime",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              }
+            ],
+            "skipped": [
+              {
+                "path": ".github/FUNDING.yml",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/ISSUE_TEMPLATE/bug_report.md",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/ISSUE_TEMPLATE/config.yml",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/ISSUE_TEMPLATE/feature_request.md",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/PULL_REQUEST_TEMPLATE.md",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/SECURITY.md",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/copilot-instructions.md",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/copilot-review.md",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/dependabot.yml",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".github/workflows/ci.yml",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".gitignore",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".readthedocs.yaml",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "CHANGELOG.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "MANIFEST.in",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "README.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/index.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "src/cachetools/__init__.pyi",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "src/cachetools/func.pyi",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "src/cachetools/keys.pyi",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "src/cachetools/py.typed",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "tox.ini",
+                "reason": "unsupported_file_type"
+              }
+            ],
+            "inspection": {
+              "initial_paths": [
+                "LICENSE",
+                "pyproject.toml",
+                "docs/conf.py",
+                "src/cachetools/_cached.py",
+                "src/cachetools/_cachedmethod.py",
+                "src/cachetools/func.py",
+                "src/cachetools/keys.py",
+                "src/cachetools/__init__.py",
+                "tests/__init__.py",
+                "tests/test_cache.py",
+                "tests/test_cached.py",
+                "tests/test_cachedmethod.py",
+                "tests/test_classmethod.py",
+                "tests/test_fifo.py",
+                "tests/test_func.py",
+                "tests/test_keys.py",
+                "tests/test_lfu.py",
+                "tests/test_lru.py",
+                "tests/test_rr.py",
+                "tests/test_threading.py",
+                "tests/test_tlru.py",
+                "tests/test_ttl.py"
+              ],
+              "followup_paths": [],
+              "fill_paths": [],
+              "deadline_reached": false
+            },
+            "targets_indexed": 144,
+            "targets_supplied": 24,
+            "omitted_targets": 120,
+            "references": [
+              {
+                "id": "546a9dcd66164f90d4179f56",
+                "path": "docs/conf.py",
+                "start_line": 1,
+                "end_line": 19,
+                "sha256": "f68affa8dfcf4a20d5fe872cfb0e19f9b284f8feda563dd8e8e23eafe75cd4eb",
+                "kind": "file"
+              },
+              {
+                "id": "90cf6f348c5588b2a8e9fa07",
+                "path": "src/cachetools/_cachedmethod.py",
+                "start_line": 28,
+                "end_line": 29,
+                "sha256": "d02cd5a8c33e8b244f78c6ce26580dbfb89ed521fb25b637d5cec6070e390ce0",
+                "kind": "declaration"
+              },
+              {
+                "id": "05a7c4401a3b72130d06ef30",
+                "path": "src/cachetools/keys.py",
+                "start_line": 46,
+                "end_line": 48,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              },
+              {
+                "id": "2183a76cb08e486a3caf09ab",
+                "path": "src/cachetools/_cached.py",
+                "start_line": 224,
+                "end_line": 229,
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "kind": "declaration"
+              },
+              {
+                "id": "8487a84b4550dcf1abbc4846",
+                "path": "src/cachetools/func.py",
+                "start_line": 63,
+                "end_line": 74,
+                "sha256": "87724e4fc82303fd5172cc9fd03c7aaf6a767c6c477f3cb74a245fc45ebf7816",
+                "kind": "declaration"
+              },
+              {
+                "id": "ac4e85d5556872cc7b19c929",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 768,
+                "end_line": 790,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "declaration"
+              },
+              {
+                "id": "608b4085e8594e6d0b05196f",
+                "path": "src/cachetools/_cachedmethod.py",
+                "start_line": 125,
+                "end_line": 141,
+                "sha256": "d02cd5a8c33e8b244f78c6ce26580dbfb89ed521fb25b637d5cec6070e390ce0",
+                "kind": "declaration"
+              },
+              {
+                "id": "69fbe48dacd8fb49bd51a5b0",
+                "path": "src/cachetools/keys.py",
+                "start_line": 64,
+                "end_line": 66,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              },
+              {
+                "id": "75acc2fd227ccc8ccea6e08a",
+                "path": "src/cachetools/_cached.py",
+                "start_line": 130,
+                "end_line": 144,
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "kind": "declaration"
+              },
+              {
+                "id": "1669aa424f0390868b432445",
+                "path": "src/cachetools/func.py",
+                "start_line": 49,
+                "end_line": 60,
+                "sha256": "87724e4fc82303fd5172cc9fd03c7aaf6a767c6c477f3cb74a245fc45ebf7816",
+                "kind": "declaration"
+              },
+              {
+                "id": "98ecf5f1b6d3a941e4b78dd4",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 737,
+                "end_line": 765,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "declaration"
+              },
+              {
+                "id": "e561245f8205274237ddf0c8",
+                "path": "src/cachetools/_cachedmethod.py",
+                "start_line": 361,
+                "end_line": 392,
+                "sha256": "d02cd5a8c33e8b244f78c6ce26580dbfb89ed521fb25b637d5cec6070e390ce0",
+                "kind": "declaration"
+              },
+              {
+                "id": "433ccf3484a06fff99565506",
+                "path": "src/cachetools/keys.py",
+                "start_line": 37,
+                "end_line": 43,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              },
+              {
+                "id": "8ab690b400969ca000b31fa3",
+                "path": "src/cachetools/_cached.py",
+                "start_line": 206,
+                "end_line": 221,
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "kind": "declaration"
+              },
+              {
+                "id": "5fea7ebdd72e061771d3e93f",
+                "path": "src/cachetools/func.py",
+                "start_line": 35,
+                "end_line": 46,
+                "sha256": "87724e4fc82303fd5172cc9fd03c7aaf6a767c6c477f3cb74a245fc45ebf7816",
+                "kind": "declaration"
+              },
+              {
+                "id": "6fef0729459a9bdae1b65074",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 171,
+                "end_line": 200,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "declaration"
+              },
+              {
+                "id": "f9ee0e7efa2ae244e305c033",
+                "path": "src/cachetools/_cachedmethod.py",
+                "start_line": 32,
+                "end_line": 65,
+                "sha256": "d02cd5a8c33e8b244f78c6ce26580dbfb89ed521fb25b637d5cec6070e390ce0",
+                "kind": "declaration"
+              },
+              {
+                "id": "fa394c267c4c21d8459ffc36",
+                "path": "src/cachetools/keys.py",
+                "start_line": 51,
+                "end_line": 61,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              },
+              {
+                "id": "2b7e8cddc2dd4e9f43ec4331",
+                "path": "src/cachetools/_cached.py",
+                "start_line": 98,
+                "end_line": 127,
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "kind": "declaration"
+              },
+              {
+                "id": "07343bc68b91944ed93cd98d",
+                "path": "src/cachetools/func.py",
+                "start_line": 77,
+                "end_line": 88,
+                "sha256": "87724e4fc82303fd5172cc9fd03c7aaf6a767c6c477f3cb74a245fc45ebf7816",
+                "kind": "declaration"
+              },
+              {
+                "id": "9c57330f2ae51f006b0db0e2",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 287,
+                "end_line": 326,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "declaration"
+              },
+              {
+                "id": "7debe8ba9da439568cee9acf",
+                "path": "src/cachetools/_cachedmethod.py",
+                "start_line": 238,
+                "end_line": 268,
+                "sha256": "d02cd5a8c33e8b244f78c6ce26580dbfb89ed521fb25b637d5cec6070e390ce0",
+                "kind": "declaration"
+              },
+              {
+                "id": "a6b321242b7b380db9656a2e",
+                "path": "src/cachetools/keys.py",
+                "start_line": 6,
+                "end_line": 29,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "declaration"
+              },
+              {
+                "id": "a86ca447487ee51b266a975e",
+                "path": "src/cachetools/_cached.py",
+                "start_line": 180,
+                "end_line": 203,
+                "sha256": "f918cb6517d3d2fdb3e5eaecbf187b069b3cb1d7c999791f5f2561c9f49f7f5c",
+                "kind": "declaration"
+              },
+              {
+                "id": "36472030b8a86c02df5e352a",
+                "path": "LICENSE",
+                "start_line": 1,
+                "end_line": 21,
+                "sha256": "28c000b52b0ee27138a68ef778227e4057046e86b65f62f1cacb99b0cc49e0d2",
+                "kind": "file"
+              },
+              {
+                "id": "b60a69108671d9450ad69153",
+                "path": "src/cachetools/keys.py",
+                "start_line": 1,
+                "end_line": 67,
+                "sha256": "9550bd6914744c2fc6fd211dfb83cdae2d6206b1a1bfcf052d017cb23b39b49e",
+                "kind": "file"
+              },
+              {
+                "id": "3cbc311b5260ab8bf7299d98",
+                "path": "src/cachetools/func.py",
+                "start_line": 1,
+                "end_line": 103,
+                "sha256": "87724e4fc82303fd5172cc9fd03c7aaf6a767c6c477f3cb74a245fc45ebf7816",
+                "kind": "file"
+              },
+              {
+                "id": "34061c40ba55ebb4858114d8",
+                "path": "src/cachetools/__init__.py",
+                "start_line": 1,
+                "end_line": 791,
+                "sha256": "c595cd9ea1ce7e52be423397398f33ad9fb8074d568bd664f229570e97f7a660",
+                "kind": "file"
+              },
+              {
+                "id": "ce0d2ec2393f5f544dafb559",
+                "path": "tests/test_cache.py",
+                "start_line": 1,
+                "end_line": 10,
+                "sha256": "dbdf81b02f344a0e62a5dcf2364be7e135e2511e765e93b43864aeb7aa3b115c",
+                "kind": "file"
+              }
+            ],
+            "selection_policy": "repo-salvage/coverage-v3"
+          }
+        },
+        "source_files": [
+          {
+            "path": "docs/conf.py",
+            "coverage": "complete",
+            "sampled_characters": 471
+          },
+          {
+            "path": "LICENSE",
+            "coverage": "complete",
+            "sampled_characters": 1085
+          },
+          {
+            "path": "src/cachetools/keys.py",
+            "coverage": "complete",
+            "sampled_characters": 1967
+          },
+          {
+            "path": "src/cachetools/func.py",
+            "coverage": "complete",
+            "sampled_characters": 3275
+          },
+          {
+            "path": "src/cachetools/__init__.py",
+            "coverage": "complete",
+            "sampled_characters": 23791
+          },
+          {
+            "path": "tests/test_cache.py",
+            "coverage": "complete",
+            "sampled_characters": 148
+          }
+        ]
+      },
+      "selection": {
+        "symbols": [
+          "LRUCache",
+          "FIFOCache",
+          "hashkey",
+          "typedkey",
+          "_locked"
+        ],
+        "groups": [
+          "cache-mappings",
+          "argument-keys",
+          "memoization"
+        ],
+        "redundantPairs": [],
+        "requiredSelected": true,
+        "enoughGroups": true,
+        "redundancyWithinLimit": true,
+        "context": [
+          {
+            "symbol": "LRUCache",
+            "supplied": true,
+            "sameFileContext": true,
+            "contextCited": true
+          }
+        ],
+        "passed": true
+      },
+      "manualReview": "pending"
+    },
+    {
+      "id": "schedule-fresh",
+      "model": "gpt-6.1-sol",
+      "effort": "low",
+      "cliVersion": "codex-cli 0.160.0",
+      "promptSha256": "d47637b698fe7670d7487d101362b0bc108401f341e9749005d52a86bcc21dcc",
+      "trace": {
+        "sha256": "61e9ce87b83f760487531e6ae0258b3f82916365176ea873dfbd657d44d6df07"
+      },
+      "latencyMs": 39316,
+      "billing": "Existing Codex account allowance; no API-key model call",
+      "transportSuccess": true,
+      "failure": null,
+      "prohibitedEvents": [],
+      "usage": {
+        "input_tokens": 26082,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1170,
+        "reasoning_output_tokens": 60
+      },
+      "requestSha256": "162d602286ccace9a257f05887e073dbb9193639c604de0b9cc94d4daef98b27",
+      "structurallyAccepted": true,
+      "response": {
+        "overview": "Four candidates cover job orchestration, weekday adjustment, format fallback parsing and decorator registration. Scheduler module context and the Job implementation are absent. Indexed tests have no supplied content; references establish source inspection, not correctness.",
+        "outcome": "candidates",
+        "reusable_pieces": [
+          {
+            "target_id": "a0059415e870e065",
+            "name": "Scheduler job orchestration",
+            "description": "Maintains jobs, runs due jobs in sorted order, supports forced execution and tag filtering, removes cancelled jobs, and reports the next run and idle time. Pending execution intentionally does not replay missed runs.",
+            "category": "Other",
+            "integration_notes": "Retain the observed internal helpers _run_job and get_next_run and the next_run property. _run_job recognizes both CancelJob instances and the class itself. get_next_run returns None for empty collections or empty tag results; idle_seconds also returns None without a next run. clear mutates the existing list; cancel_job catches ValueError. run_all iterates a list copy and sleeps after each job. Integrate with the missing Job implementation, including should_run, run, tags and ordering; the supplied Job.__lt__ compares next_run. Resolve logger, time, datetime and annotation bindings rather than assuming every indexed import is required.",
+            "limitations": [
+              "No same-file reference is supplied; module imports, globals, types and other supporting definitions may be absent.",
+              "Job construction and execution implementations are not supplied. Callback exceptions are not caught by the shown orchestration code.",
+              "No supplied test content or execution results establish behavior."
+            ],
+            "explanation_refs": [
+              "66bf9de18a73ae4c37bfef0a",
+              "7c3abc970e22e6a2edcd5945",
+              "2f66f0b3efa04ff96e31135d"
+            ]
+          },
+          {
+            "target_id": "483f5477d16536d6",
+            "name": "Nearest weekday timestamp adjustment",
+            "description": "Adds zero to six days to reach a named weekday, leaving a timestamp on that weekday unchanged. Its supporting lookup accepts lowercase English weekday names and rejects other values.",
+            "category": "Data processing",
+            "integration_notes": "Extract with the supplied _weekday_index helper and its ScheduleValueError/ScheduleError hierarchy, or explicitly adapt the error contract. Negative weekday differences gain seven days before datetime.timedelta is added. Resolve the datetime binding. The shown helper performs no input normalization or explicit timestamp validation; timezone and daylight-saving expectations remain unresolved.",
+            "limitations": [
+              "No same-file reference is supplied; imports, constants, types and additional helpers may be absent.",
+              "Datetime arithmetic is shown, but timezone transition behavior is not established by supplied tests."
+            ],
+            "explanation_refs": [
+              "c739558725ccd002fd4d736e",
+              "f0c337144f9ec65406f95b45",
+              "ac13fe303d2efd1b6f3a3c29",
+              "33cb999a2ed84c4e52eb2ca7"
+            ]
+          },
+          {
+            "target_id": "f5a3c6d38899716a",
+            "name": "Ordered datetime format fallback",
+            "description": "Tries datetime.strptime formats in order, returns the first successful datetime, and returns None when all attempts raise ValueError or the format list is empty.",
+            "category": "Data processing",
+            "integration_notes": "The supplied method does not reference self, making adaptation into a utility plausible, but its enclosing Job context is missing. Preserve format ordering and the None failure result. Resolve datetime and List/Optional annotation bindings. Only ValueError is swallowed; other exceptions propagate. Callers must provide formats and decide how to handle failed parsing.",
+            "limitations": [
+              "No same-file reference or enclosing Job implementation is supplied; imports, types and surrounding assumptions may be absent.",
+              "Accepted format policy and caller handling of None are not supplied. No test results are available."
+            ],
+            "explanation_refs": [
+              "c81981735437dbb67ab39255"
+            ]
+          },
+          {
+            "target_id": "ea72d01741063256",
+            "name": "Decorator-based job registration",
+            "description": "Builds a decorator that calls job.do with the decorated function and captured arguments, then returns the original function.",
+            "category": "Other",
+            "integration_notes": "Use with an object implementing the required do method. Registration happens when the decorator is applied. The shown code does not validate job or arguments, catch registration exceptions, or retain the return value of do. The Job.do implementation is absent, so registration details and repeated application behavior require inspection before integration.",
+            "limitations": [
+              "No same-file reference is supplied; supporting imports, globals, types or scope may be absent.",
+              "Job.do is referenced but its content is not supplied. This decorator alone does not implement scheduling or execution."
+            ],
+            "explanation_refs": [
+              "1f2cef85382e9e12ffae9812"
+            ]
+          }
+        ]
+      },
+      "summary": {
+        "overview": "Four candidates cover job orchestration, weekday adjustment, format fallback parsing and decorator registration. Scheduler module context and the Job implementation are absent. Indexed tests have no supplied content; references establish source inspection, not correctness.",
+        "languages": [
+          "Python"
+        ],
+        "frameworks": [],
+        "reusable_pieces": [
+          {
+            "name": "Scheduler job orchestration",
+            "path": "schedule/__init__.py",
+            "description": "Maintains jobs, runs due jobs in sorted order, supports forced execution and tag filtering, removes cancelled jobs, and reports the next run and idle time. Pending execution intentionally does not replay missed runs.",
+            "category": "Other",
+            "integration_notes": "Retain the observed internal helpers _run_job and get_next_run and the next_run property. _run_job recognizes both CancelJob instances and the class itself. get_next_run returns None for empty collections or empty tag results; idle_seconds also returns None without a next run. clear mutates the existing list; cancel_job catches ValueError. run_all iterates a list copy and sleeps after each job. Integrate with the missing Job implementation, including should_run, run, tags and ordering; the supplied Job.__lt__ compares next_run. Resolve logger, time, datetime and annotation bindings rather than assuming every indexed import is required.",
+            "limitations": [
+              "No same-file reference is supplied; module imports, globals, types and other supporting definitions may be absent.",
+              "Job construction and execution implementations are not supplied. Callback exceptions are not caught by the shown orchestration code.",
+              "No supplied test content or execution results establish behavior.",
+              "Same-file context was omitted from the model's bounded evidence packet; helper, type, constant and enclosing-scope requirements need further review.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "a0059415e870e065",
+            "dependencies": [
+              "collections.abc",
+              "datetime",
+              "functools",
+              "logging",
+              "pytz",
+              "random",
+              "re",
+              "time",
+              "typing"
+            ],
+            "related_paths": [],
+            "test_paths": [
+              "test_schedule.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "a0059415e870e065",
+              "path": "schedule/__init__.py",
+              "symbol": "Scheduler",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "collections.abc",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "datetime",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "logging",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "random",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "re",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "time",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "typing",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "pytz",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [
+                "test_schedule.py"
+              ],
+              "notice_paths": [
+                "LICENSE.txt"
+              ],
+              "reference": {
+                "id": "66bf9de18a73ae4c37bfef0a",
+                "path": "schedule/__init__.py",
+                "start_line": 79,
+                "end_line": 206,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "66bf9de18a73ae4c37bfef0a",
+              "7c3abc970e22e6a2edcd5945",
+              "2f66f0b3efa04ff96e31135d"
+            ]
+          },
+          {
+            "name": "Nearest weekday timestamp adjustment",
+            "path": "schedule/__init__.py",
+            "description": "Adds zero to six days to reach a named weekday, leaving a timestamp on that weekday unchanged. Its supporting lookup accepts lowercase English weekday names and rejects other values.",
+            "category": "Data processing",
+            "integration_notes": "Extract with the supplied _weekday_index helper and its ScheduleValueError/ScheduleError hierarchy, or explicitly adapt the error contract. Negative weekday differences gain seven days before datetime.timedelta is added. Resolve the datetime binding. The shown helper performs no input normalization or explicit timestamp validation; timezone and daylight-saving expectations remain unresolved.",
+            "limitations": [
+              "No same-file reference is supplied; imports, constants, types and additional helpers may be absent.",
+              "Datetime arithmetic is shown, but timezone transition behavior is not established by supplied tests.",
+              "Same-file context was omitted from the model's bounded evidence packet; helper, type, constant and enclosing-scope requirements need further review.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "483f5477d16536d6",
+            "dependencies": [
+              "collections.abc",
+              "datetime",
+              "functools",
+              "logging",
+              "pytz",
+              "random",
+              "re",
+              "time",
+              "typing"
+            ],
+            "related_paths": [],
+            "test_paths": [
+              "test_schedule.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "483f5477d16536d6",
+              "path": "schedule/__init__.py",
+              "symbol": "_move_to_next_weekday",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "collections.abc",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "datetime",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "logging",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "random",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "re",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "time",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "typing",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "pytz",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [
+                "test_schedule.py"
+              ],
+              "notice_paths": [
+                "LICENSE.txt"
+              ],
+              "reference": {
+                "id": "c739558725ccd002fd4d736e",
+                "path": "schedule/__init__.py",
+                "start_line": 916,
+                "end_line": 928,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "c739558725ccd002fd4d736e",
+              "f0c337144f9ec65406f95b45",
+              "ac13fe303d2efd1b6f3a3c29",
+              "33cb999a2ed84c4e52eb2ca7"
+            ]
+          },
+          {
+            "name": "Ordered datetime format fallback",
+            "path": "schedule/__init__.py",
+            "description": "Tries datetime.strptime formats in order, returns the first successful datetime, and returns None when all attempts raise ValueError or the format list is empty.",
+            "category": "Data processing",
+            "integration_notes": "The supplied method does not reference self, making adaptation into a utility plausible, but its enclosing Job context is missing. Preserve format ordering and the None failure result. Resolve datetime and List/Optional annotation bindings. Only ValueError is swallowed; other exceptions propagate. Callers must provide formats and decide how to handle failed parsing.",
+            "limitations": [
+              "No same-file reference or enclosing Job implementation is supplied; imports, types and surrounding assumptions may be absent.",
+              "Accepted format policy and caller handling of None are not supplied. No test results are available.",
+              "Same-file context was omitted from the model's bounded evidence packet; helper, type, constant and enclosing-scope requirements need further review.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection.",
+              "Unresolved source context: Enclosing Python class context required: Job"
+            ],
+            "target_id": "f5a3c6d38899716a",
+            "dependencies": [
+              "collections.abc",
+              "datetime",
+              "functools",
+              "logging",
+              "pytz",
+              "random",
+              "re",
+              "time",
+              "typing"
+            ],
+            "related_paths": [],
+            "test_paths": [
+              "test_schedule.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "f5a3c6d38899716a",
+              "path": "schedule/__init__.py",
+              "symbol": "Job._decode_datetimestr",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "collections.abc",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "datetime",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "logging",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "random",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "re",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "time",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "typing",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "pytz",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [],
+              "unresolved": [
+                "Enclosing Python class context required: Job"
+              ],
+              "test_paths": [
+                "test_schedule.py"
+              ],
+              "notice_paths": [
+                "LICENSE.txt"
+              ],
+              "reference": {
+                "id": "c81981735437dbb67ab39255",
+                "path": "schedule/__init__.py",
+                "start_line": 822,
+                "end_line": 830,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "c81981735437dbb67ab39255"
+            ]
+          },
+          {
+            "name": "Decorator-based job registration",
+            "path": "schedule/__init__.py",
+            "description": "Builds a decorator that calls job.do with the decorated function and captured arguments, then returns the original function.",
+            "category": "Other",
+            "integration_notes": "Use with an object implementing the required do method. Registration happens when the decorator is applied. The shown code does not validate job or arguments, catch registration exceptions, or retain the return value of do. The Job.do implementation is absent, so registration details and repeated application behavior require inspection before integration.",
+            "limitations": [
+              "No same-file reference is supplied; supporting imports, globals, types or scope may be absent.",
+              "Job.do is referenced but its content is not supplied. This decorator alone does not implement scheduling or execution.",
+              "Same-file context was omitted from the model's bounded evidence packet; helper, type, constant and enclosing-scope requirements need further review.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "ea72d01741063256",
+            "dependencies": [
+              "collections.abc",
+              "datetime",
+              "functools",
+              "logging",
+              "pytz",
+              "random",
+              "re",
+              "time",
+              "typing"
+            ],
+            "related_paths": [],
+            "test_paths": [
+              "test_schedule.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "ea72d01741063256",
+              "path": "schedule/__init__.py",
+              "symbol": "repeat",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "collections.abc",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "datetime",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "logging",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "random",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "re",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "time",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "typing",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "pytz",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [
+                "test_schedule.py"
+              ],
+              "notice_paths": [
+                "LICENSE.txt"
+              ],
+              "reference": {
+                "id": "1f2cef85382e9e12ffae9812",
+                "path": "schedule/__init__.py",
+                "start_line": 899,
+                "end_line": 913,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "1f2cef85382e9e12ffae9812"
+            ]
+          }
+        ],
+        "analysis": {
+          "format": "repo-salvage/analysis-v2",
+          "outcome": "candidates",
+          "index": {
+            "format": "repo-salvage/source-index-v2",
+            "limits": {
+              "files": 64,
+              "initialFiles": 48,
+              "initialMetadataFiles": 12,
+              "initialLibraryFiles": 24,
+              "followupFiles": 16,
+              "initialBytes": 1500000,
+              "inspectionMilliseconds": 120000,
+              "fileBytes": 128000,
+              "totalBytes": 2000000,
+              "promptCharacters": 70000,
+              "candidates": 24
+            },
+            "files": [
+              {
+                "path": "docs/conf.py",
+                "sha256": "1d784bfe0d5f280334557fec2abc51df6a77e8ea1878992384d1d9d810ee04c5",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "os",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "sys",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "LICENSE.txt",
+                "sha256": "30a8352c318ce1b645acde0299697342d4380ed2637d7ca18a8ad25661e3b41b",
+                "coverage": "complete",
+                "parser": "file",
+                "imports": []
+              },
+              {
+                "path": "pyproject.toml",
+                "sha256": "a48c79e2096ac67baf58e1107adffbbae9a4d6479ed6c8528a5b97ff76c7d996",
+                "coverage": "complete",
+                "parser": "file",
+                "imports": []
+              },
+              {
+                "path": "schedule/__init__.py",
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "collections.abc",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "datetime",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "functools",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "logging",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "random",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "re",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "time",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "typing",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "pytz",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "setup.py",
+                "sha256": "489d711917bac84051c6712d3941c00f199f43fc1b226e98f2cdccd6b1835336",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "codecs",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "setuptools",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "test_schedule.py",
+                "sha256": "71fa3781959b0dee649acc01e618559792c52c6375b82880945764819d5d5523",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "datetime",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "functools",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "os",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "time",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "schedule",
+                    "kind": "local",
+                    "resolved_path": "schedule/__init__.py"
+                  },
+                  {
+                    "specifier": "pytz",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              }
+            ],
+            "skipped": [
+              {
+                "path": ".github/workflows/ci.yml",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".gitignore",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "AUTHORS.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "HISTORY.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "MANIFEST.in",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "README.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/Makefile",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/_static/custom.css",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/_templates/sidebarintro.html",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/background-execution.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/changelog.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/development.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/examples.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/exception-handling.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/faq.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/index.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/installation.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/logging.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/multiple-schedulers.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/parallel-execution.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/reference.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/timezones.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "requirements-dev.txt",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "schedule/py.typed",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "setup.cfg",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "tox.ini",
+                "reason": "unsupported_file_type"
+              }
+            ],
+            "inspection": {
+              "initial_paths": [
+                "LICENSE.txt",
+                "pyproject.toml",
+                "setup.py",
+                "docs/conf.py",
+                "schedule/__init__.py",
+                "test_schedule.py"
+              ],
+              "followup_paths": [],
+              "fill_paths": [],
+              "deadline_reached": false
+            },
+            "targets_indexed": 62,
+            "targets_supplied": 24,
+            "omitted_targets": 38,
+            "references": [
+              {
+                "id": "367fd2729859f32dcbf3ec39",
+                "path": "setup.py",
+                "start_line": 9,
+                "end_line": 14,
+                "sha256": "489d711917bac84051c6712d3941c00f199f43fc1b226e98f2cdccd6b1835336",
+                "kind": "declaration"
+              },
+              {
+                "id": "f369cc1367e08adc213ff02e",
+                "path": "docs/conf.py",
+                "start_line": 1,
+                "end_line": 374,
+                "sha256": "1d784bfe0d5f280334557fec2abc51df6a77e8ea1878992384d1d9d810ee04c5",
+                "kind": "file"
+              },
+              {
+                "id": "33cb999a2ed84c4e52eb2ca7",
+                "path": "schedule/__init__.py",
+                "start_line": 53,
+                "end_line": 56,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "ac13fe303d2efd1b6f3a3c29",
+                "path": "schedule/__init__.py",
+                "start_line": 59,
+                "end_line": 62,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "59ae0c244ed9ee244c9885ea",
+                "path": "schedule/__init__.py",
+                "start_line": 65,
+                "end_line": 68,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "7c3abc970e22e6a2edcd5945",
+                "path": "schedule/__init__.py",
+                "start_line": 71,
+                "end_line": 76,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "3cf8c1efa0cff5f2bb929f5a",
+                "path": "schedule/__init__.py",
+                "start_line": 843,
+                "end_line": 847,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "37c35eb70f1c05ad7b42626f",
+                "path": "schedule/__init__.py",
+                "start_line": 892,
+                "end_line": 896,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "95b73f4c9fcc2062f76556a4",
+                "path": "schedule/__init__.py",
+                "start_line": 864,
+                "end_line": 868,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "f567ef6de19111ff3ddc3c60",
+                "path": "schedule/__init__.py",
+                "start_line": 885,
+                "end_line": 889,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "1f2cef85382e9e12ffae9812",
+                "path": "schedule/__init__.py",
+                "start_line": 899,
+                "end_line": 913,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "66bf9de18a73ae4c37bfef0a",
+                "path": "schedule/__init__.py",
+                "start_line": 79,
+                "end_line": 206,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "e17ec544b20b9bc93bdbb0c5",
+                "path": "schedule/__init__.py",
+                "start_line": 850,
+                "end_line": 854,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "fe35b0c21161b1c99328691e",
+                "path": "schedule/__init__.py",
+                "start_line": 878,
+                "end_line": 882,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "1b03ee92a88549d30c776df5",
+                "path": "schedule/__init__.py",
+                "start_line": 871,
+                "end_line": 875,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "5027d50866c227ecef6cd1a3",
+                "path": "schedule/__init__.py",
+                "start_line": 857,
+                "end_line": 861,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "f0c337144f9ec65406f95b45",
+                "path": "schedule/__init__.py",
+                "start_line": 931,
+                "end_line": 945,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "c739558725ccd002fd4d736e",
+                "path": "schedule/__init__.py",
+                "start_line": 916,
+                "end_line": 928,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "b17619fd28b85e30d6dc7f82",
+                "path": "schedule/__init__.py",
+                "start_line": 819,
+                "end_line": 820,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "2f66f0b3efa04ff96e31135d",
+                "path": "schedule/__init__.py",
+                "start_line": 257,
+                "end_line": 262,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "5634a92eff17034f4a330649",
+                "path": "schedule/__init__.py",
+                "start_line": 162,
+                "end_line": 170,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "c81981735437dbb67ab39255",
+                "path": "schedule/__init__.py",
+                "start_line": 822,
+                "end_line": 830,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "b7347f7d353fd822c90a0636",
+                "path": "schedule/__init__.py",
+                "start_line": 122,
+                "end_line": 133,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "254f429ef2aac99b2f1377dc",
+                "path": "schedule/__init__.py",
+                "start_line": 457,
+                "end_line": 469,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "812521335aae722d220ca92d",
+                "path": "LICENSE.txt",
+                "start_line": 1,
+                "end_line": 22,
+                "sha256": "30a8352c318ce1b645acde0299697342d4380ed2637d7ca18a8ad25661e3b41b",
+                "kind": "file"
+              },
+              {
+                "id": "1a3a06faad5dae4aa4ca1893",
+                "path": "setup.py",
+                "start_line": 1,
+                "end_line": 56,
+                "sha256": "489d711917bac84051c6712d3941c00f199f43fc1b226e98f2cdccd6b1835336",
+                "kind": "file"
+              },
+              {
+                "id": "9730fc6922ccb5b8b8d8fe08",
+                "path": "pyproject.toml",
+                "start_line": 1,
+                "end_line": 27,
+                "sha256": "a48c79e2096ac67baf58e1107adffbbae9a4d6479ed6c8528a5b97ff76c7d996",
+                "kind": "file"
+              }
+            ],
+            "selection_policy": "repo-salvage/coverage-v3"
+          }
+        },
+        "source_files": [
+          {
+            "path": "docs/conf.py",
+            "coverage": "complete",
+            "sampled_characters": 10641
+          },
+          {
+            "path": "LICENSE.txt",
+            "coverage": "complete",
+            "sampled_characters": 1099
+          },
+          {
+            "path": "setup.py",
+            "coverage": "complete",
+            "sampled_characters": 1588
+          },
+          {
+            "path": "pyproject.toml",
+            "coverage": "complete",
+            "sampled_characters": 669
+          }
+        ]
+      },
+      "selection": {
+        "symbols": [
+          "Scheduler",
+          "_move_to_next_weekday",
+          "Job._decode_datetimestr",
+          "repeat"
+        ],
+        "groups": [
+          "scheduler",
+          "weekday-transform",
+          "registration-decorator"
+        ],
+        "redundantPairs": [],
+        "requiredSelected": true,
+        "enoughGroups": true,
+        "redundancyWithinLimit": true,
+        "context": [
+          {
+            "symbol": "Scheduler",
+            "supplied": true,
+            "sameFileContext": false,
+            "contextCited": false
+          }
+        ],
+        "passed": true
+      },
+      "manualReview": "pending"
+    }
+  ]
+}
