@@ -95,7 +95,10 @@ run the explicitly authorized native trial in another terminal:
 node examples/competing-discovery-evaluation/language-followup-v2/run.mjs --run http://127.0.0.1:3191 MODEL low
 ```
 
-This reproduces the two diagnostic tasks using MCP 0.3.1. The original ten-task
+The diagnostic tasks require the recorded MCP 0.3.1 archive. Rebuild that archive
+from commit `fa710195917741efeef7b53c5f5284b99beb36aa` in a separate checkout;
+the current MCP 0.3.2 build intentionally has a different contract and hash.
+The original ten-task
 `run.mjs` requires the earlier MCP 0.3.0 archive matching its seal. Rebuild that
 archive from commit `0504e0d395f2c2a464fd296be3295adad6ccc946` in a separate checkout
 and use it as `public/repo-salvage-mcp.tgz` in an isolated evaluation workspace.

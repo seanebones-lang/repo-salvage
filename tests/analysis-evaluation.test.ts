@@ -18,7 +18,11 @@ describe("frozen interpretation controls", () => {
         c.files,
         c.files.map((f: { path: string }) => f.path),
       );
-      const packet = evidencePacket(index);
+      const packet = evidencePacket(
+        index,
+        undefined,
+        "repo-salvage/coverage-v1",
+      );
       const request = indexedAnalysisRequest(
         { full_name: "authored-evaluation/" + c.id } as Parameters<
           typeof indexedAnalysisRequest

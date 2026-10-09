@@ -112,7 +112,7 @@ describe("indexed analysis boundary", () => {
       "Same-file context was omitted",
     );
     expect(summary.analysis?.index.selection_policy).toBe(
-      "repo-salvage/coverage-v1",
+      "repo-salvage/coverage-v2",
     );
   });
   it("attaches source identity, observed transitive imports and evidence independently of model claims", () => {

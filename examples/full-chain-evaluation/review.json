@@ -1,0 +1,42 @@
+{
+  "format": "repo-salvage/full-chain-review-v1",
+  "reviewer": "Implementing operator; not independent review",
+  "analysis": {
+    "structuralGate": true,
+    "requestedSymbolSelected": false,
+    "semanticReview": "Six briefs match inspected references and disclose missing context. LRUCache was supplied but not selected; retain this miss."
+  },
+  "discovery": {
+    "sourceGate": true,
+    "manualReview": "Broadened empty LRU cache search to cache, inspected FIFO brief, read Cache and LRUCache plus complete MIT notice from pinned source. Correctly distinguished promotion, membership, count defaults, base-class coupling and absent synchronization."
+  },
+  "adaptation": {
+    "reviewedBeforeExecution": true,
+    "generatedCodeUnchanged": true,
+    "codeSha256": "be867bbe59dc6dab76adbbd51dd822e8a3e51f27731ce2970fb75cdc31b4e185",
+    "acceptance": {
+      "status": "passed",
+      "consumerTests": 10,
+      "referenceModelOperations": 2000,
+      "isolatedPython": true,
+      "applicationImports": false,
+      "credentialsForwarded": false,
+      "originalModuleExecuted": false,
+      "codeSha256": "be867bbe59dc6dab76adbbd51dd822e8a3e51f27731ce2970fb75cdc31b4e185"
+    },
+    "limits": [
+      "Single-thread, count-only mapping; no custom value sizing, expiry or persistence",
+      "No upstream test execution, concurrency or external integration claims"
+    ]
+  },
+  "isolatedDatabase": {
+    "listings": 1,
+    "summary_runs": 0,
+    "analysis_jobs": 0,
+    "analysis_job_requests": 0,
+    "integrity": "ok"
+  },
+  "liveCatalogWrites": 0,
+  "apiKeyModelCalls": 0,
+  "nextGate": "Improve bounded same-file context and brief-selection coverage; do not infer a general recall rate from this one recovery."
+}

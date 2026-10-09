@@ -1,0 +1,15 @@
+{
+  "key": "tkem/cachetools:src/cachetools/__init__.py",
+  "repository": "tkem/cachetools",
+  "commit": "9976f1a8076631560f49c5b0dfda7e4d00ee0a4a",
+  "path": "src/cachetools/__init__.py",
+  "noticePath": "LICENSE",
+  "fragments": [
+    "class Cache(collections.abc.MutableMapping):",
+    "class LRUCache(Cache):",
+    "value = cache_getitem(self, key)",
+    "self.__order.move_to_end(key)",
+    "def __contains__(self, key):\n        return key in self.__data"
+  ],
+  "analysisRequiredSymbol": "LRUCache"
+}

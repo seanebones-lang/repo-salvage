@@ -1,2 +1,5 @@
 # Byte-frozen production response; its pre-model checksum is verified by tests.
 examples/competing-discovery-evaluation/catalog.json
+# Preserve exact post-analysis and pre-discovery generated record bytes.
+examples/full-chain-evaluation/catalog.json
+examples/full-chain-evaluation/summary.json

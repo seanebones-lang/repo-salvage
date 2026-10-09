@@ -1,0 +1,22 @@
+{
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "promptSha256": "14b3874c1a23a32745994f019619a025faa05b37e19823df2d7fb11dc4e55527",
+  "trace": {
+    "sha256": "661026a5cb666bca4d37baad4e955ec5612cf6dd285b7f13cf439f61ea044022"
+  },
+  "latencyMs": 49897,
+  "billing": "Existing Codex account allowance; no API-key model call",
+  "transportSuccess": true,
+  "usage": {
+    "input_tokens": 31142,
+    "cached_input_tokens": 0,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1664,
+    "reasoning_output_tokens": 82
+  },
+  "structurallyAccepted": true,
+  "requiredSymbolSelected": false,
+  "inputSealSha256": "e688b08cfb054a9d7a45306d0ffda4b02e6eb26178cf655cc9a7e727157c8a91"
+}

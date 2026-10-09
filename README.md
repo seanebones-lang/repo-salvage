@@ -136,6 +136,14 @@ negative requests passed separate rechecks with unchanged questions and scoring.
 The original failure remains recorded. This does not establish general recall or
 certify the upstream libraries.
 
+A [fresh-source full-chain trial](examples/full-chain-evaluation/README.md) used
+production-generated briefs in a disposable catalog. A fresh agent recovered an
+LRU implementation that the six-brief selection had missed, then proposed a
+[count-bounded Python mapping](examples/cache-consumer/README.md). Its unchanged
+code passed ten pre-generation consumer tests and 2,000 reference-model operations.
+Coverage-v2 improves public Python declaration ordering; the remaining brief-selection
+and bounded-context gaps are recorded, without a general discovery-quality claim.
+
 ## For agents and scripts
 
 Open `/agents` for the guide, `/llms.txt` for the machine index and `/openapi.json`

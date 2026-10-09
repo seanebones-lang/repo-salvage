@@ -63,7 +63,11 @@ license audit. Inspection/download manifests retain their notice checks.
 
 The evidence packet supplies up to 24 candidate targets and complete source
 blocks, within a 70,000-character evidence allowance. A declaration that cannot
-fit is omitted, never cut into a prefix. Policy `repo-salvage/coverage-v1` gives
+fit is omitted, never cut into a prefix. Python public top-level declarations
+receive an earlier turn than private helpers and enclosed methods; this naming
+hint does not prove an API or dependency completeness. Private targets remain
+eligible. The earlier coverage-v1 ordering is retained for frozen evaluation
+replay. Policy `repo-salvage/coverage-v2` gives
 files one candidate turn at a time, preferring conventional library areas. Within
 a file, implementation shape, observed module dependencies, syntactic same-file
 binding references and declaration size affect scheduling. Binding observations
