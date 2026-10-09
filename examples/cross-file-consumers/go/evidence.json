@@ -1,0 +1,208 @@
+{
+  "format": "repo-salvage/focused-evidence-v1",
+  "listing_id": 995,
+  "source": {
+    "repository_id": 66737655,
+    "owner_id": 318501,
+    "repository": "cespare/xxhash",
+    "commit": "ab37246c889f9db16b606fda1c232d659df9271d"
+  },
+  "focus": {
+    "path": "xxhash.go",
+    "symbol": "Digest.Write",
+    "symbol_match": "matched",
+    "packet_character_limit": 24000
+  },
+  "coverage": {
+    "matched_files": 1,
+    "inspected_files": 5,
+    "source_bytes": 9081,
+    "indexed_targets": 1,
+    "supplied_targets": 1,
+    "context_paths": [
+      "LICENSE.txt",
+      "xxhash_asm.go",
+      "xxhash_other.go",
+      "xxhash_safe.go"
+    ],
+    "files": [
+      {
+        "path": "xxhash.go",
+        "size_bytes": 5646,
+        "download_url": "https://raw.githubusercontent.com/cespare/xxhash/ab37246c889f9db16b606fda1c232d659df9271d/xxhash.go",
+        "git_blob_sha": "e29a8c334ceb4d675c9e18f3670b7f673d7ad44e",
+        "inspection": "complete",
+        "reason": null,
+        "indexed_targets": 26,
+        "supplied_targets": 1,
+        "same_file_supplied": true
+      }
+    ],
+    "skipped": [
+      {
+        "path": "xxhash_unsafe.go",
+        "reason": "context_file_limit"
+      },
+      {
+        "path": "go.mod",
+        "reason": "context_file_limit"
+      }
+    ],
+    "skipped_details_omitted": 0
+  },
+  "packet": {
+    "format": "repo-salvage/source-index-v2",
+    "targets": [
+      {
+        "id": "481f573f27837910",
+        "path": "xxhash.go",
+        "symbol": "Digest.Write",
+        "kind": "declaration",
+        "reference_id": "d40491c17d6bcee80f54672b",
+        "imports": [
+          {
+            "specifier": "encoding/binary",
+            "kind": "external",
+            "resolved_path": null
+          },
+          {
+            "specifier": "errors",
+            "kind": "external",
+            "resolved_path": null
+          },
+          {
+            "specifier": "math/bits",
+            "kind": "external",
+            "resolved_path": null
+          }
+        ],
+        "supporting_paths": [
+          "xxhash_asm.go",
+          "xxhash_other.go",
+          "xxhash_safe.go",
+          "xxhash_unsafe.go"
+        ],
+        "unresolved": [
+          "Cross-file source associations are bounded observations; build selection, initialization, module ownership and symbol resolution require review.",
+          "Enclosing go declaration context required: Digest",
+          "Go package peers, build constraints, initialization and receiver resolution are not resolved."
+        ],
+        "test_paths": [],
+        "notice_paths": [
+          "LICENSE.txt"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "d40491c17d6bcee80f54672b",
+        "path": "xxhash.go",
+        "start_line": 75,
+        "end_line": 110,
+        "sha256": "ced3c8e453e927a399ed3bc9c310ff7a2e3f9c33999d33cc8983d6d4334e4cf7",
+        "kind": "declaration",
+        "content": "func (d *Digest) Write(b []byte) (n int, err error) {\n\tn = len(b)\n\td.total += uint64(n)\n\n\tmemleft := d.mem[d.n&(len(d.mem)-1):]\n\n\tif d.n+n < 32 {\n\t\t// This new data doesn't even fill the current block.\n\t\tcopy(memleft, b)\n\t\td.n += n\n\t\treturn\n\t}\n\n\tif d.n > 0 {\n\t\t// Finish off the partial block.\n\t\tc := copy(memleft, b)\n\t\td.v1 = round(d.v1, u64(d.mem[0:8]))\n\t\td.v2 = round(d.v2, u64(d.mem[8:16]))\n\t\td.v3 = round(d.v3, u64(d.mem[16:24]))\n\t\td.v4 = round(d.v4, u64(d.mem[24:32]))\n\t\tb = b[c:]\n\t\td.n = 0\n\t}\n\n\tif len(b) >= 32 {\n\t\t// One or more full blocks left.\n\t\tnw := writeBlocks(d, b)\n\t\tb = b[nw:]\n\t}\n\n\t// Store any remaining partial block.\n\tcopy(d.mem[:], b)\n\td.n = len(b)\n\n\treturn\n}"
+      },
+      {
+        "id": "3a5e4596b2c2bded03f09af8",
+        "path": "LICENSE.txt",
+        "start_line": 1,
+        "end_line": 23,
+        "sha256": "f566a9f97bacdaf00d9f21dd991e81dc11201c4e016c86b470799429a1c9a79c",
+        "kind": "file",
+        "content": "Copyright (c) 2016 Caleb Spare\n\nMIT License\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\nNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\nLIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\nOF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\nWITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
+      },
+      {
+        "id": "d64bcacf4fcc4ba2e9aed3b2",
+        "path": "xxhash.go",
+        "start_line": 1,
+        "end_line": 244,
+        "sha256": "ced3c8e453e927a399ed3bc9c310ff7a2e3f9c33999d33cc8983d6d4334e4cf7",
+        "kind": "file",
+        "content": "// Package xxhash implements the 64-bit variant of xxHash (XXH64) as described\n// at https://xxhash.com/.\npackage xxhash\n\nimport (\n\t\"encoding/binary\"\n\t\"errors\"\n\t\"math/bits\"\n)\n\nconst (\n\tprime1 uint64 = 11400714785074694791\n\tprime2 uint64 = 14029467366897019727\n\tprime3 uint64 = 1609587929392839161\n\tprime4 uint64 = 9650029242287828579\n\tprime5 uint64 = 2870177450012600261\n)\n\n// Store the primes in an array as well.\n//\n// The consts are used when possible in Go code to avoid MOVs but we need a\n// contiguous array for the assembly code.\nvar primes = [...]uint64{prime1, prime2, prime3, prime4, prime5}\n\n// Digest implements hash.Hash64.\n//\n// Note that a zero-valued Digest is not ready to receive writes.\n// Call Reset or create a Digest using New before calling other methods.\ntype Digest struct {\n\tv1    uint64\n\tv2    uint64\n\tv3    uint64\n\tv4    uint64\n\ttotal uint64\n\tmem   [32]byte\n\tn     int // how much of mem is used\n}\n\n// New creates a new Digest with a zero seed.\nfunc New() *Digest {\n\treturn NewWithSeed(0)\n}\n\n// NewWithSeed creates a new Digest with the given seed.\nfunc NewWithSeed(seed uint64) *Digest {\n\tvar d Digest\n\td.ResetWithSeed(seed)\n\treturn &d\n}\n\n// Reset clears the Digest's state so that it can be reused.\n// It uses a seed value of zero.\nfunc (d *Digest) Reset() {\n\td.ResetWithSeed(0)\n}\n\n// ResetWithSeed clears the Digest's state so that it can be reused.\n// It uses the given seed to initialize the state.\nfunc (d *Digest) ResetWithSeed(seed uint64) {\n\td.v1 = seed + prime1 + prime2\n\td.v2 = seed + prime2\n\td.v3 = seed\n\td.v4 = seed - prime1\n\td.total = 0\n\td.n = 0\n}\n\n// Size always returns 8 bytes.\nfunc (d *Digest) Size() int { return 8 }\n\n// BlockSize always returns 32 bytes.\nfunc (d *Digest) BlockSize() int { return 32 }\n\n// Write adds more data to d. It always returns len(b), nil.\nfunc (d *Digest) Write(b []byte) (n int, err error) {\n\tn = len(b)\n\td.total += uint64(n)\n\n\tmemleft := d.mem[d.n&(len(d.mem)-1):]\n\n\tif d.n+n < 32 {\n\t\t// This new data doesn't even fill the current block.\n\t\tcopy(memleft, b)\n\t\td.n += n\n\t\treturn\n\t}\n\n\tif d.n > 0 {\n\t\t// Finish off the partial block.\n\t\tc := copy(memleft, b)\n\t\td.v1 = round(d.v1, u64(d.mem[0:8]))\n\t\td.v2 = round(d.v2, u64(d.mem[8:16]))\n\t\td.v3 = round(d.v3, u64(d.mem[16:24]))\n\t\td.v4 = round(d.v4, u64(d.mem[24:32]))\n\t\tb = b[c:]\n\t\td.n = 0\n\t}\n\n\tif len(b) >= 32 {\n\t\t// One or more full blocks left.\n\t\tnw := writeBlocks(d, b)\n\t\tb = b[nw:]\n\t}\n\n\t// Store any remaining partial block.\n\tcopy(d.mem[:], b)\n\td.n = len(b)\n\n\treturn\n}\n\n// Sum appends the current hash to b and returns the resulting slice.\nfunc (d *Digest) Sum(b []byte) []byte {\n\ts := d.Sum64()\n\treturn append(\n\t\tb,\n\t\tbyte(s>>56),\n\t\tbyte(s>>48),\n\t\tbyte(s>>40),\n\t\tbyte(s>>32),\n\t\tbyte(s>>24),\n\t\tbyte(s>>16),\n\t\tbyte(s>>8),\n\t\tbyte(s),\n\t)\n}\n\n// Sum64 returns the current hash.\nfunc (d *Digest) Sum64() uint64 {\n\tvar h uint64\n\n\tif d.total >= 32 {\n\t\tv1, v2, v3, v4 := d.v1, d.v2, d.v3, d.v4\n\t\th = rol1(v1) + rol7(v2) + rol12(v3) + rol18(v4)\n\t\th = mergeRound(h, v1)\n\t\th = mergeRound(h, v2)\n\t\th = mergeRound(h, v3)\n\t\th = mergeRound(h, v4)\n\t} else {\n\t\th = d.v3 + prime5\n\t}\n\n\th += d.total\n\n\tb := d.mem[:d.n&(len(d.mem)-1)]\n\tfor ; len(b) >= 8; b = b[8:] {\n\t\tk1 := round(0, u64(b[:8]))\n\t\th ^= k1\n\t\th = rol27(h)*prime1 + prime4\n\t}\n\tif len(b) >= 4 {\n\t\th ^= uint64(u32(b[:4])) * prime1\n\t\th = rol23(h)*prime2 + prime3\n\t\tb = b[4:]\n\t}\n\tfor ; len(b) > 0; b = b[1:] {\n\t\th ^= uint64(b[0]) * prime5\n\t\th = rol11(h) * prime1\n\t}\n\n\th ^= h >> 33\n\th *= prime2\n\th ^= h >> 29\n\th *= prime3\n\th ^= h >> 32\n\n\treturn h\n}\n\nconst (\n\tmagic         = \"xxh\\x06\"\n\tmarshaledSize = len(magic) + 8*5 + 32\n)\n\n// MarshalBinary implements the encoding.BinaryMarshaler interface.\nfunc (d *Digest) MarshalBinary() ([]byte, error) {\n\tb := make([]byte, 0, marshaledSize)\n\tb = append(b, magic...)\n\tb = appendUint64(b, d.v1)\n\tb = appendUint64(b, d.v2)\n\tb = appendUint64(b, d.v3)\n\tb = appendUint64(b, d.v4)\n\tb = appendUint64(b, d.total)\n\tb = append(b, d.mem[:d.n]...)\n\tb = b[:len(b)+len(d.mem)-d.n]\n\treturn b, nil\n}\n\n// UnmarshalBinary implements the encoding.BinaryUnmarshaler interface.\nfunc (d *Digest) UnmarshalBinary(b []byte) error {\n\tif len(b) < len(magic) || string(b[:len(magic)]) != magic {\n\t\treturn errors.New(\"xxhash: invalid hash state identifier\")\n\t}\n\tif len(b) != marshaledSize {\n\t\treturn errors.New(\"xxhash: invalid hash state size\")\n\t}\n\tb = b[len(magic):]\n\tb, d.v1 = consumeUint64(b)\n\tb, d.v2 = consumeUint64(b)\n\tb, d.v3 = consumeUint64(b)\n\tb, d.v4 = consumeUint64(b)\n\tb, d.total = consumeUint64(b)\n\tcopy(d.mem[:], b)\n\td.n = int(d.total % uint64(len(d.mem)))\n\treturn nil\n}\n\nfunc appendUint64(b []byte, x uint64) []byte {\n\tvar a [8]byte\n\tbinary.LittleEndian.PutUint64(a[:], x)\n\treturn append(b, a[:]...)\n}\n\nfunc consumeUint64(b []byte) ([]byte, uint64) {\n\tx := u64(b)\n\treturn b[8:], x\n}\n\nfunc u64(b []byte) uint64 { return binary.LittleEndian.Uint64(b) }\nfunc u32(b []byte) uint32 { return binary.LittleEndian.Uint32(b) }\n\nfunc round(acc, input uint64) uint64 {\n\tacc += input * prime2\n\tacc = rol31(acc)\n\tacc *= prime1\n\treturn acc\n}\n\nfunc mergeRound(acc, val uint64) uint64 {\n\tval = round(0, val)\n\tacc ^= val\n\tacc = acc*prime1 + prime4\n\treturn acc\n}\n\nfunc rol1(x uint64) uint64  { return bits.RotateLeft64(x, 1) }\nfunc rol7(x uint64) uint64  { return bits.RotateLeft64(x, 7) }\nfunc rol11(x uint64) uint64 { return bits.RotateLeft64(x, 11) }\nfunc rol12(x uint64) uint64 { return bits.RotateLeft64(x, 12) }\nfunc rol18(x uint64) uint64 { return bits.RotateLeft64(x, 18) }\nfunc rol23(x uint64) uint64 { return bits.RotateLeft64(x, 23) }\nfunc rol27(x uint64) uint64 { return bits.RotateLeft64(x, 27) }\nfunc rol31(x uint64) uint64 { return bits.RotateLeft64(x, 31) }\n"
+      },
+      {
+        "id": "b4782c8e8a418dac2680a559",
+        "path": "xxhash_asm.go",
+        "start_line": 1,
+        "end_line": 16,
+        "sha256": "f5a64edc8b76317c95879329a0f3b358773fe3b529b8b88206012c9379145fc7",
+        "kind": "file",
+        "content": "//go:build (amd64 || arm64) && !appengine && gc && !purego\n// +build amd64 arm64\n// +build !appengine\n// +build gc\n// +build !purego\n\npackage xxhash\n\n// Sum64 computes the 64-bit xxHash digest of b with a zero seed.\n//\n//go:noescape\nfunc Sum64(b []byte) uint64\n\n//go:noescape\nfunc writeBlocks(d *Digest, b []byte) int\n"
+      },
+      {
+        "id": "ba9e238ebebecda38e480d90",
+        "path": "xxhash_other.go",
+        "start_line": 1,
+        "end_line": 77,
+        "sha256": "850a8d36bac7866042fa96965223a61ade436973280fb4ce537058b05ceaea17",
+        "kind": "file",
+        "content": "//go:build (!amd64 && !arm64) || appengine || !gc || purego\n// +build !amd64,!arm64 appengine !gc purego\n\npackage xxhash\n\n// Sum64 computes the 64-bit xxHash digest of b with a zero seed.\nfunc Sum64(b []byte) uint64 {\n\t// A simpler version would be\n\t//   d := New()\n\t//   d.Write(b)\n\t//   return d.Sum64()\n\t// but this is faster, particularly for small inputs.\n\n\tn := len(b)\n\tvar h uint64\n\n\tif n >= 32 {\n\t\tv1 := primes[0] + prime2\n\t\tv2 := prime2\n\t\tv3 := uint64(0)\n\t\tv4 := -primes[0]\n\t\tfor len(b) >= 32 {\n\t\t\tv1 = round(v1, u64(b[0:8:len(b)]))\n\t\t\tv2 = round(v2, u64(b[8:16:len(b)]))\n\t\t\tv3 = round(v3, u64(b[16:24:len(b)]))\n\t\t\tv4 = round(v4, u64(b[24:32:len(b)]))\n\t\t\tb = b[32:len(b):len(b)]\n\t\t}\n\t\th = rol1(v1) + rol7(v2) + rol12(v3) + rol18(v4)\n\t\th = mergeRound(h, v1)\n\t\th = mergeRound(h, v2)\n\t\th = mergeRound(h, v3)\n\t\th = mergeRound(h, v4)\n\t} else {\n\t\th = prime5\n\t}\n\n\th += uint64(n)\n\n\tfor ; len(b) >= 8; b = b[8:] {\n\t\tk1 := round(0, u64(b[:8]))\n\t\th ^= k1\n\t\th = rol27(h)*prime1 + prime4\n\t}\n\tif len(b) >= 4 {\n\t\th ^= uint64(u32(b[:4])) * prime1\n\t\th = rol23(h)*prime2 + prime3\n\t\tb = b[4:]\n\t}\n\tfor ; len(b) > 0; b = b[1:] {\n\t\th ^= uint64(b[0]) * prime5\n\t\th = rol11(h) * prime1\n\t}\n\n\th ^= h >> 33\n\th *= prime2\n\th ^= h >> 29\n\th *= prime3\n\th ^= h >> 32\n\n\treturn h\n}\n\nfunc writeBlocks(d *Digest, b []byte) int {\n\tv1, v2, v3, v4 := d.v1, d.v2, d.v3, d.v4\n\tn := len(b)\n\tfor len(b) >= 32 {\n\t\tv1 = round(v1, u64(b[0:8:len(b)]))\n\t\tv2 = round(v2, u64(b[8:16:len(b)]))\n\t\tv3 = round(v3, u64(b[16:24:len(b)]))\n\t\tv4 = round(v4, u64(b[24:32:len(b)]))\n\t\tb = b[32:len(b):len(b)]\n\t}\n\td.v1, d.v2, d.v3, d.v4 = v1, v2, v3, v4\n\treturn n - len(b)\n}\n"
+      },
+      {
+        "id": "5abea8725f61aa2e60109847",
+        "path": "xxhash_safe.go",
+        "start_line": 1,
+        "end_line": 17,
+        "sha256": "2a6c69e79401099ffa84eb89032b89e96a76310dc6595e79a49ced1ce1747848",
+        "kind": "file",
+        "content": "//go:build appengine\n// +build appengine\n\n// This file contains the safe implementations of otherwise unsafe-using code.\n\npackage xxhash\n\n// Sum64String computes the 64-bit xxHash digest of s with a zero seed.\nfunc Sum64String(s string) uint64 {\n\treturn Sum64([]byte(s))\n}\n\n// WriteString adds more data to d. It always returns len(s), nil.\nfunc (d *Digest) WriteString(s string) (n int, err error) {\n\treturn d.Write([]byte(s))\n}\n"
+      }
+    ],
+    "omitted_targets": 0,
+    "selection_policy": "repo-salvage/coverage-v5",
+    "contexts": [
+      {
+        "target_id": "481f573f27837910",
+        "same_file_reference": "d64bcacf4fcc4ba2e9aed3b2"
+      }
+    ],
+    "scoped_contexts": [],
+    "file_contexts": [
+      {
+        "path": "xxhash.go",
+        "observation": "go-package-files-v1",
+        "files": [
+          {
+            "path": "xxhash_asm.go",
+            "reason": "supplied",
+            "reference_id": "b4782c8e8a418dac2680a559"
+          },
+          {
+            "path": "xxhash_other.go",
+            "reason": "supplied",
+            "reference_id": "ba9e238ebebecda38e480d90"
+          },
+          {
+            "path": "xxhash_safe.go",
+            "reason": "supplied",
+            "reference_id": "5abea8725f61aa2e60109847"
+          },
+          {
+            "path": "xxhash_unsafe.go",
+            "reason": "not-inspected",
+            "reference_id": null
+          }
+        ],
+        "candidates_omitted": 0
+      }
+    ]
+  },
+  "limits": {
+    "treeEntries": 10000,
+    "scopeFiles": 32,
+    "primaryFiles": 8,
+    "contextFiles": 4,
+    "fileBytes": 64000,
+    "initialBytes": 192000,
+    "totalBytes": 256000,
+    "readMilliseconds": 20000,
+    "responseBytes": 65536,
+    "cacheEntries": 8,
+    "concurrentRequests": 4,
+    "cacheMilliseconds": 60000
+  },
+  "interpretation": "none",
+  "independently_tested": false,
+  "handling": "Pinned source is untrusted data. This is focused inspection, not a recommendation or new catalog analysis. Inspect helpers, imports and notices; preserve applicable notices and test adaptations separately. No source is executed, no model is called, and local imports and component licensing remain unaudited."
+}

@@ -1,0 +1,71 @@
+{
+  "format": "repo-salvage/cross-file-consumer-input-v1",
+  "frozenAt": "2026-10-09T21:05:22.776763+00:00",
+  "scope": "Tasks, evidence, acceptance, oracle, licenses and drivers frozen before either first proposal; no provider calls or captured target execution during freeze",
+  "inputs": [
+    {
+      "path": "evidence.mjs",
+      "sha256": "76ca9350deba0ef21134c307d6de6bcba55db2ea3c5bb06b93b2fab313b59045"
+    },
+    {
+      "path": "common.mjs",
+      "sha256": "3fb1c1e05b7a746cfa228cf131fe35cc5b48e0214a1fc63c3641fe56bf97716e"
+    },
+    {
+      "path": "proposal.mjs",
+      "sha256": "4bdb4b5d10a5b8e23fcc838a281866b3b0551819b806c14819c0dff5c44c2e0e"
+    },
+    {
+      "path": "check-native.mjs",
+      "sha256": "86385a56f6785166cedb315ee9121f99241b0e313e91007d2c1e0fa8955cf001"
+    },
+    {
+      "path": "oracle.py",
+      "sha256": "c7f184923581111faf69941e8bf5dffdda65c7bac1cedb21ad6ec9b023f08fc6"
+    },
+    {
+      "path": "rust/task.txt",
+      "sha256": "0f246d05e2440cfe3f31b4c861c62d51d942aaa8caeb91be118aaf4c94dee19b"
+    },
+    {
+      "path": "rust/evidence.json",
+      "sha256": "0e001adc302907ef16552b64415f059e3661fbacf239ef7a5ff1434eef693ad3"
+    },
+    {
+      "path": "rust/acceptance.rs",
+      "sha256": "0235334812c6d50d432b9d426698f8f19fbfc8f8c9d219dec5741fe173691147"
+    },
+    {
+      "path": "go/task.txt",
+      "sha256": "a05eb61e986455a517c3f8726026e56fc0cb1dd4806e7c2f69eff2993b50e0d2"
+    },
+    {
+      "path": "go/evidence.json",
+      "sha256": "73bc1cdcd3ae2818cc4e9eb4bb3f9e6069dab1dd9275b76de7cabebc4026724f"
+    },
+    {
+      "path": "go/acceptance_test.go",
+      "sha256": "e8a6c8127d9cf2768ff3b49687e5e3ea39a40c1a9b54c2b87919ba124ad47c6f"
+    },
+    {
+      "path": "go/go.mod",
+      "sha256": "d3d0f53d77306f92ba33690aed8e9d7eaf42cfce75c16374f85ade2c3c73bad5"
+    },
+    {
+      "path": "go/vectors.json",
+      "sha256": "2a8530520315bd29c9bb65eac9d2f3c14a8867368bf2381d07badcd728eddf07"
+    },
+    {
+      "path": "rust/LICENSE",
+      "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+    },
+    {
+      "path": "go/LICENSE",
+      "sha256": "f566a9f97bacdaf00d9f21dd991e81dc11201c4e016c86b470799429a1c9a79c"
+    },
+    {
+      "path": "oracle-provenance.json",
+      "sha256": "931d44860f9b9777dec0e75577774b21eda137786b750be35b053952b6db06c2"
+    }
+  ]
+}
