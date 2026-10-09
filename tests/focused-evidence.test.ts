@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createHash } from "node:crypto";
+import fs from "node:fs";
+import Ajv from "ajv/dist/2020";
 import {
   focusedEvidence,
   focusedResponse,
@@ -65,6 +67,24 @@ afterEach(() => {
   vi.unstubAllEnvs();
 });
 describe("focused complete source evidence", () => {
+  it("reports excluded long paths within a valid output contract without allowing retrieval", async () => {
+    const path = "lib/" + "x".repeat(513) + ".ts";
+    const call = transport([{ path, content: "export const x=1;" }]);
+    const value = focusedResponse(
+      identity,
+      await focusedEvidence(identity.full_name, commit, focus("lib/")),
+    );
+    const schema = JSON.parse(fs.readFileSync("public/openapi.json", "utf8"))
+      .components.schemas.FocusedEvidence;
+    const check = new Ajv({ strict: false }).compile(schema);
+    expect(check(value), JSON.stringify(check.errors)).toBe(true);
+    expect(value.coverage.files[0].path).toBe(path);
+    expect(value.coverage.files[0].reason).toBe("unsupported_path_or_mode");
+    expect(value.coverage.files[0].download_url).toBeNull();
+    expect(value.packet.references).toEqual([]);
+    expect(call).toHaveBeenCalledTimes(1);
+  });
+
   it("reserves context capacity, caps follow-up reads and exposes remaining dependencies", async () => {
     const call = transport([
       {

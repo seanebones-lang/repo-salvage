@@ -39,8 +39,9 @@ ten multi-hop MCP questions and historical model-answer regressions remain intac
 These replays are offline protocol checks, not fresh model evaluations.
 
 After `npm run build`, `npm run test:packages` installs the downloadable CLI 0.5.0
-and MCP 0.3.0 archives into a clean temporary directory. Fourteen checks cover
-package versions plus all six responses through each installed client, with no
+and MCP 0.3.0 archives into a clean temporary directory. Sixteen checks cover
+package versions, all six real-source responses and one authored excluded-long-path
+metadata boundary through each installed client, with no
 credentials, model call, source execution or consumer output-directory write.
 The disposable package installation itself writes only its temporary directory.
 CI runs this independent consumer check after packaging.

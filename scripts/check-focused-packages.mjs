@@ -46,7 +46,7 @@ const run = (command, args) =>
       else reject(Error("Independent consumer process failed: " + code));
     });
   });
-const fixture = await serveFocusFixture();
+const fixture = await serveFocusFixture({ includeBoundary: true });
 let client;
 try {
   await run(process.platform === "win32" ? "npm.cmd" : "npm", [
@@ -79,8 +79,7 @@ try {
       fixture.origin,
       "--path",
       c.parameters.path,
-      "--symbol",
-      c.parameters.symbol,
+      ...(c.parameters.symbol ? ["--symbol", c.parameters.symbol] : []),
       "--max-characters",
       "24000",
     ]);
@@ -107,7 +106,7 @@ try {
     assert.ok(!result.isError);
     assert.deepEqual(result.structuredContent, c.response);
   }
-  assert.equal(fixture.requests.length, 12);
+  assert.equal(fixture.requests.length, 14);
   assert.ok(
     fixture.requests.every(
       (r) => r.method === "GET" && r.authorization === undefined,
@@ -116,11 +115,12 @@ try {
   console.log(
     JSON.stringify({
       status: "passed",
-      checks: 14,
+      checks: 16,
       installedCli: "0.5.0",
       installedMcp: "0.3.0",
-      cases: 6,
-      requests: 12,
+      realSourceCases: 6,
+      authoredBoundaryCases: 1,
+      requests: 14,
       providerCalls: 0,
       realCredentials: false,
       sourceExecuted: false,
