@@ -47,3 +47,6 @@ examples/native-file-context/pinned.json
 
 # Preserve pre-proposal cross-file contracts and exact first native output bytes.
 examples/cross-file-consumers/
+
+# Preserve pre-proposal missing-context contracts and exact first response bytes.
+examples/missing-context-consumers/

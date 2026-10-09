@@ -1,0 +1,79 @@
+{
+  "format": "repo-salvage/missing-context-results-v1",
+  "sealedAt": "2026-10-09T21:35:50.211774+00:00",
+  "scope": "Exact six first turns, pre-execution operator review and acceptance record; no repairs",
+  "inputs": [
+    {
+      "path": "input-seal.json",
+      "sha256": "ef671abb4bad1f88b17c3508ecda0719cdf2579819a23f8987d0f385e3473aed"
+    },
+    {
+      "path": "review.json",
+      "sha256": "c75420d6e20e3d7c6270f176a2419d6d1198d696c7287107f1b79a1d7fa21a4b"
+    },
+    {
+      "path": "execution.json",
+      "sha256": "e040cd35a767d19b093b7c980008ab0b89005d9b334092d86fcfd4d838f02059"
+    },
+    {
+      "path": "rust-budget-gap/result.json",
+      "sha256": "59270f54b71c19bb27db00317bf3225e62a0b7441a65a57c7309bc25f009c5c2"
+    },
+    {
+      "path": "rust-budget-gap/trace.jsonl",
+      "sha256": "a453c92fb960f0f80c6e41d57d6276f3762f99ebf831bf6b4e848f18f7918e89"
+    },
+    {
+      "path": "rust-budget-control/result.json",
+      "sha256": "aa6b49c2e923a79834137003317f2da996eb3ad6fa5b309a01e60822857c2bae"
+    },
+    {
+      "path": "rust-budget-control/trace.jsonl",
+      "sha256": "4a81bec3b12d3ce7a27e804f10e364e2ef8d2cddf328037081ff793e40da07b4"
+    },
+    {
+      "path": "rust-budget-control/consumer.rs",
+      "sha256": "b6b34987be0a121add8a8f32bdc40128a49dcce7f9d298ef03c792ca6b35cc6c"
+    },
+    {
+      "path": "go-unread-gap/result.json",
+      "sha256": "f48a8a3f6dfc135cadc91b70efef750ecd4c941aafe5ebe1ebec0efaea8b12c3"
+    },
+    {
+      "path": "go-unread-gap/trace.jsonl",
+      "sha256": "33a82f564c640cf519499e7c7c436ed0fd2efa22847e1a67c56e14d7d00e2091"
+    },
+    {
+      "path": "go-unread-control/result.json",
+      "sha256": "6c2f817bea7dbb238dddd17aed24b3d70df28e61757a4bba030382c7d1fe6ba0"
+    },
+    {
+      "path": "go-unread-control/trace.jsonl",
+      "sha256": "bee61a584b405468d450bd5ba013d5b6c33b94b39ee187f5dc18205e6d77f168"
+    },
+    {
+      "path": "go-unread-control/consumer.go",
+      "sha256": "3bb5a56b79d27ba33b0ac96977d5dee44cfa74af04397303d6ca220743b397d4"
+    },
+    {
+      "path": "rust-conditional-gap/result.json",
+      "sha256": "bf3c4c248912c1f3288eaaf333d6c5d77742085e66f622b561cad380ebf883e7"
+    },
+    {
+      "path": "rust-conditional-gap/trace.jsonl",
+      "sha256": "5c9384d51363e843105978f1ba0c6c41cf3e416e2cf549559c2c4d09eece69cb"
+    },
+    {
+      "path": "rust-conditional-control/result.json",
+      "sha256": "8d27f901e0fc09813638585103a43f12367f4b86fb5d8cddf495f136d0c9195b"
+    },
+    {
+      "path": "rust-conditional-control/trace.jsonl",
+      "sha256": "980c76de31c0698e86b6deee3a9c835e3b73dfb1fc74df996386181cfe476e6a"
+    },
+    {
+      "path": "rust-conditional-control/consumer.rs",
+      "sha256": "e1b7da274e1604d00a41a5a7eea1ce343e1d0213ca32daded77bb8135b82f328"
+    }
+  ]
+}

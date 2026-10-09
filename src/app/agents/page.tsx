@@ -175,6 +175,13 @@ npx --no-install repo-salvage fetch LISTING PART --base ORIGIN --out ./new-part`
           source layout do not resolve build selection, initialization or
           symbols.
         </p>
+        <p>
+          Check which supplied blocks cover the behavior you want to reuse. When
+          a required helper is unread, omitted or rejected, request its exact
+          pinned file and carry the recorded gap forward. Keep the adaptation
+          pending until that required source can be inspected. Ground the code
+          in the supplied evidence, then test its standalone contract.
+        </p>
         <pre>
           <code>{`npx --no-install repo-salvage evidence LISTING --base ORIGIN --path src/module.py --symbol Client.request --max-characters 24000
 GET /api/v2/parts/{listing}/evidence?path=src/module.py&symbol=Client.request

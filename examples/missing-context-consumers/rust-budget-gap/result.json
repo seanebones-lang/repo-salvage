@@ -1,0 +1,39 @@
+{
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "promptSha256": "602a6df7f8c9800d6a3870e9d17cc306e42b393913b2711bc9ea86bd581acc41",
+  "trace": {
+    "sha256": "a453c92fb960f0f80c6e41d57d6276f3762f99ebf831bf6b4e848f18f7918e89"
+  },
+  "latencyMs": 5550,
+  "billing": "Existing Codex account allowance; no API-key model call",
+  "inputSealSha256": "ef671abb4bad1f88b17c3508ecda0719cdf2579819a23f8987d0f385e3473aed",
+  "transportSuccess": true,
+  "failure": null,
+  "prohibitedEvents": [],
+  "usage": {
+    "input_tokens": 12958,
+    "cached_input_tokens": 0,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 118,
+    "reasoning_output_tokens": 0
+  },
+  "response": {
+    "decision": "needs_context",
+    "code": "",
+    "finding": "The selected recover declaration calls helper::transform. src/lib.rs declares mod helper, but the required src/helper.rs implementation was omitted for packet-budget. Exact input/output behavior and wrapping arithmetic cannot be determined without that source.",
+    "used_reference_ids": [
+      "9b63259de7d85d9257917a0a",
+      "edd4ff3b0c7d6b7e577199d0"
+    ],
+    "needed_context": [
+      {
+        "path": "src/helper.rs",
+        "reason": "packet-budget"
+      }
+    ]
+  },
+  "review": "pending",
+  "execution": "not_run"
+}

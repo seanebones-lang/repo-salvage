@@ -380,3 +380,10 @@ proof to a Rust module helper and a Go package peer. It retains pre-proposal tes
 exact first proposals, source citations, operator reviews and compiler execution.
 The examples can be run independently with their language compiler; these are
 controlled adaptations under frozen contracts, not upstream compatibility claims.
+
+The [matched missing-context trial](examples/missing-context-consumers/README.md)
+checks whether fresh agents distinguish a required missing implementation from
+sufficient supporting evidence. Three authored gap/control pairs cover a packet
+budget, an unread Go peer and a conditional Rust module. Exact first decisions and
+reviewed standalone controls are retained; agent guidance explains how to request
+the needed pinned source while preserving the recorded uncertainty.

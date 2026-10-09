@@ -1,0 +1,56 @@
+{
+  "format": "repo-salvage/missing-context-review-v1",
+  "at": "2026-10-09T21:34:20.271508+00:00",
+  "inputSealSha256": "ef671abb4bad1f88b17c3508ecda0719cdf2579819a23f8987d0f385e3473aed",
+  "reviewer": "Implementing Codex operator; not blind independent review",
+  "cases": [
+    {
+      "id": "rust-budget-gap",
+      "accepted": true,
+      "responseSha256": "5151b8abbda23d81d8e609278b977ee0a56449f5807809be4f587e1c8c51efaa",
+      "approvedForExecution": false,
+      "codeSha256": null,
+      "review": "Inspected the entire first response. It identifies the required helper and exact recorded missing/rejection reason, cites supplied source, and returns no code or placeholder. This is an evidence-only stop, not a claim the upstream repository cannot build."
+    },
+    {
+      "id": "rust-budget-control",
+      "accepted": true,
+      "responseSha256": "b1e24b12f91d4e12374744a34d0831101ba07f85e90a8a8ad38eb23a0470abd9",
+      "approvedForExecution": true,
+      "codeSha256": "b6b34987be0a121add8a8f32bdc40128a49dcce7f9d298ef03c792ca6b35cc6c",
+      "review": "Inspected the entire exact first adaptation. It inlines only the supplied helper formula with the exact constants and order: wrapping multiply, rotate-left 17, XOR, wrapping add. Rust explicitly uses wrapping u64 arithmetic; Go uses uint64 and standard math/bits only. No unsafe, IO, environment, process, external package, feature flag, or unresolved helper. MIT notice retained. Behavioral correctness is pending frozen independent vector acceptance."
+    },
+    {
+      "id": "go-unread-gap",
+      "accepted": true,
+      "responseSha256": "38656cfcd7f251b331d6d3e10d2b9a43bddf2237de9a59ee11b27b9257ad413d",
+      "approvedForExecution": false,
+      "codeSha256": null,
+      "review": "Inspected the entire first response. It identifies the required helper and exact recorded missing/rejection reason, cites supplied source, and returns no code or placeholder. This is an evidence-only stop, not a claim the upstream repository cannot build."
+    },
+    {
+      "id": "go-unread-control",
+      "accepted": true,
+      "responseSha256": "58fffc05bc9648584a7bf539a02ee0c1702a0aa28bfda41705ccde0238469b12",
+      "approvedForExecution": true,
+      "codeSha256": "3bb5a56b79d27ba33b0ac96977d5dee44cfa74af04397303d6ca220743b397d4",
+      "review": "Inspected the entire exact first adaptation. It inlines only the supplied helper formula with the exact constants and order: wrapping multiply, rotate-left 17, XOR, wrapping add. Rust explicitly uses wrapping u64 arithmetic; Go uses uint64 and standard math/bits only. No unsafe, IO, environment, process, external package, feature flag, or unresolved helper. MIT notice retained. Behavioral correctness is pending frozen independent vector acceptance."
+    },
+    {
+      "id": "rust-conditional-gap",
+      "accepted": true,
+      "responseSha256": "84ae64c36fd1b91284c6aa548c2ebfa46ee0b96ccf521b476d20fe564ef84e8c",
+      "approvedForExecution": false,
+      "codeSha256": null,
+      "review": "Inspected the entire first response. It identifies the required helper and exact recorded missing/rejection reason, cites supplied source, and returns no code or placeholder. This is an evidence-only stop, not a claim the upstream repository cannot build."
+    },
+    {
+      "id": "rust-conditional-control",
+      "accepted": true,
+      "responseSha256": "25cea0ed1d61c30b0ea61e220748acf2aaa3ddb71dbea569a5779dc466552ebf",
+      "approvedForExecution": true,
+      "codeSha256": "e1b7da274e1604d00a41a5a7eea1ce343e1d0213ca32daded77bb8135b82f328",
+      "review": "Inspected the entire exact first adaptation. It inlines only the supplied helper formula with the exact constants and order: wrapping multiply, rotate-left 17, XOR, wrapping add. Rust explicitly uses wrapping u64 arithmetic; Go uses uint64 and standard math/bits only. No unsafe, IO, environment, process, external package, feature flag, or unresolved helper. MIT notice retained. Behavioral correctness is pending frozen independent vector acceptance."
+    }
+  ]
+}

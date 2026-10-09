@@ -1,0 +1,72 @@
+{
+  "format": "repo-salvage/missing-context-execution-v1",
+  "at": "2026-10-09T21:34:27.540Z",
+  "inputSealSha256": "ef671abb4bad1f88b17c3508ecda0719cdf2579819a23f8987d0f385e3473aed",
+  "reviewSha256": "c75420d6e20e3d7c6270f176a2419d6d1198d696c7287107f1b79a1d7fa21a4b",
+  "scope": "Only reviewed standalone controls executed; authored upstream fixtures stay parser input; negative turns never compiled; no provider calls",
+  "results": [
+    {
+      "id": "rust-budget-gap",
+      "status": "needs_context",
+      "compiled": false,
+      "executed": false
+    },
+    {
+      "id": "rust-budget-control",
+      "status": "passed",
+      "codeSha256": "b6b34987be0a121add8a8f32bdc40128a49dcce7f9d298ef03c792ca6b35cc6c",
+      "compiled": true,
+      "executed": true,
+      "compiler": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "output": [
+        {
+          "optimize": false,
+          "output": "\nrunning 1 test\ntest independent_vectors ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+        },
+        {
+          "optimize": true,
+          "output": "\nrunning 1 test\ntest independent_vectors ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+        }
+      ]
+    },
+    {
+      "id": "go-unread-gap",
+      "status": "needs_context",
+      "compiled": false,
+      "executed": false
+    },
+    {
+      "id": "go-unread-control",
+      "status": "passed",
+      "codeSha256": "3bb5a56b79d27ba33b0ac96977d5dee44cfa74af04397303d6ca220743b397d4",
+      "compiled": true,
+      "executed": true,
+      "compiler": "go version go1.27.2 darwin/arm64",
+      "output": "=== RUN   TestIndependentVectors\n--- PASS: TestIndependentVectors (0.00s)\nPASS\nok  \trepo-salvage.example/missing-context-control\t0.223s\n"
+    },
+    {
+      "id": "rust-conditional-gap",
+      "status": "needs_context",
+      "compiled": false,
+      "executed": false
+    },
+    {
+      "id": "rust-conditional-control",
+      "status": "passed",
+      "codeSha256": "e1b7da274e1604d00a41a5a7eea1ce343e1d0213ca32daded77bb8135b82f328",
+      "compiled": true,
+      "executed": true,
+      "compiler": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "output": [
+        {
+          "optimize": false,
+          "output": "\nrunning 1 test\ntest independent_vectors ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+        },
+        {
+          "optimize": true,
+          "output": "\nrunning 1 test\ntest independent_vectors ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+        }
+      ]
+    }
+  ]
+}

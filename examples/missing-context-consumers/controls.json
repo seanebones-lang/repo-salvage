@@ -1,0 +1,56 @@
+[
+  {
+    "id": "rust-budget-gap",
+    "pair": "rust-budget",
+    "language": "rust",
+    "expectedDecision": "needs_context",
+    "requiredPath": "src/helper.rs",
+    "requiredReason": "packet-budget",
+    "vectorCount": 0
+  },
+  {
+    "id": "rust-budget-control",
+    "pair": "rust-budget",
+    "language": "rust",
+    "expectedDecision": "adapt",
+    "requiredPath": "src/helper.rs",
+    "requiredReason": "supplied",
+    "vectorCount": 518
+  },
+  {
+    "id": "go-unread-gap",
+    "pair": "go-unread",
+    "language": "go",
+    "expectedDecision": "needs_context",
+    "requiredPath": "z_helper.go",
+    "requiredReason": "not-inspected",
+    "vectorCount": 0
+  },
+  {
+    "id": "go-unread-control",
+    "pair": "go-unread",
+    "language": "go",
+    "expectedDecision": "adapt",
+    "requiredPath": "z_helper.go",
+    "requiredReason": "supplied",
+    "vectorCount": 518
+  },
+  {
+    "id": "rust-conditional-gap",
+    "pair": "rust-conditional",
+    "language": "rust",
+    "expectedDecision": "needs_context",
+    "requiredPath": "src/helper.rs",
+    "requiredReason": "restricted-module",
+    "vectorCount": 0
+  },
+  {
+    "id": "rust-conditional-control",
+    "pair": "rust-conditional",
+    "language": "rust",
+    "expectedDecision": "adapt",
+    "requiredPath": "src/helper.rs",
+    "requiredReason": "supplied",
+    "vectorCount": 518
+  }
+]
