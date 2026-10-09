@@ -241,6 +241,24 @@ client-integration needs.
 
 ## Completion evidence
 
+The [ordinary-request trial](../examples/discovery-evaluation/README.md) gave ten
+fresh native Codex CLI sessions developer requests without repository names,
+source paths, part identities or seeded queries. Eight selected the expected
+source and two rejected unsupported requirements; all inspected actual source.
+Nineteen searches included three empty results recovered through subsequent
+queries. The model used search, inspection and file reading, with no focused-tool
+call in this run. This is one explicit model profile on a small known corpus,
+not a held-out accuracy estimate or evidence of external adoption.
+
+A separate fresh session produced the
+[prose consumer](../examples/prose-consumer/README.md) after discovering source
+and reading its notice. The unchanged proposed code passed eight operator-owned
+checks, including 1,000 seeded round trips, in isolated Python without application
+imports or credentials. Its upstream starting point has whitespace, overflow and
+buffer defects; the adaptation corrects them. This execution applies to the
+consumer, not the upstream catalog part. Both tasks and consumer acceptance checks
+were sealed before their respective model runs.
+
 The [consumer example](../examples/agent-consumer/README.md) reproduced search,
 inspection and fetch with the packaged CLI installed in a fresh workspace, then
 explicitly transpiled the pinned Brainstormin-System circuit breaker and passed

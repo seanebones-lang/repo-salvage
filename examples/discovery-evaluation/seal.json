@@ -1,0 +1,8 @@
+{
+  "format": "repo-salvage/discovery-seal-v1",
+  "casesSha256": "ee3b476ca4bca96cd00b0d5b91199ae3253aba5f961eda62ab31c915858e32ae",
+  "catalogSha256": "ee7fa3cc3d9c9f7c3eeea0d38b088fa32a8ed7a9cfcb96c6cf83b9995c988d8f",
+  "controlsSha256": "ce97d6f8f4c8642a6d7a1dd49375144e0598083c40733881d8489451d686fd70",
+  "archiveSha256": "f8eba85523cb25e221c236b3ca05cb2cb8dec1eac255ca162fae83fe4c668261",
+  "catalogRevision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+}

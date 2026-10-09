@@ -1,0 +1,190 @@
+[
+  {
+    "id": "pause-failing-service",
+    "source": {
+      "repository_id": 1131519045,
+      "owner_id": 227504642,
+      "repository": "seanebones-lang/Brainstormin-System",
+      "commit": "120f8b40de0446fe98c13c604ec4281d0f83185d"
+    },
+    "file": {
+      "path": "src/lib/circuitBreaker.ts",
+      "roles": ["primary"],
+      "analysis_coverage": "sampled_extent_unknown",
+      "git_blob_sha": "ba3a3ac6823b6f61144db4590dd028acd5c63b5f",
+      "sha256": "4f23280d8ba2364a8a20d660c517c7c272e24ed894205c3961b8f9995c12fd4a",
+      "size_bytes": 5552
+    },
+    "sourceFacts": [
+      "CLOSED/OPEN/HALF_OPEN state is per instance and in memory",
+      "Failure threshold opens the circuit; reset timeout permits recovery attempts",
+      "Reset clears counters; this does not establish concurrency correctness"
+    ]
+  },
+  {
+    "id": "repeatable-cohorts",
+    "source": {
+      "repository_id": 1295124238,
+      "owner_id": 227504642,
+      "repository": "seanebones-lang/btcpredictor",
+      "commit": "aaac31375effca4d862e719d90ac078b8fb7696b"
+    },
+    "file": {
+      "path": "btc_predictor/ab_testing.py",
+      "roles": ["primary"],
+      "analysis_coverage": "sampled_extent_unknown",
+      "git_blob_sha": "996620fdb9119b1643e451d1c768e0a3068c7697",
+      "sha256": "b34b87a075170c2155f8f03eecfcb559d1c6d070ee458a85369bcddc68eaa32c",
+      "size_bytes": 11525
+    },
+    "sourceFacts": [
+      "assign_variant hashes UTF-8 experiment_id:user_id using MD5",
+      "B when integer digest / 2**128 is below traffic_split, otherwise A",
+      "Routine is stdlib-only but importing its surrounding module is not standalone"
+    ]
+  },
+  {
+    "id": "authenticated-post-stream",
+    "source": {
+      "repository_id": 1131519045,
+      "owner_id": 227504642,
+      "repository": "seanebones-lang/Brainstormin-System",
+      "commit": "120f8b40de0446fe98c13c604ec4281d0f83185d"
+    },
+    "file": {
+      "path": "src/hooks/useSSE.ts",
+      "roles": ["primary"],
+      "analysis_coverage": "sampled_extent_unknown",
+      "git_blob_sha": "d455d69a43b7cc8c5ef6be656f58d52d4b59c36e",
+      "sha256": "4bc9f53818d76fae5f67f4e6785410fcb003ce471eee7255e809775960b7b5a4",
+      "size_bytes": 9446
+    },
+    "sourceFacts": [
+      "useSSEFetch uses fetch with POST, JSON body and merged headers",
+      "EventSource sibling cannot send that POST request",
+      "AbortController handles cancellation; parser framing needs consumer checks"
+    ]
+  },
+  {
+    "id": "bounded-prose-chunks",
+    "source": {
+      "repository_id": 1141375798,
+      "owner_id": 227504642,
+      "repository": "seanebones-lang/personal-RAG",
+      "commit": "7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66"
+    },
+    "file": {
+      "path": "src/ingest/chunking/strategies.py",
+      "roles": ["primary"],
+      "analysis_coverage": "sampled_extent_unknown",
+      "git_blob_sha": "2a27480beea0df02b1da0045eacb900e765b04d9",
+      "sha256": "1b70342c320d2bb048f27be7e20036fe8ccdb5cf32333dbe9729c9e5f1f96d02",
+      "size_bytes": 9686
+    },
+    "sourceFacts": [
+      "Paragraph merge delegates oversized chunks to recursive splitting",
+      "The space-separator branch uses an empty joiner, losing inter-word spaces",
+      "The final separator can emit an oversized unbroken token; require consumer repair before claiming a strict bound"
+    ]
+  },
+  {
+    "id": "optional-request-auth",
+    "source": {
+      "repository_id": 1141375798,
+      "owner_id": 227504642,
+      "repository": "seanebones-lang/personal-RAG",
+      "commit": "7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66"
+    },
+    "file": {
+      "path": "src/query/api.py",
+      "roles": ["primary"],
+      "analysis_coverage": "sampled_extent_unknown",
+      "git_blob_sha": "d9670713ee4dd354bd18f43face407468a60bb54",
+      "sha256": "50a5c46a8b346e6126d84dab1a568036df8143b5778ef2d2ed436895415c6104",
+      "size_bytes": 10220
+    },
+    "sourceFacts": [
+      "PRV_API_TOKEN is read for every request; empty or whitespace configuration disables the guard",
+      "/health and /version are exempt; Bearer syntax required otherwise",
+      "secrets.compare_digest compares equal-length tokens; different lengths are rejected first"
+    ]
+  },
+  {
+    "id": "signed-node-integrity",
+    "source": {
+      "repository_id": 1370193955,
+      "owner_id": 227504642,
+      "repository": "seanebones-lang/witness",
+      "commit": "482ce52011d55c4991cd7dc73fa103c9527c43ab"
+    },
+    "file": {
+      "path": "core/src/signing.rs",
+      "roles": ["primary", "test"],
+      "analysis_coverage": "sampled_extent_unknown",
+      "git_blob_sha": "5f4dc1e7a5cd1233845fa045de212a4dc83b3b49",
+      "sha256": "90927a0e222cb45814f15e1308ad88b4aab196e74c41a3ac56f3e6243cb4946c",
+      "size_bytes": 5841
+    },
+    "sourceFacts": [
+      "Signing serializes canonical node fields excluding the signature",
+      "CID uses serde JSON bytes; verify detects changes to those bytes",
+      "A valid signature does not prove factual accuracy or establish publisher trust"
+    ]
+  },
+  {
+    "id": "local-admission-client",
+    "source": {
+      "repository_id": 1394049538,
+      "owner_id": 227504642,
+      "repository": "seanebones-lang/deadbolt",
+      "commit": "71f2083062d4eed6874a35fff967c38b0d78306f"
+    },
+    "file": {
+      "path": "examples/deadbolt_client.py",
+      "roles": ["primary"],
+      "analysis_coverage": "sampled_extent_unknown",
+      "git_blob_sha": "fbd2e599f64ee170bf08e15c91eab41214237398",
+      "sha256": "470c6d6199d4f39fd297c3fff42255be147dd3dbff97f6e0508ac51ea7bef382",
+      "size_bytes": 4722
+    },
+    "sourceFacts": [
+      "AF_UNIX transport and loopback HTTP option use Python stdlib",
+      "Exceptions return a deny-shaped response",
+      "admit rejects malformed decision values; transport and policy require a daemon"
+    ]
+  },
+  {
+    "id": "leakage-gap-windows",
+    "source": {
+      "repository_id": 1295124238,
+      "owner_id": 227504642,
+      "repository": "seanebones-lang/btcpredictor",
+      "commit": "aaac31375effca4d862e719d90ac078b8fb7696b"
+    },
+    "file": {
+      "path": "btc_predictor/backtest.py",
+      "roles": ["primary"],
+      "analysis_coverage": "sampled_extent_unknown",
+      "git_blob_sha": "3f2690d473b046820ac840b3c1a520608c5511df",
+      "sha256": "079eba79754379a80e06d9dfbf0685f0a403864a7608a8ec65c0d89cf316c702",
+      "size_bytes": 11454
+    },
+    "sourceFacts": [
+      "train_end equals current plus initial_train_days",
+      "test_start equals train_end plus purge_days; test_end adds test_window_days",
+      "Advance by step_days and stop if test_end exceeds end_date; embargo_days is stored but not applied here"
+    ]
+  },
+  {
+    "id": "shared-failure-state",
+    "sourceFacts": [
+      "The inspected circuit breaker stores its state in a private instance object; no persistence or inter-process storage is implemented."
+    ]
+  },
+  {
+    "id": "prove-observation-truth",
+    "sourceFacts": [
+      "Signature and CID verification concern key binding and byte integrity; no external observation or factual validation is implemented."
+    ]
+  }
+]

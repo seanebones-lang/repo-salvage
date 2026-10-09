@@ -1,0 +1,1268 @@
+{
+  "format": "repo-salvage/discovery-evaluation-v1",
+  "scope": "Ten authored ordinary-language tasks over the fixed 34-part catalog; not unseen repositories or external-user demand. No task supplies repository names, source paths, part IDs or search strings.",
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "suiteSealSha256": "2d4d79274811fe614c49094c3bdcbb347b15acb430fc013e30d18fb150d96875",
+  "archiveSha256": "f8eba85523cb25e221c236b3ca05cb2cb8dec1eac255ca162fae83fe4c668261",
+  "catalogRevision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+  "billing": "Existing Codex account allowance; no API-key model calls",
+  "results": [
+    {
+      "id": "pause-failing-service",
+      "promptSha256": "c3a8b5fdec8a1d0de3c362bda58ea18043fadc04b29a2d1371c5b1a61191c485",
+      "answer": {
+        "answer": "seanebones-lang/Brainstormin-System:src/lib/circuitBreaker.ts",
+        "finding": "Read the complete 5,552-byte TypeScript source and MIT LICENSE at commit 120f8b40de0446fe98c13c604ec4281d0f83185d. No imports. CLOSED opens after 5 failures by default; OPEN rejects without invoking the callback. After a 30-second cooldown, the next execute/getState/getStats transitions to HALF_OPEN; a successful recovery call closes and clears failures, while failure reopens with another cooldown. reset() immediately restores CLOSED and clears all counters and timestamps. Share one instance per dependency: state is process-local and per-instance. The monitoring window measures time since the last failure, not a rolling failure history; success clears failures. Concurrent recovery calls are possible (default limit 3), in-flight calls are not cancelled, and their completions can affect subsequent state, including after reset. Options are not validated. Preserve the MIT copyright and permission notice; component licensing is not independently audited. Source inspection only; no independent testing or execution."
+      },
+      "expected": "seanebones-lang/Brainstormin-System:src/lib/circuitBreaker.ts",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "inspected": true,
+        "read": true,
+        "sourceReadForAnswer": true,
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 82276,
+        "cached_input_tokens": 58624,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 479,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 27627,
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "circuit breaker",
+            "language": "TypeScript",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 3,
+            "part_id": "01a762bc95837106"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 3,
+            "part_id": "01a762bc95837106",
+            "path": "LICENSE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 3,
+            "part_id": "01a762bc95837106",
+            "path": "src/lib/circuitBreaker.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ],
+      "semanticReview": {
+        "status": "passed",
+        "reviewer": "Implementing Codex agent, compared with pre-run source controls",
+        "limits": "Manual source review; not blinded or independent certification"
+      }
+    },
+    {
+      "id": "repeatable-cohorts",
+      "promptSha256": "b1d64e0a4d6071945eff7719972f7164c6dadc2ad7ea162259a75cd42abe6d53",
+      "answer": {
+        "answer": "seanebones-lang/btcpredictor:btc_predictor/ab_testing.py",
+        "finding": "Inspected the complete source and MIT LICENSE at commit aaac31375effca4d862e719d90ac078b8fb7696b. ABTestManager.assign_variant calculates int(hashlib.md5(f'{experiment_id}:{user_id}'.encode()).hexdigest(), 16) / 2**128, assigning B when this bucket is below traffic_split, otherwise A; the default split is 0.5. Extract this small hashing routine to use only standard-library hashlib: the surrounding module imports MLflow tracking and its constructor calls get_tracker(). Returning visitors retain assignment only with stable visitor IDs, experiment IDs, and split. Assignments are recomputed rather than retrieved from the in-memory cache, so changing the split can move visitors; persist assignments if that must be prevented. Experiment creation generates time-dependent IDs, and split bounds are not validated. Unknown experiments return A. MD5 serves bucketing, not security. The split gives approximate population proportions. Retain the MIT copyright and permission notice; component/dependency licensing was not independently audited. No code was executed or independently tested."
+      },
+      "expected": "seanebones-lang/btcpredictor:btc_predictor/ab_testing.py",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "inspected": true,
+        "read": true,
+        "sourceReadForAnswer": true,
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 85802,
+        "cached_input_tokens": 58880,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 542,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 32025,
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "experiment",
+            "language": "Python",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 7,
+            "part_id": "87b6a59b3f501640"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 7,
+            "part_id": "87b6a59b3f501640",
+            "path": "LICENSE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 7,
+            "part_id": "87b6a59b3f501640",
+            "path": "btc_predictor/ab_testing.py",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ],
+      "semanticReview": {
+        "status": "passed",
+        "reviewer": "Implementing Codex agent, compared with pre-run source controls",
+        "limits": "Manual source review; not blinded or independent certification"
+      }
+    },
+    {
+      "id": "authenticated-post-stream",
+      "promptSha256": "649f95d3e458be9339878554f984628ab892fe9ef5aa01e4110070767127d2df",
+      "answer": {
+        "answer": "seanebones-lang/Brainstormin-System:src/hooks/useSSE.ts",
+        "finding": "Inspected the complete source and MIT LICENSE at commit 120f8b40de0446fe98c13c604ec4281d0f83185d. Select useSSEFetch: it calls fetch with POST, JSON.stringify(body), custom headers including Authorization, and an AbortController signal. It reads response.body incrementally, delivering parsed JSON or raw strings through onMessage. disconnect() and effect cleanup abort the request and cancel the reader. The separate useSSE export uses browser EventSource and ignores body/custom headers. Important limits: parsing only supports LF-separated blocks beginning exactly with 'data: '; it lacks full SSE multiline, CRLF, event/id/retry handling and drops trailing incomplete data. Pending retry timers are not cleared by disconnect, so cancellation can be followed by reconnection. Retries repeat the POST; unstable option references can restart connections. Preserve the MIT notice; component/dependency licensing is unaudited. Source inspection only, no independent testing."
+      },
+      "expected": "seanebones-lang/Brainstormin-System:src/hooks/useSSE.ts",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "inspected": true,
+        "read": true,
+        "sourceReadForAnswer": true,
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 88667,
+        "cached_input_tokens": 64256,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 541,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 30917,
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "SSE",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 3,
+            "part_id": "b93a4b052bca0a2f"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 3,
+            "part_id": "b93a4b052bca0a2f",
+            "path": "LICENSE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 3,
+            "part_id": "b93a4b052bca0a2f",
+            "path": "src/hooks/useSSE.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ],
+      "semanticReview": {
+        "status": "passed",
+        "reviewer": "Implementing Codex agent, compared with pre-run source controls",
+        "limits": "Manual source review; not blinded or independent certification"
+      }
+    },
+    {
+      "id": "bounded-prose-chunks",
+      "promptSha256": "81b1a4c1ad754f603611ad1ad8fb851f98d961e2fde3c90e6040e42633e23bc7",
+      "answer": {
+        "answer": "seanebones-lang/personal-RAG:src/ingest/chunking/strategies.py",
+        "finding": "Inspected the complete source and LICENSE at commit 7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66. MIT license, copyright 2026 Sean McDonnell; retain its copyright and permission notices. Suitable starting point with fixes: _prose_split splits on blank lines, merges paragraphs, then recursively splits oversized results using separators '\\n\\n', '\\n', '. ', and space. Sizes use Python len(), not tokens or bytes; min_size is unused. The bound is not guaranteed: at the final space separator, an oversized word is assigned to current and emitted because recursion is conditional on remaining separators, making the hard-slice fallback unreachable on that path. Recursive overflow also fails to clear current after flushing it, potentially duplicating preceding text. Text preservation fails through strip(), discarded blank-line delimiters, whitespace split(), concatenation of words without spaces, and lost '. ' separators at chunk boundaries. Fix by validating a positive integer maximum, clearing the buffer after every flush, recursively processing every oversized piece even with no separators left, and hard-slicing at exhaustion. Preserve original delimiters and whitespace using contiguous source spans; count retained delimiters in merge lengths and eliminate stripping/filtering. Correct prose length accounting to add separators only between paragraphs. Require every chunk length <= maximum and concatenation of chunks == original text in adaptation tests. Extract these functions with explicit size parameters to avoid unrelated numpy/config/context imports; bypass the Markdown wrapper, which removes headings from chunk text. Repository licensing and dependencies are not component-audited. No code was executed or independently tested."
+      },
+      "expected": "seanebones-lang/personal-RAG:src/ingest/chunking/strategies.py",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "inspected": true,
+        "read": true,
+        "sourceReadForAnswer": true,
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 84583,
+        "cached_input_tokens": 58368,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 619,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 36276,
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "recursive text",
+            "language": "Python",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 5,
+            "part_id": "ad68a2d44d29024b"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 5,
+            "part_id": "ad68a2d44d29024b",
+            "path": "src/ingest/chunking/strategies.py",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 5,
+            "part_id": "ad68a2d44d29024b",
+            "path": "LICENSE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ],
+      "semanticReview": {
+        "status": "passed",
+        "reviewer": "Implementing Codex agent, compared with pre-run source controls",
+        "limits": "Manual source review; not blinded or independent certification"
+      }
+    },
+    {
+      "id": "optional-request-auth",
+      "promptSha256": "dc5715baa899cd96f92bccb3139ce789464e14021050911f76e3b4795014ac4a",
+      "answer": {
+        "answer": "seanebones-lang/personal-RAG:src/query/api.py",
+        "finding": "Inspected complete source and MIT LICENSE at commit 7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66. require_api_token reads PRV_API_TOKEN each request; unset, empty, or whitespace-only configuration disables authentication. Exact /health and /version paths remain public. Otherwise it requires case-sensitive 'Bearer ' authorization and returns 401 for missing or invalid credentials. Equal-length tokens use secrets.compare_digest, but an early length check exposes length-dependent timing; the whole guard is not constant-time. Preserve the MIT notice; component/dependency licensing remains unaudited. Source inspection only, without independent testing."
+      },
+      "expected": "seanebones-lang/personal-RAG:src/query/api.py",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "inspected": true,
+        "read": true,
+        "sourceReadForAnswer": true,
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 88100,
+        "cached_input_tokens": 63744,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 430,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 33896,
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "FastAPI",
+            "language": "Python",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 5,
+            "part_id": "d67c64de2434a7a4"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 5,
+            "part_id": "d67c64de2434a7a4",
+            "path": "LICENSE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 5,
+            "part_id": "d67c64de2434a7a4",
+            "path": "src/query/api.py",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ],
+      "semanticReview": {
+        "status": "passed",
+        "reviewer": "Implementing Codex agent, compared with pre-run source controls",
+        "limits": "Manual source review; not blinded or independent certification"
+      }
+    },
+    {
+      "id": "signed-node-integrity",
+      "promptSha256": "0a89f1ae9a229cae187d1e8b5fc756478133d76c4e6d2f564bbd979d038aba13",
+      "answer": {
+        "answer": "seanebones-lang/witness:core/src/signing.rs",
+        "finding": "Inspected signing.rs and types.rs at commit 482ce52011d55c4991cd7dc73fa103c9527c43ab. Ed25519 signing includes id, cid, epistemic_type, payload, author (id, name, author_type, metadata), timestamp, parents, labels, domain and source_uri; it excludes signature. Separate wrapper fields such as Observation.measurement and Inference.derivation are not covered unless placed in payload. compute_cid hashes serde_json bytes of whichever value is supplied using SHA-256, encoded as hex; the included tests use payload alone. verify_node checks the signature but does not check CID consistency; use verify_cid separately. Payload modification changes the signed bytes and payload hash. Verification trusts the public key embedded in the signature, without binding it to the claimed author or a trusted identity, and does not prove the claim is true. Serialization is not formal canonical JSON; author.metadata uses HashMap, whose ordering can undermine stable bytes. Repository license metadata is MPL-2.0; component licensing and dependencies remain unaudited. Source tests were inspected, not executed; no independent testing was performed."
+      },
+      "expected": "seanebones-lang/witness:core/src/signing.rs",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "inspected": true,
+        "read": true,
+        "sourceReadForAnswer": true,
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 111215,
+        "cached_input_tokens": 79360,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 565,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 32726,
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "evidence",
+            "language": "Rust",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "sign",
+            "language": "Rust",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 9,
+            "part_id": "0cbfc41e1a97c092"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 9,
+            "part_id": "0cbfc41e1a97c092",
+            "path": "core/src/signing.rs",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 9,
+            "part_id": "0cbfc41e1a97c092",
+            "path": "core/src/types.rs",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ],
+      "semanticReview": {
+        "status": "passed",
+        "reviewer": "Implementing Codex agent, compared with pre-run source controls",
+        "limits": "Manual source review; not blinded or independent certification"
+      }
+    },
+    {
+      "id": "local-admission-client",
+      "promptSha256": "f9513a867a07abd7890ad690b790f0cc6845201275a227f4e22603760a925fb7",
+      "answer": {
+        "answer": "seanebones-lang/deadbolt:examples/deadbolt_client.py",
+        "finding": "Read the complete 4,722-byte client at commit 71f2083062d4eed6874a35fff967c38b0d78306f. All imports are Python standard library. It sends HTTP over a Unix socket or TCP restricted to 127.0.0.1/::1, with five-second socket timeouts and an optional DEADBOLT_TOKEN header. Connection and socket-permission exceptions, UTF-8/JSON decoding failures, empty responses, and non-2xx statuses (including authorization failures) return deny/store_unavailable. admit additionally denies malformed response shapes or unknown decisions. Callers must execute work only when decision == 'allow'; the CLI returns exit code 0 even on denial. Other endpoints lack admit's response validation, response reads are unbounded, and socket timeouts are not an overall deadline. LICENSE and NOTICE support Apache-2.0; retain applicable notices. Component licensing is not audited. Source and upstream tests were read, not executed; no independent testing was performed."
+      },
+      "expected": "seanebones-lang/deadbolt:examples/deadbolt_client.py",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "inspected": true,
+        "read": true,
+        "sourceReadForAnswer": true,
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 109024,
+        "cached_input_tokens": 69248,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 582,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 35753,
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "admission",
+            "language": "Python",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "client",
+            "language": "Python",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 8,
+            "part_id": "a723886d1a32c8bc"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 8,
+            "part_id": "dcd37dda4bd28169"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 8,
+            "part_id": "dcd37dda4bd28169",
+            "path": "NOTICE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 8,
+            "part_id": "dcd37dda4bd28169",
+            "path": "examples/deadbolt_client.py",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 8,
+            "part_id": "dcd37dda4bd28169",
+            "path": "tests/client_contract.py",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 8,
+            "part_id": "dcd37dda4bd28169",
+            "path": "LICENSE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ],
+      "semanticReview": {
+        "status": "passed",
+        "reviewer": "Implementing Codex agent, compared with pre-run source controls",
+        "limits": "Manual source review; not blinded or independent certification"
+      }
+    },
+    {
+      "id": "leakage-gap-windows",
+      "promptSha256": "a63889ec2248acadbf579fbceca94d7f7c3a99ef21f50e52c881876cfda9a87d",
+      "answer": {
+        "answer": "seanebones-lang/btcpredictor:btc_predictor/backtest.py",
+        "finding": "Read the complete source and MIT LICENSE at commit aaac31375effca4d862e719d90ac078b8fb7696b. WalkForwardBacktest.generate_windows computes train_start=current, train_end=current+initial_train_days, test_start=train_end+purge_days, and test_end=test_start+test_window_days; all offsets use timedelta days. It includes windows ending exactly at end_date, drops incomplete final windows, and advances current by step_days. Training windows have fixed length. Limits: returns datetime boundaries rather than slicing data or defining endpoint inclusion; embargo_days is unused; parameters are unvalidated, so require positive train/test lengths and step and a positive purge for a deliberate gap. Nonpositive steps can prevent termination. The window calculation uses only datetime, but importing the whole module also loads numpy, pandas and local predictor code. The surrounding backtest does not enforce the generated training boundaries. Preserve the MIT copyright and permission notices; dependencies/component licensing remain unaudited. No code was executed or independently tested."
+      },
+      "expected": "seanebones-lang/btcpredictor:btc_predictor/backtest.py",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "inspected": true,
+        "read": true,
+        "sourceReadForAnswer": true,
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 103878,
+        "cached_input_tokens": 75904,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 543,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 33746,
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "rolling",
+            "language": "Python",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "window",
+            "language": "Python",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "split",
+            "language": "Python",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 7,
+            "part_id": "83da981c8ced245f"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 7,
+            "part_id": "83da981c8ced245f",
+            "path": "LICENSE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 7,
+            "part_id": "83da981c8ced245f",
+            "path": "btc_predictor/backtest.py",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ],
+      "semanticReview": {
+        "status": "passed",
+        "reviewer": "Implementing Codex agent, compared with pre-run source controls",
+        "limits": "Manual source review; not blinded or independent certification"
+      }
+    },
+    {
+      "id": "shared-failure-state",
+      "promptSha256": "db35cfb43f1d288deb008672d4e99f95ad2cac3d886872f50f27663363b1f68f",
+      "answer": {
+        "answer": "NO_MATCH",
+        "finding": "Catalog searches found no candidate establishing shared, restart-persistent failure suppression. Read complete source for seanebones-lang/Brainstormin-System:src/lib/circuitBreaker.ts: it rejects calls while OPEN after a failure threshold and permits recovery attempts after a timeout, but stores all counters, timestamps and state in an instance-local object. There is no shared storage or persistence; new instances start CLOSED. The inspected src/lib/ai.ts creates a new breaker per generateIdeas call. The repository LICENSE contains MIT terms, but component/dependency licensing remains unaudited. No code was executed or independently tested."
+      },
+      "expected": "NO_MATCH",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "inspected": true,
+        "read": true,
+        "sourceReadForAnswer": true,
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 92258,
+        "cached_input_tokens": 63360,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 630,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 32050,
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "circuit breaker",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "distributed",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 3,
+            "part_id": "c4bd04c559ce9bac"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "failure",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 3,
+            "part_id": "01a762bc95837106"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "suppression",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "breaker",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 3,
+            "part_id": "01a762bc95837106",
+            "path": "src/lib/circuitBreaker.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 3,
+            "part_id": "01a762bc95837106",
+            "path": "LICENSE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 3,
+            "part_id": "c4bd04c559ce9bac",
+            "path": "src/lib/ai.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ],
+      "semanticReview": {
+        "status": "passed",
+        "reviewer": "Implementing Codex agent, compared with pre-run source controls",
+        "limits": "Manual source review; not blinded or independent certification"
+      }
+    },
+    {
+      "id": "prove-observation-truth",
+      "promptSha256": "53021a7f60f1171fa5da466ad2e605811ce11bd1fae62514e26983c17fb27d5b",
+      "answer": {
+        "answer": "NO_MATCH",
+        "finding": "Inspected actual source in witness:core/src/signing.rs and evidencelens\u2019s packet-builder and evidence-schema validators. Witness checks serialized-content CID equality and Ed25519 signatures using the public key supplied in the node; it does not establish publisher identity or measurement accuracy. EvidenceLens checks snapshot SHA-256 equality, schema invariants, references and supplied verification flags; its scientific-source resolver requires PubMed/Crossref resolvers. A fabricated observation can have a matching hash and valid signature. Bundle integrity and signing-key possession alone cannot establish factual accuracy under the requested constraints. Source was inspected only; no code was executed or independently tested."
+      },
+      "expected": "NO_MATCH",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "inspected": true,
+        "read": true,
+        "sourceReadForAnswer": true,
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 105973,
+        "cached_input_tokens": 71552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 572,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 33920,
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "evidence",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "signature",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 9,
+            "part_id": "0cbfc41e1a97c092"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 6,
+            "part_id": "6dcfd68c83d19424"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 6,
+            "part_id": "e2ee88f5ab047987"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 6,
+            "part_id": "6dcfd68c83d19424",
+            "path": "packages/evidence-schema/src/validate.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 9,
+            "part_id": "0cbfc41e1a97c092",
+            "path": "core/src/signing.rs",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 6,
+            "part_id": "e2ee88f5ab047987",
+            "path": "packages/packet-builder/src/index.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ],
+      "semanticReview": {
+        "status": "passed",
+        "reviewer": "Implementing Codex agent, compared with pre-run source controls",
+        "limits": "Manual source review; not blinded or independent certification"
+      }
+    }
+  ],
+  "mode": "--run",
+  "summary": {
+    "completedCases": 10,
+    "exactSelections": 10,
+    "evidenceWorkflowPasses": 10,
+    "toolCalls": 57,
+    "toolCounts": {
+      "repo_salvage_search_parts": 19,
+      "repo_salvage_inspect_part": 14,
+      "repo_salvage_read_part_file": 24
+    },
+    "emptySearches": 3,
+    "searches": 19,
+    "noticeReads": 9,
+    "usage": {
+      "input_tokens": 951776,
+      "cached_input_tokens": 663296,
+      "output_tokens": 5503
+    }
+  },
+  "searchObservations": [
+    {
+      "case": "pause-failing-service",
+      "query": {
+        "q": "circuit breaker",
+        "language": "TypeScript",
+        "license": "MIT",
+        "limit": 8
+      },
+      "resultCount": 2,
+      "firstResult": "seanebones-lang/Brainstormin-System:src/lib/circuitBreaker.ts"
+    },
+    {
+      "case": "repeatable-cohorts",
+      "query": {
+        "q": "experiment",
+        "language": "Python",
+        "license": "MIT",
+        "limit": 8
+      },
+      "resultCount": 2,
+      "firstResult": "seanebones-lang/btcpredictor:btc_predictor/ab_testing.py"
+    },
+    {
+      "case": "authenticated-post-stream",
+      "query": {
+        "q": "SSE",
+        "license": "MIT",
+        "limit": 8
+      },
+      "resultCount": 8,
+      "firstResult": "seanebones-lang/Brainstormin-System:src/hooks/useSSE.ts"
+    },
+    {
+      "case": "bounded-prose-chunks",
+      "query": {
+        "q": "recursive text",
+        "language": "Python",
+        "license": "MIT",
+        "limit": 8
+      },
+      "resultCount": 1,
+      "firstResult": "seanebones-lang/personal-RAG:src/ingest/chunking/strategies.py"
+    },
+    {
+      "case": "optional-request-auth",
+      "query": {
+        "q": "FastAPI",
+        "language": "Python",
+        "license": "MIT",
+        "limit": 8
+      },
+      "resultCount": 8,
+      "firstResult": "seanebones-lang/personal-RAG:src/query/api.py"
+    },
+    {
+      "case": "signed-node-integrity",
+      "query": {
+        "q": "evidence",
+        "language": "Rust",
+        "limit": 8
+      },
+      "resultCount": 2,
+      "firstResult": "seanebones-lang/deadbolt:src/witness.rs"
+    },
+    {
+      "case": "signed-node-integrity",
+      "query": {
+        "q": "sign",
+        "language": "Rust",
+        "limit": 8
+      },
+      "resultCount": 3,
+      "firstResult": "seanebones-lang/witness:core/src/signing.rs"
+    },
+    {
+      "case": "local-admission-client",
+      "query": {
+        "q": "admission",
+        "language": "Python",
+        "limit": 8
+      },
+      "resultCount": 1,
+      "firstResult": "seanebones-lang/deadbolt:examples/deadbolt_sample_agent.py"
+    },
+    {
+      "case": "local-admission-client",
+      "query": {
+        "q": "client",
+        "language": "Python",
+        "limit": 8
+      },
+      "resultCount": 3,
+      "firstResult": "seanebones-lang/deadbolt:examples/deadbolt_client.js"
+    },
+    {
+      "case": "leakage-gap-windows",
+      "query": {
+        "q": "rolling",
+        "language": "Python",
+        "license": "MIT",
+        "limit": 8
+      },
+      "resultCount": 0,
+      "firstResult": null
+    },
+    {
+      "case": "leakage-gap-windows",
+      "query": {
+        "q": "window",
+        "language": "Python",
+        "license": "MIT",
+        "limit": 8
+      },
+      "resultCount": 1,
+      "firstResult": "seanebones-lang/btcpredictor:btc_predictor/backtest.py"
+    },
+    {
+      "case": "leakage-gap-windows",
+      "query": {
+        "q": "split",
+        "language": "Python",
+        "license": "MIT",
+        "limit": 8
+      },
+      "resultCount": 2,
+      "firstResult": "seanebones-lang/personal-RAG:src/ingest/chunking/strategies.py"
+    },
+    {
+      "case": "shared-failure-state",
+      "query": {
+        "q": "circuit breaker",
+        "license": "MIT",
+        "limit": 8
+      },
+      "resultCount": 2,
+      "firstResult": "seanebones-lang/Brainstormin-System:src/lib/circuitBreaker.ts"
+    },
+    {
+      "case": "shared-failure-state",
+      "query": {
+        "q": "distributed",
+        "license": "MIT",
+        "limit": 8
+      },
+      "resultCount": 0,
+      "firstResult": null
+    },
+    {
+      "case": "shared-failure-state",
+      "query": {
+        "q": "failure",
+        "license": "MIT",
+        "limit": 8
+      },
+      "resultCount": 2,
+      "firstResult": "seanebones-lang/Brainstormin-System:src/lib/circuitBreaker.ts"
+    },
+    {
+      "case": "shared-failure-state",
+      "query": {
+        "q": "suppression",
+        "limit": 8
+      },
+      "resultCount": 0,
+      "firstResult": null
+    },
+    {
+      "case": "shared-failure-state",
+      "query": {
+        "q": "breaker",
+        "limit": 8
+      },
+      "resultCount": 2,
+      "firstResult": "seanebones-lang/Brainstormin-System:src/lib/circuitBreaker.ts"
+    },
+    {
+      "case": "prove-observation-truth",
+      "query": {
+        "q": "evidence",
+        "limit": 8
+      },
+      "resultCount": 7,
+      "firstResult": "seanebones-lang/evidencelens:packages/evidence-schema/src/validate.ts"
+    },
+    {
+      "case": "prove-observation-truth",
+      "query": {
+        "q": "signature",
+        "limit": 8
+      },
+      "resultCount": 4,
+      "firstResult": "seanebones-lang/witness:core/src/signing.rs"
+    }
+  ],
+  "privateEventTraceSha256": [
+    {
+      "case": "pause-failing-service",
+      "sha256": "ad454fba9ec673630fa385f481c777fcedf90e42f4223a9fa6e8ca12e0a96a6c"
+    },
+    {
+      "case": "repeatable-cohorts",
+      "sha256": "61f8fdca2959a95b7b0b8c8d14080895a4c89f0736ddccc88d8d6e8c6428cc7a"
+    },
+    {
+      "case": "authenticated-post-stream",
+      "sha256": "9efaff835d8a1837a43df8a03d5ef51a36a7ca8c8e354870b940f1be4b27a250"
+    },
+    {
+      "case": "bounded-prose-chunks",
+      "sha256": "b771aaad52f148ba59c0f2a78e5c948a471fa2dc04d5220c30fa4d1a65443eed"
+    },
+    {
+      "case": "optional-request-auth",
+      "sha256": "d473eb7294f7be8ca73a0d47100fcfe3cb95cb97b2105ad883e12c4ed4e64b4a"
+    },
+    {
+      "case": "signed-node-integrity",
+      "sha256": "0b418b1119808f220f22b45bfe58e55c3d073ee3e3602a5174916aa958f9a842"
+    },
+    {
+      "case": "local-admission-client",
+      "sha256": "baf9a350bc51871bda57119e33625943625ecf3607eb746e58e702d7c3c788ec"
+    },
+    {
+      "case": "leakage-gap-windows",
+      "sha256": "033ba9cda61e84b7ce6bbb55ca13e1b38272b1d912746425a6eb164203c06d0f"
+    },
+    {
+      "case": "shared-failure-state",
+      "sha256": "621dbf13619ffed5b18b8b0c558abf3b60e3016a8b32543fc890f549ef4d6252"
+    },
+    {
+      "case": "prove-observation-truth",
+      "sha256": "89d603355162322d8af9856c56b3e166811c0d422839760338e4970ab6dab24e"
+    }
+  ],
+  "limitations": [
+    "Ten authored requests on a small previously known corpus; not an unseen-repository holdout or general accuracy estimate.",
+    "One explicit model/reasoning profile, one fresh session per request; no model or dollar-cost comparison.",
+    "Production API ranking and public GitHub checks used; endpoint and catalog were stable before/after the run.",
+    "Code was read through native MCP; no shell, source execution, file editing, web or write tools appeared in completed event traces.",
+    "Correct source selection and inspection do not establish successful integration.",
+    "Raw events remain private under ignored artifacts; recorded hashes do not provide independent validation."
+  ]
+}

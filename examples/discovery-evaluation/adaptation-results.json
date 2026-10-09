@@ -1,0 +1,103 @@
+{
+  "format": "repo-salvage/discovery-evaluation-v1",
+  "mode": "--run-adaptation",
+  "scope": "Ten authored ordinary-language tasks over the fixed 34-part catalog; not unseen repositories or external-user demand. No task supplies repository names, source paths, part IDs or search strings.",
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "suiteSealSha256": "2d4d79274811fe614c49094c3bdcbb347b15acb430fc013e30d18fb150d96875",
+  "archiveSha256": "f8eba85523cb25e221c236b3ca05cb2cb8dec1eac255ca162fae83fe4c668261",
+  "catalogRevision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+  "billing": "Existing Codex account allowance; no API-key model calls",
+  "results": [
+    {
+      "id": "bounded-prose-chunks",
+      "promptSha256": "3b4b0162b0e8ddcc597376e89be01192afecd71df516fb68b55e0a70e8d2cc90",
+      "answer": {
+        "answer": "seanebones-lang/personal-RAG:src/ingest/chunking/strategies.py",
+        "finding": "Inspected the complete source and LICENSE at commit 7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66. The MIT notice credits Sean McDonnell (2026) and is retained below. Upstream prose splitting strips paragraphs and replaces blank-line separators with two newlines. Recursive splitting tries double newline, newline, '. ', then whitespace, but strips text, drops separators on overflow, concatenates words without spaces, and fails to clear the buffer after recursively emitting an oversized part, potentially duplicating text. At the final space level, oversized words can bypass fixed-width fallback. Paragraph length accounting also overcounts separators; min_size is unused. This adaptation removes configuration, models and optional imports, retains every original character, counts actual retained separators, clears buffers on overflow, and recursively descends through paragraph, line, sentence and whitespace boundaries before slicing unbroken text. Paragraph separators include LF, CRLF and CR blank lines with horizontal whitespace; separators stay attached to the preceding span. A separator or paragraph larger than the limit must itself be split. Bounds use Python string characters, not bytes, tokens or grapheme clusters. Empty text returns []; invalid limits raise ValueError, including booleans. The source and repository notice were read, but component licensing is not independently audited. This is proposed code; nothing was executed or independently tested. Operator-owned consumer checks run separately.",
+        "code": "\"\"\"Lossless, paragraph-first prose chunking (Python 3.9+).\"\"\"\n\n# Adapted from seanebones-lang/personal-RAG,\n# src/ingest/chunking/strategies.py, commit:\n# 7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66\n# Intentional changes: retain separators and whitespace, correct overflow\n# buffering, validate limits, and always slice oversized terminal spans.\n\n# MIT License\n#\n# Copyright (c) 2026 Sean McDonnell\n#\n# Permission is hereby granted, free of charge, to any person obtaining a copy\n# of this software and associated documentation files (the \"Software\"), to deal\n# in the Software without restriction, including without limitation the rights\n# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n# copies of the Software, and to permit persons to whom the Software is\n# furnished to do so, subject to the following conditions:\n#\n# The above copyright notice and this permission notice shall be included in all\n# copies or substantial portions of the Software.\n#\n# THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n# SOFTWARE.\n\nimport re\nfrom typing import Iterator\n\n\n_SEPARATORS = (\n    re.compile(r\"(?:\\r\\n|\\r|\\n)[^\\S\\r\\n]*(?:\\r\\n|\\r|\\n)\"),\n    re.compile(r\"\\r\\n|\\r|\\n\"),\n    re.compile(r\"(?<=[.!?])\\s+\"),\n    re.compile(r\"\\s+\"),\n)\n\n\ndef _retained_parts(text: str, separator: re.Pattern) -> Iterator[str]:\n    \"\"\"Partition text, attaching each matched separator to its left span.\"\"\"\n    start = 0\n    for match in separator.finditer(text):\n        end = match.end()\n        yield text[start:end]\n        start = end\n    if start < len(text):\n        yield text[start:]\n\n\ndef _split_recursive(text: str, max_chars: int, level: int) -> Iterator[str]:\n    if not text:\n        return\n    if len(text) <= max_chars:\n        yield text\n        return\n    if level == len(_SEPARATORS):\n        for start in range(0, len(text), max_chars):\n            yield text[start:start + max_chars]\n        return\n\n    current: list[str] = []\n    current_len = 0\n    for part in _retained_parts(text, _SEPARATORS[level]):\n        part_len = len(part)\n        if part_len > max_chars:\n            if current:\n                yield ''.join(current)\n                current = []\n                current_len = 0\n            yield from _split_recursive(part, max_chars, level + 1)\n        else:\n            if current_len + part_len > max_chars:\n                yield ''.join(current)\n                current = []\n                current_len = 0\n            current.append(part)\n            current_len += part_len\n    if current:\n        yield ''.join(current)\n\n\ndef split_prose(text: str, max_chars: int) -> list[str]:\n    \"\"\"Return bounded chunks whose concatenation exactly equals text.\n\n    Prefer paragraph boundaries, then line, sentence and whitespace boundaries.\n    Oversized spans recurse through those choices; unbroken spans are sliced.\n    Character counts follow Python len(str), not encoded bytes or graphemes.\n    \"\"\"\n    if isinstance(max_chars, bool) or not isinstance(max_chars, int):\n        raise ValueError('max_chars must be a positive integer')\n    if max_chars <= 0:\n        raise ValueError('max_chars must be a positive integer')\n    return list(_split_recursive(text, max_chars, 0))\n"
+      },
+      "expected": "seanebones-lang/personal-RAG:src/ingest/chunking/strategies.py",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "inspected": true,
+        "read": true,
+        "sourceReadForAnswer": true,
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 85768,
+        "cached_input_tokens": 59392,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1884,
+        "reasoning_output_tokens": 208
+      },
+      "latencyMs": 73325,
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "recursive",
+            "language": "Python",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 5,
+            "part_id": "ad68a2d44d29024b"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 5,
+            "part_id": "ad68a2d44d29024b",
+            "path": "src/ingest/chunking/strategies.py",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 5,
+            "part_id": "ad68a2d44d29024b",
+            "path": "LICENSE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    }
+  ],
+  "consumerAcceptance": {
+    "status": "passed",
+    "testCases": 8,
+    "seededRoundtripInputs": 1000,
+    "testSealSha256": "62fcb917dd332d96b33a6be0c82163109f47a827aedf42c368afc573b63236f4",
+    "codeSha256": "bbc07842e3bd2bfdc2da24f9dad083caf86d6983bdd192109d8f52b7e4ca89ae",
+    "noticeSha256": "ea8f3bf6e196fc163a30dcb580af8cd4b77b9509b6f018cf8c9681ee9b7329c7",
+    "codeChangedAfterGeneration": false,
+    "originalModuleExecuted": false,
+    "scope": "Operator-reviewed generated adaptation; pure stdlib checks in a clean Python workspace. Not load, browser, deployment or security certification."
+  },
+  "privateEventTraceSha256": "2f7de1e2d81acde1f869d7329fba0fa7c607bebbe60760d6efc3b402b79d79c5"
+}
