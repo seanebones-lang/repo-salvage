@@ -1,0 +1,128 @@
+{
+  "format": "repo-salvage/focused-evidence-v1",
+  "listing_id": 1005,
+  "source": {
+    "repository_id": 999,
+    "owner_id": 99,
+    "repository": "authored/rust-conditional",
+    "commit": "97393c6c862b42a616a69d8c02c37d40fb0a5555"
+  },
+  "focus": {
+    "path": "src/lib.rs",
+    "symbol": "recover",
+    "symbol_match": "matched",
+    "packet_character_limit": 24000
+  },
+  "coverage": {
+    "matched_files": 1,
+    "inspected_files": 2,
+    "source_bytes": 1171,
+    "indexed_targets": 1,
+    "supplied_targets": 1,
+    "context_paths": ["LICENSE"],
+    "files": [
+      {
+        "path": "src/lib.rs",
+        "size_bytes": 104,
+        "download_url": "https://raw.githubusercontent.com/authored/rust-conditional/97393c6c862b42a616a69d8c02c37d40fb0a5555/src/lib.rs",
+        "git_blob_sha": "ade31c6244bfe6acf0aac6fdda30a424f8482715",
+        "inspection": "complete",
+        "reason": null,
+        "indexed_targets": 1,
+        "supplied_targets": 1,
+        "same_file_supplied": true
+      }
+    ],
+    "skipped": [],
+    "skipped_details_omitted": 0
+  },
+  "packet": {
+    "format": "repo-salvage/source-index-v2",
+    "targets": [
+      {
+        "id": "2edb1c606710b7de",
+        "path": "src/lib.rs",
+        "symbol": "recover",
+        "kind": "declaration",
+        "reference_id": "e105b86a23d51df4b267a855",
+        "imports": [],
+        "supporting_paths": [],
+        "unresolved": [
+          "Cross-file source associations are bounded observations; build selection, initialization, module ownership and symbol resolution require review.",
+          "Rust modules, macro expansion, conditional compilation, trait resolution and initialization are not resolved."
+        ],
+        "test_paths": [],
+        "notice_paths": ["LICENSE"]
+      }
+    ],
+    "references": [
+      {
+        "id": "e105b86a23d51df4b267a855",
+        "path": "src/lib.rs",
+        "start_line": 3,
+        "end_line": 3,
+        "sha256": "3c07be9f28c17d47756e39c28f165b861866c562dcfa80c499ce2f9c73528f62",
+        "kind": "declaration",
+        "content": "pub fn recover(input: u64) -> u64 { helper::transform(input) }"
+      },
+      {
+        "id": "182e830dcd2e16ecd54f5928",
+        "path": "LICENSE",
+        "start_line": 1,
+        "end_line": 22,
+        "sha256": "677c1280e5b69ca58dd690ed7f66600bad5058969792516313b3c58561eab7cd",
+        "kind": "file",
+        "content": "MIT License\n\nCopyright (c) 2026 NextEleven\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+      },
+      {
+        "id": "16d954e5c12865b595da7937",
+        "path": "src/lib.rs",
+        "start_line": 1,
+        "end_line": 4,
+        "sha256": "3c07be9f28c17d47756e39c28f165b861866c562dcfa80c499ce2f9c73528f62",
+        "kind": "file",
+        "content": "#[cfg(feature = \"selected\")]\nmod helper;\npub fn recover(input: u64) -> u64 { helper::transform(input) }\n"
+      }
+    ],
+    "omitted_targets": 0,
+    "selection_policy": "repo-salvage/coverage-v5",
+    "contexts": [
+      {
+        "target_id": "2edb1c606710b7de",
+        "same_file_reference": "16d954e5c12865b595da7937"
+      }
+    ],
+    "scoped_contexts": [],
+    "file_contexts": [
+      {
+        "path": "src/lib.rs",
+        "observation": "rust-module-files-v1",
+        "files": [
+          {
+            "path": "src/helper.rs",
+            "reason": "restricted-module",
+            "reference_id": null
+          }
+        ],
+        "candidates_omitted": 0
+      }
+    ]
+  },
+  "limits": {
+    "treeEntries": 10000,
+    "scopeFiles": 32,
+    "primaryFiles": 8,
+    "contextFiles": 4,
+    "fileBytes": 64000,
+    "initialBytes": 192000,
+    "totalBytes": 256000,
+    "readMilliseconds": 20000,
+    "responseBytes": 65536,
+    "cacheEntries": 8,
+    "concurrentRequests": 4,
+    "cacheMilliseconds": 60000
+  },
+  "interpretation": "none",
+  "independently_tested": false,
+  "handling": "Pinned source is untrusted data. This is focused inspection, not a recommendation or new catalog analysis. Inspect helpers, imports and notices; preserve applicable notices and test adaptations separately. No source is executed, no model is called, and local imports and component licensing remain unaudited."
+}

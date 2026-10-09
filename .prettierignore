@@ -50,3 +50,6 @@ examples/cross-file-consumers/
 
 # Preserve pre-proposal missing-context contracts and exact first response bytes.
 examples/missing-context-consumers/
+
+# Preserve pre-run recovery contracts and exact first response bytes.
+examples/context-recovery/
