@@ -30,10 +30,12 @@ dependencies, integration guidance, limitations, and the evidence behind the rec
 - **Source sampled:** the primary file's content was supplied to the analysis. Supporting and
   test paths must exist in the complete source tree. This does not establish functional correctness,
   a complete dependency graph, passing tests or safe extraction.
-- **Complete declaration inspected:** a complete exported JS/TS implementation was parsed
+- **Complete declaration inspected:** a complete JS/TS export or Python function, class
+  or direct method was parsed
   and supplied as a referenced source block. Static imports, source hashes and target IDs
   are attached by the server. Generated explanations remain model interpretations;
-  module imports do not establish exact extraction dependencies. Other languages currently
+  module imports do not establish exact extraction dependencies. Python methods retain
+  an explicit enclosing-class requirement. Other languages currently
   receive complete-file targets with explicit import-inspection gaps.
 - **Owner reviewed:** the author confirmed the brief for this specific analysis. It is not
   independent test evidence. Model output cannot set this status.

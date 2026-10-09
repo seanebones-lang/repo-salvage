@@ -178,11 +178,17 @@ npx --no-install repo-salvage drafts --base ORIGIN`}</code>
         <h2>Make uncertainty part of the decision.</h2>
         <p>
           Complete-file and prefix coverage describe what was supplied to the
-          analysis. New JS/TS briefs can also identify a complete parsed
-          declaration, its lines and explanation references. Older briefs keep
-          their earlier evidence. Static module imports still need inspection
-          before extracting a part, and root licenses can differ from vendored
-          file licenses.
+          analysis. New JS/TS and Python briefs can also identify a complete
+          parsed declaration, its lines and explanation references. Older briefs
+          keep their earlier evidence. Static module imports still need
+          inspection before extracting a part, and root licenses can differ from
+          vendored file licenses.
+        </p>
+        <p>
+          Python functions, classes and direct methods use Python 3.11 grammar.
+          Method targets retain an enclosing-class requirement. The conservative
+          resolved-import filter excludes recorded source-context gaps; inspect
+          initialization, helpers and runtime requirements before extraction.
         </p>
         <p>
           Notices are discovered by filenames and ancestry. Preserve them,
