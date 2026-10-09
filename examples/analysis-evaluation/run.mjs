@@ -6,27 +6,49 @@ import { createHash, randomUUID } from "node:crypto";
 import { spawn, spawnSync } from "node:child_process";
 import Anthropic from "@anthropic-ai/sdk";
 import { root, loadEngine } from "./engine.mjs";
-const [provider, model] = process.argv.slice(2);
+import { buildHoldout, sha256 } from "./holdout.mjs";
+import { scoreSelection } from "./scoring.mjs";
+import { inspectCodexTrace } from "./trace.mjs";
+const [provider, model, ...options] = process.argv.slice(2);
+const holdout = options[0] === "--holdout";
+const effortOptions = holdout ? options.slice(1) : options;
+const effort = effortOptions[0] === "--effort" ? effortOptions[1] : "low";
 if (
   !["--codex", "--anthropic"].includes(provider) ||
   !model ||
-  process.argv.length !== 4
+  !["low", "medium", "high"].includes(effort) ||
+  (effortOptions.length !== 0 &&
+    (effortOptions.length !== 2 || effortOptions[0] !== "--effort")) ||
+  (provider === "--anthropic" && effortOptions.length !== 0)
 ) {
   console.log(
-    "Explicit model use: node examples/analysis-evaluation/run.mjs --codex MODEL\nOr: node --env-file=.env.local examples/analysis-evaluation/run.mjs --anthropic MODEL\nNo automatic retries; results remain under ignored artifacts.",
+    "Explicit model use: node examples/analysis-evaluation/run.mjs --codex MODEL [--holdout] [--effort low|medium|high]\nOr: node --env-file=.env.local examples/analysis-evaluation/run.mjs --anthropic MODEL [--holdout]\nNo automatic retries; results remain under ignored artifacts.",
   );
   process.exit(process.argv.length > 2 ? 1 : 0);
 }
 if (provider === "--anthropic" && !process.env.ANTHROPIC_API_KEY)
   throw Error("Anthropic credential is not configured.");
 process.chdir(root);
-const frozen = JSON.parse(
-  await fs.readFile(
-    path.join(root, "examples/analysis-evaluation/packets.json"),
-    "utf8",
-  ),
-);
+let frozen =
+  !holdout &&
+  JSON.parse(
+    await fs.readFile(
+      path.join(root, "examples/analysis-evaluation/packets.json"),
+      "utf8",
+    ),
+  );
 const engine = await loadEngine();
+try {
+  if (holdout) frozen = await buildHoldout(engine);
+  if (!frozen.cases.length || frozen.cases.length > 8)
+    throw Error("Evaluation batch must have between one and eight cases.");
+  for (const c of frozen.cases)
+    if (sha256(JSON.stringify(c.request)) !== c.requestSha256)
+      throw Error("Frozen request hash mismatch; stop before any model use.");
+} catch (error) {
+  await engine.close();
+  throw error;
+}
 const workspace = await fs.mkdtemp(
   path.join(os.tmpdir(), "salvage-evidence-eval-"),
 );
@@ -63,6 +85,7 @@ try {
       transportSuccess: false,
       structurallyAccepted: false,
       selectionMatchesControl: false,
+      selection: null,
       semanticReview: "pending",
       failure: null,
     };
@@ -110,7 +133,7 @@ try {
           "-c",
           "features.unified_exec=false",
           "-c",
-          'model_reasoning_effort="low"',
+          `model_reasoning_effort="${effort}"`,
           "--cd",
           workspace,
           "--output-schema",
@@ -121,39 +144,43 @@ try {
         ],
         { cwd: workspace, env, stdio: ["pipe", log.fd, diagnostic.fd] },
       );
+      child.stdin.on("error", () => {});
       child.stdin.end(c.request.system + "\n\n" + c.request.input);
-      const timer = setTimeout(() => child.kill("SIGTERM"), 120_000);
+      let timedOut = false;
+      let killTimer;
+      const timer = setTimeout(() => {
+        timedOut = true;
+        child.kill("SIGTERM");
+        killTimer = setTimeout(() => child.kill("SIGKILL"), 5000);
+      }, 120_000);
       const exit = await new Promise((resolve) => {
         child.once("error", () => resolve({ code: null }));
         child.once("exit", (code) => resolve({ code }));
       });
       clearTimeout(timer);
+      clearTimeout(killTimer);
       await log.close();
       await diagnostic.close();
-      const events = (
-        await fs.readFile(path.join(directory, c.id + ".events.jsonl"), "utf8")
-      )
-        .split("\n")
-        .filter(Boolean)
-        .map((l) => JSON.parse(l));
-      result.usage =
-        events.find((e) => e.type === "turn.completed")?.usage ?? null;
-      const prohibited = events
-        .filter(
-          (e) =>
-            ["item.started", "item.updated", "item.completed"].includes(
-              e.type,
-            ) && !["agent_message", "reasoning"].includes(e.item?.type),
-        )
-        .map((e) => e.item?.type);
-      result.prohibitedEvents = prohibited;
-      result.transportSuccess = exit.code === 0 && prohibited.length === 0;
-      result.failure = prohibited.length
-        ? "prohibited_tool_event"
-        : exit.code !== 0
-          ? "cli_failed"
-          : null;
-      if (result.transportSuccess) text = await fs.readFile(output, "utf8");
+      Object.assign(
+        result,
+        inspectCodexTrace(
+          await fs.readFile(
+            path.join(directory, c.id + ".events.jsonl"),
+            "utf8",
+          ),
+          exit.code,
+          timedOut,
+        ),
+      );
+      if (result.transportSuccess) {
+        try {
+          text = await fs.readFile(output, "utf8");
+          await fs.chmod(output, 0o600);
+        } catch {
+          result.transportSuccess = false;
+          result.failure = "missing_cli_answer";
+        }
+      }
     } else {
       try {
         const client = new Anthropic({
@@ -205,11 +232,18 @@ try {
         const summary = engine.verifiedIndexedSummary(text, c.index, c.packet);
         result.structurallyAccepted = true;
         const response = JSON.parse(text);
-        result.selectionMatchesControl =
-          response.outcome === c.expectedOutcome &&
-          summary.reusable_pieces.every((p) =>
-            c.allowedSymbols.includes(p.source_target.symbol),
-          );
+        if (c.expectation) {
+          result.selection = scoreSelection(response, summary, c.expectation);
+          result.selectionMatchesControl = result.selection.passed;
+        } else {
+          result.selectionMatchesControl =
+            response.outcome === c.expectedOutcome &&
+            summary.reusable_pieces.every((p) =>
+              c.allowedSymbols.includes(p.source_target.symbol),
+            );
+        }
+        if (!result.selectionMatchesControl)
+          result.failure = "selection_mismatch";
       } catch {
         result.failure = "response_validation_failed";
       }
@@ -224,9 +258,13 @@ try {
           model,
           provider,
           cliVersion,
+          suiteSealSha256: frozen.seal
+            ? sha256(JSON.stringify(frozen.seal))
+            : null,
+          coverage: frozen.seal?.coverage ?? null,
           transportLimits:
             provider === "--codex"
-              ? "120s; CLI has no equivalent 4000-output-token cap; low reasoning"
+              ? `120s plus 5s termination grace; CLI has no equivalent 4000-output-token cap; ${effort} reasoning`
               : "120s; 4000 output tokens; medium effort",
           billing:
             provider === "--codex"

@@ -20,6 +20,8 @@ export async function loadEngine() {
     "components",
     "analysis-provider",
     "summarize",
+    "http",
+    "github",
   ]) {
     const source = await fs.readFile(
       path.join(root, "src/lib", name + ".ts"),
@@ -38,6 +40,7 @@ export async function loadEngine() {
   return {
     ...(await import(pathToFileURL(path.join(temp, "source-index.mjs")))),
     ...(await import(pathToFileURL(path.join(temp, "summarize.mjs")))),
+    ...(await import(pathToFileURL(path.join(temp, "github.mjs")))),
     close: () => fs.rm(temp, { recursive: true, force: true }),
   };
 }

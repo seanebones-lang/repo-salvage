@@ -1,0 +1,91 @@
+{
+  "frozenAt": "2026-10-09T06:55:52.410Z",
+  "seal": {
+    "corpusSha256": "4f9a415582bbe50a3906dbdebdf1b018a628084af69605c2279f412b1ec87a43",
+    "casesSha256": "4744b3b221764e05184493f0e62b6a5d003dac5caa2db9d03e506775af9cf8bd",
+    "requests": [
+      {
+        "id": "hg-consensus",
+        "requestSha256": "a0fae118aa6fb23cf98911b4eaa2f6b4e1bad72ba6774e7ad5e016e5c6219bdd"
+      },
+      {
+        "id": "hg-streaming-hash",
+        "requestSha256": "c62e16399d90961008544b98142a47bfb674409ae3129eb37aa8d29a4db5c9f0"
+      },
+      {
+        "id": "hg-results-loader",
+        "requestSha256": "08f4d177d7d0c7ee0b4e57d3c8f44d47e13e079db65533cef279a8f33ba38936"
+      },
+      {
+        "id": "hg-owner-exclusion",
+        "requestSha256": "d6a0a1f49d5870602d55014d37ec66af448768b72ebea373abc3fc99e06f4542"
+      },
+      {
+        "id": "av-token-extraction",
+        "requestSha256": "40e76e8f4cf175bbd1165264f84fd1beb4f145eba2632dad0f96f4266c8269b3"
+      },
+      {
+        "id": "av-prosody",
+        "requestSha256": "b3416e1bb308e9825033e671cdba38ec2477684e3efd33b71b999ed502adaddb"
+      },
+      {
+        "id": "av-manifest-shape",
+        "requestSha256": "8d50426b637b547f65f535d6d60412269269283cb56567b42feca2eedbf09315"
+      },
+      {
+        "id": "av-owner-exclusion",
+        "requestSha256": "ac37cf6140ed48f2a98bd6bea29b4970da45ee8cf6f076bc40fc28d504464e80"
+      }
+    ],
+    "coverage": [
+      {
+        "repo": "seanebones-lang/Humanity-Grid",
+        "path": "src/research-scout/src/research_scout/ingest/arxiv.py",
+        "symbol": "ArxivClient._rate_limited_request",
+        "inspected": true,
+        "indexed": true,
+        "supplied": false
+      },
+      {
+        "repo": "seanebones-lang/Humanity-Grid",
+        "path": "src/experiment-engine/scripts/split_work_units.py",
+        "symbol": "main",
+        "inspected": true,
+        "indexed": true,
+        "supplied": false
+      },
+      {
+        "repo": "seanebones-lang/Humanity-Grid",
+        "path": "src/volunteer-app/src-tauri/src/main.rs",
+        "symbol": "<module>",
+        "inspected": true,
+        "indexed": true,
+        "supplied": false
+      },
+      {
+        "repo": "seanebones-lang/AI-Voiceover",
+        "path": "apps/web/lib/tts/prosody-tags.ts",
+        "symbol": "parseProsodyTags",
+        "inspected": false,
+        "indexed": false,
+        "supplied": false
+      },
+      {
+        "repo": "seanebones-lang/AI-Voiceover",
+        "path": "apps/web/lib/tts-cache.ts",
+        "symbol": "buildTtsCacheKey",
+        "inspected": false,
+        "indexed": false,
+        "supplied": false
+      },
+      {
+        "repo": "seanebones-lang/AI-Voiceover",
+        "path": "apps/web/lib/rate-limit.ts",
+        "symbol": "createFallbackLimiter",
+        "inspected": false,
+        "indexed": false,
+        "supplied": false
+      }
+    ]
+  }
+}
