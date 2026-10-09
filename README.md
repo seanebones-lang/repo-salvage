@@ -368,3 +368,9 @@ and runnable offline checks. Build exports `/rust-edit-distance.tar.gz` and
 `/go-rendezvous-consumer.tar.gz`; Rust/Go compilers are needed only to test or use
 those adaptations. Run `npm run test:native` with `rustc` and `go` on PATH, or
 set `SALVAGE_RUSTC` / `SALVAGE_GO` to their absolute executables.
+
+The [cross-file consumer trial](examples/cross-file-consumers/README.md) extends this
+proof to a Rust module helper and a Go package peer. It retains pre-proposal tests,
+exact first proposals, source citations, operator reviews and compiler execution.
+The examples can be run independently with their language compiler; these are
+controlled adaptations under frozen contracts, not upstream compatibility claims.

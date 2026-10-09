@@ -1,0 +1,43 @@
+{
+  "format": "repo-salvage/cross-file-consumer-results-v1",
+  "sealedAt": "2026-10-09T21:07:49.890888+00:00",
+  "scope": "Exact first responses and traces, pre-execution review and acceptance record; no post-result repairs",
+  "inputs": [
+    {
+      "path": "input-seal.json",
+      "sha256": "8bd211e4186cac96142fb42b665bb67e5c1c7e42c272de0ebb784d2fc2ce9165"
+    },
+    {
+      "path": "review.json",
+      "sha256": "8c08fa697704556797ea3cc0405ce030d48c8f0a80e6360caf0386df642328a2"
+    },
+    {
+      "path": "execution.json",
+      "sha256": "04c5469b57fb45767ca4c7e39c8f1d24a709d6576735bee202ce53020c9adecf"
+    },
+    {
+      "path": "rust/result.json",
+      "sha256": "1de8d7a620b39993c6f0467c6b80dafc74eb5f7a0211ebc17a4d815a3b0f35b2"
+    },
+    {
+      "path": "rust/trace.jsonl",
+      "sha256": "ebf1723bf724dc84742c86174268385082cc1a60cafe8b330362873e2f29243d"
+    },
+    {
+      "path": "rust/consumer.rs",
+      "sha256": "57b390909081aeb63219df82dbadb3d857759429050aae73157db3831b60b9e0"
+    },
+    {
+      "path": "go/result.json",
+      "sha256": "c2cf36ab33bca559e9bf78b43d88e4bf9106051c586504d5f13929a1648059d7"
+    },
+    {
+      "path": "go/trace.jsonl",
+      "sha256": "6bfd6f37a388eb01b5aa3af50aab99e2f1b7e8568902bacad5cfa548b26db75b"
+    },
+    {
+      "path": "go/consumer.go",
+      "sha256": "645b967c6bb8ab10a54646b2520d3cf2bc9dced269c6a7834db8a136ec0e5a39"
+    }
+  ]
+}

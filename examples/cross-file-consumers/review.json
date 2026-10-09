@@ -1,0 +1,20 @@
+{
+  "format": "repo-salvage/cross-file-consumer-review-v1",
+  "at": "2026-10-09T21:07:19.034055+00:00",
+  "inputSealSha256": "8bd211e4186cac96142fb42b665bb67e5c1c7e42c272de0ebb784d2fc2ce9165",
+  "reviewer": "Codex operator; source review is not independent blind review",
+  "consumers": [
+    {
+      "language": "rust",
+      "approved": true,
+      "codeSha256": "57b390909081aeb63219df82dbadb3d857759429050aae73157db3831b60b9e0",
+      "review": "Inspected the entire exact first Rust proposal. The reciprocal quotient uses the pinned multiplier and shift and calls the adapted high-128-bit product helper from src/u128_ext.rs. The helper uses bounded fixed-width limb arithmetic; no unsafe, external crate, feature gate, IO, environment or process access. Return contract matches the frozen task. Exact supplied MIT notice retained beside code. Arithmetic correctness is pending independent acceptance, not inferred from review."
+    },
+    {
+      "language": "go",
+      "approved": true,
+      "codeSha256": "645b967c6bb8ab10a54646b2520d3cf2bc9dced269c6a7834db8a136ec0e5a39",
+      "review": "Inspected the entire exact first Go proposal. Digest.Write uses the supplied pure-Go writeBlocks helper and source lane/avalanche operations; only encoding/binary and math/bits imports. Reset clears logical tail state; Write copies buffered tails into a 32-byte owned array; Sum64 reads state without mutation. The large flag tracks whether a full block was consumed. No unsafe, build tags, assembly, IO, init or external packages. Exact copyright/MIT notice retained. Functional correctness pending independent frozen vectors and chunk tests."
+    }
+  ]
+}

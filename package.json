@@ -20,11 +20,11 @@
     "test:operations": "node --test tests/deployment.test.mjs",
     "test:container": "node scripts/smoke-container.mjs --run repo-salvage:readiness",
     "test:analysis": "vitest run tests/source-index.test.ts tests/python-index.test.ts tests/source-benchmark.test.ts tests/indexed-snapshot.test.ts tests/indexed-analysis.test.ts tests/indexed-flow.test.tsx tests/analysis-evaluation.test.ts",
-    "test:evaluation": "node --test tests/real-source-evaluation.test.mjs tests/real-source-consumer.test.mjs tests/discovery-evaluation.test.mjs tests/competing-discovery-evaluation.test.mjs tests/full-chain-evaluation.test.mjs tests/context-diversity-evaluation.test.mjs tests/scoped-context-evaluation.test.mjs tests/scoped-consumer-evaluation.test.mjs tests/cross-language-evaluation.test.mjs tests/rust-go-consumers.test.mjs tests/native-file-context-pinned.test.mjs",
+    "test:evaluation": "node --test tests/real-source-evaluation.test.mjs tests/real-source-consumer.test.mjs tests/discovery-evaluation.test.mjs tests/competing-discovery-evaluation.test.mjs tests/full-chain-evaluation.test.mjs tests/context-diversity-evaluation.test.mjs tests/scoped-context-evaluation.test.mjs tests/scoped-consumer-evaluation.test.mjs tests/cross-language-evaluation.test.mjs tests/rust-go-consumers.test.mjs tests/native-file-context-pinned.test.mjs tests/cross-file-consumers.test.mjs",
     "test:packages": "node scripts/check-focused-packages.mjs --run && python3 -I scripts/check-integer-word-bundle.py && python3 -I scripts/check-native-bundles.py",
     "test:cache": "python3 -I scripts/check-cache-consumer.py",
     "test:integer": "python3 -I scripts/check-integer-word-consumer.py",
-    "test:native": "node examples/rust-go-consumers/check-native.mjs --check"
+    "test:native": "node examples/rust-go-consumers/check-native.mjs --check && node examples/cross-file-consumers/check-native.mjs --check"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",
