@@ -298,6 +298,33 @@ support focused or partitioned evidence requests without silently multiplying
 provider calls. Broader source selection, non-exported helper exposure and
 independent natural-discovery review remain open before hosted provider choice.
 
+## Focused evidence milestone
+
+Agents can now explicitly inspect omitted source through
+`GET /api/v2/parts/{listing}/evidence`, CLI `evidence` and MCP
+`repo_salvage_focus_evidence`. These public read-only requests use the existing
+listing's pinned commit and make no provider call or catalog change. They expose
+complete source blocks, same-file context, indexed/supplied counts and bounded
+inspection gaps. Exact path/symbol requests select five of the six known probes;
+the unexported limiter is reported as unindexed with containing-file context.
+All six probe files reach the focused packet. This is exact-scope regression,
+not unconstrained recall or an extraction/execution certification.
+
+The focused reader shares source exclusions, Git blob verification and trusted
+parsers with ordinary analysis. It inspects up to eight scope files and four
+notice/dependency files, 64 KB per file and 256 KB total, within a 20-second
+source-read deadline. Parser time is additional. Scope inventory caps at 32 files;
+response size caps at 64 KiB, dropping complete blocks as needed. A bounded
+60-second process cache coalesces identical requests and allows at most four
+concurrent distinct inspections. Every response rechecks public identity and
+local catalog state before returning source.
+
+[Focused regression evidence](../examples/focused-evidence/README.md) preserves
+production-reader responses at the same pinned commits, separate from the two
+unchanged model-evaluation epochs. CLI and real stdio consumers replay the data
+offline. The clean installed-package check verifies both downloadable clients;
+CI runs it after build. No upstream application or new model evaluation is run.
+
 ## Job milestone validation
 
 The 2026-10-09 validation passed 277 offline checks: 218 application tests,

@@ -286,6 +286,27 @@ export type RepoSnapshot = {
   packet?: EvidencePacket;
 };
 
+/** Shared source eligibility; a focus request cannot bypass inspection exclusions. */
+export function sourceExclusion(
+  file: SourceFile,
+  fileBytes: number = INDEX_LIMITS.fileBytes,
+) {
+  return !safeSourcePath(file.path) || !["100644", "100755"].includes(file.mode)
+    ? "unsupported_path_or_mode"
+    : SKIP_DIR.test(file.path) || SKIP_FILE.test(file.path)
+      ? "excluded_generated_vendor_or_asset"
+      : !(
+            isCodePath(file.path) ||
+            isManifestPath(file.path) ||
+            isNoticePath(file.path) ||
+            /(^|\/)readme(?:\.md)?$/i.test(file.path)
+          )
+        ? "unsupported_file_type"
+        : (file.size ?? 0) > fileBytes
+          ? "file_byte_limit"
+          : null;
+}
+
 /** Current analyzer: bounded complete source, deterministic indexing and explicit exclusions. */
 export async function indexedSnapshotRepo(
   _token: string,
@@ -299,21 +320,7 @@ export async function indexedSnapshotRepo(
   const skipped: SourceIndex["skipped"] = [];
   const eligible = tree.filter((file) => {
     if (file.type !== "blob") return false;
-    const reason =
-      !safeSourcePath(file.path) || !["100644", "100755"].includes(file.mode)
-        ? "unsupported_path_or_mode"
-        : SKIP_DIR.test(file.path) || SKIP_FILE.test(file.path)
-          ? "excluded_generated_vendor_or_asset"
-          : !(
-                isCodePath(file.path) ||
-                isManifestPath(file.path) ||
-                isNoticePath(file.path) ||
-                /(^|\/)readme(?:\.md)?$/i.test(file.path)
-              )
-            ? "unsupported_file_type"
-            : (file.size ?? 0) > INDEX_LIMITS.fileBytes
-              ? "file_byte_limit"
-              : null;
+    const reason = sourceExclusion(file);
     if (reason) {
       skipped.push({ path: file.path, reason });
       return false;

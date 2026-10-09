@@ -797,6 +797,136 @@
           }
         }
       }
+    },
+    "/api/v2/parts/{id}/evidence": {
+      "get": {
+        "operationId": "focusedEvidence",
+        "summary": "Inspect a focused pinned file or directory without a model call",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          },
+          {
+            "name": "path",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 513
+            },
+            "description": "Exact file path, or directory prefix ending in /. Scope must contain at most 32 files."
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 160
+            },
+            "description": "Exact indexed symbol in an exact file. An unindexed symbol still permits complete-file evidence."
+          },
+          {
+            "name": "max_characters",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1000,
+              "maximum": 24000,
+              "default": 12000
+            },
+            "description": "Packet character allowance, potentially reduced to preserve the 64 KiB response bound. Complete blocks are omitted rather than truncated."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pinned regular files, Git blob hashes and evidence boundaries.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FocusedEvidence"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid identity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Missing, hidden, removed or inaccessible part.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Unpinned, unsupported or changed source analysis; inspect manually or retry.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Source/catalog verification unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "const": 60
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Shared installation read allowance reached; respect Retry-After. Default 30 valid requests per fixed minute, configurable with AGENT_READ_LIMIT.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "const": 60
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2269,6 +2399,493 @@
           "source",
           "dependency_evidence",
           "licensing",
+          "handling"
+        ],
+        "additionalProperties": false
+      },
+      "FocusedEvidence": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "const": "repo-salvage/focused-evidence-v1"
+          },
+          "listing_id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "repository_id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "owner_id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 9007199254740991
+              },
+              "repository": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "commit": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{40}$"
+              }
+            },
+            "required": ["repository_id", "owner_id", "repository", "commit"],
+            "additionalProperties": false
+          },
+          "focus": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "maxLength": 513
+              },
+              "symbol": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 160
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "symbol_match": {
+                "enum": ["matched", "not_indexed", null]
+              },
+              "packet_character_limit": {
+                "type": "integer",
+                "minimum": 1000,
+                "maximum": 24000
+              }
+            },
+            "required": [
+              "path",
+              "symbol",
+              "symbol_match",
+              "packet_character_limit"
+            ],
+            "additionalProperties": false
+          },
+          "coverage": {
+            "type": "object",
+            "properties": {
+              "matched_files": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 32
+              },
+              "inspected_files": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 12
+              },
+              "source_bytes": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 256000
+              },
+              "indexed_targets": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "supplied_targets": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 24
+              },
+              "context_paths": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 512
+                },
+                "maxItems": 4
+              },
+              "files": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "maxLength": 512
+                    },
+                    "size_bytes": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "download_url": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "git_blob_sha": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[a-f0-9]{40}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "inspection": {
+                      "enum": ["complete", "not_inspected"]
+                    },
+                    "reason": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "maxLength": 100
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "indexed_targets": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "supplied_targets": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 24
+                    },
+                    "same_file_supplied": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "size_bytes",
+                    "download_url",
+                    "git_blob_sha",
+                    "inspection",
+                    "reason",
+                    "indexed_targets",
+                    "supplied_targets",
+                    "same_file_supplied"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 32
+              },
+              "skipped": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "maxLength": 512
+                    },
+                    "reason": {
+                      "type": "string",
+                      "maxLength": 100
+                    }
+                  },
+                  "required": ["path", "reason"],
+                  "additionalProperties": false
+                },
+                "maxItems": 64
+              },
+              "skipped_details_omitted": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "matched_files",
+              "inspected_files",
+              "source_bytes",
+              "indexed_targets",
+              "supplied_targets",
+              "context_paths",
+              "files",
+              "skipped",
+              "skipped_details_omitted"
+            ],
+            "additionalProperties": false
+          },
+          "packet": {
+            "type": "object",
+            "properties": {
+              "format": {
+                "const": "repo-salvage/source-index-v2"
+              },
+              "targets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{16}$"
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "symbol": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "enum": ["declaration", "file"]
+                    },
+                    "imports": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "specifier": {
+                            "type": "string"
+                          },
+                          "kind": {
+                            "enum": [
+                              "local",
+                              "external",
+                              "unresolved",
+                              "dynamic"
+                            ]
+                          },
+                          "resolved_path": {
+                            "type": ["string", "null"]
+                          }
+                        },
+                        "required": ["specifier", "kind", "resolved_path"],
+                        "additionalProperties": false
+                      }
+                    },
+                    "supporting_paths": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "unresolved": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "test_paths": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "notice_paths": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "reference_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{24}$"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "path",
+                    "symbol",
+                    "kind",
+                    "imports",
+                    "supporting_paths",
+                    "unresolved",
+                    "test_paths",
+                    "notice_paths",
+                    "reference_id"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 24
+              },
+              "references": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{24}$"
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "start_line": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "end_line": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    "kind": {
+                      "enum": ["declaration", "file"]
+                    },
+                    "content": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "path",
+                    "start_line",
+                    "end_line",
+                    "sha256",
+                    "kind",
+                    "content"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "omitted_targets": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "selection_policy": {
+                "const": "repo-salvage/coverage-v1"
+              },
+              "contexts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "target_id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{16}$"
+                    },
+                    "same_file_reference": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[a-f0-9]{24}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": ["target_id", "same_file_reference"],
+                  "additionalProperties": false
+                },
+                "maxItems": 24
+              }
+            },
+            "required": [
+              "format",
+              "targets",
+              "references",
+              "omitted_targets",
+              "selection_policy",
+              "contexts"
+            ],
+            "additionalProperties": false
+          },
+          "limits": {
+            "type": "object",
+            "properties": {
+              "treeEntries": {
+                "const": 10000
+              },
+              "scopeFiles": {
+                "const": 32
+              },
+              "primaryFiles": {
+                "const": 8
+              },
+              "contextFiles": {
+                "const": 4
+              },
+              "fileBytes": {
+                "const": 64000
+              },
+              "initialBytes": {
+                "const": 192000
+              },
+              "totalBytes": {
+                "const": 256000
+              },
+              "readMilliseconds": {
+                "const": 20000
+              },
+              "responseBytes": {
+                "const": 65536
+              },
+              "cacheEntries": {
+                "const": 8
+              },
+              "concurrentRequests": {
+                "const": 4
+              },
+              "cacheMilliseconds": {
+                "const": 60000
+              }
+            },
+            "required": [
+              "treeEntries",
+              "scopeFiles",
+              "primaryFiles",
+              "contextFiles",
+              "fileBytes",
+              "initialBytes",
+              "totalBytes",
+              "readMilliseconds",
+              "responseBytes",
+              "cacheEntries",
+              "concurrentRequests",
+              "cacheMilliseconds"
+            ],
+            "additionalProperties": false
+          },
+          "interpretation": {
+            "const": "none"
+          },
+          "independently_tested": {
+            "const": false
+          },
+          "handling": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "format",
+          "listing_id",
+          "source",
+          "focus",
+          "coverage",
+          "packet",
+          "limits",
+          "interpretation",
+          "independently_tested",
           "handling"
         ],
         "additionalProperties": false

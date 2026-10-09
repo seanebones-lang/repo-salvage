@@ -58,11 +58,11 @@ const failure = (result) => {
   return JSON.parse(result.content[0].text).error;
 };
 const key = (part) => ({ listing_id: part.listing_id, part_id: part.part_id });
-test("modern stdio discovery exposes three public tools, complete schemas and a guide", async (t) => {
+test("modern stdio discovery exposes four public tools, complete schemas and a guide", async (t) => {
   const fixture = await serveFixture();
   const client = await connect(t, fixture);
   const tools = (await client.listTools()).tools;
-  assert.equal(tools.length, 3);
+  assert.equal(tools.length, 4);
   for (const tool of tools) {
     assert.ok(tool.description);
     assert.equal(tool.annotations.readOnlyHint, true);
@@ -270,7 +270,7 @@ test("explicit private draft tools use only the fixed origin and preserve idempo
   });
   const client = await connect(t, fixture, { enabled: true });
   const tools = (await client.listTools()).tools;
-  assert.equal(tools.length, 5);
+  assert.equal(tools.length, 6);
   assert.equal(
     tools.find((t) => t.name.endsWith("prepare_draft")).annotations
       .readOnlyHint,

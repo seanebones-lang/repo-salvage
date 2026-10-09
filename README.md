@@ -291,3 +291,8 @@ are the default. Private draft tools additionally require `--enable-drafts` and
 `REPO_SALVAGE_TOKEN` in the host's secret environment. No paid analysis or
 publication tool is exposed. The package is not published to npm and no remote
 MCP endpoint is hosted.
+
+Focused source inspection is available through the [agent interface](docs/AGENT-INTERFACE.md)
+and [known-source regression](examples/focused-evidence/README.md). Agents can
+request a pinned file/directory outside the selected catalog briefs, see complete
+source and explicit gaps, and do so without a model call or publication.

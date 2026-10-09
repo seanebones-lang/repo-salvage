@@ -19,7 +19,8 @@
     "test:operations": "node --test tests/deployment.test.mjs",
     "test:container": "node scripts/smoke-container.mjs --run repo-salvage:readiness",
     "test:analysis": "vitest run tests/source-index.test.ts tests/python-index.test.ts tests/source-benchmark.test.ts tests/indexed-snapshot.test.ts tests/indexed-analysis.test.ts tests/indexed-flow.test.tsx tests/analysis-evaluation.test.ts",
-    "test:evaluation": "node --test tests/real-source-evaluation.test.mjs tests/real-source-consumer.test.mjs"
+    "test:evaluation": "node --test tests/real-source-evaluation.test.mjs tests/real-source-consumer.test.mjs",
+    "test:packages": "node scripts/check-focused-packages.mjs --run"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",

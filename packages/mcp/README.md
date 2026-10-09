@@ -70,6 +70,23 @@ OpenAPI contract at package build time. Remote prose and exception details are
 never emitted as error explanations. HTTP machine codes, status and Retry-After
 seconds survive; errors carry `isError: true`. No automatic retries.
 
+## Focused evidence
+
+`repo_salvage_focus_evidence` accepts `listing_id`, `path`, optional `symbol` and
+`max_characters` (1000–24000, default 12000). Use an exact file or directory prefix
+ending in `/`; symbols apply only to exact files. It inspects source omitted from
+catalog briefs at the listing's pinned commit, with complete source blocks,
+same-file context and explicit omissions. `not_indexed` preserves available file
+context without inventing a declaration. It performs no model call or execution.
+
+At most eight scope files plus four notice/dependency files are read. Narrow a
+scope above 32 files. Source caps are 64 KB per file and 256 KB total; responses
+remain within 64 KiB. The packet character allowance can shrink to preserve that
+byte cap. Requests allow up to 60 seconds. Repeated source requests use a short
+process cache while current public identity/moderation/analysis checks still run.
+The tool writes no files and sends no credential. Preserve notices and test
+adaptations separately. Add the tool to any host's explicit allowlist.
+
 ## Private draft tools
 
 Public mode is the default, even when a token exists in the environment. To enable

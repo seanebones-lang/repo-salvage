@@ -114,7 +114,7 @@ export default function Agents() {
 command = "node"
 args = ["/absolute/workspace/node_modules/@repo-salvage/mcp/dist/index.js", "--base", "ORIGIN"]
 required = true
-enabled_tools = ["repo_salvage_search_parts", "repo_salvage_inspect_part", "repo_salvage_read_part_file"]`}</code>
+enabled_tools = ["repo_salvage_search_parts", "repo_salvage_inspect_part", "repo_salvage_read_part_file", "repo_salvage_focus_evidence"]`}</code>
         </pre>
         <p>
           Try: “Find a Python routine for repeatable A/B assignment. Inspect its
@@ -148,6 +148,30 @@ npx --no-install repo-salvage fetch LISTING PART --base ORIGIN --out ./new-part`
           <code>--include-tests</code> to select supporting files. Fetch never
           runs source or installs its dependencies; existing destinations are
           rejected.
+        </p>
+      </section>
+      <section className="detail-section agent-commands">
+        <span className="eyebrow">Focused source evidence</span>
+        <h2>Inspect beyond the selected brief.</h2>
+        <p>
+          Use a listing ID from search to inspect an exact file or a directory
+          ending in /. Name a symbol to focus on one indexed declaration. The
+          response includes complete source blocks when they fit, same-file
+          context and explicit inspection gaps. An unexported helper can be
+          inspected in its containing file without being labeled a catalog part.
+        </p>
+        <pre>
+          <code>{`npx --no-install repo-salvage evidence LISTING --base ORIGIN --path src/module.py --symbol Client.request --max-characters 24000
+GET /api/v2/parts/{listing}/evidence?path=src/module.py&symbol=Client.request
+MCP: repo_salvage_focus_evidence`}</code>
+        </pre>
+        <p>
+          A directory scope can contain up to 32 files; inspection reads at most
+          eight scope files and four notice or dependency files. Narrow the
+          directory when it is too broad. Source reads verify pinned Git blobs
+          and use a short cache with fresh visibility checks. They make no model
+          calls and leave catalog briefs unchanged. Preserve notices and test
+          adaptations separately.
         </p>
       </section>
       <section className="detail-section agent-commands">

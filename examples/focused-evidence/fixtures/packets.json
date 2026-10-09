@@ -1,0 +1,1008 @@
+{
+  "capturedAt": "2026-10-09T08:10:33.298Z",
+  "scope": "Six known-repository focus regressions; production reader, publicly verified numeric identities, pinned complete Git blobs. Listing IDs 901/902 are fixture identities, not live catalog IDs. No model or repository execution.",
+  "cases": [
+    {
+      "id": "probe-1",
+      "probe": {
+        "repo": "seanebones-lang/Humanity-Grid",
+        "path": "src/research-scout/src/research_scout/ingest/arxiv.py",
+        "symbol": "ArxivClient._rate_limited_request"
+      },
+      "parameters": {
+        "listing_id": 901,
+        "path": "src/research-scout/src/research_scout/ingest/arxiv.py",
+        "symbol": "ArxivClient._rate_limited_request",
+        "max_characters": 24000
+      },
+      "response": {
+        "format": "repo-salvage/focused-evidence-v1",
+        "listing_id": 901,
+        "source": {
+          "repository_id": 1372632343,
+          "owner_id": 227504642,
+          "repository": "seanebones-lang/Humanity-Grid",
+          "commit": "3e6c736b2b73f2b2f747c13358f37c8c371f2ff1"
+        },
+        "focus": {
+          "path": "src/research-scout/src/research_scout/ingest/arxiv.py",
+          "symbol": "ArxivClient._rate_limited_request",
+          "symbol_match": "matched",
+          "packet_character_limit": 24000
+        },
+        "coverage": {
+          "matched_files": 1,
+          "inspected_files": 5,
+          "source_bytes": 12508,
+          "indexed_targets": 1,
+          "supplied_targets": 1,
+          "context_paths": [
+            "LICENSE",
+            "LICENSE-POLICY.md",
+            "NOTICE",
+            "src/research-scout/pyproject.toml"
+          ],
+          "files": [
+            {
+              "path": "src/research-scout/src/research_scout/ingest/arxiv.py",
+              "size_bytes": 7247,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/Humanity-Grid/3e6c736b2b73f2b2f747c13358f37c8c371f2ff1/src/research-scout/src/research_scout/ingest/arxiv.py",
+              "git_blob_sha": "61ac9fc44f083fba7d3a6ac7b193a0960c7711f4",
+              "inspection": "complete",
+              "reason": null,
+              "indexed_targets": 11,
+              "supplied_targets": 1,
+              "same_file_supplied": true
+            }
+          ],
+          "skipped": [],
+          "skipped_details_omitted": 0
+        },
+        "packet": {
+          "format": "repo-salvage/source-index-v2",
+          "targets": [
+            {
+              "id": "11d1b350c1918e2f",
+              "path": "src/research-scout/src/research_scout/ingest/arxiv.py",
+              "symbol": "ArxivClient._rate_limited_request",
+              "kind": "declaration",
+              "reference_id": "ee97436a723ac8bfdc743f56",
+              "imports": [
+                {
+                  "specifier": "__future__",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "asyncio",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "re",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "datetime",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "typing",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "httpx",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "loguru",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "tenacity",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "research_scout",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "sys",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "xml.etree.ElementTree",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [],
+              "unresolved": [
+                "Enclosing Python class context required: ArxivClient"
+              ],
+              "test_paths": [],
+              "notice_paths": ["LICENSE", "LICENSE-POLICY.md", "NOTICE"]
+            }
+          ],
+          "references": [
+            {
+              "id": "ee97436a723ac8bfdc743f56",
+              "path": "src/research-scout/src/research_scout/ingest/arxiv.py",
+              "start_line": 31,
+              "end_line": 42,
+              "sha256": "e6af3576eb230fc443b9983dd892ae64068d9a18f8e306406d74219077447fb4",
+              "kind": "declaration",
+              "content": "async def _rate_limited_request(self, url: str, params: dict = None) -> httpx.Response:\n        \"\"\"Make a rate-limited request.\"\"\"\n        async with self._semaphore:\n            now = asyncio.get_event_loop().time()\n            elapsed = now - self._last_request\n            min_interval = 1.0 / self.rate_limit\n            if elapsed < min_interval:\n                await asyncio.sleep(min_interval - elapsed)\n\n            response = await self._request_with_retry(url, params or {})\n            self._last_request = asyncio.get_event_loop().time()\n            return response"
+            },
+            {
+              "id": "4cd1816f3739c2d76f0ea0d5",
+              "path": "LICENSE",
+              "start_line": 1,
+              "end_line": 21,
+              "sha256": "86a919aeeb82b9c13807b3666b693716f0dd4741772f55f280975f54d26acd28",
+              "kind": "file",
+              "content": "MIT License\n\nCopyright (c) 2026 Humanity Grid Contributors\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+            },
+            {
+              "id": "f8d02f7ba22b5eb376aab9a4",
+              "path": "LICENSE-POLICY.md",
+              "start_line": 1,
+              "end_line": 30,
+              "sha256": "1564c50a23b139e5039e1f2d7b0e70040de7f704bd2b25954ec221e3cd2ec765",
+              "kind": "file",
+              "content": "# License policy and artifact boundaries\n\nThe repository's [MIT License](LICENSE) applies to original project code and\ndocumentation for which the project can grant that license. It is selected to\nmake early technical review, reuse, and contribution straightforward.\n\nThe MIT License does not grant rights that the project does not hold. In\nparticular, imported datasets, source structures, identifiers, software\ndependencies, images, and generated outputs may have separate terms. Their\npresence in this repository does not silently relicense them.\n\nThe EXP-001 package has a file-specific boundary in\n[`proofs/EXP-001-v1/LICENSES.md`](proofs/EXP-001-v1/LICENSES.md). Before using\nthat package beyond review, identify the source and terms for every input and\nexternal dependency relevant to the intended use.\n\n## Contributions\n\nContributors retain their copyright unless they separately agree otherwise. By\nsubmitting a pull request with the required DCO sign-off, contributors license\ntheir contribution under the MIT License. See\n[CONTRIBUTOR-PROVENANCE.md](CONTRIBUTOR-PROVENANCE.md).\n\n## Future licensing decisions\n\nA different license for future modules, a dual-license offering, trademark\nregistration, employment assignment, contributor agreement, or a data-use\nagreement must be evaluated before it is announced or applied. Do not change\nthe root license or relicense third-party material by implication.\n"
+            },
+            {
+              "id": "5c0f4f8db6a04d0356d7ebe1",
+              "path": "NOTICE",
+              "start_line": 1,
+              "end_line": 13,
+              "sha256": "59cff6fb469b27344882fa4d594c221a81c28e4d259c4178ee3f2bdccf8089d2",
+              "kind": "file",
+              "content": "Humanity Grid\nCopyright (c) 2026 Sean McDonnell and contributors.\n\nHumanity Grid was initiated by Sean McDonnell in 2026. Copyright in each\ncontribution remains with its author or other rightsholder unless a separate,\nwritten agreement says otherwise. This notice records project origin and\nattribution; it does not assert employment, corporate ownership, assignment,\nor an exclusive right in work created by another person.\n\nThe repository is offered under the MIT License in LICENSE. Materials included\nfor review may carry third-party or source-specific terms; see LICENSE-POLICY.md\nand proofs/EXP-001-v1/LICENSES.md before reusing a packaged artifact.\n"
+            },
+            {
+              "id": "cd0855bfe06e1a523ebcc89b",
+              "path": "src/research-scout/src/research_scout/ingest/arxiv.py",
+              "start_line": 1,
+              "end_line": 223,
+              "sha256": "e6af3576eb230fc443b9983dd892ae64068d9a18f8e306406d74219077447fb4",
+              "kind": "file",
+              "content": "\"\"\"\narXiv ingestion module.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport asyncio\nimport re\nfrom datetime import datetime\nfrom typing import Optional\n\nimport httpx\nfrom loguru import logger\nfrom tenacity import retry, stop_after_attempt, wait_exponential_jitter\n\nfrom research_scout import Paper, settings\n\n\nARXIV_API = \"http://export.arxiv.org/api/query\"\n\n\nclass ArxivClient:\n    \"\"\"Async client for arXiv API.\"\"\"\n\n    def __init__(self, rate_limit: float = 3.0):\n        self.rate_limit = rate_limit\n        self._semaphore = asyncio.Semaphore(int(rate_limit))\n        self._last_request = 0.0\n        self.client = httpx.AsyncClient(timeout=settings.request_timeout)\n\n    async def _rate_limited_request(self, url: str, params: dict = None) -> httpx.Response:\n        \"\"\"Make a rate-limited request.\"\"\"\n        async with self._semaphore:\n            now = asyncio.get_event_loop().time()\n            elapsed = now - self._last_request\n            min_interval = 1.0 / self.rate_limit\n            if elapsed < min_interval:\n                await asyncio.sleep(min_interval - elapsed)\n\n            response = await self._request_with_retry(url, params or {})\n            self._last_request = asyncio.get_event_loop().time()\n            return response\n\n    @retry(\n        wait=wait_exponential_jitter(initial=1, max=30),\n        stop=stop_after_attempt(3),\n    )\n    async def _request_with_retry(self, url: str, params: dict) -> httpx.Response:\n        response = await self.client.get(url, params=params)\n        response.raise_for_status()\n        return response\n\n    async def search(\n        self,\n        query: str,\n        max_results: int = 5000,\n        category: str | None = None,\n    ) -> list[Paper]:\n        \"\"\"Search arXiv for papers matching query.\"\"\"\n        all_papers = []\n        start = 0\n        page_size = 100  # arXiv max per request\n\n        # Build search query\n        search_query = query\n        if category:\n            search_query = f\"cat:{category} AND ({query})\"\n\n        while len(all_papers) < max_results:\n            params = {\n                \"search_query\": search_query,\n                \"start\": start,\n                \"max_results\": min(page_size, max_results - len(all_papers)),\n                \"sortBy\": \"relevance\",\n                \"sortOrder\": \"descending\",\n            }\n\n            logger.debug(f\"Fetching arXiv page start={start}\")\n            response = await self._rate_limited_request(ARXIV_API, params)\n            papers = self._parse_atom_response(response.text)\n\n            if not papers:\n                break\n\n            all_papers.extend(papers)\n\n            if len(papers) < page_size:\n                break\n\n            start += page_size\n\n        logger.info(f\"Found {len(all_papers)} arXiv papers matching '{query}'\")\n        return all_papers\n\n    def _parse_atom_response(self, xml_text: str) -> list[Paper]:\n        \"\"\"Parse arXiv Atom XML response into Paper objects.\"\"\"\n        import xml.etree.ElementTree as ET\n\n        papers = []\n        # arXiv uses Atom namespace\n        ns = {\"atom\": \"http://www.w3.org/2005/Atom\", \"arxiv\": \"http://arxiv.org/schemas/atom\"}\n\n        try:\n            root = ET.fromstring(xml_text)\n        except ET.ParseError as e:\n            logger.error(f\"Failed to parse arXiv XML: {e}\")\n            return papers\n\n        for entry in root.findall(\"atom:entry\", ns):\n            paper = self._parse_entry(entry, ns)\n            if paper:\n                papers.append(paper)\n\n        return papers\n\n    def _parse_entry(self, entry: ET.Element, ns: dict) -> Optional[Paper]:\n        \"\"\"Parse a single arXiv entry.\"\"\"\n        try:\n            # arXiv ID\n            id_elem = entry.find(\"atom:id\", ns)\n            if id_elem is None or not id_elem.text:\n                return None\n            arxiv_url = id_elem.text.strip()\n            arxiv_id = arxiv_url.split(\"/abs/\")[-1]  # Extract ID from URL\n            # Remove version suffix if present\n            arxiv_id = re.sub(r\"v\\d+$\", \"\", arxiv_id)\n\n            # Title\n            title_elem = entry.find(\"atom:title\", ns)\n            title = title_elem.text.strip() if title_elem is not None and title_elem.text else \"\"\n\n            # Abstract\n            summary_elem = entry.find(\"atom:summary\", ns)\n            abstract = summary_elem.text.strip() if summary_elem is not None and summary_elem.text else None\n\n            # Authors\n            authors = []\n            for author in entry.findall(\"atom:author\", ns):\n                name_elem = author.find(\"atom:name\", ns)\n                if name_elem is not None and name_elem.text:\n                    authors.append(name_elem.text.strip())\n\n            # Publication date\n            pub_date = None\n            published_elem = entry.find(\"atom:published\", ns)\n            if published_elem is not None and published_elem.text:\n                try:\n                    pub_date = datetime.fromisoformat(published_elem.text.replace(\"Z\", \"+00:00\"))\n                except ValueError:\n                    pass\n\n            # Categories\n            categories = []\n            for cat in entry.findall(\"atom:category\", ns):\n                term = cat.get(\"term\")\n                if term:\n                    categories.append(term)\n\n            # DOI\n            doi = None\n            for link in entry.findall(\"atom:link\", ns):\n                if link.get(\"title\") == \"doi\" and link.get(\"href\"):\n                    doi = link.get(\"href\").replace(\"https://doi.org/\", \"\")\n                    break\n\n            return Paper(\n                paper_id=arxiv_id,\n                source=\"arxiv\",\n                title=title,\n                abstract=abstract,\n                authors=authors,\n                journal=\"arXiv\",\n                publication_date=pub_date,\n                doi=doi,\n                url=f\"https://arxiv.org/abs/{arxiv_id}\",\n                keywords=categories,\n            )\n\n        except Exception as e:\n            logger.error(f\"Failed to parse arXiv entry: {e}\")\n            return None\n\n    async def close(self):\n        await self.client.aclose()\n\n    async def __aenter__(self):\n        return self\n\n    async def __aexit__(self, *args):\n        await self.close()\n\n\nasync def ingest_arxiv(\n    query: str,\n    max_results: int = 5000,\n    category: str | None = None,\n    output_path: Optional[str] = None,\n) -> list[Paper]:\n    \"\"\"High-level function to search and fetch papers from arXiv.\"\"\"\n    async with ArxivClient() as client:\n        papers = await client.search(query, max_results, category)\n\n        if output_path:\n            with open(output_path, \"w\") as f:\n                for paper in papers:\n                    f.write(paper.to_jsonl() + \"\\n\")\n            logger.info(f\"Saved {len(papers)} papers to {output_path}\")\n\n        return papers\n\n\nif __name__ == \"__main__\":\n    import sys\n\n    async def main():\n        query = sys.argv[1] if len(sys.argv) > 1 else \"molecular dynamics\"\n        max_results = int(sys.argv[2]) if len(sys.argv) > 2 else 100\n        category = sys.argv[3] if len(sys.argv) > 3 else None\n\n        papers = await ingest_arxiv(query, max_results, category, \"data/arxiv_papers.jsonl\")\n        print(f\"Fetched {len(papers)} papers\")\n\n    asyncio.run(main())"
+            },
+            {
+              "id": "ca54f108676cc29f310869e4",
+              "path": "src/research-scout/pyproject.toml",
+              "start_line": 1,
+              "end_line": 81,
+              "sha256": "28b3c337e71b80df32eb3e88960beb1e22e6ca637a7f1d6d3d16b9b69ce6ab00",
+              "kind": "file",
+              "content": "[project]\nname = \"research-scout\"\nversion = \"0.1.0\"\ndescription = \"AI-powered literature ingestion and hypothesis generation for Humanity Grid\"\nreadme = \"README.md\"\nrequires-python = \">=3.12\"\nlicense = {text = \"MIT\"}\nauthors = [\n    {name = \"NextEleven\", email = \"sean@nexteleven.com\"}\n]\nkeywords = [\"science\", \"literature-mining\", \"hypothesis-generation\", \"drug-discovery\", \"distributed-computing\"]\nclassifiers = [\n    \"Development Status :: 2 - Pre-Alpha\",\n    \"Intended Audience :: Science/Research\",\n    \"License :: OSI Approved :: MIT License\",\n    \"Programming Language :: Python :: 3.12\",\n    \"Topic :: Scientific/Engineering :: Bio-Informatics\",\n    \"Topic :: Scientific/Engineering :: Artificial Intelligence\",\n]\ndependencies = [\n    \"httpx>=0.27\",\n    \"pydantic>=2.8\",\n    \"pydantic-settings>=2.4\",\n    \"tenacity>=8.5\",\n    \"rich>=13.9\",\n    \"loguru>=0.7\",\n    \"polars>=1.10\",\n    \"pyarrow>=17.0\",\n    \"networkx>=3.4\",\n    \"rapidfuzz>=3.9\",\n    \"sqlite-utils>=3.37\",\n    \"duckdb>=1.1\",\n    \"transformers>=4.44\",\n    \"torch>=2.4\",\n    \"sentence-transformers>=3.0\",\n]\n\n[project.optional-dependencies]\ndev = [\n    \"pytest>=8.3\",\n    \"pytest-asyncio>=0.23\",\n    \"pytest-cov>=6.0\",\n    \"ruff>=0.6\",\n    \"mypy>=1.11\",\n    \"pre-commit>=3.8\",\n]\ngpu = [\n    \"torch[cuda]>=2.4\",\n    \"flash-attn>=2.6\",\n]\n\n[tool.uv.sources]\nresearch-scout = {path = \".\", editable = true}\n\n[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\"\n\n[tool.ruff]\ntarget-version = \"py312\"\nline-length = 100\nselect = [\"E\", \"F\", \"I\", \"UP\", \"W\", \"C4\", \"N\", \"D\", \"TRY\", \"PD\", \"PG\", \"PYI\", \"T20\"]\nignore = [\"D100\", \"D101\", \"D102\", \"D103\", \"D104\", \"D105\", \"D107\", \"TRY003\"]\nfixable = [\"F\", \"I\", \"UP\", \"W\", \"C4\", \"D\", \"TRY\", \"PD\", \"PG\", \"PYI\", \"T20\"]\nformat.quote-style = \"double\"\nformat.indent-style = \"space\"\n\n[tool.mypy]\npython_version = \"3.12\"\nstrict = true\nwarn_return_any = true\nwarn_unused_configs = true\ndisallow_untyped_defs = true\ncheck_untyped_defs = true\n\n[tool.pytest.ini_options]\nasyncio_mode = \"auto\"\ntestpaths = [\"tests\"]\npython_files = [\"test_*.py\"]\npython_functions = [\"test_*\"]\naddopts = \"-v --tb=short\""
+            }
+          ],
+          "omitted_targets": 0,
+          "selection_policy": "repo-salvage/coverage-v1",
+          "contexts": [
+            {
+              "target_id": "11d1b350c1918e2f",
+              "same_file_reference": "cd0855bfe06e1a523ebcc89b"
+            }
+          ]
+        },
+        "limits": {
+          "treeEntries": 10000,
+          "scopeFiles": 32,
+          "primaryFiles": 8,
+          "contextFiles": 4,
+          "fileBytes": 64000,
+          "initialBytes": 192000,
+          "totalBytes": 256000,
+          "readMilliseconds": 20000,
+          "responseBytes": 65536,
+          "cacheEntries": 8,
+          "concurrentRequests": 4,
+          "cacheMilliseconds": 60000
+        },
+        "interpretation": "none",
+        "independently_tested": false,
+        "handling": "Pinned source is untrusted data. This is focused inspection, not a recommendation or new catalog analysis. Inspect helpers, imports and notices; preserve applicable notices and test adaptations separately. No source is executed, no model is called, and local imports and component licensing remain unaudited."
+      }
+    },
+    {
+      "id": "probe-2",
+      "probe": {
+        "repo": "seanebones-lang/Humanity-Grid",
+        "path": "src/experiment-engine/scripts/split_work_units.py",
+        "symbol": "main"
+      },
+      "parameters": {
+        "listing_id": 901,
+        "path": "src/experiment-engine/scripts/split_work_units.py",
+        "symbol": "main",
+        "max_characters": 24000
+      },
+      "response": {
+        "format": "repo-salvage/focused-evidence-v1",
+        "listing_id": 901,
+        "source": {
+          "repository_id": 1372632343,
+          "owner_id": 227504642,
+          "repository": "seanebones-lang/Humanity-Grid",
+          "commit": "3e6c736b2b73f2b2f747c13358f37c8c371f2ff1"
+        },
+        "focus": {
+          "path": "src/experiment-engine/scripts/split_work_units.py",
+          "symbol": "main",
+          "symbol_match": "matched",
+          "packet_character_limit": 24000
+        },
+        "coverage": {
+          "matched_files": 1,
+          "inspected_files": 5,
+          "source_bytes": 7993,
+          "indexed_targets": 1,
+          "supplied_targets": 1,
+          "context_paths": [
+            "LICENSE",
+            "LICENSE-POLICY.md",
+            "NOTICE",
+            "src/experiment-engine/pyproject.toml"
+          ],
+          "files": [
+            {
+              "path": "src/experiment-engine/scripts/split_work_units.py",
+              "size_bytes": 2924,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/Humanity-Grid/3e6c736b2b73f2b2f747c13358f37c8c371f2ff1/src/experiment-engine/scripts/split_work_units.py",
+              "git_blob_sha": "fa7bb2bb6b38a0bfad825955e402ccb22de85c3a",
+              "inspection": "complete",
+              "reason": null,
+              "indexed_targets": 1,
+              "supplied_targets": 1,
+              "same_file_supplied": true
+            }
+          ],
+          "skipped": [],
+          "skipped_details_omitted": 0
+        },
+        "packet": {
+          "format": "repo-salvage/source-index-v2",
+          "targets": [
+            {
+              "id": "8eaf731952bfba4c",
+              "path": "src/experiment-engine/scripts/split_work_units.py",
+              "symbol": "main",
+              "kind": "declaration",
+              "reference_id": "1e1274cf1d1f5275774b25f0",
+              "imports": [
+                {
+                  "specifier": "__future__",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "argparse",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "json",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "math",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "sys",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "pathlib",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "experiment_engine.jobs.spec",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [],
+              "notice_paths": ["LICENSE", "LICENSE-POLICY.md", "NOTICE"]
+            }
+          ],
+          "references": [
+            {
+              "id": "1e1274cf1d1f5275774b25f0",
+              "path": "src/experiment-engine/scripts/split_work_units.py",
+              "start_line": 19,
+              "end_line": 80,
+              "sha256": "dc6571138f62ad3362495cade8c0fbead4dcbe2dd3bbea7d35c53f63e30fead4",
+              "kind": "declaration",
+              "content": "def main():\n    parser = argparse.ArgumentParser(description=\"Split JobSpec into work unit configs\")\n    parser.add_argument(\"job_spec\", type=Path, help=\"JobSpec YAML file\")\n    parser.add_argument(\"--output\", type=Path, default=Path(\"work_units\"), help=\"Output directory\")\n    parser.add_argument(\"--library-path\", type=Path, help=\"Path to compound library file\")\n    args = parser.parse_args()\n\n    # Load job spec\n    job = JobSpec.from_yaml(args.job_spec)\n\n    # Calculate work unit splits\n    total_compounds = job.work_units.total * job.work_units.compounds_per_unit\n    # Last unit may have fewer compounds\n    n_units = job.work_units.total\n\n    args.output.mkdir(parents=True, exist_ok=True)\n\n    # Get input file names from job spec\n    protein_input = job.inputs.get(\"protein_structure\")\n    library_input = job.inputs.get(\"compound_library\")\n    config_input = job.inputs.get(\"docking_parameters\")\n\n    protein_file = protein_input.source if protein_input else \"protein.pdbqt\"\n    library_file = library_input.source if library_input else \"library.sdf\"\n    config_file = config_input.source if config_input else \"config.txt\"\n\n    # Default docking parameters\n    default_params = {\"exhaustiveness\": 16, \"num_modes\": 10, \"energy_range\": 3.0}\n    docking_params = default_params.copy()\n    if config_input and config_input.format == \"json\":\n        # If params are embedded in the input, they'd be parsed separately\n        pass\n\n    for i in range(n_units):\n        start = i * job.work_units.compounds_per_unit\n        end = min(start + job.work_units.compounds_per_unit, total_compounds)\n\n        # Create work unit config\n        wu_config = {\n            \"work_unit_id\": f\"{job.job_id}-WU-{i:04d}\",\n            \"job_id\": job.job_id,\n            \"index\": i,\n            \"compound_range\": [start, end - 1],\n            \"parameters\": docking_params,\n            \"input_files\": {\n                \"protein\": protein_file,\n                \"compounds\": library_file,\n                \"config\": config_file,\n            },\n            \"output_files\": {\n                \"results\": f\"results_{i:04d}.parquet\",\n                \"poses\": f\"poses_{i:04d}.pdbqt\",\n                \"metadata\": f\"metadata_{i:04d}.json\",\n            },\n            \"binding_site\": protein_input.binding_site if protein_input and protein_input.binding_site else {},\n        }\n\n        output_file = args.output / f\"wu_{i:04d}.json\"\n        with open(output_file, \"w\") as f:\n            json.dump(wu_config, f, indent=2)\n\n    print(f\"Created {n_units} work unit configs in {args.output}\")"
+            },
+            {
+              "id": "4cd1816f3739c2d76f0ea0d5",
+              "path": "LICENSE",
+              "start_line": 1,
+              "end_line": 21,
+              "sha256": "86a919aeeb82b9c13807b3666b693716f0dd4741772f55f280975f54d26acd28",
+              "kind": "file",
+              "content": "MIT License\n\nCopyright (c) 2026 Humanity Grid Contributors\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+            },
+            {
+              "id": "f8d02f7ba22b5eb376aab9a4",
+              "path": "LICENSE-POLICY.md",
+              "start_line": 1,
+              "end_line": 30,
+              "sha256": "1564c50a23b139e5039e1f2d7b0e70040de7f704bd2b25954ec221e3cd2ec765",
+              "kind": "file",
+              "content": "# License policy and artifact boundaries\n\nThe repository's [MIT License](LICENSE) applies to original project code and\ndocumentation for which the project can grant that license. It is selected to\nmake early technical review, reuse, and contribution straightforward.\n\nThe MIT License does not grant rights that the project does not hold. In\nparticular, imported datasets, source structures, identifiers, software\ndependencies, images, and generated outputs may have separate terms. Their\npresence in this repository does not silently relicense them.\n\nThe EXP-001 package has a file-specific boundary in\n[`proofs/EXP-001-v1/LICENSES.md`](proofs/EXP-001-v1/LICENSES.md). Before using\nthat package beyond review, identify the source and terms for every input and\nexternal dependency relevant to the intended use.\n\n## Contributions\n\nContributors retain their copyright unless they separately agree otherwise. By\nsubmitting a pull request with the required DCO sign-off, contributors license\ntheir contribution under the MIT License. See\n[CONTRIBUTOR-PROVENANCE.md](CONTRIBUTOR-PROVENANCE.md).\n\n## Future licensing decisions\n\nA different license for future modules, a dual-license offering, trademark\nregistration, employment assignment, contributor agreement, or a data-use\nagreement must be evaluated before it is announced or applied. Do not change\nthe root license or relicense third-party material by implication.\n"
+            },
+            {
+              "id": "5c0f4f8db6a04d0356d7ebe1",
+              "path": "NOTICE",
+              "start_line": 1,
+              "end_line": 13,
+              "sha256": "59cff6fb469b27344882fa4d594c221a81c28e4d259c4178ee3f2bdccf8089d2",
+              "kind": "file",
+              "content": "Humanity Grid\nCopyright (c) 2026 Sean McDonnell and contributors.\n\nHumanity Grid was initiated by Sean McDonnell in 2026. Copyright in each\ncontribution remains with its author or other rightsholder unless a separate,\nwritten agreement says otherwise. This notice records project origin and\nattribution; it does not assert employment, corporate ownership, assignment,\nor an exclusive right in work created by another person.\n\nThe repository is offered under the MIT License in LICENSE. Materials included\nfor review may carry third-party or source-specific terms; see LICENSE-POLICY.md\nand proofs/EXP-001-v1/LICENSES.md before reusing a packaged artifact.\n"
+            },
+            {
+              "id": "bba3fa13d8f15478a8625db3",
+              "path": "src/experiment-engine/scripts/split_work_units.py",
+              "start_line": 1,
+              "end_line": 84,
+              "sha256": "dc6571138f62ad3362495cade8c0fbead4dcbe2dd3bbea7d35c53f63e30fead4",
+              "kind": "file",
+              "content": "#!/usr/bin/env python3\n\"\"\"\nCLI to split JobSpec into work unit configs.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport argparse\nimport json\nimport math\nimport sys\nfrom pathlib import Path\n\nsys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))\n\nfrom experiment_engine.jobs.spec import JobSpec, WorkUnit\n\n\ndef main():\n    parser = argparse.ArgumentParser(description=\"Split JobSpec into work unit configs\")\n    parser.add_argument(\"job_spec\", type=Path, help=\"JobSpec YAML file\")\n    parser.add_argument(\"--output\", type=Path, default=Path(\"work_units\"), help=\"Output directory\")\n    parser.add_argument(\"--library-path\", type=Path, help=\"Path to compound library file\")\n    args = parser.parse_args()\n\n    # Load job spec\n    job = JobSpec.from_yaml(args.job_spec)\n\n    # Calculate work unit splits\n    total_compounds = job.work_units.total * job.work_units.compounds_per_unit\n    # Last unit may have fewer compounds\n    n_units = job.work_units.total\n\n    args.output.mkdir(parents=True, exist_ok=True)\n\n    # Get input file names from job spec\n    protein_input = job.inputs.get(\"protein_structure\")\n    library_input = job.inputs.get(\"compound_library\")\n    config_input = job.inputs.get(\"docking_parameters\")\n\n    protein_file = protein_input.source if protein_input else \"protein.pdbqt\"\n    library_file = library_input.source if library_input else \"library.sdf\"\n    config_file = config_input.source if config_input else \"config.txt\"\n\n    # Default docking parameters\n    default_params = {\"exhaustiveness\": 16, \"num_modes\": 10, \"energy_range\": 3.0}\n    docking_params = default_params.copy()\n    if config_input and config_input.format == \"json\":\n        # If params are embedded in the input, they'd be parsed separately\n        pass\n\n    for i in range(n_units):\n        start = i * job.work_units.compounds_per_unit\n        end = min(start + job.work_units.compounds_per_unit, total_compounds)\n\n        # Create work unit config\n        wu_config = {\n            \"work_unit_id\": f\"{job.job_id}-WU-{i:04d}\",\n            \"job_id\": job.job_id,\n            \"index\": i,\n            \"compound_range\": [start, end - 1],\n            \"parameters\": docking_params,\n            \"input_files\": {\n                \"protein\": protein_file,\n                \"compounds\": library_file,\n                \"config\": config_file,\n            },\n            \"output_files\": {\n                \"results\": f\"results_{i:04d}.parquet\",\n                \"poses\": f\"poses_{i:04d}.pdbqt\",\n                \"metadata\": f\"metadata_{i:04d}.json\",\n            },\n            \"binding_site\": protein_input.binding_site if protein_input and protein_input.binding_site else {},\n        }\n\n        output_file = args.output / f\"wu_{i:04d}.json\"\n        with open(output_file, \"w\") as f:\n            json.dump(wu_config, f, indent=2)\n\n    print(f\"Created {n_units} work unit configs in {args.output}\")\n\n\nif __name__ == \"__main__\":\n    main()"
+            },
+            {
+              "id": "b64da9a2c6151d109e685dbb",
+              "path": "src/experiment-engine/pyproject.toml",
+              "start_line": 1,
+              "end_line": 73,
+              "sha256": "93af0aa3bc20e628330dadcdda8c25d458723f8f8b249e328bec88c807cbd5a4",
+              "kind": "file",
+              "content": "[project]\nname = \"experiment-engine\"\nversion = \"0.1.0\"\ndescription = \"Job definitions, datasets, reproducibility, and provenance for Humanity Grid\"\nreadme = \"README.md\"\nrequires-python = \">=3.12\"\nlicense = {text = \"MIT\"}\nauthors = [\n    {name = \"NextEleven\", email = \"sean@nexteleven.com\"}\n]\nkeywords = [\"science\", \"distributed-computing\", \"reproducibility\", \"provenance\", \"drug-discovery\"]\nclassifiers = [\n    \"Development Status :: 2 - Pre-Alpha\",\n    \"Intended Audience :: Science/Research\",\n    \"License :: OSI Approved :: MIT License\",\n    \"Programming Language :: Python :: 3.12\",\n    \"Topic :: Scientific/Engineering :: Bio-Informatics\",\n    \"Topic :: Scientific/Engineering :: Chemistry\",\n]\ndependencies = [\n    \"pydantic>=2.8\",\n    \"pydantic-settings>=2.4\",\n    \"pydantic-yaml>=1.0\",\n    \"pyyaml>=6.0\",\n    \"rich>=13.9\",\n    \"loguru>=0.7\",\n    \"polars>=1.10\",\n    \"pyarrow>=17.0\",\n    \"duckdb>=1.1\",\n    \"sqlite-utils>=3.37\",\n    \"httpx>=0.27\",\n    \"tenacity>=8.5\",\n    \"hashlib\",\n    \"pathlib\",\n]\n\n[project.optional-dependencies]\ndev = [\n    \"pytest>=8.3\",\n    \"pytest-asyncio>=0.23\",\n    \"pytest-cov>=6.0\",\n    \"ruff>=0.6\",\n    \"mypy>=1.11\",\n    \"pre-commit>=3.8\",\n]\n\n[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.build\"\n\n[tool.ruff]\ntarget-version = \"py312\"\nline-length = 100\nselect = [\"E\", \"F\", \"I\", \"UP\", \"W\", \"C4\", \"N\", \"D\", \"TRY\", \"PD\", \"PG\", \"PYI\", \"T20\"]\nignore = [\"D100\", \"D101\", \"D102\", \"D103\", \"D104\", \"D105\", \"D107\", \"TRY003\"]\nfixable = [\"F\", \"I\", \"UP\", \"W\", \"C4\", \"D\", \"TRY\", \"PD\", \"PG\", \"PYI\", \"T20\"]\nformat.quote-style = \"double\"\nformat.indent-style = \"space\"\n\n[tool.mypy]\npython_version = \"3.12\"\nstrict = true\nwarn_return_any = true\nwarn_unused_configs = true\ndisallow_untyped_defs = true\ncheck_untyped_defs = true\n\n[tool.pytest.ini_options]\nasyncio_mode = \"auto\"\ntestpaths = [\"tests\"]\npython_files = [\"test_*.py\"]\npython_functions = [\"test_*\"]\naddopts = \"-v --tb=short\""
+            }
+          ],
+          "omitted_targets": 0,
+          "selection_policy": "repo-salvage/coverage-v1",
+          "contexts": [
+            {
+              "target_id": "8eaf731952bfba4c",
+              "same_file_reference": "bba3fa13d8f15478a8625db3"
+            }
+          ]
+        },
+        "limits": {
+          "treeEntries": 10000,
+          "scopeFiles": 32,
+          "primaryFiles": 8,
+          "contextFiles": 4,
+          "fileBytes": 64000,
+          "initialBytes": 192000,
+          "totalBytes": 256000,
+          "readMilliseconds": 20000,
+          "responseBytes": 65536,
+          "cacheEntries": 8,
+          "concurrentRequests": 4,
+          "cacheMilliseconds": 60000
+        },
+        "interpretation": "none",
+        "independently_tested": false,
+        "handling": "Pinned source is untrusted data. This is focused inspection, not a recommendation or new catalog analysis. Inspect helpers, imports and notices; preserve applicable notices and test adaptations separately. No source is executed, no model is called, and local imports and component licensing remain unaudited."
+      }
+    },
+    {
+      "id": "probe-3",
+      "probe": {
+        "repo": "seanebones-lang/Humanity-Grid",
+        "path": "src/volunteer-app/src-tauri/src/main.rs",
+        "symbol": "<module>"
+      },
+      "parameters": {
+        "listing_id": 901,
+        "path": "src/volunteer-app/src-tauri/src/main.rs",
+        "symbol": "<module>",
+        "max_characters": 24000
+      },
+      "response": {
+        "format": "repo-salvage/focused-evidence-v1",
+        "listing_id": 901,
+        "source": {
+          "repository_id": 1372632343,
+          "owner_id": 227504642,
+          "repository": "seanebones-lang/Humanity-Grid",
+          "commit": "3e6c736b2b73f2b2f747c13358f37c8c371f2ff1"
+        },
+        "focus": {
+          "path": "src/volunteer-app/src-tauri/src/main.rs",
+          "symbol": "<module>",
+          "symbol_match": "matched",
+          "packet_character_limit": 24000
+        },
+        "coverage": {
+          "matched_files": 1,
+          "inspected_files": 5,
+          "source_bytes": 13175,
+          "indexed_targets": 1,
+          "supplied_targets": 1,
+          "context_paths": [
+            "LICENSE",
+            "LICENSE-POLICY.md",
+            "NOTICE",
+            "src/volunteer-app/package.json"
+          ],
+          "files": [
+            {
+              "path": "src/volunteer-app/src-tauri/src/main.rs",
+              "size_bytes": 9197,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/Humanity-Grid/3e6c736b2b73f2b2f747c13358f37c8c371f2ff1/src/volunteer-app/src-tauri/src/main.rs",
+              "git_blob_sha": "fd80975cb4a17a83a6ef055ba0b74df869a2e3d9",
+              "inspection": "complete",
+              "reason": null,
+              "indexed_targets": 1,
+              "supplied_targets": 1,
+              "same_file_supplied": true
+            }
+          ],
+          "skipped": [
+            {
+              "path": "src/volunteer-app/src-tauri/Cargo.toml",
+              "reason": "context_file_limit"
+            },
+            {
+              "path": "src/volunteer-app/tsconfig.json",
+              "reason": "context_file_limit"
+            }
+          ],
+          "skipped_details_omitted": 0
+        },
+        "packet": {
+          "format": "repo-salvage/source-index-v2",
+          "targets": [
+            {
+              "id": "7d61e689dd0b3bec",
+              "path": "src/volunteer-app/src-tauri/src/main.rs",
+              "symbol": "<module>",
+              "kind": "file",
+              "reference_id": "7af58b00a4455e1ceb5ec6d7",
+              "imports": [],
+              "supporting_paths": [],
+              "unresolved": [
+                "Imports not statically inspected: src/volunteer-app/src-tauri/src/main.rs"
+              ],
+              "test_paths": [],
+              "notice_paths": ["LICENSE", "LICENSE-POLICY.md", "NOTICE"]
+            }
+          ],
+          "references": [
+            {
+              "id": "7af58b00a4455e1ceb5ec6d7",
+              "path": "src/volunteer-app/src-tauri/src/main.rs",
+              "start_line": 1,
+              "end_line": 328,
+              "sha256": "feeaa8420f1169aa30225b0f16209fd31f201b27f849a29431221280c1311243",
+              "kind": "file",
+              "content": "#[cfg_attr(mobile, tauri::mobile_entry_point)]\npub fn run() {\n    tauri::Builder::default()\n        .plugin(tauri_plugin_opener::init())\n        .plugin(tauri_plugin_notification::init())\n        .plugin(tauri_plugin_dialog::init())\n        .plugin(tauri_plugin_fs::init())\n        .plugin(tauri_plugin_shell::init())\n        .plugin(tauri_plugin_process::init())\n        .plugin(tauri_plugin_updater::Builder::new().build())\n        .plugin(tauri_plugin_clipboard_manager::init())\n        .plugin(tauri_plugin_global_shortcut::Builder::new().build())\n        .plugin(tauri_plugin_http::init())\n        .plugin(tauri_plugin_websocket::init())\n        .plugin(tauri_plugin_sql::Builder::default().add_migrations(\"sqlite:humanity_grid.db\", vec![\n            tauri_plugin_sql::Migration {\n                version: 1,\n                description: \"create_initial_tables\",\n                sql: include_str!(\"../migrations/001_initial.sql\"),\n                kind: tauri_plugin_sql::MigrationKind::Up,\n            }\n        ]).build())\n        .setup(|app| {\n            // Initialize system monitoring\n            #[cfg(debug_assertions)]\n            {\n                let window = app.get_webview_window(\"main\").unwrap();\n                window.open_devtools();\n            }\n            Ok(())\n        })\n        .invoke_handler(tauri::generate_handler![\n            // System info\n            get_system_info,\n            get_thermal_info,\n            get_power_info,\n            // BOINC control\n            boinc_get_status,\n            boinc_start,\n            boinc_stop,\n            boinc_pause,\n            boinc_resume,\n            // Settings\n            get_settings,\n            update_settings,\n            // Contributions\n            get_contributions,\n            get_project_stories,\n        ])\n        .run(tauri::generate_context!())\n        .expect(\"error while running tauri application\");\n}\n\n// System info commands\n#[tauri::command]\nasync fn get_system_info() -> Result<SystemInfo, String> {\n    let mut sys = sysinfo::System::new_all();\n    sys.refresh_all();\n\n    let cpu_usage = sys.global_cpu_usage();\n    let total_memory = sys.total_memory();\n    let used_memory = sys.used_memory();\n    let available_memory = sys.available_memory();\n\n    let cpus = sys.cpus().iter().map(|cpu| CpuInfo {\n        name: cpu.name().to_string(),\n        usage: cpu.cpu_usage(),\n        frequency: cpu.frequency(),\n    }).collect();\n\n    let gpus = detect_gpus();\n\n    Ok(SystemInfo {\n        cpu_usage,\n        total_memory,\n        used_memory,\n        available_memory,\n        cpus,\n        gpus,\n        os: std::env::consts::OS.to_string(),\n        arch: std::env::consts::ARCH.to_string(),\n    })\n}\n\n#[tauri::command]\nasync fn get_thermal_info() -> Result<ThermalInfo, String> {\n    let mut sys = sysinfo::System::new_all();\n    sys.refresh_all();\n\n    let temperatures = sys.components().iter().map(|comp| TemperatureReading {\n        label: comp.label().to_string(),\n        temperature: comp.temperature(),\n        max: comp.max(),\n        critical: comp.critical(),\n    }).collect();\n\n    Ok(ThermalInfo { temperatures })\n}\n\n#[tauri::command]\nasync fn get_power_info() -> Result<PowerInfo, String> {\n    // Platform-specific power detection\n    // For now, return mock data\n    Ok(PowerInfo {\n        on_battery: false,\n        battery_percentage: 100,\n        time_remaining: None,\n        is_charging: true,\n    })\n}\n\n// BOINC commands (stubs - will implement full integration)\n#[tauri::command]\nasync fn boinc_get_status() -> Result<BoincStatus, String> {\n    Ok(BoincStatus {\n        running: false,\n        connected: false,\n        active_tasks: 0,\n        gpu_tasks: 0,\n        cpu_tasks: 0,\n        download_speed: 0.0,\n        upload_speed: 0.0,\n    })\n}\n\n#[tauri::command]\nasync fn boinc_start() -> Result<(), String> {\n    // TODO: Start BOINC client\n    Ok(())\n}\n\n#[tauri::command]\nasync fn boinc_stop() -> Result<(), String> {\n    // TODO: Stop BOINC client\n    Ok(())\n}\n\n#[tauri::command]\nasync fn boinc_pause() -> Result<(), String> {\n    Ok(())\n}\n\n#[tauri::command]\nasync fn boinc_resume() -> Result<(), String> {\n    Ok(())\n}\n\n// Settings commands\n#[tauri::command]\nasync fn get_settings() -> Result<UserSettings, String> {\n    // TODO: Load from database\n    Ok(UserSettings::default())\n}\n\n#[tauri::command]\nasync fn update_settings(settings: UserSettings) -> Result<(), String> {\n    // TODO: Save to database\n    Ok(())\n}\n\n// Contributions commands\n#[tauri::command]\nasync fn get_contributions() -> Result<ContributionStats, String> {\n    Ok(ContributionStats {\n        total_hours: 0.0,\n        validated_work_units: 0,\n        projects_contributed: 0,\n        papers_published: 0,\n        current_streak: 0,\n        total_credits: 0,\n    })\n}\n\n#[tauri::command]\nasync fn get_project_stories() -> Result<Vec<ProjectStory>, String> {\n    Ok(vec![])\n}\n\n// Data structures\n#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]\nstruct SystemInfo {\n    cpu_usage: f32,\n    total_memory: u64,\n    used_memory: u64,\n    available_memory: u64,\n    cpus: Vec<CpuInfo>,\n    gpus: Vec<GpuInfo>,\n    os: String,\n    arch: String,\n}\n\n#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]\nstruct CpuInfo {\n    name: String,\n    usage: f32,\n    frequency: u64,\n}\n\n#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]\nstruct GpuInfo {\n    name: String,\n    vendor: String,\n    memory_total: u64,\n    memory_used: u64,\n    utilization: f32,\n    temperature: Option<f32>,\n}\n\n#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]\nstruct ThermalInfo {\n    temperatures: Vec<TemperatureReading>,\n}\n\n#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]\nstruct TemperatureReading {\n    label: String,\n    temperature: f32,\n    max: Option<f32>,\n    critical: Option<f32>,\n}\n\n#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]\nstruct PowerInfo {\n    on_battery: bool,\n    battery_percentage: u8,\n    time_remaining: Option<u64>,\n    is_charging: bool,\n}\n\n#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]\nstruct BoincStatus {\n    running: bool,\n    connected: bool,\n    active_tasks: u32,\n    gpu_tasks: u32,\n    cpu_tasks: u32,\n    download_speed: f64,\n    upload_speed: f64,\n}\n\n#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, Default)]\nstruct UserSettings {\n    causes: Vec<CauseAllocation>,\n    cpu_limit_percent: u8,\n    gpu_limit_percent: u8,\n    memory_limit_gb: u32,\n    thermal_limit_celsius: u8,\n    thermal_resume_celsius: u8,\n    run_on_battery: bool,\n    schedule: ScheduleConfig,\n    network_wifi_only: bool,\n    network_metered_allowed: bool,\n}\n\n#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]\nstruct CauseAllocation {\n    id: String,\n    name: String,\n    icon: String,\n    percentage: u8,\n    enabled: bool,\n}\n\nimpl Default for UserSettings {\n    fn default() -> Self {\n        Self {\n            causes: vec![\n                CauseAllocation { id: \"cancer\".into(), name: \"Cancer Research\".into(), icon: \"🧬\".into(), percentage: 50, enabled: true },\n                CauseAllocation { id: \"alzheimer\".into(), name: \"Alzheimer's Research\".into(), icon: \"🧠\".into(), percentage: 30, enabled: true },\n                CauseAllocation { id: \"antibiotics\".into(), name: \"Antibiotic Discovery\".into(), icon: \"🦠\".into(), percentage: 20, enabled: true },\n                CauseAllocation { id: \"climate\".into(), name: \"Climate Modeling\".into(), icon: \"🌎\".into(), percentage: 0, enabled: false },\n                CauseAllocation { id: \"energy\".into(), name: \"Clean Energy\".into(), icon: \"🔋\".into(), percentage: 0, enabled: false },\n                CauseAllocation { id: \"rare\".into(), name: \"Rare Diseases\".into(), icon: \"🧬\".into(), percentage: 0, enabled: false },\n            ],\n            cpu_limit_percent: 30,\n            gpu_limit_percent: 40,\n            memory_limit_gb: 8,\n            thermal_limit_celsius: 75,\n            thermal_resume_celsius: 65,\n            run_on_battery: false,\n            schedule: ScheduleConfig::default(),\n            network_wifi_only: true,\n            network_metered_allowed: false,\n        }\n    }\n}\n\n#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, Default)]\nstruct ScheduleConfig {\n    weekday_start: String,\n    weekday_end: String,\n    weekend_all_day: bool,\n    custom_hours: Vec<ScheduleEntry>,\n}\n\n#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]\nstruct ScheduleEntry {\n    day: String,\n    start: String,\n    end: String,\n}\n\n#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]\nstruct ContributionStats {\n    total_hours: f64,\n    validated_work_units: u64,\n    projects_contributed: u32,\n    papers_published: u32,\n    current_streak: u32,\n    total_credits: u64,\n}\n\n#[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]\nstruct ProjectStory {\n    project_id: String,\n    title: String,\n    description: String,\n    your_contribution: String,\n    molecules_screened: u64,\n    hours_donated: f64,\n    status: String,\n}\n\nfn detect_gpus() -> Vec<GpuInfo> {\n    // Platform-specific GPU detection\n    // For now, return empty - will implement with platform-specific code\n    vec![]\n}"
+            },
+            {
+              "id": "4cd1816f3739c2d76f0ea0d5",
+              "path": "LICENSE",
+              "start_line": 1,
+              "end_line": 21,
+              "sha256": "86a919aeeb82b9c13807b3666b693716f0dd4741772f55f280975f54d26acd28",
+              "kind": "file",
+              "content": "MIT License\n\nCopyright (c) 2026 Humanity Grid Contributors\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE."
+            },
+            {
+              "id": "f8d02f7ba22b5eb376aab9a4",
+              "path": "LICENSE-POLICY.md",
+              "start_line": 1,
+              "end_line": 30,
+              "sha256": "1564c50a23b139e5039e1f2d7b0e70040de7f704bd2b25954ec221e3cd2ec765",
+              "kind": "file",
+              "content": "# License policy and artifact boundaries\n\nThe repository's [MIT License](LICENSE) applies to original project code and\ndocumentation for which the project can grant that license. It is selected to\nmake early technical review, reuse, and contribution straightforward.\n\nThe MIT License does not grant rights that the project does not hold. In\nparticular, imported datasets, source structures, identifiers, software\ndependencies, images, and generated outputs may have separate terms. Their\npresence in this repository does not silently relicense them.\n\nThe EXP-001 package has a file-specific boundary in\n[`proofs/EXP-001-v1/LICENSES.md`](proofs/EXP-001-v1/LICENSES.md). Before using\nthat package beyond review, identify the source and terms for every input and\nexternal dependency relevant to the intended use.\n\n## Contributions\n\nContributors retain their copyright unless they separately agree otherwise. By\nsubmitting a pull request with the required DCO sign-off, contributors license\ntheir contribution under the MIT License. See\n[CONTRIBUTOR-PROVENANCE.md](CONTRIBUTOR-PROVENANCE.md).\n\n## Future licensing decisions\n\nA different license for future modules, a dual-license offering, trademark\nregistration, employment assignment, contributor agreement, or a data-use\nagreement must be evaluated before it is announced or applied. Do not change\nthe root license or relicense third-party material by implication.\n"
+            },
+            {
+              "id": "5c0f4f8db6a04d0356d7ebe1",
+              "path": "NOTICE",
+              "start_line": 1,
+              "end_line": 13,
+              "sha256": "59cff6fb469b27344882fa4d594c221a81c28e4d259c4178ee3f2bdccf8089d2",
+              "kind": "file",
+              "content": "Humanity Grid\nCopyright (c) 2026 Sean McDonnell and contributors.\n\nHumanity Grid was initiated by Sean McDonnell in 2026. Copyright in each\ncontribution remains with its author or other rightsholder unless a separate,\nwritten agreement says otherwise. This notice records project origin and\nattribution; it does not assert employment, corporate ownership, assignment,\nor an exclusive right in work created by another person.\n\nThe repository is offered under the MIT License in LICENSE. Materials included\nfor review may carry third-party or source-specific terms; see LICENSE-POLICY.md\nand proofs/EXP-001-v1/LICENSES.md before reusing a packaged artifact.\n"
+            },
+            {
+              "id": "494c56dc4bdd2b74202310ef",
+              "path": "src/volunteer-app/package.json",
+              "start_line": 1,
+              "end_line": 34,
+              "sha256": "1f05178dfa371d0118ca5dd2f27720b411c0f728cb09dcbe6e046270da490fab",
+              "kind": "file",
+              "content": "{\n  \"name\": \"humanity-grid-volunteer\",\n  \"version\": \"0.1.0\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"tsc && vite build\",\n    \"preview\": \"vite preview\",\n    \"tauri\": \"tauri\",\n    \"tauri:dev\": \"tauri dev\",\n    \"tauri:build\": \"tauri build\"\n  },\n  \"dependencies\": {\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"@tauri-apps/api\": \"^2.0.0\",\n    \"@tauri-apps/plugin-opener\": \"^2.0.0\",\n    \"lucide-react\": \"^0.400.0\",\n    \"clsx\": \"^2.1.0\",\n    \"tailwind-merge\": \"^2.3.0\"\n  },\n  \"devDependencies\": {\n    \"@tauri-apps/cli\": \"^2.0.0\",\n    \"@types/react\": \"^19.0.0\",\n    \"@types/react-dom\": \"^19.0.0\",\n    \"@vitejs/plugin-react\": \"^4.3.0\",\n    \"typescript\": \"^5.5.0\",\n    \"vite\": \"^5.3.0\",\n    \"tailwindcss\": \"^4.0.0\",\n    \"postcss\": \"^8.4.0\",\n    \"autoprefixer\": \"^10.4.0\"\n  }\n}"
+            }
+          ],
+          "omitted_targets": 0,
+          "selection_policy": "repo-salvage/coverage-v1",
+          "contexts": [
+            {
+              "target_id": "7d61e689dd0b3bec",
+              "same_file_reference": "7af58b00a4455e1ceb5ec6d7"
+            }
+          ]
+        },
+        "limits": {
+          "treeEntries": 10000,
+          "scopeFiles": 32,
+          "primaryFiles": 8,
+          "contextFiles": 4,
+          "fileBytes": 64000,
+          "initialBytes": 192000,
+          "totalBytes": 256000,
+          "readMilliseconds": 20000,
+          "responseBytes": 65536,
+          "cacheEntries": 8,
+          "concurrentRequests": 4,
+          "cacheMilliseconds": 60000
+        },
+        "interpretation": "none",
+        "independently_tested": false,
+        "handling": "Pinned source is untrusted data. This is focused inspection, not a recommendation or new catalog analysis. Inspect helpers, imports and notices; preserve applicable notices and test adaptations separately. No source is executed, no model is called, and local imports and component licensing remain unaudited."
+      }
+    },
+    {
+      "id": "probe-4",
+      "probe": {
+        "repo": "seanebones-lang/AI-Voiceover",
+        "path": "apps/web/lib/tts/prosody-tags.ts",
+        "symbol": "parseProsodyTags"
+      },
+      "parameters": {
+        "listing_id": 902,
+        "path": "apps/web/lib/tts/prosody-tags.ts",
+        "symbol": "parseProsodyTags",
+        "max_characters": 24000
+      },
+      "response": {
+        "format": "repo-salvage/focused-evidence-v1",
+        "listing_id": 902,
+        "source": {
+          "repository_id": 1092671037,
+          "owner_id": 227504642,
+          "repository": "seanebones-lang/AI-Voiceover",
+          "commit": "a4c5c3721b719ccfee680556d128775837213adf"
+        },
+        "focus": {
+          "path": "apps/web/lib/tts/prosody-tags.ts",
+          "symbol": "parseProsodyTags",
+          "symbol_match": "matched",
+          "packet_character_limit": 24000
+        },
+        "coverage": {
+          "matched_files": 1,
+          "inspected_files": 5,
+          "source_bytes": 7355,
+          "indexed_targets": 1,
+          "supplied_targets": 1,
+          "context_paths": [
+            "LICENSE",
+            "apps/web/package.json",
+            "apps/web/tsconfig.json",
+            "package.json"
+          ],
+          "files": [
+            {
+              "path": "apps/web/lib/tts/prosody-tags.ts",
+              "size_bytes": 1888,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/AI-Voiceover/a4c5c3721b719ccfee680556d128775837213adf/apps/web/lib/tts/prosody-tags.ts",
+              "git_blob_sha": "9504001500d650b0a5dc78ab52b797ec55946fb1",
+              "inspection": "complete",
+              "reason": null,
+              "indexed_targets": 1,
+              "supplied_targets": 1,
+              "same_file_supplied": true
+            }
+          ],
+          "skipped": [],
+          "skipped_details_omitted": 0
+        },
+        "packet": {
+          "format": "repo-salvage/source-index-v2",
+          "targets": [
+            {
+              "id": "ded14c1b054626d8",
+              "path": "apps/web/lib/tts/prosody-tags.ts",
+              "symbol": "parseProsodyTags",
+              "kind": "declaration",
+              "reference_id": "7ec4cc3a151b03e7b0de72d4",
+              "imports": [],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [],
+              "notice_paths": ["LICENSE"]
+            }
+          ],
+          "references": [
+            {
+              "id": "7ec4cc3a151b03e7b0de72d4",
+              "path": "apps/web/lib/tts/prosody-tags.ts",
+              "start_line": 26,
+              "end_line": 67,
+              "sha256": "3dbe74608e1a468bb91943a2cf29126255cc1bc1fb6b3e690bce699cb1eea569",
+              "kind": "declaration",
+              "content": "export function parseProsodyTags(text: string): ProsodyTagParseResult {\n  if (!text) return { cleanText: text, adjustments: { ...DEFAULT_ADJUSTMENTS } }\n\n  let speedDelta = 0\n  let pitchDelta = 0\n  let reverbDelta = 0\n\n  const emphCount = (text.match(/\\[emph\\]/gi) || []).length\n  const strongCount = (text.match(/\\[strong\\]/gi) || []).length\n  const questionCount = (text.match(/\\[question\\]/gi) || []).length\n  const pauseShort = (text.match(/\\[pause:short\\]/gi) || []).length\n  const pauseMedium = (text.match(/\\[pause(?::medium)?\\]/gi) || []).length\n  const pauseLong = (text.match(/\\[pause:long\\]/gi) || []).length\n\n  speedDelta += emphCount * 0.02\n  pitchDelta += emphCount * 0.6\n\n  speedDelta += strongCount * 0.04\n  pitchDelta += strongCount * 1.0\n\n  pitchDelta += questionCount * 0.8\n\n  speedDelta -= pauseShort * 0.01\n  speedDelta -= pauseMedium * 0.02\n  speedDelta -= pauseLong * 0.03\n  reverbDelta += (pauseMedium + pauseLong) * 0.02\n\n  const cleanText = text\n    .replace(/\\[(\\/)?(emph|strong|question)\\]/gi, '')\n    .replace(/\\[pause(?::short|:medium|:long)?\\]/gi, ' — ')\n    .replace(/\\s+/g, ' ')\n    .trim()\n\n  return {\n    cleanText,\n    adjustments: {\n      speedDelta: clamp(speedDelta, -0.18, 0.22),\n      pitchDelta: clamp(pitchDelta, -6, 8),\n      reverbDelta: clamp(reverbDelta, 0, 0.2),\n    },\n  }\n}"
+            },
+            {
+              "id": "6ac6154d34fa4e758508abe1",
+              "path": "LICENSE",
+              "start_line": 1,
+              "end_line": 22,
+              "sha256": "ea8f3bf6e196fc163a30dcb580af8cd4b77b9509b6f018cf8c9681ee9b7329c7",
+              "kind": "file",
+              "content": "MIT License\n\nCopyright (c) 2026 Sean McDonnell\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+            },
+            {
+              "id": "e53aa2359502120ef9918317",
+              "path": "apps/web/lib/tts/prosody-tags.ts",
+              "start_line": 1,
+              "end_line": 68,
+              "sha256": "3dbe74608e1a468bb91943a2cf29126255cc1bc1fb6b3e690bce699cb1eea569",
+              "kind": "file",
+              "content": "export type ProsodyTagAdjustments = {\n  speedDelta: number\n  pitchDelta: number\n  reverbDelta: number\n}\n\nexport type ProsodyTagParseResult = {\n  cleanText: string\n  adjustments: ProsodyTagAdjustments\n}\n\nconst DEFAULT_ADJUSTMENTS: ProsodyTagAdjustments = {\n  speedDelta: 0,\n  pitchDelta: 0,\n  reverbDelta: 0,\n}\n\nfunction clamp(n: number, lo: number, hi: number): number {\n  return Math.min(hi, Math.max(lo, n))\n}\n\n/**\n * SSML-lite deterministic controls:\n * [emph]...[/emph], [strong]...[/strong], [question]...[/question], [pause], [pause:short|medium|long]\n */\nexport function parseProsodyTags(text: string): ProsodyTagParseResult {\n  if (!text) return { cleanText: text, adjustments: { ...DEFAULT_ADJUSTMENTS } }\n\n  let speedDelta = 0\n  let pitchDelta = 0\n  let reverbDelta = 0\n\n  const emphCount = (text.match(/\\[emph\\]/gi) || []).length\n  const strongCount = (text.match(/\\[strong\\]/gi) || []).length\n  const questionCount = (text.match(/\\[question\\]/gi) || []).length\n  const pauseShort = (text.match(/\\[pause:short\\]/gi) || []).length\n  const pauseMedium = (text.match(/\\[pause(?::medium)?\\]/gi) || []).length\n  const pauseLong = (text.match(/\\[pause:long\\]/gi) || []).length\n\n  speedDelta += emphCount * 0.02\n  pitchDelta += emphCount * 0.6\n\n  speedDelta += strongCount * 0.04\n  pitchDelta += strongCount * 1.0\n\n  pitchDelta += questionCount * 0.8\n\n  speedDelta -= pauseShort * 0.01\n  speedDelta -= pauseMedium * 0.02\n  speedDelta -= pauseLong * 0.03\n  reverbDelta += (pauseMedium + pauseLong) * 0.02\n\n  const cleanText = text\n    .replace(/\\[(\\/)?(emph|strong|question)\\]/gi, '')\n    .replace(/\\[pause(?::short|:medium|:long)?\\]/gi, ' — ')\n    .replace(/\\s+/g, ' ')\n    .trim()\n\n  return {\n    cleanText,\n    adjustments: {\n      speedDelta: clamp(speedDelta, -0.18, 0.22),\n      pitchDelta: clamp(pitchDelta, -6, 8),\n      reverbDelta: clamp(reverbDelta, 0, 0.2),\n    },\n  }\n}\n"
+            },
+            {
+              "id": "2571f29c868e1c7afa91a166",
+              "path": "apps/web/package.json",
+              "start_line": 1,
+              "end_line": 84,
+              "sha256": "4f2c16e3b242d6fc05ccd6159a17247c65fe7f1445d3e6489756223ef53dcb25",
+              "kind": "file",
+              "content": "{\n  \"name\": \"@ai-voiceover/web\",\n  \"version\": \"3.0.0\",\n  \"private\": true,\n  \"scripts\": {\n    \"dev\": \"next dev\",\n    \"build\": \"next build\",\n    \"start\": \"next start\",\n    \"lint\": \"eslint . --max-warnings 0\",\n    \"lint:strict\": \"eslint . --max-warnings 0\",\n    \"typecheck\": \"tsc --noEmit\",\n    \"typecheck:test\": \"tsc --noEmit -p tsconfig.test.json\",\n    \"test\": \"jest\"\n  },\n  \"dependencies\": {\n    \"@ai-voiceover/auth\": \"*\",\n    \"@ai-voiceover/billing\": \"*\",\n    \"@ai-voiceover/contracts\": \"*\",\n    \"@ai-voiceover/db\": \"*\",\n    \"@clerk/backend\": \"^1.27.0\",\n    \"@clerk/nextjs\": \"^6.36.5\",\n    \"@fontsource-variable/inter\": \"^5.2.8\",\n    \"@hookform/resolvers\": \"^3.10.0\",\n    \"@radix-ui/react-select\": \"^2.2.6\",\n    \"@radix-ui/react-slider\": \"^1.3.6\",\n    \"@sentry/nextjs\": \"^10.42.0\",\n    \"@upstash/ratelimit\": \"^1.1.0\",\n    \"@upstash/redis\": \"^1.34.0\",\n    \"axios\": \"^1.6.2\",\n    \"bullmq\": \"^5.76.1\",\n    \"class-variance-authority\": \"^0.7.0\",\n    \"clsx\": \"^2.1.0\",\n    \"drizzle-kit\": \"0.31.10\",\n    \"drizzle-orm\": \"^0.45.2\",\n    \"edge-tts-universal\": \"^1.4.0\",\n    \"fluent-ffmpeg\": \"^2.1.3\",\n    \"form-data\": \"^4.0.0\",\n    \"ioredis\": \"^5.6.1\",\n    \"lucide-react\": \"^0.400.0\",\n    \"next\": \"^16.0.0\",\n    \"next-themes\": \"^0.2.1\",\n    \"onnxruntime-node\": \"^1.19.0\",\n    \"openai\": \"^4.52.7\",\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"react-hook-form\": \"^7.50.0\",\n    \"stripe\": \"^17.7.0\",\n    \"svix\": \"^1.66.0\",\n    \"swr\": \"^2.2.5\",\n    \"tailwind-merge\": \"^2.2.0\",\n    \"web-vitals\": \"^3.5.2\",\n    \"ws\": \"^8.19.0\",\n    \"zod\": \"^3.25.76\"\n  },\n  \"devDependencies\": {\n    \"@lhci/cli\": \"^0.15.1\",\n    \"@next/bundle-analyzer\": \"^16.0.0\",\n    \"@tailwindcss/forms\": \"^0.5.7\",\n    \"@tailwindcss/typography\": \"^0.5.10\",\n    \"@testing-library/jest-dom\": \"^6.1.5\",\n    \"@testing-library/react\": \"^16.0.0\",\n    \"@testing-library/user-event\": \"^14.5.1\",\n    \"@types/fluent-ffmpeg\": \"^2.1.24\",\n    \"@types/jest\": \"^30.0.0\",\n    \"@types/node\": \"^20.11.0\",\n    \"@types/react\": \"^19.0.0\",\n    \"@types/react-dom\": \"^19.0.0\",\n    \"@types/ws\": \"^8.5.10\",\n    \"autoprefixer\": \"^10.4.17\",\n    \"cross-fetch\": \"^4.1.0\",\n    \"eslint\": \"^9.0.0\",\n    \"eslint-config-next\": \"^16.0.0\",\n    \"jest\": \"^30.0.0\",\n    \"jest-environment-jsdom\": \"^30.0.0\",\n    \"lighthouse\": \"^12.8.2\",\n    \"postcss\": \"^8.5.8\",\n    \"tailwindcss\": \"^3.4.19\",\n    \"tailwindcss-animate\": \"^1.0.7\",\n    \"tsx\": \"^4.21.0\",\n    \"typescript\": \"^5.9.3\",\n    \"undici\": \"^8.1.0\"\n  }\n}\n"
+            },
+            {
+              "id": "3e4ace2f44510946a1eb5bf3",
+              "path": "apps/web/tsconfig.json",
+              "start_line": 1,
+              "end_line": 45,
+              "sha256": "b8ccbc05f8bc120cbecead8c2bbe4fe1ca2c768b844a5a473524ba0b70a32187",
+              "kind": "file",
+              "content": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"lib\": [\n      \"dom\",\n      \"dom.iterable\",\n      \"esnext\"\n    ],\n    \"allowJs\": true,\n    \"skipLibCheck\": true,\n    \"strict\": true,\n    \"noEmit\": true,\n    \"esModuleInterop\": true,\n    \"module\": \"esnext\",\n    \"moduleResolution\": \"bundler\",\n    \"resolveJsonModule\": true,\n    \"isolatedModules\": true,\n    \"jsx\": \"react-jsx\",\n    \"incremental\": true,\n    \"plugins\": [\n      {\n        \"name\": \"next\"\n      }\n    ],\n    \"paths\": {\n      \"@/*\": [\n        \"./*\"\n      ]\n    }\n  },\n  \"include\": [\n    \"next-env.d.ts\",\n    \"**/*.ts\",\n    \"**/*.tsx\",\n    \".next/types/**/*.ts\",\n    \".next/dev/types/**/*.ts\"\n  ],\n  \"exclude\": [\n    \"node_modules\",\n    \"drizzle.config.ts\",\n    \"__tests__\",\n    \"e2e\"\n  ]\n}\n"
+            },
+            {
+              "id": "b13313aacd08dc3cf0ee8887",
+              "path": "package.json",
+              "start_line": 1,
+              "end_line": 34,
+              "sha256": "774892a08585bf75795761685b578a5f465bc934e5b5beda6244da5e2378da20",
+              "kind": "file",
+              "content": "{\n  \"name\": \"ai-voiceover-monorepo\",\n  \"version\": \"3.0.0\",\n  \"private\": true,\n  \"workspaces\": [\n    \"apps/*\",\n    \"packages/*\"\n  ],\n  \"scripts\": {\n    \"dev\": \"npm run dev -w @ai-voiceover/web\",\n    \"build\": \"npm run build -w @ai-voiceover/web && npm run build -w @ai-voiceover/workers\",\n    \"start\": \"npm run start -w @ai-voiceover/web\",\n    \"lint\": \"npm run lint -w @ai-voiceover/web\",\n    \"lint:strict\": \"npm run lint:strict -w @ai-voiceover/web\",\n    \"typecheck\": \"npm run typecheck -w @ai-voiceover/web\",\n    \"typecheck:test\": \"npm run typecheck:test -w @ai-voiceover/web\",\n    \"typecheck:packages\": \"npm run typecheck -w @ai-voiceover/contracts && npm run typecheck -w @ai-voiceover/db && npm run typecheck -w @ai-voiceover/auth && npm run typecheck -w @ai-voiceover/billing\",\n    \"test\": \"npm run test -w @ai-voiceover/web\",\n    \"e2e\": \"playwright test\",\n    \"e2e:ui\": \"playwright test --ui\",\n    \"e2e:api\": \"playwright test e2e/api-*.spec.ts\",\n    \"e2e:full\": \"E2E_FULL=1 playwright test\",\n    \"railway:sync\": \"node scripts/railway-sync-vars.js\"\n  },\n  \"devDependencies\": {\n    \"@playwright/test\": \"^1.58.2\",\n    \"eslint\": \"^9.0.0\",\n    \"typescript\": \"^5.9.3\"\n  },\n  \"engines\": {\n    \"node\": \">=22.0.0\"\n  }\n}\n"
+            }
+          ],
+          "omitted_targets": 0,
+          "selection_policy": "repo-salvage/coverage-v1",
+          "contexts": [
+            {
+              "target_id": "ded14c1b054626d8",
+              "same_file_reference": "e53aa2359502120ef9918317"
+            }
+          ]
+        },
+        "limits": {
+          "treeEntries": 10000,
+          "scopeFiles": 32,
+          "primaryFiles": 8,
+          "contextFiles": 4,
+          "fileBytes": 64000,
+          "initialBytes": 192000,
+          "totalBytes": 256000,
+          "readMilliseconds": 20000,
+          "responseBytes": 65536,
+          "cacheEntries": 8,
+          "concurrentRequests": 4,
+          "cacheMilliseconds": 60000
+        },
+        "interpretation": "none",
+        "independently_tested": false,
+        "handling": "Pinned source is untrusted data. This is focused inspection, not a recommendation or new catalog analysis. Inspect helpers, imports and notices; preserve applicable notices and test adaptations separately. No source is executed, no model is called, and local imports and component licensing remain unaudited."
+      }
+    },
+    {
+      "id": "probe-5",
+      "probe": {
+        "repo": "seanebones-lang/AI-Voiceover",
+        "path": "apps/web/lib/tts-cache.ts",
+        "symbol": "buildTtsCacheKey"
+      },
+      "parameters": {
+        "listing_id": 902,
+        "path": "apps/web/lib/tts-cache.ts",
+        "symbol": "buildTtsCacheKey",
+        "max_characters": 24000
+      },
+      "response": {
+        "format": "repo-salvage/focused-evidence-v1",
+        "listing_id": 902,
+        "source": {
+          "repository_id": 1092671037,
+          "owner_id": 227504642,
+          "repository": "seanebones-lang/AI-Voiceover",
+          "commit": "a4c5c3721b719ccfee680556d128775837213adf"
+        },
+        "focus": {
+          "path": "apps/web/lib/tts-cache.ts",
+          "symbol": "buildTtsCacheKey",
+          "symbol_match": "matched",
+          "packet_character_limit": 24000
+        },
+        "coverage": {
+          "matched_files": 1,
+          "inspected_files": 5,
+          "source_bytes": 7521,
+          "indexed_targets": 1,
+          "supplied_targets": 1,
+          "context_paths": [
+            "LICENSE",
+            "apps/web/package.json",
+            "apps/web/tsconfig.json",
+            "package.json"
+          ],
+          "files": [
+            {
+              "path": "apps/web/lib/tts-cache.ts",
+              "size_bytes": 2054,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/AI-Voiceover/a4c5c3721b719ccfee680556d128775837213adf/apps/web/lib/tts-cache.ts",
+              "git_blob_sha": "a89bdcc1e554f58e21eb62fda8e8aaf118862574",
+              "inspection": "complete",
+              "reason": null,
+              "indexed_targets": 3,
+              "supplied_targets": 1,
+              "same_file_supplied": true
+            }
+          ],
+          "skipped": [],
+          "skipped_details_omitted": 0
+        },
+        "packet": {
+          "format": "repo-salvage/source-index-v2",
+          "targets": [
+            {
+              "id": "41abcc9e2a8db004",
+              "path": "apps/web/lib/tts-cache.ts",
+              "symbol": "buildTtsCacheKey",
+              "kind": "declaration",
+              "reference_id": "f51d88b65992df936dfa3978",
+              "imports": [
+                {
+                  "specifier": "node:crypto",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [],
+              "notice_paths": ["LICENSE"]
+            }
+          ],
+          "references": [
+            {
+              "id": "f51d88b65992df936dfa3978",
+              "path": "apps/web/lib/tts-cache.ts",
+              "start_line": 25,
+              "end_line": 56,
+              "sha256": "2ff309209a5653b2264ea66e81a80db7e012089c7bfd70cead16552472830c10",
+              "kind": "declaration",
+              "content": "export function buildTtsCacheKey(params: {\n  text: string\n  voice_id: string\n  language: string\n  speed: number\n  pitch: number\n  volume: number\n  reverb: number\n  echo: number\n  noise_reduction: boolean\n  special_effect: string\n  /** Clone tuning segment so preset / sampling changes bust cache correctly. */\n  clone_tune?: string\n  /** Emotion preset (server merges into prosody; included for cache correctness). */\n  emotion?: string\n}): string {\n  const payload = [\n    params.text.trim(),\n    params.voice_id,\n    params.language,\n    params.speed,\n    params.pitch,\n    params.volume,\n    params.reverb,\n    params.echo,\n    params.noise_reduction ? '1' : '0',\n    params.special_effect,\n    params.clone_tune ?? '',\n    params.emotion ?? 'neutral',\n  ].join('\\0')\n  return hash(payload)\n}"
+            },
+            {
+              "id": "6ac6154d34fa4e758508abe1",
+              "path": "LICENSE",
+              "start_line": 1,
+              "end_line": 22,
+              "sha256": "ea8f3bf6e196fc163a30dcb580af8cd4b77b9509b6f018cf8c9681ee9b7329c7",
+              "kind": "file",
+              "content": "MIT License\n\nCopyright (c) 2026 Sean McDonnell\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+            },
+            {
+              "id": "0f7bb46ab17622980aafb7d2",
+              "path": "apps/web/lib/tts-cache.ts",
+              "start_line": 1,
+              "end_line": 78,
+              "sha256": "2ff309209a5653b2264ea66e81a80db7e012089c7bfd70cead16552472830c10",
+              "kind": "file",
+              "content": "/**\n * In-memory TTS response cache for repeat lines (solo-creator workflow).\n * Cache key = hash of text + voice_id + params. Max 200 entries, LRU eviction.\n * March 2026\n */\n\nimport { createHash } from 'node:crypto'\n\nconst MAX_ENTRIES = 200\n\ninterface CacheEntry {\n  buffer: ArrayBuffer\n  contentType: string\n  createdAt: number\n}\n\nconst cache = new Map<string, CacheEntry>()\nconst keyOrder: string[] = []\n\nfunction hash(payload: string): string {\n  // Collision-resistant hash so distinct requests do not share audio.\n  return createHash('sha256').update(payload).digest('hex')\n}\n\nexport function buildTtsCacheKey(params: {\n  text: string\n  voice_id: string\n  language: string\n  speed: number\n  pitch: number\n  volume: number\n  reverb: number\n  echo: number\n  noise_reduction: boolean\n  special_effect: string\n  /** Clone tuning segment so preset / sampling changes bust cache correctly. */\n  clone_tune?: string\n  /** Emotion preset (server merges into prosody; included for cache correctness). */\n  emotion?: string\n}): string {\n  const payload = [\n    params.text.trim(),\n    params.voice_id,\n    params.language,\n    params.speed,\n    params.pitch,\n    params.volume,\n    params.reverb,\n    params.echo,\n    params.noise_reduction ? '1' : '0',\n    params.special_effect,\n    params.clone_tune ?? '',\n    params.emotion ?? 'neutral',\n  ].join('\\0')\n  return hash(payload)\n}\n\nexport function getCached(key: string): { buffer: ArrayBuffer; contentType: string } | null {\n  const entry = cache.get(key)\n  if (!entry) return null\n  // Move to end (most recently used)\n  const idx = keyOrder.indexOf(key)\n  if (idx !== -1) {\n    keyOrder.splice(idx, 1)\n    keyOrder.push(key)\n  }\n  return { buffer: entry.buffer, contentType: entry.contentType }\n}\n\nexport function setCached(key: string, buffer: ArrayBuffer, contentType: string): void {\n  while (cache.size >= MAX_ENTRIES && keyOrder.length > 0) {\n    const oldest = keyOrder.shift()!\n    cache.delete(oldest)\n  }\n  cache.set(key, { buffer, contentType, createdAt: Date.now() })\n  keyOrder.push(key)\n}\n"
+            },
+            {
+              "id": "2571f29c868e1c7afa91a166",
+              "path": "apps/web/package.json",
+              "start_line": 1,
+              "end_line": 84,
+              "sha256": "4f2c16e3b242d6fc05ccd6159a17247c65fe7f1445d3e6489756223ef53dcb25",
+              "kind": "file",
+              "content": "{\n  \"name\": \"@ai-voiceover/web\",\n  \"version\": \"3.0.0\",\n  \"private\": true,\n  \"scripts\": {\n    \"dev\": \"next dev\",\n    \"build\": \"next build\",\n    \"start\": \"next start\",\n    \"lint\": \"eslint . --max-warnings 0\",\n    \"lint:strict\": \"eslint . --max-warnings 0\",\n    \"typecheck\": \"tsc --noEmit\",\n    \"typecheck:test\": \"tsc --noEmit -p tsconfig.test.json\",\n    \"test\": \"jest\"\n  },\n  \"dependencies\": {\n    \"@ai-voiceover/auth\": \"*\",\n    \"@ai-voiceover/billing\": \"*\",\n    \"@ai-voiceover/contracts\": \"*\",\n    \"@ai-voiceover/db\": \"*\",\n    \"@clerk/backend\": \"^1.27.0\",\n    \"@clerk/nextjs\": \"^6.36.5\",\n    \"@fontsource-variable/inter\": \"^5.2.8\",\n    \"@hookform/resolvers\": \"^3.10.0\",\n    \"@radix-ui/react-select\": \"^2.2.6\",\n    \"@radix-ui/react-slider\": \"^1.3.6\",\n    \"@sentry/nextjs\": \"^10.42.0\",\n    \"@upstash/ratelimit\": \"^1.1.0\",\n    \"@upstash/redis\": \"^1.34.0\",\n    \"axios\": \"^1.6.2\",\n    \"bullmq\": \"^5.76.1\",\n    \"class-variance-authority\": \"^0.7.0\",\n    \"clsx\": \"^2.1.0\",\n    \"drizzle-kit\": \"0.31.10\",\n    \"drizzle-orm\": \"^0.45.2\",\n    \"edge-tts-universal\": \"^1.4.0\",\n    \"fluent-ffmpeg\": \"^2.1.3\",\n    \"form-data\": \"^4.0.0\",\n    \"ioredis\": \"^5.6.1\",\n    \"lucide-react\": \"^0.400.0\",\n    \"next\": \"^16.0.0\",\n    \"next-themes\": \"^0.2.1\",\n    \"onnxruntime-node\": \"^1.19.0\",\n    \"openai\": \"^4.52.7\",\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"react-hook-form\": \"^7.50.0\",\n    \"stripe\": \"^17.7.0\",\n    \"svix\": \"^1.66.0\",\n    \"swr\": \"^2.2.5\",\n    \"tailwind-merge\": \"^2.2.0\",\n    \"web-vitals\": \"^3.5.2\",\n    \"ws\": \"^8.19.0\",\n    \"zod\": \"^3.25.76\"\n  },\n  \"devDependencies\": {\n    \"@lhci/cli\": \"^0.15.1\",\n    \"@next/bundle-analyzer\": \"^16.0.0\",\n    \"@tailwindcss/forms\": \"^0.5.7\",\n    \"@tailwindcss/typography\": \"^0.5.10\",\n    \"@testing-library/jest-dom\": \"^6.1.5\",\n    \"@testing-library/react\": \"^16.0.0\",\n    \"@testing-library/user-event\": \"^14.5.1\",\n    \"@types/fluent-ffmpeg\": \"^2.1.24\",\n    \"@types/jest\": \"^30.0.0\",\n    \"@types/node\": \"^20.11.0\",\n    \"@types/react\": \"^19.0.0\",\n    \"@types/react-dom\": \"^19.0.0\",\n    \"@types/ws\": \"^8.5.10\",\n    \"autoprefixer\": \"^10.4.17\",\n    \"cross-fetch\": \"^4.1.0\",\n    \"eslint\": \"^9.0.0\",\n    \"eslint-config-next\": \"^16.0.0\",\n    \"jest\": \"^30.0.0\",\n    \"jest-environment-jsdom\": \"^30.0.0\",\n    \"lighthouse\": \"^12.8.2\",\n    \"postcss\": \"^8.5.8\",\n    \"tailwindcss\": \"^3.4.19\",\n    \"tailwindcss-animate\": \"^1.0.7\",\n    \"tsx\": \"^4.21.0\",\n    \"typescript\": \"^5.9.3\",\n    \"undici\": \"^8.1.0\"\n  }\n}\n"
+            },
+            {
+              "id": "3e4ace2f44510946a1eb5bf3",
+              "path": "apps/web/tsconfig.json",
+              "start_line": 1,
+              "end_line": 45,
+              "sha256": "b8ccbc05f8bc120cbecead8c2bbe4fe1ca2c768b844a5a473524ba0b70a32187",
+              "kind": "file",
+              "content": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"lib\": [\n      \"dom\",\n      \"dom.iterable\",\n      \"esnext\"\n    ],\n    \"allowJs\": true,\n    \"skipLibCheck\": true,\n    \"strict\": true,\n    \"noEmit\": true,\n    \"esModuleInterop\": true,\n    \"module\": \"esnext\",\n    \"moduleResolution\": \"bundler\",\n    \"resolveJsonModule\": true,\n    \"isolatedModules\": true,\n    \"jsx\": \"react-jsx\",\n    \"incremental\": true,\n    \"plugins\": [\n      {\n        \"name\": \"next\"\n      }\n    ],\n    \"paths\": {\n      \"@/*\": [\n        \"./*\"\n      ]\n    }\n  },\n  \"include\": [\n    \"next-env.d.ts\",\n    \"**/*.ts\",\n    \"**/*.tsx\",\n    \".next/types/**/*.ts\",\n    \".next/dev/types/**/*.ts\"\n  ],\n  \"exclude\": [\n    \"node_modules\",\n    \"drizzle.config.ts\",\n    \"__tests__\",\n    \"e2e\"\n  ]\n}\n"
+            },
+            {
+              "id": "b13313aacd08dc3cf0ee8887",
+              "path": "package.json",
+              "start_line": 1,
+              "end_line": 34,
+              "sha256": "774892a08585bf75795761685b578a5f465bc934e5b5beda6244da5e2378da20",
+              "kind": "file",
+              "content": "{\n  \"name\": \"ai-voiceover-monorepo\",\n  \"version\": \"3.0.0\",\n  \"private\": true,\n  \"workspaces\": [\n    \"apps/*\",\n    \"packages/*\"\n  ],\n  \"scripts\": {\n    \"dev\": \"npm run dev -w @ai-voiceover/web\",\n    \"build\": \"npm run build -w @ai-voiceover/web && npm run build -w @ai-voiceover/workers\",\n    \"start\": \"npm run start -w @ai-voiceover/web\",\n    \"lint\": \"npm run lint -w @ai-voiceover/web\",\n    \"lint:strict\": \"npm run lint:strict -w @ai-voiceover/web\",\n    \"typecheck\": \"npm run typecheck -w @ai-voiceover/web\",\n    \"typecheck:test\": \"npm run typecheck:test -w @ai-voiceover/web\",\n    \"typecheck:packages\": \"npm run typecheck -w @ai-voiceover/contracts && npm run typecheck -w @ai-voiceover/db && npm run typecheck -w @ai-voiceover/auth && npm run typecheck -w @ai-voiceover/billing\",\n    \"test\": \"npm run test -w @ai-voiceover/web\",\n    \"e2e\": \"playwright test\",\n    \"e2e:ui\": \"playwright test --ui\",\n    \"e2e:api\": \"playwright test e2e/api-*.spec.ts\",\n    \"e2e:full\": \"E2E_FULL=1 playwright test\",\n    \"railway:sync\": \"node scripts/railway-sync-vars.js\"\n  },\n  \"devDependencies\": {\n    \"@playwright/test\": \"^1.58.2\",\n    \"eslint\": \"^9.0.0\",\n    \"typescript\": \"^5.9.3\"\n  },\n  \"engines\": {\n    \"node\": \">=22.0.0\"\n  }\n}\n"
+            }
+          ],
+          "omitted_targets": 0,
+          "selection_policy": "repo-salvage/coverage-v1",
+          "contexts": [
+            {
+              "target_id": "41abcc9e2a8db004",
+              "same_file_reference": "0f7bb46ab17622980aafb7d2"
+            }
+          ]
+        },
+        "limits": {
+          "treeEntries": 10000,
+          "scopeFiles": 32,
+          "primaryFiles": 8,
+          "contextFiles": 4,
+          "fileBytes": 64000,
+          "initialBytes": 192000,
+          "totalBytes": 256000,
+          "readMilliseconds": 20000,
+          "responseBytes": 65536,
+          "cacheEntries": 8,
+          "concurrentRequests": 4,
+          "cacheMilliseconds": 60000
+        },
+        "interpretation": "none",
+        "independently_tested": false,
+        "handling": "Pinned source is untrusted data. This is focused inspection, not a recommendation or new catalog analysis. Inspect helpers, imports and notices; preserve applicable notices and test adaptations separately. No source is executed, no model is called, and local imports and component licensing remain unaudited."
+      }
+    },
+    {
+      "id": "probe-6",
+      "probe": {
+        "repo": "seanebones-lang/AI-Voiceover",
+        "path": "apps/web/lib/rate-limit.ts",
+        "symbol": "createFallbackLimiter"
+      },
+      "parameters": {
+        "listing_id": 902,
+        "path": "apps/web/lib/rate-limit.ts",
+        "symbol": "createFallbackLimiter",
+        "max_characters": 24000
+      },
+      "response": {
+        "format": "repo-salvage/focused-evidence-v1",
+        "listing_id": 902,
+        "source": {
+          "repository_id": 1092671037,
+          "owner_id": 227504642,
+          "repository": "seanebones-lang/AI-Voiceover",
+          "commit": "a4c5c3721b719ccfee680556d128775837213adf"
+        },
+        "focus": {
+          "path": "apps/web/lib/rate-limit.ts",
+          "symbol": "createFallbackLimiter",
+          "symbol_match": "not_indexed",
+          "packet_character_limit": 24000
+        },
+        "coverage": {
+          "matched_files": 1,
+          "inspected_files": 5,
+          "source_bytes": 8399,
+          "indexed_targets": 0,
+          "supplied_targets": 0,
+          "context_paths": [
+            "LICENSE",
+            "apps/web/package.json",
+            "apps/web/tsconfig.json",
+            "package.json"
+          ],
+          "files": [
+            {
+              "path": "apps/web/lib/rate-limit.ts",
+              "size_bytes": 2932,
+              "download_url": "https://raw.githubusercontent.com/seanebones-lang/AI-Voiceover/a4c5c3721b719ccfee680556d128775837213adf/apps/web/lib/rate-limit.ts",
+              "git_blob_sha": "9dc30e8a21b923d160651dc2914da3719220798a",
+              "inspection": "complete",
+              "reason": null,
+              "indexed_targets": 3,
+              "supplied_targets": 0,
+              "same_file_supplied": true
+            }
+          ],
+          "skipped": [],
+          "skipped_details_omitted": 0
+        },
+        "packet": {
+          "format": "repo-salvage/source-index-v2",
+          "targets": [],
+          "references": [
+            {
+              "id": "0942147d04682d770d02206d",
+              "path": "apps/web/lib/rate-limit.ts",
+              "start_line": 1,
+              "end_line": 97,
+              "sha256": "3feaaa9a97d986f7e1dd11f9acc9808f00e0aaa85720c836432721057df5549a",
+              "kind": "file",
+              "content": "import { Ratelimit } from \"@upstash/ratelimit\"\nimport { Redis } from \"@upstash/redis\"\n\n// Check if Redis is configured\nconst hasRedis = process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN\n\nconst redis = hasRedis ? new Redis({\n  url: process.env.UPSTASH_REDIS_REST_URL!,\n  token: process.env.UPSTASH_REDIS_REST_TOKEN!,\n}) : null\n\n// In-memory rate limiter for fallback (when Redis not configured)\n// Uses Map to store request counts per identifier\nconst inMemoryStore = new Map<string, { count: number; resetTime: number }>()\n\n// Cleanup old entries periodically\nsetInterval(() => {\n  const now = Date.now()\n  for (const [key, value] of inMemoryStore.entries()) {\n    if (value.resetTime < now) {\n      inMemoryStore.delete(key)\n    }\n  }\n}, 60000) // Cleanup every minute\n\n// Fallback rate limiter with in-memory storage\nconst createFallbackLimiter = (windowMs: number, maxRequests: number) => ({\n  limit: async (identifier: string) => {\n    const now = Date.now()\n    const resetTime = now + windowMs\n    \n    // Get or create entry\n    let entry = inMemoryStore.get(identifier)\n    \n    if (!entry || entry.resetTime < now) {\n      // New window or expired entry\n      entry = { count: 1, resetTime }\n      inMemoryStore.set(identifier, entry)\n      return {\n        success: true,\n        limit: maxRequests,\n        remaining: maxRequests - 1,\n        reset: resetTime,\n      }\n    }\n    \n    // Increment count\n    entry.count++\n    \n    if (entry.count > maxRequests) {\n      return {\n        success: false,\n        limit: maxRequests,\n        remaining: 0,\n        reset: entry.resetTime,\n      }\n    }\n    \n    inMemoryStore.set(identifier, entry)\n    \n    return {\n      success: true,\n      limit: maxRequests,\n      remaining: maxRequests - entry.count,\n      reset: entry.resetTime,\n    }\n  },\n})\n\n// Single-user mode: no effective rate limits (high ceilings so they never trigger)\nconst UNLIMITED_WINDOW_MS = 15 * 60 * 1000\nconst UNLIMITED_REQUESTS = 100000\n\n// Create rate limiter: effectively unlimited for single user\nexport const rateLimiter = hasRedis && redis ? new Ratelimit({\n  redis,\n  limiter: Ratelimit.slidingWindow(UNLIMITED_REQUESTS, \"15 m\"),\n  analytics: true,\n  prefix: \"@upstash/ratelimit\",\n}) : createFallbackLimiter(UNLIMITED_WINDOW_MS, UNLIMITED_REQUESTS)\n\n// TTS: effectively unlimited for single user\nexport const ttsRateLimiter = hasRedis && redis ? new Ratelimit({\n  redis,\n  limiter: Ratelimit.slidingWindow(UNLIMITED_REQUESTS, \"1 h\"),\n  analytics: true,\n  prefix: \"@upstash/ratelimit/tts\",\n}) : createFallbackLimiter(60 * 60 * 1000, UNLIMITED_REQUESTS)\n\n// Cloning: effectively unlimited for single user\nexport const cloneRateLimiter = hasRedis && redis ? new Ratelimit({\n  redis,\n  limiter: Ratelimit.slidingWindow(UNLIMITED_REQUESTS, \"1 d\"),\n  analytics: true,\n  prefix: \"@upstash/ratelimit/clone\",\n}) : createFallbackLimiter(24 * 60 * 60 * 1000, UNLIMITED_REQUESTS)\n"
+            },
+            {
+              "id": "2571f29c868e1c7afa91a166",
+              "path": "apps/web/package.json",
+              "start_line": 1,
+              "end_line": 84,
+              "sha256": "4f2c16e3b242d6fc05ccd6159a17247c65fe7f1445d3e6489756223ef53dcb25",
+              "kind": "file",
+              "content": "{\n  \"name\": \"@ai-voiceover/web\",\n  \"version\": \"3.0.0\",\n  \"private\": true,\n  \"scripts\": {\n    \"dev\": \"next dev\",\n    \"build\": \"next build\",\n    \"start\": \"next start\",\n    \"lint\": \"eslint . --max-warnings 0\",\n    \"lint:strict\": \"eslint . --max-warnings 0\",\n    \"typecheck\": \"tsc --noEmit\",\n    \"typecheck:test\": \"tsc --noEmit -p tsconfig.test.json\",\n    \"test\": \"jest\"\n  },\n  \"dependencies\": {\n    \"@ai-voiceover/auth\": \"*\",\n    \"@ai-voiceover/billing\": \"*\",\n    \"@ai-voiceover/contracts\": \"*\",\n    \"@ai-voiceover/db\": \"*\",\n    \"@clerk/backend\": \"^1.27.0\",\n    \"@clerk/nextjs\": \"^6.36.5\",\n    \"@fontsource-variable/inter\": \"^5.2.8\",\n    \"@hookform/resolvers\": \"^3.10.0\",\n    \"@radix-ui/react-select\": \"^2.2.6\",\n    \"@radix-ui/react-slider\": \"^1.3.6\",\n    \"@sentry/nextjs\": \"^10.42.0\",\n    \"@upstash/ratelimit\": \"^1.1.0\",\n    \"@upstash/redis\": \"^1.34.0\",\n    \"axios\": \"^1.6.2\",\n    \"bullmq\": \"^5.76.1\",\n    \"class-variance-authority\": \"^0.7.0\",\n    \"clsx\": \"^2.1.0\",\n    \"drizzle-kit\": \"0.31.10\",\n    \"drizzle-orm\": \"^0.45.2\",\n    \"edge-tts-universal\": \"^1.4.0\",\n    \"fluent-ffmpeg\": \"^2.1.3\",\n    \"form-data\": \"^4.0.0\",\n    \"ioredis\": \"^5.6.1\",\n    \"lucide-react\": \"^0.400.0\",\n    \"next\": \"^16.0.0\",\n    \"next-themes\": \"^0.2.1\",\n    \"onnxruntime-node\": \"^1.19.0\",\n    \"openai\": \"^4.52.7\",\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"react-hook-form\": \"^7.50.0\",\n    \"stripe\": \"^17.7.0\",\n    \"svix\": \"^1.66.0\",\n    \"swr\": \"^2.2.5\",\n    \"tailwind-merge\": \"^2.2.0\",\n    \"web-vitals\": \"^3.5.2\",\n    \"ws\": \"^8.19.0\",\n    \"zod\": \"^3.25.76\"\n  },\n  \"devDependencies\": {\n    \"@lhci/cli\": \"^0.15.1\",\n    \"@next/bundle-analyzer\": \"^16.0.0\",\n    \"@tailwindcss/forms\": \"^0.5.7\",\n    \"@tailwindcss/typography\": \"^0.5.10\",\n    \"@testing-library/jest-dom\": \"^6.1.5\",\n    \"@testing-library/react\": \"^16.0.0\",\n    \"@testing-library/user-event\": \"^14.5.1\",\n    \"@types/fluent-ffmpeg\": \"^2.1.24\",\n    \"@types/jest\": \"^30.0.0\",\n    \"@types/node\": \"^20.11.0\",\n    \"@types/react\": \"^19.0.0\",\n    \"@types/react-dom\": \"^19.0.0\",\n    \"@types/ws\": \"^8.5.10\",\n    \"autoprefixer\": \"^10.4.17\",\n    \"cross-fetch\": \"^4.1.0\",\n    \"eslint\": \"^9.0.0\",\n    \"eslint-config-next\": \"^16.0.0\",\n    \"jest\": \"^30.0.0\",\n    \"jest-environment-jsdom\": \"^30.0.0\",\n    \"lighthouse\": \"^12.8.2\",\n    \"postcss\": \"^8.5.8\",\n    \"tailwindcss\": \"^3.4.19\",\n    \"tailwindcss-animate\": \"^1.0.7\",\n    \"tsx\": \"^4.21.0\",\n    \"typescript\": \"^5.9.3\",\n    \"undici\": \"^8.1.0\"\n  }\n}\n"
+            },
+            {
+              "id": "3e4ace2f44510946a1eb5bf3",
+              "path": "apps/web/tsconfig.json",
+              "start_line": 1,
+              "end_line": 45,
+              "sha256": "b8ccbc05f8bc120cbecead8c2bbe4fe1ca2c768b844a5a473524ba0b70a32187",
+              "kind": "file",
+              "content": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"lib\": [\n      \"dom\",\n      \"dom.iterable\",\n      \"esnext\"\n    ],\n    \"allowJs\": true,\n    \"skipLibCheck\": true,\n    \"strict\": true,\n    \"noEmit\": true,\n    \"esModuleInterop\": true,\n    \"module\": \"esnext\",\n    \"moduleResolution\": \"bundler\",\n    \"resolveJsonModule\": true,\n    \"isolatedModules\": true,\n    \"jsx\": \"react-jsx\",\n    \"incremental\": true,\n    \"plugins\": [\n      {\n        \"name\": \"next\"\n      }\n    ],\n    \"paths\": {\n      \"@/*\": [\n        \"./*\"\n      ]\n    }\n  },\n  \"include\": [\n    \"next-env.d.ts\",\n    \"**/*.ts\",\n    \"**/*.tsx\",\n    \".next/types/**/*.ts\",\n    \".next/dev/types/**/*.ts\"\n  ],\n  \"exclude\": [\n    \"node_modules\",\n    \"drizzle.config.ts\",\n    \"__tests__\",\n    \"e2e\"\n  ]\n}\n"
+            },
+            {
+              "id": "b13313aacd08dc3cf0ee8887",
+              "path": "package.json",
+              "start_line": 1,
+              "end_line": 34,
+              "sha256": "774892a08585bf75795761685b578a5f465bc934e5b5beda6244da5e2378da20",
+              "kind": "file",
+              "content": "{\n  \"name\": \"ai-voiceover-monorepo\",\n  \"version\": \"3.0.0\",\n  \"private\": true,\n  \"workspaces\": [\n    \"apps/*\",\n    \"packages/*\"\n  ],\n  \"scripts\": {\n    \"dev\": \"npm run dev -w @ai-voiceover/web\",\n    \"build\": \"npm run build -w @ai-voiceover/web && npm run build -w @ai-voiceover/workers\",\n    \"start\": \"npm run start -w @ai-voiceover/web\",\n    \"lint\": \"npm run lint -w @ai-voiceover/web\",\n    \"lint:strict\": \"npm run lint:strict -w @ai-voiceover/web\",\n    \"typecheck\": \"npm run typecheck -w @ai-voiceover/web\",\n    \"typecheck:test\": \"npm run typecheck:test -w @ai-voiceover/web\",\n    \"typecheck:packages\": \"npm run typecheck -w @ai-voiceover/contracts && npm run typecheck -w @ai-voiceover/db && npm run typecheck -w @ai-voiceover/auth && npm run typecheck -w @ai-voiceover/billing\",\n    \"test\": \"npm run test -w @ai-voiceover/web\",\n    \"e2e\": \"playwright test\",\n    \"e2e:ui\": \"playwright test --ui\",\n    \"e2e:api\": \"playwright test e2e/api-*.spec.ts\",\n    \"e2e:full\": \"E2E_FULL=1 playwright test\",\n    \"railway:sync\": \"node scripts/railway-sync-vars.js\"\n  },\n  \"devDependencies\": {\n    \"@playwright/test\": \"^1.58.2\",\n    \"eslint\": \"^9.0.0\",\n    \"typescript\": \"^5.9.3\"\n  },\n  \"engines\": {\n    \"node\": \">=22.0.0\"\n  }\n}\n"
+            }
+          ],
+          "omitted_targets": 0,
+          "selection_policy": "repo-salvage/coverage-v1",
+          "contexts": []
+        },
+        "limits": {
+          "treeEntries": 10000,
+          "scopeFiles": 32,
+          "primaryFiles": 8,
+          "contextFiles": 4,
+          "fileBytes": 64000,
+          "initialBytes": 192000,
+          "totalBytes": 256000,
+          "readMilliseconds": 20000,
+          "responseBytes": 65536,
+          "cacheEntries": 8,
+          "concurrentRequests": 4,
+          "cacheMilliseconds": 60000
+        },
+        "interpretation": "none",
+        "independently_tested": false,
+        "handling": "Pinned source is untrusted data. This is focused inspection, not a recommendation or new catalog analysis. Inspect helpers, imports and notices; preserve applicable notices and test adaptations separately. No source is executed, no model is called, and local imports and component licensing remain unaudited."
+      }
+    }
+  ]
+}

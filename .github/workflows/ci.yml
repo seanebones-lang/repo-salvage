@@ -26,5 +26,6 @@ jobs:
         env:
           AUTH_SECRET: ci-build-secret
           AUTH_URL: http://localhost:3000
+      - run: npm run test:packages
       - run: docker build -t repo-salvage:readiness .
       - run: npm run test:container

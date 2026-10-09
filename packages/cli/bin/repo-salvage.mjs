@@ -1,5 +1,12 @@
 #!/usr/bin/env node
-import { fetchPart, inspect, search, baseUrl, drafts } from "../lib/client.mjs";
+import {
+  fetchPart,
+  inspect,
+  search,
+  baseUrl,
+  drafts,
+  focusEvidence,
+} from "../lib/client.mjs";
 
 const HELP = `Repo Salvage — agent client (Node.js 22+)
 
@@ -7,6 +14,8 @@ repo-salvage search --base ORIGIN [--q TEXT] [--language NAME] [--license SPDX]
                     [--category NAME] [--declaration complete] [--imports resolved]
                     [--sort relevance|latest|name|reviewed] [--page N] [--limit N] [--revision HASH]
 repo-salvage inspect LISTING_ID PART_ID --base ORIGIN
+repo-salvage evidence LISTING_ID --base ORIGIN --path FILE_OR_DIRECTORY/
+                      [--symbol EXACT_SYMBOL] [--max-characters 1000..24000]
 repo-salvage fetch LISTING_ID PART_ID --base ORIGIN --out NEW_DIRECTORY
                    [--include-related] [--include-tests]
 
@@ -28,11 +37,15 @@ try {
     process.stdout.write(HELP);
   } else {
     const command = args.shift();
-    if (!["search", "inspect", "fetch", "prepare", "drafts"].includes(command))
+    if (
+      !["search", "inspect", "fetch", "prepare", "drafts", "evidence"].includes(
+        command,
+      )
+    )
       throw new Error("Unknown command. Use --help.");
     const positional = ["search", "drafts"].includes(command)
       ? []
-      : args.splice(0, command === "prepare" ? 1 : 2);
+      : args.splice(0, ["prepare", "evidence"].includes(command) ? 1 : 2);
     const allowed = new Set(
       command === "search"
         ? [
@@ -48,11 +61,13 @@ try {
             "limit",
             "revision",
           ]
-        : command === "prepare"
-          ? ["base", "commit", "note", "key"]
-          : command === "fetch"
-            ? ["base", "out", "include-related", "include-tests"]
-            : ["base"],
+        : command === "evidence"
+          ? ["base", "path", "symbol", "max-characters"]
+          : command === "prepare"
+            ? ["base", "commit", "note", "key"]
+            : command === "fetch"
+              ? ["base", "out", "include-related", "include-tests"]
+              : ["base"],
     );
     if (["search", "inspect", "fetch"].includes(command))
       allowed.add("api-version");
@@ -85,6 +100,14 @@ try {
     if (command === "search") {
       const { base: _base, "api-version": _version, ...params } = options;
       result = await search(base, params, fetch, version);
+    } else if (command === "evidence") {
+      result = await focusEvidence(base, positional[0], {
+        path: options.path,
+        ...(options.symbol !== undefined ? { symbol: options.symbol } : {}),
+        ...(options["max-characters"] !== undefined
+          ? { max_characters: options["max-characters"] }
+          : {}),
+      });
     } else if (["prepare", "drafts"].includes(command)) {
       result = await drafts(base, {
         token: process.env.REPO_SALVAGE_TOKEN,

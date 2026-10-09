@@ -77,10 +77,11 @@ async function readBytes(response, max) {
 }
 
 async function responseFor(url, transport, options = {}) {
+  const { timeoutMs = 15000, ...requestOptions } = options;
   const response = await transport(url, {
-    ...options,
+    ...requestOptions,
     redirect: "error",
-    signal: AbortSignal.timeout(15000),
+    signal: AbortSignal.timeout(timeoutMs),
     headers: {
       Accept: "application/json, text/plain;q=0.9, */*;q=0.8",
       ...options.headers,
@@ -110,7 +111,13 @@ async function responseFor(url, transport, options = {}) {
   return response;
 }
 
-export async function apiJson(base, relative, transport = fetch) {
+export async function apiJson(
+  base,
+  relative,
+  transport = fetch,
+  timeoutMs = 15000,
+  maxBytes = MAX_FILE,
+) {
   base = baseUrl(base);
   if (
     !/^\/api\/v[12]\/parts(?:[/?]|$)/.test(relative) ||
@@ -119,8 +126,67 @@ export async function apiJson(base, relative, transport = fetch) {
     throw new Error("Invalid API path.");
   const url = new URL(relative, base);
   if (url.origin !== base) throw new Error("Cross-origin API link rejected.");
-  const response = await responseFor(url.href, transport);
-  return JSON.parse((await readBytes(response, MAX_FILE)).toString("utf8"));
+  const response = await responseFor(url.href, transport, { timeoutMs });
+  return JSON.parse((await readBytes(response, maxBytes)).toString("utf8"));
+}
+
+/** Focused public source inspection; neither a model request nor a filesystem write. */
+export async function focusEvidence(base, listing, params, transport = fetch) {
+  if (
+    !/^[1-9]\d*$/.test(String(listing)) ||
+    !Number.isSafeInteger(Number(listing))
+  )
+    throw new Error("Expected a positive listing ID.");
+  for (const key of Object.keys(params))
+    if (!["path", "symbol", "max_characters"].includes(key))
+      throw new Error("Unsupported focus parameter.");
+  const file = params.path;
+  if (typeof file !== "string") throw new Error("A source path is required.");
+  safePath(file.endsWith("/") ? file.slice(0, -1) : file);
+  const symbol = params.symbol ?? null;
+  if (
+    symbol !== null &&
+    (typeof symbol !== "string" ||
+      !symbol ||
+      symbol.length > 160 ||
+      /[\x00-\x1f\x7f]/.test(symbol) ||
+      file.endsWith("/"))
+  )
+    throw new Error(
+      "A symbol applies only to an exact file and must be 1–160 characters.",
+    );
+  const max = Number(params.max_characters ?? 12000);
+  if (!Number.isSafeInteger(max) || max < 1000 || max > 24000)
+    throw new Error("max_characters must be an integer from 1000 to 24000.");
+  const query = new URLSearchParams({
+    path: file,
+    max_characters: String(max),
+    ...(symbol !== null ? { symbol } : {}),
+  });
+  const value = await apiJson(
+    base,
+    `/api/v2/parts/${listing}/evidence?${query}`,
+    transport,
+    60000,
+    65536,
+  );
+  if (
+    value.format !== "repo-salvage/focused-evidence-v1" ||
+    value.listing_id !== Number(listing) ||
+    value.focus?.path !== file ||
+    value.focus?.symbol !== symbol ||
+    !Number.isSafeInteger(value.focus.packet_character_limit) ||
+    value.focus.packet_character_limit < 1000 ||
+    value.focus.packet_character_limit > max ||
+    !/^[a-f0-9]{40}$/.test(value.source?.commit) ||
+    !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(value.source?.repository) ||
+    value.interpretation !== "none" ||
+    value.independently_tested !== false ||
+    !Array.isArray(value.packet?.references) ||
+    !Array.isArray(value.packet?.targets)
+  )
+    throw new Error("Unexpected focused evidence identity or format.");
+  return value;
 }
 
 export function identity(listing, part, version = 1) {

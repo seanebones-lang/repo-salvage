@@ -15,6 +15,8 @@ export async function loadEngine() {
     "dir",
   );
   for (const name of [
+    "agent-error",
+    "focused-evidence",
     "python-parser",
     "source-selection",
     "source-index",
@@ -42,6 +44,7 @@ export async function loadEngine() {
     ...(await import(pathToFileURL(path.join(temp, "source-index.mjs")))),
     ...(await import(pathToFileURL(path.join(temp, "summarize.mjs")))),
     ...(await import(pathToFileURL(path.join(temp, "github.mjs")))),
+    ...(await import(pathToFileURL(path.join(temp, "focused-evidence.mjs")))),
     close: () => fs.rm(temp, { recursive: true, force: true }),
   };
 }
