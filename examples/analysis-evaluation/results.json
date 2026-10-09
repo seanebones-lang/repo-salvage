@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-09",
+  "cliVersion": "codex-cli 0.160.0",
+  "selectedModel": "gpt-6.1-sol",
+  "reasoningEffort": "low",
+  "scope": "Authored controls; not an unseen or independent real-repository holdout.",
+  "results": [
+    {
+      "id": "python-pure-function",
+      "provider": "--codex",
+      "model": "gpt-6.1-sol",
+      "requestSha256": "ce09a70bcd6e7177737a192031dd4d1567072c46a38c079cecc85b61a33ebc52",
+      "latencyMs": 11496,
+      "usage": {
+        "input_tokens": 11794,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 242,
+        "reasoning_output_tokens": 0
+      },
+      "requestId": null,
+      "transportSuccess": true,
+      "structurallyAccepted": true,
+      "selectionMatchesControl": true,
+      "semanticReview": "Reviewed against authored source and control rubric by the implementing agent; not independent assessment.",
+      "failure": null,
+      "unsupportedMaterialClaimsObserved": false,
+      "toolEvents": 0
+    },
+    {
+      "id": "python-coupling-and-injection",
+      "provider": "--codex",
+      "model": "gpt-6.1-sol",
+      "requestSha256": "1c830b781853e5dc97ad328fdf075fdaeb9573f9ab10398edf1f12cc5e9051c5",
+      "latencyMs": 10372,
+      "usage": {
+        "input_tokens": 11816,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 236,
+        "reasoning_output_tokens": 0
+      },
+      "requestId": null,
+      "transportSuccess": true,
+      "structurallyAccepted": true,
+      "selectionMatchesControl": true,
+      "semanticReview": "Reviewed against authored source and control rubric by the implementing agent; not independent assessment.",
+      "failure": null,
+      "unsupportedMaterialClaimsObserved": false,
+      "toolEvents": 0
+    },
+    {
+      "id": "same-file-helper-and-class",
+      "provider": "--codex",
+      "model": "gpt-6.1-sol",
+      "requestSha256": "e344ff12eb9b0619a4e756586438e07ebdf271a656a6b48806a9082688270065",
+      "latencyMs": 10291,
+      "usage": {
+        "input_tokens": 12407,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 282,
+        "reasoning_output_tokens": 0
+      },
+      "requestId": null,
+      "transportSuccess": true,
+      "structurallyAccepted": true,
+      "selectionMatchesControl": true,
+      "semanticReview": "Reviewed against authored source and control rubric by the implementing agent; not independent assessment.",
+      "failure": null,
+      "unsupportedMaterialClaimsObserved": false,
+      "toolEvents": 0
+    },
+    {
+      "id": "author-excludes-all",
+      "provider": "--codex",
+      "model": "gpt-6.1-sol",
+      "requestSha256": "4c2d7feb0c67b3b0627b7117e6795e1fd4749ce57883520a9c42a516e7d78f1f",
+      "latencyMs": 5041,
+      "usage": {
+        "input_tokens": 11787,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 40,
+        "reasoning_output_tokens": 0
+      },
+      "requestId": null,
+      "transportSuccess": true,
+      "structurallyAccepted": true,
+      "selectionMatchesControl": true,
+      "semanticReview": "Reviewed against authored source and control rubric by the implementing agent; not independent assessment.",
+      "failure": null,
+      "unsupportedMaterialClaimsObserved": false,
+      "toolEvents": 0
+    }
+  ],
+  "anthropicTrial": {
+    "configuredModel": "claude-haiku-5-5",
+    "attemptedCases": 1,
+    "failure": "provider_http_401",
+    "generationResponse": false,
+    "automaticRetries": 0
+  },
+  "interpretation": "Four authored controls passed structural/selection checks and source review. No provider quality or cost winner: Anthropic did not generate an answer. No real-repository discovery recall or independent holdout measured.",
+  "billing": "Codex used existing account allowance; no dollar equivalence claimed. Anthropic returned no generation usage."
+}

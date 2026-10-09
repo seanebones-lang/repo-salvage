@@ -54,7 +54,10 @@ dependencies, integration guidance, limitations, and the evidence behind the rec
 ## Local setup
 
 Node.js 22 is used in CI and the container. SQLite requires persistent local storage.
-Python 3.9+ runs the standalone assignment-consumer checks; no Python package is needed.
+Python 3.11+ enables isolated AST declaration inspection using the standard library;
+the Docker image includes it. Python 3.9+ still runs the standalone assignment-consumer
+checks. Without a compatible parser, Python inspection falls back to complete files
+and records the missing parser/import evidence explicitly.
 
 ```sh
 npm ci
@@ -234,9 +237,12 @@ See [GitHub's public OAuth app rate limits](https://docs.github.com/en/rest/usin
 
 - New analyses inspect at most 64 files, 128 KB per file and 2 MB per repository,
   from complete pinned trees of at most 10,000 entries. Downloads have ten-second
-  timeouts. Up to 24 complete candidate blocks fit within a 70,000-character evidence
-  allowance; omissions are recorded. JS/TS exported declarations are parsed; other
-  languages have file-level inspection. Static imports, dynamic dependencies, aliases
+  timeouts within a two-minute source-read deadline. The initial pass reserves up to
+  16 reads for omitted dependencies, likely tests and notices; unused reads return to
+  broad discovery. Up to 24 complete candidate blocks fit within a 70,000-character evidence
+  allowance; omissions are recorded. JS/TS exported declarations and Python 3.11
+  functions/classes/methods are parsed; other languages have file-level inspection.
+  Static imports, dynamic dependencies, aliases
   and same-file helpers still need consumer inspection. Existing pilot listings retain
   their original sampling evidence until deliberately analyzed again.
 - The app does not execute untrusted repository code or automatically certify extraction.

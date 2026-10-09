@@ -11,6 +11,10 @@ live adapter; a Codex runtime or hosted OpenAI adapter has not been provisioned.
 Existing pilot listings are not silently re-analyzed. The additive history table
 is included in ordinary SQLite backups; preserve an online backup before upgrading.
 Provider choice and live validation of the new prompt remain pre-hosting work.
+The runtime image now includes standard-library Python 3.11 and its trusted AST
+helper. It parses repository text in an isolated, time-limited process; it does
+not install or execute repository code. A standalone deployment must preserve
+the traced `scripts/python-index.py` file and provide Python 3.11+.
 
 ## Recommended first deployment
 

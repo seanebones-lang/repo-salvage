@@ -5,5 +5,6 @@ const nextConfig = {
   // OAuth callback origin between authorization and token exchange.
   skipMiddlewareUrlNormalize: true,
   serverExternalPackages: ["better-sqlite3"],
+  outputFileTracingIncludes: { "/*": ["./scripts/python-index.py"] },
 };
 export default nextConfig;

@@ -267,3 +267,43 @@ Fourteen disposable container checks pass, including both API versions and the
 shipped TypeScript parser, crash recovery and fresh-volume restoration. Public
 hosting and live behavior of the new provider prompt remain
 separate gates; no new catalog analyses are part of this milestone.
+
+## Python declarations and source follow-ups — 2026-10-09
+
+Python 3.11 grammar now identifies functions, async functions, classes and direct
+methods through an isolated trusted standard-library helper. Decorators, Unicode
+and BOM byte positions, CR/CRLF lines, shadowed class definitions, invalid grammar,
+missing parsers and source-level execution attempts have explicit checks. The
+Docker runtime includes Python and the helper is traced into standalone output.
+
+The broad pass reserves up to sixteen of the existing sixty-four reads for
+missing local dependency files, likely tests and notices. Transitive follow-ups
+remain pinned and Git-blob verified, within the existing 2 MB allowance and a
+120-second source-read deadline. Test association still requires an observed
+import, not a filename. Read phases and omissions are retained in index history.
+
+A real GitHub probe against Repo Salvage commit `3a970b0` inspected 64 files,
+indexed 77 targets and supplied 16 within 69,965 serialized characters. It still
+omitted `src/lib/summarize.ts`; this is recorded, not presented as complete recall.
+The probe exposed and fixed JSON-envelope/comma accounting in the evidence limit.
+The full packet now fits its advertised allowance, including escaped source.
+
+A second pinned probe against btcpredictor commit `aaac313` inspected 42 files,
+indexed 477 targets, supplied 18 in 69,770 characters and found complete Python
+class/method declarations in `btc_predictor/ab_testing.py`. Indexing a target does
+not mean it was supplied or selected by a model. Neither probe executed upstream
+code, called a model or changed a listing.
+
+Validation: **238 offline checks** (179 application, 9 operations, 3 parser,
+12 Python consumer, 12 CLI, 23 MCP/replay), formatting, type checks, production
+build and zero npm audit vulnerabilities. **15 disposable arm64 container checks**
+passed, including the packaged parser under a read-only image as an unprivileged
+user, and existing backup/restart/restore/OAuth-redirect drills. Sampled memory was
+86.75 MiB of 512 MiB after the smoke run; this is not analysis peak/load evidence.
+
+Four frozen authored interpretation controls completed on explicit
+`gpt-6.1-sol` through Codex CLI 0.160.0 with no tool events. All passed reference,
+selection and implementing-agent source review. The configured Anthropic trial
+stopped on HTTP 401 without a generation response. No comparative model/cost
+winner or real-repository holdout accuracy is claimed. See the committed
+`examples/analysis-evaluation/results.json` and reproduction instructions.

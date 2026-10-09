@@ -2,6 +2,28 @@ import { describe, expect, it } from "vitest";
 import { indexSources, evidencePacket, indexRecord } from "@/lib/source-index";
 
 describe("source index evidence", () => {
+  it("bounds the complete serialized packet including JSON escaping and envelope overhead", () => {
+    const files = Array.from({ length: 40 }, (_, i) => ({
+      path: `quoted-${i}.ts`,
+      content: `export const value${i} = ${JSON.stringify('"\\\n'.repeat(600))};`,
+    }));
+    const index = indexSources(
+      files,
+      files.map((f) => f.path),
+    );
+    for (const limit of [100, 500, 1000, 5000, 70000]) {
+      const packet = evidencePacket(index, limit);
+      expect(JSON.stringify(packet).length).toBeLessThanOrEqual(limit);
+      for (const target of packet.targets)
+        expect(
+          packet.references.some((r) => r.id === target.reference_id),
+        ).toBe(true);
+      expect(packet.omitted_targets).toBe(
+        index.targets.length - packet.targets.length,
+      );
+    }
+    expect(() => evidencePacket(index, 1)).toThrow(/envelope/);
+  });
   it("finds tiny exports and complete declarations beyond the former prefix and size limits", () => {
     const files = [
       {
@@ -69,7 +91,7 @@ describe("source index evidence", () => {
     const files = [
       { path: "bad.ts", content: "export function x( {" },
       { path: "cut.ts", content: "export function x() {}", truncated: true },
-      { path: "parser.py", content: "def parse(x):\n    return x\n" },
+      { path: "parser.rs", content: "fn parse(x: i32) -> i32 { x }" },
     ];
     const index = indexSources(
       files,
@@ -78,7 +100,7 @@ describe("source index evidence", () => {
     expect(index.targets).toHaveLength(1);
     expect(index.targets[0].kind).toBe("file");
     expect(index.targets[0].unresolved).toContain(
-      "Imports not statically inspected: parser.py",
+      "Imports not statically inspected: parser.rs",
     );
     expect(index.skipped.map((s) => s.reason)).toEqual([
       "parse_error",

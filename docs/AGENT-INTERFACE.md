@@ -72,6 +72,10 @@ dependencies or complete runtime requirements; `local_imports_complete` remains
 false. Legacy listings retain their original coverage and can be inspected in
 either API version. See [the analysis engine](ANALYSIS-ENGINE.md) for selection
 limits, import gaps and valid no-candidate results. License auditing is unchanged.
+Python declarations use 3.11 grammar, including decorators and direct class
+methods. Method targets record an enclosing-class context gap. The conservative
+`imports=resolved` filter excludes all recorded source-context gaps, including
+that method gap; it remains an inspection filter, not a dependency certification.
 
 The updated MCP package uses version 2. CLI inspection/fetch defaults to version
 1; use `--api-version 2` to preserve indexed evidence in consumer manifests.
