@@ -1,0 +1,7 @@
+{
+  "source": "https://github.com/Cyan4973/xxHash/blob/v0.8.3/cli/xsum_sanity_check.c",
+  "sourceSha256": "f1cf719abcd194161e0d812fa51083f6d1406596ceb65955aba97e3d96a0561d",
+  "use": "Nine numerical XXH64 input/output facts; no C code copied or executed",
+  "specification": "https://github.com/Cyan4973/xxHash/blob/v0.8.3/doc/xxhash_spec.md",
+  "oracle": "Authored Python integer reference independently structured from the Go consumer; checked against all nine official numeric facts before proposal"
+}

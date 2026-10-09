@@ -1,0 +1,36 @@
+{
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "promptSha256": "a62bce68b6716957970a4057c11b30fca8bf129f18d0b1696a12677664cbe27c",
+  "trace": {
+    "sha256": "6bfd6f37a388eb01b5aa3af50aab99e2f1b7e8568902bacad5cfa548b26db75b"
+  },
+  "latencyMs": 35971,
+  "billing": "Existing Codex account allowance; no API-key model call",
+  "inputSealSha256": "8bd211e4186cac96142fb42b665bb67e5c1c7e42c272de0ebb784d2fc2ce9165",
+  "transportSuccess": true,
+  "failure": null,
+  "prohibitedEvents": [],
+  "usage": {
+    "input_tokens": 17135,
+    "cached_input_tokens": 0,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1926,
+    "reasoning_output_tokens": 70
+  },
+  "response": {
+    "code": "// Package consumer implements seeded XXH64 in pure Go.\n// Adapted from cespare/xxhash, commit ab37246c889f9db16b606fda1c232d659df9271d.\n//\n// Copyright (c) 2016 Caleb Spare\n//\n// MIT License\n//\n// Permission is hereby granted, free of charge, to any person obtaining\n// a copy of this software and associated documentation files (the\n// \"Software\"), to deal in the Software without restriction, including\n// without limitation the rights to use, copy, modify, merge, publish,\n// distribute, sublicense, and/or sell copies of the Software, and to\n// permit persons to whom the Software is furnished to do so, subject to\n// the following conditions:\n//\n// The above copyright notice and this permission notice shall be\n// included in all copies or substantial portions of the Software.\n//\n// THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\n// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\n// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\n// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\n// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\n// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\n// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\npackage consumer\n\nimport (\n\t\"encoding/binary\"\n\t\"math/bits\"\n)\n\nconst (\n\tprime1 uint64 = 11400714785074694791\n\tprime2 uint64 = 14029467366897019727\n\tprime3 uint64 = 1609587929392839161\n\tprime4 uint64 = 9650029242287828579\n\tprime5 uint64 = 2870177450012600261\n)\n\n// Digest holds a streaming XXH64 state. Initialize it with New or Reset.\ntype Digest struct {\n\tv1, v2, v3, v4 uint64\n\ttotal          uint64\n\tmem            [32]byte\n\tn              int\n\tlarge          bool\n}\n\n// New creates a Digest initialized with seed.\nfunc New(seed uint64) *Digest {\n\td := new(Digest)\n\td.Reset(seed)\n\treturn d\n}\n\n// Reset clears the stream and initializes its accumulators with seed.\nfunc (d *Digest) Reset(seed uint64) {\n\td.v1 = seed + prime1 + prime2\n\td.v2 = seed + prime2\n\td.v3 = seed\n\td.v4 = seed - prime1\n\td.total = 0\n\td.n = 0\n\td.large = false\n}\n\n// Write consumes all data and copies any buffered tail.\nfunc (d *Digest) Write(data []byte) (int, error) {\n\tn := len(data)\n\td.total += uint64(n)\n\n\tif len(data) < len(d.mem)-d.n {\n\t\tcopy(d.mem[d.n:], data)\n\t\td.n += len(data)\n\t\treturn n, nil\n\t}\n\n\td.large = true\n\tif d.n > 0 {\n\t\tc := copy(d.mem[d.n:], data)\n\t\td.v1 = round(d.v1, u64(d.mem[0:8]))\n\t\td.v2 = round(d.v2, u64(d.mem[8:16]))\n\t\td.v3 = round(d.v3, u64(d.mem[16:24]))\n\t\td.v4 = round(d.v4, u64(d.mem[24:32]))\n\t\tdata = data[c:]\n\t\td.n = 0\n\t}\n\n\tif len(data) >= 32 {\n\t\tdata = data[writeBlocks(d, data):]\n\t}\n\n\tcopy(d.mem[:], data)\n\td.n = len(data)\n\treturn n, nil\n}\n\n// Sum64 returns the current hash without changing the stream state.\nfunc (d *Digest) Sum64() uint64 {\n\tvar h uint64\n\tif d.large {\n\t\th = bits.RotateLeft64(d.v1, 1) + bits.RotateLeft64(d.v2, 7) +\n\t\t\tbits.RotateLeft64(d.v3, 12) + bits.RotateLeft64(d.v4, 18)\n\t\th = mergeRound(h, d.v1)\n\t\th = mergeRound(h, d.v2)\n\t\th = mergeRound(h, d.v3)\n\t\th = mergeRound(h, d.v4)\n\t} else {\n\t\th = d.v3 + prime5\n\t}\n\th += d.total\n\n\tb := d.mem[:d.n]\n\tfor len(b) >= 8 {\n\t\th ^= round(0, u64(b[:8]))\n\t\th = bits.RotateLeft64(h, 27)*prime1 + prime4\n\t\tb = b[8:]\n\t}\n\tif len(b) >= 4 {\n\t\th ^= uint64(binary.LittleEndian.Uint32(b[:4])) * prime1\n\t\th = bits.RotateLeft64(h, 23)*prime2 + prime3\n\t\tb = b[4:]\n\t}\n\tfor _, c := range b {\n\t\th ^= uint64(c) * prime5\n\t\th = bits.RotateLeft64(h, 11) * prime1\n\t}\n\n\th ^= h >> 33\n\th *= prime2\n\th ^= h >> 29\n\th *= prime3\n\th ^= h >> 32\n\treturn h\n}\n\n// Sum64 computes the seeded XXH64 hash of data.\nfunc Sum64(data []byte, seed uint64) uint64 {\n\tvar d Digest\n\td.Reset(seed)\n\td.Write(data)\n\treturn d.Sum64()\n}\n\nfunc writeBlocks(d *Digest, b []byte) int {\n\tv1, v2, v3, v4 := d.v1, d.v2, d.v3, d.v4\n\tn := len(b)\n\tfor len(b) >= 32 {\n\t\tv1 = round(v1, u64(b[0:8:len(b)]))\n\t\tv2 = round(v2, u64(b[8:16:len(b)]))\n\t\tv3 = round(v3, u64(b[16:24:len(b)]))\n\t\tv4 = round(v4, u64(b[24:32:len(b)]))\n\t\tb = b[32:len(b):len(b)]\n\t}\n\td.v1, d.v2, d.v3, d.v4 = v1, v2, v3, v4\n\treturn n - len(b)\n}\n\nfunc u64(b []byte) uint64 {\n\treturn binary.LittleEndian.Uint64(b)\n}\n\nfunc round(acc, input uint64) uint64 {\n\tacc += input * prime2\n\treturn bits.RotateLeft64(acc, 31) * prime1\n}\n\nfunc mergeRound(acc, val uint64) uint64 {\n\tacc ^= round(0, val)\n\treturn acc*prime1 + prime4\n}\n",
+    "finding": "consumer.go combines Digest.Write and its enclosing state/finalization helpers from xxhash.go with the cross-file pure-Go writeBlocks dependency from xxhash_other.go. It excludes the mutually exclusive assembly and pure-Go build selection machinery, and the safe/unsafe string variants. Uninspected xxhash_unsafe.go, go.mod, assembly bodies, and upstream package/build resolution remain unresolved; this standalone adaptation needs none of them. The MIT copyright and full permission notice are preserved. No tests were run.",
+    "used_reference_ids": [
+      "d40491c17d6bcee80f54672b",
+      "ba9e238ebebecda38e480d90",
+      "d64bcacf4fcc4ba2e9aed3b2",
+      "b4782c8e8a418dac2680a559",
+      "5abea8725f61aa2e60109847",
+      "3a5e4596b2c2bded03f09af8"
+    ]
+  },
+  "review": "pending",
+  "execution": "not_run"
+}

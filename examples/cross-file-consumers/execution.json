@@ -1,0 +1,32 @@
+{
+  "format": "repo-salvage/cross-file-consumer-execution-v1",
+  "at": "2026-10-09T21:07:24.678Z",
+  "inputSealSha256": "8bd211e4186cac96142fb42b665bb67e5c1c7e42c272de0ebb784d2fc2ce9165",
+  "reviewSha256": "8c08fa697704556797ea3cc0405ce030d48c8f0a80e6360caf0386df642328a2",
+  "scope": "Only operator-reviewed standalone adaptations executed; upstream captures remain data; no provider calls during acceptance",
+  "results": [
+    {
+      "language": "rust",
+      "codeSha256": "57b390909081aeb63219df82dbadb3d857759429050aae73157db3831b60b9e0",
+      "status": "passed",
+      "compiler": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "output": [
+        {
+          "optimized": false,
+          "output": "\nrunning 3 tests\ntest boundaries ... ok\ntest deterministic_full_width ... ok\ntest exhaustive_small ... ok\n\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s\n\n"
+        },
+        {
+          "optimized": true,
+          "output": "\nrunning 3 tests\ntest boundaries ... ok\ntest deterministic_full_width ... ok\ntest exhaustive_small ... ok\n\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s\n\n"
+        }
+      ]
+    },
+    {
+      "language": "go",
+      "codeSha256": "645b967c6bb8ab10a54646b2520d3cf2bc9dced269c6a7834db8a136ec0e5a39",
+      "status": "passed",
+      "compiler": "go version go1.27.2 darwin/arm64",
+      "output": "=== RUN   TestIndependentVectors\n--- PASS: TestIndependentVectors (0.00s)\n=== RUN   TestChunkBoundariesAndOwnership\n--- PASS: TestChunkBoundariesAndOwnership (0.02s)\n=== RUN   TestResetAndContinue\n--- PASS: TestResetAndContinue (0.00s)\nPASS\nok  \trepo-salvage.example/cross-file-xxhash\t0.260s\n"
+    }
+  ]
+}

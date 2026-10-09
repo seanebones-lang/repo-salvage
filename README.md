@@ -272,6 +272,12 @@ docker run --rm -p 3000:3000 --env-file .env.production \
   --mount source=repo-salvage-data,target=/app/data repo-salvage
 ```
 
+The default base image comes from [Docker's official image mirror on Amazon ECR](https://aws.amazon.com/blogs/containers/docker-official-images-now-available-on-amazon-elastic-container-registry-public/)
+and remains pinned by manifest digest. The mirror serves the same pinned Node
+image as Docker Hub and avoids Hub's shared-runner pull limit. `NODE_IMAGE` is a
+build argument if a deployment needs a different registry; retain and verify the
+reviewed digest when changing the image source.
+
 Use the actual HTTPS origin for `AUTH_URL` and register its GitHub callback. Supply secrets at
 runtime, keep them out of image build arguments, and mount persistent storage at `/app/data`.
 Use a single application instance with SQLite, back up the database with SQLite's backup API,
@@ -368,3 +374,9 @@ and runnable offline checks. Build exports `/rust-edit-distance.tar.gz` and
 `/go-rendezvous-consumer.tar.gz`; Rust/Go compilers are needed only to test or use
 those adaptations. Run `npm run test:native` with `rustc` and `go` on PATH, or
 set `SALVAGE_RUSTC` / `SALVAGE_GO` to their absolute executables.
+
+The [cross-file consumer trial](examples/cross-file-consumers/README.md) extends this
+proof to a Rust module helper and a Go package peer. It retains pre-proposal tests,
+exact first proposals, source citations, operator reviews and compiler execution.
+The examples can be run independently with their language compiler; these are
+controlled adaptations under frozen contracts, not upstream compatibility claims.

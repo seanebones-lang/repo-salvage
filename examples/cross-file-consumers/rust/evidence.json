@@ -1,0 +1,299 @@
+{
+  "format": "repo-salvage/focused-evidence-v1",
+  "listing_id": 996,
+  "source": {
+    "repository_id": 61962375,
+    "owner_id": 1940490,
+    "repository": "dtolnay/itoa",
+    "commit": "1577ed901354d0d7448ac162328f9dbf5183124c"
+  },
+  "focus": {
+    "path": "src/lib.rs",
+    "symbol": "div_rem_1e16",
+    "symbol_match": "matched",
+    "packet_character_limit": 24000
+  },
+  "coverage": {
+    "matched_files": 1,
+    "inspected_files": 5,
+    "source_bytes": 29305,
+    "indexed_targets": 1,
+    "supplied_targets": 1,
+    "context_paths": [
+      "LICENSE-APACHE",
+      "LICENSE-MIT",
+      "src/u128_ext.rs",
+      "Cargo.toml"
+    ],
+    "files": [
+      {
+        "path": "src/lib.rs",
+        "size_bytes": 16904,
+        "download_url": "https://raw.githubusercontent.com/dtolnay/itoa/1577ed901354d0d7448ac162328f9dbf5183124c/src/lib.rs",
+        "git_blob_sha": "74cd9b4abab9aa160b740ca2d90402859e51387f",
+        "inspection": "complete",
+        "reason": null,
+        "indexed_targets": 18,
+        "supplied_targets": 1,
+        "same_file_supplied": false
+      }
+    ],
+    "skipped": [],
+    "skipped_details_omitted": 0
+  },
+  "packet": {
+    "format": "repo-salvage/source-index-v2",
+    "targets": [
+      {
+        "id": "9eb3e30a2453378c",
+        "path": "src/lib.rs",
+        "symbol": "div_rem_1e16",
+        "kind": "declaration",
+        "reference_id": "56e42ae4de3c6a77dab220db",
+        "imports": [
+          {
+            "specifier": "core::hint",
+            "kind": "external",
+            "resolved_path": null
+          },
+          {
+            "specifier": "core::mem::{self, MaybeUninit}",
+            "kind": "external",
+            "resolved_path": null
+          },
+          {
+            "specifier": "core::str",
+            "kind": "external",
+            "resolved_path": null
+          },
+          {
+            "specifier": "no_panic::no_panic",
+            "kind": "dynamic",
+            "resolved_path": null
+          }
+        ],
+        "supporting_paths": [
+          "src/u128_ext.rs"
+        ],
+        "unresolved": [
+          "Conditional Rust declaration: compilation configuration is not resolved.",
+          "Cross-file source associations are bounded observations; build selection, initialization, module ownership and symbol resolution require review.",
+          "Rust modules, macro expansion, conditional compilation, trait resolution and initialization are not resolved.",
+          "src/lib.rs: no_panic::no_panic"
+        ],
+        "test_paths": [],
+        "notice_paths": [
+          "LICENSE-APACHE",
+          "LICENSE-MIT"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "56e42ae4de3c6a77dab220db",
+        "path": "src/lib.rs",
+        "start_line": 449,
+        "end_line": 466,
+        "sha256": "e962338e1886873aa7c3399ec89aa5378ccbfed712b9690f043628079390a34f",
+        "kind": "declaration",
+        "content": "#[cfg_attr(feature = \"no-panic\", no_panic)]\nfn div_rem_1e16(n: u128) -> (u128, u64) {\n    const D: u128 = 1_0000_0000_0000_0000;\n    // The check inlines well with the caller flow.\n    if n < D {\n        return (0, n as u64);\n    }\n\n    // These constant values are computed with the CHOOSE_MULTIPLIER procedure\n    // from the Granlund & Montgomery paper, using N=128, prec=128 and d=1E16.\n    const M_HIGH: u128 = 76624777043294442917917351357515459181;\n    const SH_POST: u8 = 51;\n\n    // n.widening_mul(M_HIGH).1 >> SH_POST\n    let quot = u128_ext::mulhi(n, M_HIGH) >> SH_POST;\n    let rem = n - quot * D;\n    (quot, rem as u64)\n}"
+      },
+      {
+        "id": "605c97cad9e77e806f8a88ec",
+        "path": "LICENSE-APACHE",
+        "start_line": 1,
+        "end_line": 177,
+        "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+        "kind": "file",
+        "content": "                              Apache License\n                        Version 2.0, January 2004\n                     http://www.apache.org/licenses/\n\nTERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION\n\n1. Definitions.\n\n   \"License\" shall mean the terms and conditions for use, reproduction,\n   and distribution as defined by Sections 1 through 9 of this document.\n\n   \"Licensor\" shall mean the copyright owner or entity authorized by\n   the copyright owner that is granting the License.\n\n   \"Legal Entity\" shall mean the union of the acting entity and all\n   other entities that control, are controlled by, or are under common\n   control with that entity. For the purposes of this definition,\n   \"control\" means (i) the power, direct or indirect, to cause the\n   direction or management of such entity, whether by contract or\n   otherwise, or (ii) ownership of fifty percent (50%) or more of the\n   outstanding shares, or (iii) beneficial ownership of such entity.\n\n   \"You\" (or \"Your\") shall mean an individual or Legal Entity\n   exercising permissions granted by this License.\n\n   \"Source\" form shall mean the preferred form for making modifications,\n   including but not limited to software source code, documentation\n   source, and configuration files.\n\n   \"Object\" form shall mean any form resulting from mechanical\n   transformation or translation of a Source form, including but\n   not limited to compiled object code, generated documentation,\n   and conversions to other media types.\n\n   \"Work\" shall mean the work of authorship, whether in Source or\n   Object form, made available under the License, as indicated by a\n   copyright notice that is included in or attached to the work\n   (an example is provided in the Appendix below).\n\n   \"Derivative Works\" shall mean any work, whether in Source or Object\n   form, that is based on (or derived from) the Work and for which the\n   editorial revisions, annotations, elaborations, or other modifications\n   represent, as a whole, an original work of authorship. For the purposes\n   of this License, Derivative Works shall not include works that remain\n   separable from, or merely link (or bind by name) to the interfaces of,\n   the Work and Derivative Works thereof.\n\n   \"Contribution\" shall mean any work of authorship, including\n   the original version of the Work and any modifications or additions\n   to that Work or Derivative Works thereof, that is intentionally\n   submitted to Licensor for inclusion in the Work by the copyright owner\n   or by an individual or Legal Entity authorized to submit on behalf of\n   the copyright owner. For the purposes of this definition, \"submitted\"\n   means any form of electronic, verbal, or written communication sent\n   to the Licensor or its representatives, including but not limited to\n   communication on electronic mailing lists, source code control systems,\n   and issue tracking systems that are managed by, or on behalf of, the\n   Licensor for the purpose of discussing and improving the Work, but\n   excluding communication that is conspicuously marked or otherwise\n   designated in writing by the copyright owner as \"Not a Contribution.\"\n\n   \"Contributor\" shall mean Licensor and any individual or Legal Entity\n   on behalf of whom a Contribution has been received by Licensor and\n   subsequently incorporated within the Work.\n\n2. Grant of Copyright License. Subject to the terms and conditions of\n   this License, each Contributor hereby grants to You a perpetual,\n   worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n   copyright license to reproduce, prepare Derivative Works of,\n   publicly display, publicly perform, sublicense, and distribute the\n   Work and such Derivative Works in Source or Object form.\n\n3. Grant of Patent License. Subject to the terms and conditions of\n   this License, each Contributor hereby grants to You a perpetual,\n   worldwide, non-exclusive, no-charge, royalty-free, irrevocable\n   (except as stated in this section) patent license to make, have made,\n   use, offer to sell, sell, import, and otherwise transfer the Work,\n   where such license applies only to those patent claims licensable\n   by such Contributor that are necessarily infringed by their\n   Contribution(s) alone or by combination of their Contribution(s)\n   with the Work to which such Contribution(s) was submitted. If You\n   institute patent litigation against any entity (including a\n   cross-claim or counterclaim in a lawsuit) alleging that the Work\n   or a Contribution incorporated within the Work constitutes direct\n   or contributory patent infringement, then any patent licenses\n   granted to You under this License for that Work shall terminate\n   as of the date such litigation is filed.\n\n4. Redistribution. You may reproduce and distribute copies of the\n   Work or Derivative Works thereof in any medium, with or without\n   modifications, and in Source or Object form, provided that You\n   meet the following conditions:\n\n   (a) You must give any other recipients of the Work or\n       Derivative Works a copy of this License; and\n\n   (b) You must cause any modified files to carry prominent notices\n       stating that You changed the files; and\n\n   (c) You must retain, in the Source form of any Derivative Works\n       that You distribute, all copyright, patent, trademark, and\n       attribution notices from the Source form of the Work,\n       excluding those notices that do not pertain to any part of\n       the Derivative Works; and\n\n   (d) If the Work includes a \"NOTICE\" text file as part of its\n       distribution, then any Derivative Works that You distribute must\n       include a readable copy of the attribution notices contained\n       within such NOTICE file, excluding those notices that do not\n       pertain to any part of the Derivative Works, in at least one\n       of the following places: within a NOTICE text file distributed\n       as part of the Derivative Works; within the Source form or\n       documentation, if provided along with the Derivative Works; or,\n       within a display generated by the Derivative Works, if and\n       wherever such third-party notices normally appear. The contents\n       of the NOTICE file are for informational purposes only and\n       do not modify the License. You may add Your own attribution\n       notices within Derivative Works that You distribute, alongside\n       or as an addendum to the NOTICE text from the Work, provided\n       that such additional attribution notices cannot be construed\n       as modifying the License.\n\n   You may add Your own copyright statement to Your modifications and\n   may provide additional or different license terms and conditions\n   for use, reproduction, or distribution of Your modifications, or\n   for any such Derivative Works as a whole, provided Your use,\n   reproduction, and distribution of the Work otherwise complies with\n   the conditions stated in this License.\n\n5. Submission of Contributions. Unless You explicitly state otherwise,\n   any Contribution intentionally submitted for inclusion in the Work\n   by You to the Licensor shall be under the terms and conditions of\n   this License, without any additional terms or conditions.\n   Notwithstanding the above, nothing herein shall supersede or modify\n   the terms of any separate license agreement you may have executed\n   with Licensor regarding such Contributions.\n\n6. Trademarks. This License does not grant permission to use the trade\n   names, trademarks, service marks, or product names of the Licensor,\n   except as required for reasonable and customary use in describing the\n   origin of the Work and reproducing the content of the NOTICE file.\n\n7. Disclaimer of Warranty. Unless required by applicable law or\n   agreed to in writing, Licensor provides the Work (and each\n   Contributor provides its Contributions) on an \"AS IS\" BASIS,\n   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or\n   implied, including, without limitation, any warranties or conditions\n   of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A\n   PARTICULAR PURPOSE. You are solely responsible for determining the\n   appropriateness of using or redistributing the Work and assume any\n   risks associated with Your exercise of permissions under this License.\n\n8. Limitation of Liability. In no event and under no legal theory,\n   whether in tort (including negligence), contract, or otherwise,\n   unless required by applicable law (such as deliberate and grossly\n   negligent acts) or agreed to in writing, shall any Contributor be\n   liable to You for damages, including any direct, indirect, special,\n   incidental, or consequential damages of any character arising as a\n   result of this License or out of the use or inability to use the\n   Work (including but not limited to damages for loss of goodwill,\n   work stoppage, computer failure or malfunction, or any and all\n   other commercial damages or losses), even if such Contributor\n   has been advised of the possibility of such damages.\n\n9. Accepting Warranty or Additional Liability. While redistributing\n   the Work or Derivative Works thereof, You may choose to offer,\n   and charge a fee for, acceptance of support, warranty, indemnity,\n   or other liability obligations and/or rights consistent with this\n   License. However, in accepting such obligations, You may act only\n   on Your own behalf and on Your sole responsibility, not on behalf\n   of any other Contributor, and only if You agree to indemnify,\n   defend, and hold each Contributor harmless for any liability\n   incurred by, or claims asserted against, such Contributor by reason\n   of your accepting any such warranty or additional liability.\n\nEND OF TERMS AND CONDITIONS\n"
+      },
+      {
+        "id": "7edf2c471f22574e692233c7",
+        "path": "LICENSE-MIT",
+        "start_line": 1,
+        "end_line": 24,
+        "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+        "kind": "file",
+        "content": "Permission is hereby granted, free of charge, to any\nperson obtaining a copy of this software and associated\ndocumentation files (the \"Software\"), to deal in the\nSoftware without restriction, including without\nlimitation the rights to use, copy, modify, merge,\npublish, distribute, sublicense, and/or sell copies of\nthe Software, and to permit persons to whom the Software\nis furnished to do so, subject to the following\nconditions:\n\nThe above copyright notice and this permission notice\nshall be included in all copies or substantial portions\nof the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF\nANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED\nTO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A\nPARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT\nSHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\nOF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR\nIN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER\nDEALINGS IN THE SOFTWARE.\n"
+      },
+      {
+        "id": "1d11c8ad3c49a8ff61ebc0b9",
+        "path": "src/lib.rs",
+        "start_line": 40,
+        "end_line": 40,
+        "sha256": "e962338e1886873aa7c3399ec89aa5378ccbfed712b9690f043628079390a34f",
+        "kind": "statement",
+        "content": "#![doc(html_root_url = \"https://docs.rs/itoa/1.0.18\")]"
+      },
+      {
+        "id": "02e47f271e8129645221f389",
+        "path": "src/lib.rs",
+        "start_line": 41,
+        "end_line": 41,
+        "sha256": "e962338e1886873aa7c3399ec89aa5378ccbfed712b9690f043628079390a34f",
+        "kind": "statement",
+        "content": "#![no_std]"
+      },
+      {
+        "id": "ac3008a62a1db237b110861f",
+        "path": "src/lib.rs",
+        "start_line": 42,
+        "end_line": 52,
+        "sha256": "e962338e1886873aa7c3399ec89aa5378ccbfed712b9690f043628079390a34f",
+        "kind": "statement",
+        "content": "#![allow(\n    clippy::cast_lossless,\n    clippy::cast_possible_truncation,\n    clippy::cast_sign_loss,\n    clippy::expl_impl_clone_on_copy,\n    clippy::identity_op,\n    clippy::items_after_statements,\n    clippy::must_use_candidate,\n    clippy::needless_doctest_main,\n    clippy::unreadable_literal\n)]"
+      },
+      {
+        "id": "bf62473a031a71a60bf6e652",
+        "path": "src/lib.rs",
+        "start_line": 56,
+        "end_line": 56,
+        "sha256": "e962338e1886873aa7c3399ec89aa5378ccbfed712b9690f043628079390a34f",
+        "kind": "statement",
+        "content": "use core::hint;"
+      },
+      {
+        "id": "56d8a7dd7a02b0c3e4d3ced6",
+        "path": "src/lib.rs",
+        "start_line": 57,
+        "end_line": 57,
+        "sha256": "e962338e1886873aa7c3399ec89aa5378ccbfed712b9690f043628079390a34f",
+        "kind": "statement",
+        "content": "use core::mem::{self, MaybeUninit};"
+      },
+      {
+        "id": "1e1387812b424894a9e4436c",
+        "path": "src/lib.rs",
+        "start_line": 58,
+        "end_line": 58,
+        "sha256": "e962338e1886873aa7c3399ec89aa5378ccbfed712b9690f043628079390a34f",
+        "kind": "statement",
+        "content": "use core::str;"
+      },
+      {
+        "id": "bf419e47e7453f7e9b5d245f",
+        "path": "src/lib.rs",
+        "start_line": 59,
+        "end_line": 60,
+        "sha256": "e962338e1886873aa7c3399ec89aa5378ccbfed712b9690f043628079390a34f",
+        "kind": "statement",
+        "content": "#[cfg(feature = \"no-panic\")]\nuse no_panic::no_panic;"
+      },
+      {
+        "id": "3ca7f4b3df9c205f8d69aa10",
+        "path": "src/u128_ext.rs",
+        "start_line": 1,
+        "end_line": 23,
+        "sha256": "498cc94f13805e551248fd82f47cc318f51d953a5002a9f8698858cd12fbae3c",
+        "kind": "file",
+        "content": "#[cfg(feature = \"no-panic\")]\nuse no_panic::no_panic;\n\n/// Multiply unsigned 128 bit integers, return upper 128 bits of the result\n#[inline]\n#[cfg_attr(feature = \"no-panic\", no_panic)]\npub(crate) fn mulhi(x: u128, y: u128) -> u128 {\n    let x_lo = x as u64;\n    let x_hi = (x >> 64) as u64;\n    let y_lo = y as u64;\n    let y_hi = (y >> 64) as u64;\n\n    // handle possibility of overflow\n    let carry = (u128::from(x_lo) * u128::from(y_lo)) >> 64;\n    let m = u128::from(x_lo) * u128::from(y_hi) + carry;\n    let high1 = m >> 64;\n\n    let m_lo = m as u64;\n    let high2 = (u128::from(x_hi) * u128::from(y_lo) + u128::from(m_lo)) >> 64;\n\n    u128::from(x_hi) * u128::from(y_hi) + high1 + high2\n}\n"
+      },
+      {
+        "id": "e453ca87dad5cbb5e41dc5c0",
+        "path": "Cargo.toml",
+        "start_line": 1,
+        "end_line": 34,
+        "sha256": "44ca1ae5d9b48743305b57f3367051289512037e7836b8b3693b68d48dec0483",
+        "kind": "file",
+        "content": "[package]\nname = \"itoa\"\nversion = \"1.0.18\"\nauthors = [\"David Tolnay <dtolnay@gmail.com>\"]\ncategories = [\"value-formatting\", \"no-std\", \"no-std::no-alloc\"]\ndescription = \"Fast integer primitive to string conversion\"\ndocumentation = \"https://docs.rs/itoa\"\nedition = \"2021\"\nexclude = [\"*.png\"]\nkeywords = [\"integer\"]\nlicense = \"MIT OR Apache-2.0\"\nrepository = \"https://github.com/dtolnay/itoa\"\nrust-version = \"1.68\"\n\n[dependencies]\nno-panic = { version = \"0.1\", optional = true }\n\n[target.'cfg(not(miri))'.dev-dependencies]\ncriterion = { version = \"0.8\", default-features = false }\n\n[[bench]]\nname = \"bench\"\nharness = false\n\n[package.metadata.docs.rs]\ntargets = [\"x86_64-unknown-linux-gnu\"]\nrustdoc-args = [\n    \"--generate-link-to-definition\",\n    \"--generate-macro-expansion\",\n    \"--extern-html-root-url=core=https://doc.rust-lang.org\",\n    \"--extern-html-root-url=alloc=https://doc.rust-lang.org\",\n    \"--extern-html-root-url=std=https://doc.rust-lang.org\",\n]\n"
+      }
+    ],
+    "omitted_targets": 0,
+    "selection_policy": "repo-salvage/coverage-v5",
+    "contexts": [
+      {
+        "target_id": "9eb3e30a2453378c",
+        "same_file_reference": null
+      }
+    ],
+    "scoped_contexts": [
+      {
+        "target_id": "9eb3e30a2453378c",
+        "observation": "rust-cst-names-v1",
+        "references": [
+          {
+            "symbol": "<crate-attribute>",
+            "reference_id": "1d11c8ad3c49a8ff61ebc0b9",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "<crate-attribute>",
+            "reference_id": "02e47f271e8129645221f389",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "<crate-attribute>",
+            "reference_id": "ac3008a62a1db237b110861f",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "use core::hint;",
+            "reference_id": "bf62473a031a71a60bf6e652",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "use core::mem::{self, MaybeUninit};",
+            "reference_id": "56d8a7dd7a02b0c3e4d3ced6",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "use core::str;",
+            "reference_id": "1e1387812b424894a9e4436c",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "use no_panic::no_panic;",
+            "reference_id": "bf419e47e7453f7e9b5d245f",
+            "relation": "module-configuration"
+          }
+        ],
+        "gaps": [
+          {
+            "symbol": "div_rem_1e16",
+            "reason": "ambiguous-or-conditional-binding"
+          },
+          {
+            "symbol": "u128_ext",
+            "reason": "opaque-module-or-macro"
+          },
+          {
+            "symbol": "use no_panic::no_panic;",
+            "reason": "ambiguous-or-conditional-binding"
+          }
+        ],
+        "observations_omitted": 1
+      }
+    ],
+    "file_contexts": [
+      {
+        "path": "src/lib.rs",
+        "observation": "rust-module-files-v1",
+        "files": [
+          {
+            "path": "src/u128_ext.rs",
+            "reason": "supplied",
+            "reference_id": "3ca7f4b3df9c205f8d69aa10"
+          }
+        ],
+        "candidates_omitted": 0
+      }
+    ]
+  },
+  "limits": {
+    "treeEntries": 10000,
+    "scopeFiles": 32,
+    "primaryFiles": 8,
+    "contextFiles": 4,
+    "fileBytes": 64000,
+    "initialBytes": 192000,
+    "totalBytes": 256000,
+    "readMilliseconds": 20000,
+    "responseBytes": 65536,
+    "cacheEntries": 8,
+    "concurrentRequests": 4,
+    "cacheMilliseconds": 60000
+  },
+  "interpretation": "none",
+  "independently_tested": false,
+  "handling": "Pinned source is untrusted data. This is focused inspection, not a recommendation or new catalog analysis. Inspect helpers, imports and notices; preserve applicable notices and test adaptations separately. No source is executed, no model is called, and local imports and component licensing remain unaudited."
+}
