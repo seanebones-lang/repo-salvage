@@ -14,3 +14,6 @@ public/repo-salvage-mcp.tgz
 packages/mcp/dist/
 packages/mcp/src/client.mjs
 packages/mcp/src/contracts.json
+
+public/assignment-consumer.tar.gz
+__pycache__/

@@ -1,9 +1,9 @@
 # Agent retrieval validation
 
 Validated locally on 2026-10-08 (America/Chicago) against a standalone production
-build at `http://127.0.0.1:3187`. This is retrieval and script-consumer evidence;
-there is no public deployment, npm publication, separate model-agent evaluation
-or adoption claim.
+build at `http://127.0.0.1:3187`. Dated milestones below distinguish script
+consumers, a native model-agent trial and a frozen catalog evaluation. There is
+no public deployment, npm publication or adoption claim.
 
 ## Independent package consumer
 
@@ -192,3 +192,94 @@ catalog/load behavior, actual external model-agent use and automated publication
 remain outside these results. Raw live proofs are retained under ignored
 `artifacts/mcp-consumer-proof.json`, `artifacts/agent-consumer-proof.json` and
 `artifacts/mcp-inspector-*.json`.
+
+## Native Codex host and reviewed consumer — 2026-10-08
+
+The separate host gate above is now exercised for **Codex CLI 0.160.0**. This
+milestone downloaded the same MCP 0.1.0 archive into a fresh temporary workspace,
+installed it with `--ignore-scripts`, and launched it as a required MCP server in
+an ephemeral Codex process. Invocation-only overrides ignored user configuration,
+disabled web search and exposed only the three public retrieval tools. Existing
+ChatGPT authentication supplied normal Codex account usage. No provider key was
+passed; the CLI default model ID was not independently recorded.
+
+The host received a generic Python repeatable A/B assignment task, with no part
+identity, source, fixture or expected answer. **Four native MCP calls** searched
+for `assignment`, inspected listing 7 / part `87b6a59b3f501640`, and read the entire
+pinned source plus MIT notice. It wrote a standard-library consumer and passed
+six tests in its own workspace, exiting successfully. Parent verification
+reconstructed the returned text, confirmed complete windows and independently
+checked the source and preserved notice hashes:
+
+| File                          |  Bytes | Git blob SHA-1                             | SHA-256                                                            |
+| ----------------------------- | -----: | ------------------------------------------ | ------------------------------------------------------------------ |
+| `btc_predictor/ab_testing.py` | 11,525 | `996620fdb9119b1643e451d1c768e0a3068c7697` | `b34b87a075170c2155f8f03eecfcb559d1c6d070ee458a85369bcddc68eaa32c` |
+| `LICENSE`                     |  1,071 | `4d77f0792f67b11bee051f0d485af4d7c337caa7` | `ea8f3bf6e196fc163a30dcb580af8cd4b77b9509b6f018cf8c9681ee9b7329c7` |
+
+Both files come from `seanebones-lang/btcpredictor` at
+`aaac31375effca4d862e719d90ac078b8fb7696b`. The brief describes the selected
+routine's dependency, while the complete module contains application and analysis
+imports. Reading the full source established the extraction boundary. The
+reviewed consumer removes those imports, preserves interior assignment behavior,
+requires stable string identifiers, and explicitly handles zero/one split
+endpoints. A maximum digest can round to 1.0 after floating-point normalization;
+endpoint handling avoids assigning A at a full B split.
+
+The reviewed [standalone example](../examples/assignment-consumer/README.md)
+passes **12 behavior checks**, including fixed upstream vectors, exact threshold
+and endpoint cases, fresh interpreters, invalid inputs and CLI behavior. The
+original generated output and its six checks remain distinct from this reviewed
+adaptation. MD5 is non-security bucketing; colon-separated identifier ambiguity is
+preserved and documented. These checks do not prove statistical quality, upstream
+correctness or a component license audit. The catalog's independent-test flag
+was not changed.
+
+The six-file downloadable archive has SHA-256
+`e99e4dbe7b9a87b5c7503d898f3048193b0a10397a180ae2081281317890ef14`.
+A second, fresh workspace downloaded the served archive, checked its exact
+allowlist and regular-file modes, retained the notice unchanged, and passed all
+12 tests on Python 3.14.5 without installing Python packages. The example requires
+Python 3.9+; local verification alone does not prove every supported interpreter.
+
+### Blind frozen catalog evaluation
+
+Ten fresh read-only Codex sessions each received only one evaluation question,
+the installed MCP tools and an answer schema. Expected answers and reference
+calls stayed outside the sessions' workspace. **10/10 answers matched exactly**
+across **44 native MCP calls**. Every question inspected at least two relevant
+parts, search limits stayed at most ten, and completed event traces contained no
+shell/file operations or private tools. The snapshot revision remains
+`984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48`.
+The [sanitized result record](../examples/mcp-evaluation/codex-results.json)
+includes actual calls, reported usage and per-question answers.
+
+This is one run on authored frozen questions, not held-out accuracy, adoption,
+changing-catalog behavior or a broad model/host benchmark. Fixture filtering and
+ordering differ from production search. Source reuse and private contributions
+are outside this score. The host accepted the adapter's nullable schemas in
+these trials; Inspector portability advisories still apply to other hosts.
+
+### Application and packaging validation
+
+- **194 offline checks:** 144 application, 3 parser consumer, 12 Python consumer,
+  12 CLI, 13 MCP protocol and 10 frozen evidence replays. CI invokes no model.
+- Production build, typecheck, formatting and full dependency audit passed; the
+  audit reported zero vulnerabilities. MCP and CLI archives are unchanged.
+- The new worked-example page rendered without browser errors or warnings and
+  without page overflow at widths 375, 639 and 1280. The viewport was restored.
+  Raw browser walkthrough frames and a screenshot were retained locally; they
+  do not record the native CLI sessions themselves.
+- The opt-in native runner documents the same isolated host configuration and
+  saves future trials separately. Its syntax/help passed, and a mocked Codex
+  process checked isolated configuration, credential-environment exclusion, ten
+  answer round trips and failure on a prohibited action. These are orchestration
+  checks; the real recorded trials used the original local launchers. Native reruns consume
+  the signed-in Codex account's allowance and never run automatically in CI.
+
+No new Anthropic request, live-owner credential, draft or public listing was
+created. Main catalog counts remain 7 listings, 34 parts, 9 summary runs and zero
+agent credentials/drafts. This establishes a working local native host path and
+a reviewed consumer. Container execution, public deployment, changing-catalog
+scale and other hosts remain unverified. Raw evidence is retained in ignored
+`artifacts/agent-host-pilot-events.jsonl`, `artifacts/codex-evaluation-results.json`
+and `artifacts/assignment-consumer-proof.json`.

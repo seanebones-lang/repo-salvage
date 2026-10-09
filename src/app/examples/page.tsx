@@ -30,6 +30,19 @@ export default function ExamplesPage() {
         ))}
       </div>
       <section className="closing-note">
+        <span className="eyebrow">A native agent reuse pilot</span>
+        <h2>Let an agent make the connection.</h2>
+        <p>
+          A separate Codex host used MCP to discover a Python assignment
+          routine, read its complete source and notice, and produce a standalone
+          consumer. The reviewed example includes twelve behavior checks and
+          explicit adaptations.
+        </p>
+        <Link href="/examples/assignment" className="text-link">
+          Explore the agent-produced adaptation →
+        </Link>
+      </section>
+      <section className="closing-note">
         <span className="eyebrow">The useful outcome</span>
         <h2>A part that earns its place in your project.</h2>
         <p>

@@ -102,6 +102,33 @@ export default function Agents() {
         </a>
       </section>
       <section className="detail-section agent-commands">
+        <span className="eyebrow">Tested host · Codex CLI 0.160.0</span>
+        <h2>Connect, then give it a task.</h2>
+        <p>
+          Use these fields in your Codex MCP configuration after installing the
+          archive. Replace the installed path and ORIGIN with your workspace and
+          catalog origin. Public tools require no credential.
+        </p>
+        <pre>
+          <code>{`[mcp_servers.repo_salvage]
+command = "node"
+args = ["/absolute/workspace/node_modules/@repo-salvage/mcp/dist/index.js", "--base", "ORIGIN"]
+required = true
+enabled_tools = ["repo_salvage_search_parts", "repo_salvage_inspect_part", "repo_salvage_read_part_file"]`}</code>
+        </pre>
+        <p>
+          Try: “Find a Python routine for repeatable A/B assignment. Inspect its
+          source and notices, make a standalone adaptation, and test it in my
+          workspace.” The host controls local editing and execution; the MCP
+          server supplies evidence. Search uses AND lexical terms. If a long
+          phrase finds no matches, try fewer capability terms. Language filters
+          describe repositories; confirm the selected file.
+        </p>
+        <Link className="text-link" href="/examples/assignment">
+          See the completed agent reuse pilot <Icon name="arrow" />
+        </Link>
+      </section>
+      <section className="detail-section agent-commands">
         <span className="eyebrow">Node.js 22+ · no runtime dependencies</span>
         <h2>A small client for your workspace.</h2>
         <p>

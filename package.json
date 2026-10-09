@@ -9,12 +9,13 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit && npm run typecheck --workspace @repo-salvage/mcp",
-    "test": "vitest run && npm run test:example && npm run test:cli && npm run test:mcp",
+    "test": "vitest run && npm run test:example && npm run test:assignment && npm run test:cli && npm run test:mcp",
     "test:example": "node --test examples/summary-parser/consumer.test.mjs",
     "test:cli": "npm --prefix packages/cli test",
     "format": "prettier --write src tests scripts examples docs packages public/openapi.json package.json README.md .github/workflows/ci.yml",
     "format:check": "prettier --check src tests scripts examples docs packages public/openapi.json package.json README.md .github/workflows/ci.yml",
-    "test:mcp": "npm test --workspace @repo-salvage/mcp"
+    "test:mcp": "npm test --workspace @repo-salvage/mcp",
+    "test:assignment": "python3 -m unittest discover -s examples/assignment-consumer -p 'test_*.py' -v"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",

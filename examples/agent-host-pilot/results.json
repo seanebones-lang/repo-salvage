@@ -1,0 +1,79 @@
+{
+  "host": "codex-cli 0.160.0",
+  "model": "CLI default; model ID not independently recorded",
+  "archive_sha256": "860ee164e2d6aac4d961df97f098b037e71059609639d65be55b9b116bac093e",
+  "catalog_origin": "http://127.0.0.1:3187",
+  "source_commit": "aaac31375effca4d862e719d90ac078b8fb7696b",
+  "tool_calls": [
+    {
+      "tool": "repo_salvage_search_parts",
+      "arguments": {
+        "q": "assignment",
+        "limit": 3
+      },
+      "status": "completed"
+    },
+    {
+      "tool": "repo_salvage_inspect_part",
+      "arguments": {
+        "listing_id": 7,
+        "part_id": "87b6a59b3f501640"
+      },
+      "status": "completed"
+    },
+    {
+      "tool": "repo_salvage_read_part_file",
+      "arguments": {
+        "listing_id": 7,
+        "part_id": "87b6a59b3f501640",
+        "path": "LICENSE",
+        "max_characters": 12000
+      },
+      "status": "completed"
+    },
+    {
+      "tool": "repo_salvage_read_part_file",
+      "arguments": {
+        "listing_id": 7,
+        "part_id": "87b6a59b3f501640",
+        "path": "btc_predictor/ab_testing.py",
+        "max_characters": 12000
+      },
+      "status": "completed"
+    }
+  ],
+  "source_reads_independently_verified": [
+    {
+      "path": "LICENSE",
+      "bytes": 1071,
+      "sha256": "ea8f3bf6e196fc163a30dcb580af8cd4b77b9509b6f018cf8c9681ee9b7329c7",
+      "git_blob_sha": "4d77f0792f67b11bee051f0d485af4d7c337caa7"
+    },
+    {
+      "path": "btc_predictor/ab_testing.py",
+      "bytes": 11525,
+      "sha256": "b34b87a075170c2155f8f03eecfcb559d1c6d070ee458a85369bcddc68eaa32c",
+      "git_blob_sha": "996620fdb9119b1643e451d1c768e0a3068c7697"
+    }
+  ],
+  "agent_tests_passed": 6,
+  "reviewed_consumer_tests_passed": 12,
+  "host_exit_code": 0,
+  "user_configuration_changed": false,
+  "draft_credentials_created": 0,
+  "public_listings_created": 0,
+  "anthropic_provider_calls": 0,
+  "usage": {
+    "input_tokens": 144707,
+    "cached_input_tokens": 121344,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 3531,
+    "reasoning_output_tokens": 10
+  },
+  "limits": [
+    "One local host task, not adoption or a broad host compatibility claim",
+    "CLI default model not separately identified",
+    "Catalog descriptions are generated guidance, not component/dependency/license audits",
+    "Original generated output retained locally; reviewed consumer has documented endpoint and identifier refinements"
+  ]
+}
