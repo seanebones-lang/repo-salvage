@@ -1,0 +1,2365 @@
+{
+  "format": "repo-salvage/scoped-support-results-v1",
+  "scope": "Two bounded operator diagnostics: retained scheduling analysis and fresh focused humanize interpretation. No causal or general recall inference.",
+  "inputSealSha256": "83633834fb6c77451f5810387c9ba0a758627b490acfe51c9d3d64ee8c68212c",
+  "billing": "Existing Codex account allowance; no API-key model calls",
+  "results": [
+    {
+      "id": "schedule-scoped",
+      "model": "gpt-6.1-sol",
+      "effort": "low",
+      "cliVersion": "codex-cli 0.160.0",
+      "promptSha256": "efbebc965d963c4d0ec7ca32d6baf9a2293867edefd26dcab30cfcb799812d1d",
+      "trace": {
+        "sha256": "d4ad1213663f6a51de8dae4f9dfab7e8732b1fe1bec0ad6f495a93808e6ccb74"
+      },
+      "latencyMs": 51170,
+      "billing": "Existing Codex account allowance; no API-key model call",
+      "transportSuccess": true,
+      "failure": null,
+      "prohibitedEvents": [],
+      "usage": {
+        "input_tokens": 31290,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1459,
+        "reasoning_output_tokens": 36
+      },
+      "requestSha256": "8775eff75661595dec0f97a29d7f1b41585d3b082105b6fbeb846aa8b491e1e4",
+      "structurallyAccepted": true,
+      "response": {
+        "overview": "Four distinct reuse candidates are supported by the supplied excerpts: scheduler orchestration, weekday adjustment, ordered datetime parsing, and decorator registration. Full schedule-module context is absent; scoped references do not establish dependency closure or correctness. Test content and results were not supplied.",
+        "outcome": "candidates",
+        "reusable_pieces": [
+          {
+            "target_id": "a0059415e870e065",
+            "name": "Scheduler orchestration and job registry",
+            "description": "Maintains a job list, dispatches due jobs in sorted order without replaying missed runs, runs a snapshot of all jobs, filters and removes jobs by tag, and reports the next run or idle duration.",
+            "category": "Other",
+            "integration_notes": "The supplied Scheduler definition includes get_jobs, clear, cancel_job, every, _run_job and timing properties. Empty registries or empty tag matches return None for next-run queries. _run_job removes jobs returning the CancelJob class or an instance; cancel_job catches ValueError. run_all sleeps after each job, including the last. Observed Job.should_run asserts next_run exists. Job.run can return CancelJob before execution, otherwise calls the callback, updates last_run, reschedules and checks the deadline again. Callback exceptions are not caught here. Job construction, logger initialization and relevant import statements are excerpted, but Job._schedule_next_run is not supplied.",
+            "limitations": [
+              "Full same-file context is missing. The scoped context records Job omitted for packet budget; Job member excerpts do not provide its complete class or resolve receiver types.",
+              "The Job scheduling implementation and complete initialization/import behavior remain unresolved. Scoped observations report zero omitted observations, not complete dependencies.",
+              "No interval or delay validation appears in Scheduler. Execution invokes callbacks, mutates the registry and can block through sleep."
+            ],
+            "explanation_refs": [
+              "66bf9de18a73ae4c37bfef0a",
+              "7c3abc970e22e6a2edcd5945",
+              "c4d1e3fd616b708ed77a4947",
+              "75d833f330ecca9bba43e244",
+              "b7891f2bae80de6a8a0076b9",
+              "182d18da763680d1ce2bfe50",
+              "23caae7c74e3baaac696046d",
+              "e3ce266b27074df0873c2057",
+              "2705b3481f4dcd857bd52af5",
+              "90efc3fc411ae0546027db96",
+              "c695d655f02e8a5369293eef",
+              "2bdba43ab79ab91a88260f3c"
+            ]
+          },
+          {
+            "target_id": "483f5477d16536d6",
+            "name": "Nearest weekday timestamp adjustment",
+            "description": "Moves a timestamp forward to the requested weekday, retaining the same day when it already matches. The supporting helper accepts lowercase English weekday names and raises ScheduleValueError for other values.",
+            "category": "Data processing",
+            "integration_notes": "Extract with the observed _weekday_index helper and account for ScheduleValueError and its ScheduleError base. The algorithm subtracts weekday indexes, adds seven for a negative difference, then adds a datetime.timedelta. The datetime import statement is supplied. No timezone normalization or input coercion appears in these excerpts.",
+            "limitations": [
+              "Full same-file context is missing. Scoped references supply the helper and datetime import, with no recorded gaps or omitted observations; module initialization and dependency closure remain unestablished.",
+              "Weekday matching is case-sensitive. Behavior for timezone transitions or objects other than the annotated datetime is not established."
+            ],
+            "explanation_refs": [
+              "c739558725ccd002fd4d736e",
+              "f0c337144f9ec65406f95b45",
+              "c695d655f02e8a5369293eef",
+              "ac13fe303d2efd1b6f3a3c29",
+              "33cb999a2ed84c4e52eb2ca7"
+            ]
+          },
+          {
+            "target_id": "f5a3c6d38899716a",
+            "name": "Ordered datetime format fallback",
+            "description": "Tries datetime format strings in order, returns the first successful strptime result, and returns None when every attempt raises ValueError or the format list is empty.",
+            "category": "Data processing",
+            "integration_notes": "The method body does not read self, making its parsing policy a possible extraction into a utility after adapting the method boundary. Supplied supporting statements import datetime and typing names. Only ValueError is caught; other failures propagate. The first successful parse returns immediately, so format ordering determines ambiguous-input interpretation.",
+            "limitations": [
+              "Full same-file and enclosing Job class context are missing. The scoped context records Job omitted for packet budget; supplied constructor and member spellings do not resolve the enclosing scope.",
+              "No input validation beyond strptime attempts is shown. Scoped observations report zero omitted observations but do not establish complete imports, initialization or external dependencies."
+            ],
+            "explanation_refs": [
+              "c81981735437dbb67ab39255",
+              "c695d655f02e8a5369293eef",
+              "90efc3fc411ae0546027db96",
+              "c4d1e3fd616b708ed77a4947"
+            ]
+          },
+          {
+            "target_id": "ea72d01741063256",
+            "name": "Decorator-based job registration",
+            "description": "Creates a decorator that calls job.do with the decorated function and captured arguments, then returns the original function.",
+            "category": "Other",
+            "integration_notes": "The nested _schedule_decorator is supplied within repeat. Registration occurs when the decorator is applied; repeat itself only returns that closure. Preserve or explicitly adapt this timing and the return of the original function. The body performs no validation and does not catch failures from job.do. Its receiver contract and registration implementation require additional source inspection.",
+            "limitations": [
+              "Full same-file context is missing. Scoped context supplies no supporting references and records no gaps or omitted observations; this does not resolve job.do or dynamic binding.",
+              "Job.do content is absent. Registration side effects, accepted arguments and enclosing module initialization remain unresolved."
+            ],
+            "explanation_refs": [
+              "1f2cef85382e9e12ffae9812"
+            ]
+          }
+        ]
+      },
+      "summary": {
+        "overview": "Four distinct reuse candidates are supported by the supplied excerpts: scheduler orchestration, weekday adjustment, ordered datetime parsing, and decorator registration. Full schedule-module context is absent; scoped references do not establish dependency closure or correctness. Test content and results were not supplied.",
+        "languages": [
+          "Python"
+        ],
+        "frameworks": [],
+        "reusable_pieces": [
+          {
+            "name": "Scheduler orchestration and job registry",
+            "path": "schedule/__init__.py",
+            "description": "Maintains a job list, dispatches due jobs in sorted order without replaying missed runs, runs a snapshot of all jobs, filters and removes jobs by tag, and reports the next run or idle duration.",
+            "category": "Other",
+            "integration_notes": "The supplied Scheduler definition includes get_jobs, clear, cancel_job, every, _run_job and timing properties. Empty registries or empty tag matches return None for next-run queries. _run_job removes jobs returning the CancelJob class or an instance; cancel_job catches ValueError. run_all sleeps after each job, including the last. Observed Job.should_run asserts next_run exists. Job.run can return CancelJob before execution, otherwise calls the callback, updates last_run, reschedules and checks the deadline again. Callback exceptions are not caught here. Job construction, logger initialization and relevant import statements are excerpted, but Job._schedule_next_run is not supplied.",
+            "limitations": [
+              "Full same-file context is missing. The scoped context records Job omitted for packet budget; Job member excerpts do not provide its complete class or resolve receiver types.",
+              "The Job scheduling implementation and complete initialization/import behavior remain unresolved. Scoped observations report zero omitted observations, not complete dependencies.",
+              "No interval or delay validation appears in Scheduler. Execution invokes callbacks, mutates the registry and can block through sleep.",
+              "Same-file context was omitted from the model's bounded evidence packet; helper, type, constant and enclosing-scope requirements need further review.",
+              "Scoped supporting blocks are syntactic observations, not complete module context or a resolved dependency closure; recorded gaps and omitted observations require review.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "a0059415e870e065",
+            "dependencies": [
+              "collections.abc",
+              "datetime",
+              "functools",
+              "logging",
+              "pytz",
+              "random",
+              "re",
+              "time",
+              "typing"
+            ],
+            "related_paths": [],
+            "test_paths": [
+              "test_schedule.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "a0059415e870e065",
+              "path": "schedule/__init__.py",
+              "symbol": "Scheduler",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "collections.abc",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "datetime",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "logging",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "random",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "re",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "time",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "typing",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "pytz",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [
+                "test_schedule.py"
+              ],
+              "notice_paths": [
+                "LICENSE.txt"
+              ],
+              "reference": {
+                "id": "66bf9de18a73ae4c37bfef0a",
+                "path": "schedule/__init__.py",
+                "start_line": 79,
+                "end_line": 206,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "66bf9de18a73ae4c37bfef0a",
+              "7c3abc970e22e6a2edcd5945",
+              "c4d1e3fd616b708ed77a4947",
+              "75d833f330ecca9bba43e244",
+              "b7891f2bae80de6a8a0076b9",
+              "182d18da763680d1ce2bfe50",
+              "23caae7c74e3baaac696046d",
+              "e3ce266b27074df0873c2057",
+              "2705b3481f4dcd857bd52af5",
+              "90efc3fc411ae0546027db96",
+              "c695d655f02e8a5369293eef",
+              "2bdba43ab79ab91a88260f3c"
+            ]
+          },
+          {
+            "name": "Nearest weekday timestamp adjustment",
+            "path": "schedule/__init__.py",
+            "description": "Moves a timestamp forward to the requested weekday, retaining the same day when it already matches. The supporting helper accepts lowercase English weekday names and raises ScheduleValueError for other values.",
+            "category": "Data processing",
+            "integration_notes": "Extract with the observed _weekday_index helper and account for ScheduleValueError and its ScheduleError base. The algorithm subtracts weekday indexes, adds seven for a negative difference, then adds a datetime.timedelta. The datetime import statement is supplied. No timezone normalization or input coercion appears in these excerpts.",
+            "limitations": [
+              "Full same-file context is missing. Scoped references supply the helper and datetime import, with no recorded gaps or omitted observations; module initialization and dependency closure remain unestablished.",
+              "Weekday matching is case-sensitive. Behavior for timezone transitions or objects other than the annotated datetime is not established.",
+              "Same-file context was omitted from the model's bounded evidence packet; helper, type, constant and enclosing-scope requirements need further review.",
+              "Scoped supporting blocks are syntactic observations, not complete module context or a resolved dependency closure; recorded gaps and omitted observations require review.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "483f5477d16536d6",
+            "dependencies": [
+              "collections.abc",
+              "datetime",
+              "functools",
+              "logging",
+              "pytz",
+              "random",
+              "re",
+              "time",
+              "typing"
+            ],
+            "related_paths": [],
+            "test_paths": [
+              "test_schedule.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "483f5477d16536d6",
+              "path": "schedule/__init__.py",
+              "symbol": "_move_to_next_weekday",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "collections.abc",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "datetime",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "logging",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "random",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "re",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "time",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "typing",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "pytz",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [
+                "test_schedule.py"
+              ],
+              "notice_paths": [
+                "LICENSE.txt"
+              ],
+              "reference": {
+                "id": "c739558725ccd002fd4d736e",
+                "path": "schedule/__init__.py",
+                "start_line": 916,
+                "end_line": 928,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "c739558725ccd002fd4d736e",
+              "f0c337144f9ec65406f95b45",
+              "c695d655f02e8a5369293eef",
+              "ac13fe303d2efd1b6f3a3c29",
+              "33cb999a2ed84c4e52eb2ca7"
+            ]
+          },
+          {
+            "name": "Ordered datetime format fallback",
+            "path": "schedule/__init__.py",
+            "description": "Tries datetime format strings in order, returns the first successful strptime result, and returns None when every attempt raises ValueError or the format list is empty.",
+            "category": "Data processing",
+            "integration_notes": "The method body does not read self, making its parsing policy a possible extraction into a utility after adapting the method boundary. Supplied supporting statements import datetime and typing names. Only ValueError is caught; other failures propagate. The first successful parse returns immediately, so format ordering determines ambiguous-input interpretation.",
+            "limitations": [
+              "Full same-file and enclosing Job class context are missing. The scoped context records Job omitted for packet budget; supplied constructor and member spellings do not resolve the enclosing scope.",
+              "No input validation beyond strptime attempts is shown. Scoped observations report zero omitted observations but do not establish complete imports, initialization or external dependencies.",
+              "Same-file context was omitted from the model's bounded evidence packet; helper, type, constant and enclosing-scope requirements need further review.",
+              "Scoped supporting blocks are syntactic observations, not complete module context or a resolved dependency closure; recorded gaps and omitted observations require review.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection.",
+              "Unresolved source context: Enclosing Python class context required: Job"
+            ],
+            "target_id": "f5a3c6d38899716a",
+            "dependencies": [
+              "collections.abc",
+              "datetime",
+              "functools",
+              "logging",
+              "pytz",
+              "random",
+              "re",
+              "time",
+              "typing"
+            ],
+            "related_paths": [],
+            "test_paths": [
+              "test_schedule.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "f5a3c6d38899716a",
+              "path": "schedule/__init__.py",
+              "symbol": "Job._decode_datetimestr",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "collections.abc",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "datetime",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "logging",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "random",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "re",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "time",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "typing",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "pytz",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [],
+              "unresolved": [
+                "Enclosing Python class context required: Job"
+              ],
+              "test_paths": [
+                "test_schedule.py"
+              ],
+              "notice_paths": [
+                "LICENSE.txt"
+              ],
+              "reference": {
+                "id": "c81981735437dbb67ab39255",
+                "path": "schedule/__init__.py",
+                "start_line": 822,
+                "end_line": 830,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "c81981735437dbb67ab39255",
+              "c695d655f02e8a5369293eef",
+              "90efc3fc411ae0546027db96",
+              "c4d1e3fd616b708ed77a4947"
+            ]
+          },
+          {
+            "name": "Decorator-based job registration",
+            "path": "schedule/__init__.py",
+            "description": "Creates a decorator that calls job.do with the decorated function and captured arguments, then returns the original function.",
+            "category": "Other",
+            "integration_notes": "The nested _schedule_decorator is supplied within repeat. Registration occurs when the decorator is applied; repeat itself only returns that closure. Preserve or explicitly adapt this timing and the return of the original function. The body performs no validation and does not catch failures from job.do. Its receiver contract and registration implementation require additional source inspection.",
+            "limitations": [
+              "Full same-file context is missing. Scoped context supplies no supporting references and records no gaps or omitted observations; this does not resolve job.do or dynamic binding.",
+              "Job.do content is absent. Registration side effects, accepted arguments and enclosing module initialization remain unresolved.",
+              "Same-file context was omitted from the model's bounded evidence packet; helper, type, constant and enclosing-scope requirements need further review.",
+              "Scoped supporting blocks are syntactic observations, not complete module context or a resolved dependency closure; recorded gaps and omitted observations require review.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "ea72d01741063256",
+            "dependencies": [
+              "collections.abc",
+              "datetime",
+              "functools",
+              "logging",
+              "pytz",
+              "random",
+              "re",
+              "time",
+              "typing"
+            ],
+            "related_paths": [],
+            "test_paths": [
+              "test_schedule.py"
+            ],
+            "source_sampled": true,
+            "source_target": {
+              "id": "ea72d01741063256",
+              "path": "schedule/__init__.py",
+              "symbol": "repeat",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "collections.abc",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "datetime",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "functools",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "logging",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "random",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "re",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "time",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "typing",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "pytz",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [],
+              "unresolved": [],
+              "test_paths": [
+                "test_schedule.py"
+              ],
+              "notice_paths": [
+                "LICENSE.txt"
+              ],
+              "reference": {
+                "id": "1f2cef85382e9e12ffae9812",
+                "path": "schedule/__init__.py",
+                "start_line": 899,
+                "end_line": 913,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "1f2cef85382e9e12ffae9812"
+            ]
+          }
+        ],
+        "analysis": {
+          "format": "repo-salvage/analysis-v2",
+          "outcome": "candidates",
+          "index": {
+            "format": "repo-salvage/source-index-v2",
+            "limits": {
+              "files": 64,
+              "initialFiles": 48,
+              "initialMetadataFiles": 12,
+              "initialLibraryFiles": 24,
+              "followupFiles": 16,
+              "initialBytes": 1500000,
+              "inspectionMilliseconds": 120000,
+              "fileBytes": 128000,
+              "totalBytes": 2000000,
+              "promptCharacters": 70000,
+              "candidates": 24
+            },
+            "files": [
+              {
+                "path": "docs/conf.py",
+                "sha256": "1d784bfe0d5f280334557fec2abc51df6a77e8ea1878992384d1d9d810ee04c5",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "os",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "sys",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "LICENSE.txt",
+                "sha256": "30a8352c318ce1b645acde0299697342d4380ed2637d7ca18a8ad25661e3b41b",
+                "coverage": "complete",
+                "parser": "file",
+                "imports": []
+              },
+              {
+                "path": "pyproject.toml",
+                "sha256": "a48c79e2096ac67baf58e1107adffbbae9a4d6479ed6c8528a5b97ff76c7d996",
+                "coverage": "complete",
+                "parser": "file",
+                "imports": []
+              },
+              {
+                "path": "schedule/__init__.py",
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "collections.abc",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "datetime",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "functools",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "logging",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "random",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "re",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "time",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "typing",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "pytz",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "setup.py",
+                "sha256": "489d711917bac84051c6712d3941c00f199f43fc1b226e98f2cdccd6b1835336",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "codecs",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "setuptools",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "test_schedule.py",
+                "sha256": "71fa3781959b0dee649acc01e618559792c52c6375b82880945764819d5d5523",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "datetime",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "functools",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "unittest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "os",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "time",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "schedule",
+                    "kind": "local",
+                    "resolved_path": "schedule/__init__.py"
+                  },
+                  {
+                    "specifier": "pytz",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              }
+            ],
+            "skipped": [
+              {
+                "path": ".github/workflows/ci.yml",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": ".gitignore",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "AUTHORS.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "HISTORY.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "MANIFEST.in",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "README.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/Makefile",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/_static/custom.css",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/_templates/sidebarintro.html",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/background-execution.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/changelog.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/development.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/examples.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/exception-handling.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/faq.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/index.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/installation.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/logging.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/multiple-schedulers.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/parallel-execution.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/reference.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "docs/timezones.rst",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "requirements-dev.txt",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "schedule/py.typed",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "setup.cfg",
+                "reason": "unsupported_file_type"
+              },
+              {
+                "path": "tox.ini",
+                "reason": "unsupported_file_type"
+              }
+            ],
+            "inspection": {
+              "initial_paths": [
+                "LICENSE.txt",
+                "pyproject.toml",
+                "setup.py",
+                "docs/conf.py",
+                "schedule/__init__.py",
+                "test_schedule.py"
+              ],
+              "followup_paths": [],
+              "fill_paths": [],
+              "deadline_reached": false
+            },
+            "targets_indexed": 62,
+            "targets_supplied": 24,
+            "omitted_targets": 38,
+            "references": [
+              {
+                "id": "367fd2729859f32dcbf3ec39",
+                "path": "setup.py",
+                "start_line": 9,
+                "end_line": 14,
+                "sha256": "489d711917bac84051c6712d3941c00f199f43fc1b226e98f2cdccd6b1835336",
+                "kind": "declaration"
+              },
+              {
+                "id": "f369cc1367e08adc213ff02e",
+                "path": "docs/conf.py",
+                "start_line": 1,
+                "end_line": 374,
+                "sha256": "1d784bfe0d5f280334557fec2abc51df6a77e8ea1878992384d1d9d810ee04c5",
+                "kind": "file"
+              },
+              {
+                "id": "33cb999a2ed84c4e52eb2ca7",
+                "path": "schedule/__init__.py",
+                "start_line": 53,
+                "end_line": 56,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "ac13fe303d2efd1b6f3a3c29",
+                "path": "schedule/__init__.py",
+                "start_line": 59,
+                "end_line": 62,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "59ae0c244ed9ee244c9885ea",
+                "path": "schedule/__init__.py",
+                "start_line": 65,
+                "end_line": 68,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "7c3abc970e22e6a2edcd5945",
+                "path": "schedule/__init__.py",
+                "start_line": 71,
+                "end_line": 76,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "3cf8c1efa0cff5f2bb929f5a",
+                "path": "schedule/__init__.py",
+                "start_line": 843,
+                "end_line": 847,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "37c35eb70f1c05ad7b42626f",
+                "path": "schedule/__init__.py",
+                "start_line": 892,
+                "end_line": 896,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "95b73f4c9fcc2062f76556a4",
+                "path": "schedule/__init__.py",
+                "start_line": 864,
+                "end_line": 868,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "f567ef6de19111ff3ddc3c60",
+                "path": "schedule/__init__.py",
+                "start_line": 885,
+                "end_line": 889,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "1f2cef85382e9e12ffae9812",
+                "path": "schedule/__init__.py",
+                "start_line": 899,
+                "end_line": 913,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "66bf9de18a73ae4c37bfef0a",
+                "path": "schedule/__init__.py",
+                "start_line": 79,
+                "end_line": 206,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "e17ec544b20b9bc93bdbb0c5",
+                "path": "schedule/__init__.py",
+                "start_line": 850,
+                "end_line": 854,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "fe35b0c21161b1c99328691e",
+                "path": "schedule/__init__.py",
+                "start_line": 878,
+                "end_line": 882,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "1b03ee92a88549d30c776df5",
+                "path": "schedule/__init__.py",
+                "start_line": 871,
+                "end_line": 875,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "5027d50866c227ecef6cd1a3",
+                "path": "schedule/__init__.py",
+                "start_line": 857,
+                "end_line": 861,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "f0c337144f9ec65406f95b45",
+                "path": "schedule/__init__.py",
+                "start_line": 931,
+                "end_line": 945,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "c739558725ccd002fd4d736e",
+                "path": "schedule/__init__.py",
+                "start_line": 916,
+                "end_line": 928,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "b17619fd28b85e30d6dc7f82",
+                "path": "schedule/__init__.py",
+                "start_line": 819,
+                "end_line": 820,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "2f66f0b3efa04ff96e31135d",
+                "path": "schedule/__init__.py",
+                "start_line": 257,
+                "end_line": 262,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "5634a92eff17034f4a330649",
+                "path": "schedule/__init__.py",
+                "start_line": 162,
+                "end_line": 170,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "c81981735437dbb67ab39255",
+                "path": "schedule/__init__.py",
+                "start_line": 822,
+                "end_line": 830,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "b7347f7d353fd822c90a0636",
+                "path": "schedule/__init__.py",
+                "start_line": 122,
+                "end_line": 133,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "254f429ef2aac99b2f1377dc",
+                "path": "schedule/__init__.py",
+                "start_line": 457,
+                "end_line": 469,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "812521335aae722d220ca92d",
+                "path": "LICENSE.txt",
+                "start_line": 1,
+                "end_line": 22,
+                "sha256": "30a8352c318ce1b645acde0299697342d4380ed2637d7ca18a8ad25661e3b41b",
+                "kind": "file"
+              },
+              {
+                "id": "1a3a06faad5dae4aa4ca1893",
+                "path": "setup.py",
+                "start_line": 1,
+                "end_line": 56,
+                "sha256": "489d711917bac84051c6712d3941c00f199f43fc1b226e98f2cdccd6b1835336",
+                "kind": "file"
+              },
+              {
+                "id": "90efc3fc411ae0546027db96",
+                "path": "schedule/__init__.py",
+                "start_line": 48,
+                "end_line": 48,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "statement"
+              },
+              {
+                "id": "2705b3481f4dcd857bd52af5",
+                "path": "schedule/__init__.py",
+                "start_line": 41,
+                "end_line": 41,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "statement"
+              },
+              {
+                "id": "9448503fca95016a213840fd",
+                "path": "schedule/__init__.py",
+                "start_line": 837,
+                "end_line": 837,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "statement"
+              },
+              {
+                "id": "c695d655f02e8a5369293eef",
+                "path": "schedule/__init__.py",
+                "start_line": 42,
+                "end_line": 42,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "statement"
+              },
+              {
+                "id": "c4d1e3fd616b708ed77a4947",
+                "path": "schedule/__init__.py",
+                "start_line": 227,
+                "end_line": 255,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "182d18da763680d1ce2bfe50",
+                "path": "schedule/__init__.py",
+                "start_line": 50,
+                "end_line": 50,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "statement"
+              },
+              {
+                "id": "23caae7c74e3baaac696046d",
+                "path": "schedule/__init__.py",
+                "start_line": 47,
+                "end_line": 47,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "statement"
+              },
+              {
+                "id": "2bdba43ab79ab91a88260f3c",
+                "path": "schedule/__init__.py",
+                "start_line": 43,
+                "end_line": 43,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "statement"
+              },
+              {
+                "id": "75d833f330ecca9bba43e244",
+                "path": "schedule/__init__.py",
+                "start_line": 666,
+                "end_line": 672,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "b7891f2bae80de6a8a0076b9",
+                "path": "schedule/__init__.py",
+                "start_line": 674,
+                "end_line": 698,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "declaration"
+              },
+              {
+                "id": "e3ce266b27074df0873c2057",
+                "path": "schedule/__init__.py",
+                "start_line": 44,
+                "end_line": 44,
+                "sha256": "b0c93f8ee84cbb8dbb98bcb8284864f4ea04012fdbc216de13f8ad2141d09efa",
+                "kind": "statement"
+              },
+              {
+                "id": "9730fc6922ccb5b8b8d8fe08",
+                "path": "pyproject.toml",
+                "start_line": 1,
+                "end_line": 27,
+                "sha256": "a48c79e2096ac67baf58e1107adffbbae9a4d6479ed6c8528a5b97ff76c7d996",
+                "kind": "file"
+              }
+            ],
+            "selection_policy": "repo-salvage/coverage-v4",
+            "scoped_contexts": [
+              {
+                "target_id": "bcdc91d5e34c2d07",
+                "observation": "python-ast-name-loads-v1",
+                "references": [],
+                "gaps": [],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "2315c81359b13272",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "ScheduleError",
+                    "reference_id": "33cb999a2ed84c4e52eb2ca7",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "cd9a2ef1a989b8ee",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "ScheduleValueError",
+                    "reference_id": "ac13fe303d2efd1b6f3a3c29",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "5153ec4d125481de",
+                "observation": "python-ast-name-loads-v1",
+                "references": [],
+                "gaps": [],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "4f9ffb49f49b13f2",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "default_scheduler",
+                    "reference_id": "9448503fca95016a213840fd",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Job.__init__",
+                    "reference_id": "c4d1e3fd616b708ed77a4947",
+                    "relation": "class-member-spelling"
+                  },
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Hashable",
+                    "reference_id": "2705b3481f4dcd857bd52af5",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Optional",
+                    "reference_id": "90efc3fc411ae0546027db96",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "datetime",
+                    "reference_id": "c695d655f02e8a5369293eef",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "functools",
+                    "reference_id": "2bdba43ab79ab91a88260f3c",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [
+                  {
+                    "symbol": "Job",
+                    "reason": "packet-budget"
+                  }
+                ],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "af4ff3920f39cf51",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "Optional",
+                    "reference_id": "90efc3fc411ae0546027db96",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "default_scheduler",
+                    "reference_id": "9448503fca95016a213840fd",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "dc6ea11f62cd3fe9",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "Hashable",
+                    "reference_id": "2705b3481f4dcd857bd52af5",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "List",
+                    "reference_id": "90efc3fc411ae0546027db96",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "default_scheduler",
+                    "reference_id": "9448503fca95016a213840fd",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Job.__init__",
+                    "reference_id": "c4d1e3fd616b708ed77a4947",
+                    "relation": "class-member-spelling"
+                  },
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "datetime",
+                    "reference_id": "c695d655f02e8a5369293eef",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "functools",
+                    "reference_id": "2bdba43ab79ab91a88260f3c",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [
+                  {
+                    "symbol": "Job",
+                    "reason": "packet-budget"
+                  }
+                ],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "41431f3ddcb93e41",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "Hashable",
+                    "reference_id": "2705b3481f4dcd857bd52af5",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Optional",
+                    "reference_id": "90efc3fc411ae0546027db96",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "datetime",
+                    "reference_id": "c695d655f02e8a5369293eef",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "default_scheduler",
+                    "reference_id": "9448503fca95016a213840fd",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "ea72d01741063256",
+                "observation": "python-ast-name-loads-v1",
+                "references": [],
+                "gaps": [],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "a0059415e870e065",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "CancelJob",
+                    "reference_id": "7c3abc970e22e6a2edcd5945",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Hashable",
+                    "reference_id": "2705b3481f4dcd857bd52af5",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "List",
+                    "reference_id": "90efc3fc411ae0546027db96",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "datetime",
+                    "reference_id": "c695d655f02e8a5369293eef",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "logger",
+                    "reference_id": "182d18da763680d1ce2bfe50",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "time",
+                    "reference_id": "23caae7c74e3baaac696046d",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Job.__init__",
+                    "reference_id": "c4d1e3fd616b708ed77a4947",
+                    "relation": "class-member-spelling"
+                  },
+                  {
+                    "symbol": "Job.should_run",
+                    "reference_id": "75d833f330ecca9bba43e244",
+                    "relation": "class-member-spelling"
+                  },
+                  {
+                    "symbol": "Job.run",
+                    "reference_id": "b7891f2bae80de6a8a0076b9",
+                    "relation": "class-member-spelling"
+                  },
+                  {
+                    "symbol": "logging",
+                    "reference_id": "e3ce266b27074df0873c2057",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "functools",
+                    "reference_id": "2bdba43ab79ab91a88260f3c",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [
+                  {
+                    "symbol": "Job",
+                    "reason": "packet-budget"
+                  }
+                ],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "321b3d5527de858d",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "default_scheduler",
+                    "reference_id": "9448503fca95016a213840fd",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "9704c27560d659dd",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "default_scheduler",
+                    "reference_id": "9448503fca95016a213840fd",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Job.__init__",
+                    "reference_id": "c4d1e3fd616b708ed77a4947",
+                    "relation": "class-member-spelling"
+                  },
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Hashable",
+                    "reference_id": "2705b3481f4dcd857bd52af5",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Optional",
+                    "reference_id": "90efc3fc411ae0546027db96",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "datetime",
+                    "reference_id": "c695d655f02e8a5369293eef",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "functools",
+                    "reference_id": "2bdba43ab79ab91a88260f3c",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [
+                  {
+                    "symbol": "Job",
+                    "reason": "packet-budget"
+                  }
+                ],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "d5f038dc8dd9758c",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "Hashable",
+                    "reference_id": "2705b3481f4dcd857bd52af5",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Optional",
+                    "reference_id": "90efc3fc411ae0546027db96",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "default_scheduler",
+                    "reference_id": "9448503fca95016a213840fd",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "fbed67480cec60f6",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "default_scheduler",
+                    "reference_id": "9448503fca95016a213840fd",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "570a9f7e94562324",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "ScheduleValueError",
+                    "reference_id": "ac13fe303d2efd1b6f3a3c29",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "483f5477d16536d6",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "_weekday_index",
+                    "reference_id": "f0c337144f9ec65406f95b45",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "datetime",
+                    "reference_id": "c695d655f02e8a5369293eef",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "e3fb73b02a166bde",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "datetime",
+                    "reference_id": "c695d655f02e8a5369293eef",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Job.__init__",
+                    "reference_id": "c4d1e3fd616b708ed77a4947",
+                    "relation": "class-member-spelling"
+                  },
+                  {
+                    "symbol": "Hashable",
+                    "reference_id": "2705b3481f4dcd857bd52af5",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Optional",
+                    "reference_id": "90efc3fc411ae0546027db96",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "functools",
+                    "reference_id": "2bdba43ab79ab91a88260f3c",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [
+                  {
+                    "symbol": "Job",
+                    "reason": "packet-budget"
+                  }
+                ],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "378b99ca07930447",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "Job.__init__",
+                    "reference_id": "c4d1e3fd616b708ed77a4947",
+                    "relation": "class-member-spelling"
+                  },
+                  {
+                    "symbol": "Hashable",
+                    "reference_id": "2705b3481f4dcd857bd52af5",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Optional",
+                    "reference_id": "90efc3fc411ae0546027db96",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "datetime",
+                    "reference_id": "c695d655f02e8a5369293eef",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "functools",
+                    "reference_id": "2bdba43ab79ab91a88260f3c",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [
+                  {
+                    "symbol": "Job",
+                    "reason": "packet-budget"
+                  }
+                ],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "6e0ba010176f5aa3",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "enclosing-class"
+                  },
+                  {
+                    "symbol": "Job.__init__",
+                    "reference_id": "c4d1e3fd616b708ed77a4947",
+                    "relation": "class-member-spelling"
+                  },
+                  {
+                    "symbol": "Hashable",
+                    "reference_id": "2705b3481f4dcd857bd52af5",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Optional",
+                    "reference_id": "90efc3fc411ae0546027db96",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "datetime",
+                    "reference_id": "c695d655f02e8a5369293eef",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "functools",
+                    "reference_id": "2bdba43ab79ab91a88260f3c",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [
+                  {
+                    "symbol": "Job",
+                    "reason": "packet-budget"
+                  }
+                ],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "f5a3c6d38899716a",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "List",
+                    "reference_id": "90efc3fc411ae0546027db96",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "datetime",
+                    "reference_id": "c695d655f02e8a5369293eef",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Job.__init__",
+                    "reference_id": "c4d1e3fd616b708ed77a4947",
+                    "relation": "class-member-spelling"
+                  },
+                  {
+                    "symbol": "Hashable",
+                    "reference_id": "2705b3481f4dcd857bd52af5",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "functools",
+                    "reference_id": "2bdba43ab79ab91a88260f3c",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [
+                  {
+                    "symbol": "Job",
+                    "reason": "packet-budget"
+                  }
+                ],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "4913385ba388bf57",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "enclosing-class"
+                  },
+                  {
+                    "symbol": "Hashable",
+                    "reference_id": "2705b3481f4dcd857bd52af5",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "List",
+                    "reference_id": "90efc3fc411ae0546027db96",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [],
+                "observations_omitted": 0
+              },
+              {
+                "target_id": "131702a4313b6050",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "Hashable",
+                    "reference_id": "2705b3481f4dcd857bd52af5",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Job.__init__",
+                    "reference_id": "c4d1e3fd616b708ed77a4947",
+                    "relation": "class-member-spelling"
+                  },
+                  {
+                    "symbol": "Optional",
+                    "reference_id": "90efc3fc411ae0546027db96",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "Scheduler",
+                    "reference_id": "66bf9de18a73ae4c37bfef0a",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "datetime",
+                    "reference_id": "c695d655f02e8a5369293eef",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "functools",
+                    "reference_id": "2bdba43ab79ab91a88260f3c",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [
+                  {
+                    "symbol": "Job",
+                    "reason": "packet-budget"
+                  }
+                ],
+                "observations_omitted": 0
+              }
+            ]
+          }
+        },
+        "source_files": [
+          {
+            "path": "docs/conf.py",
+            "coverage": "complete",
+            "sampled_characters": 10641
+          },
+          {
+            "path": "LICENSE.txt",
+            "coverage": "complete",
+            "sampled_characters": 1099
+          },
+          {
+            "path": "setup.py",
+            "coverage": "complete",
+            "sampled_characters": 1588
+          },
+          {
+            "path": "pyproject.toml",
+            "coverage": "complete",
+            "sampled_characters": 669
+          }
+        ]
+      },
+      "selection": {
+        "requiredSymbol": "Scheduler",
+        "selected": true,
+        "citations": [
+          {
+            "symbol": "Job.__init__",
+            "supplied": true,
+            "cited": true
+          },
+          {
+            "symbol": "Job.run",
+            "supplied": true,
+            "cited": true
+          }
+        ],
+        "fullModuleSupplied": false,
+        "passed": true
+      },
+      "manualReview": "pending"
+    },
+    {
+      "id": "humanize-focused",
+      "model": "gpt-6.1-sol",
+      "effort": "low",
+      "cliVersion": "codex-cli 0.160.0",
+      "promptSha256": "197f312223e4b7a5f9822b70f1434b77291c6b09b2d0bba62f53b93661576fad",
+      "trace": {
+        "sha256": "f17adde513e6884315fe1726397e62818aafa73b0c08c93aed8972d4f2088692"
+      },
+      "latencyMs": 19768,
+      "billing": "Existing Codex account allowance; no API-key model call",
+      "transportSuccess": true,
+      "failure": null,
+      "prohibitedEvents": [],
+      "usage": {
+        "input_tokens": 14446,
+        "cached_input_tokens": 0,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 597,
+        "reasoning_output_tokens": 22
+      },
+      "requestSha256": "4fc3fb62ab1e28bf9b1a86ccedb852cd0f5e64a14edf2eeef703a7b4067b7dea",
+      "structurallyAccepted": true,
+      "response": {
+        "overview": "One useful number-formatting entry point is evidenced, with scoped supporting definitions. Extraction requires resolving missing module and localization context; no tests are supplied.",
+        "outcome": "candidates",
+        "reusable_pieces": [
+          {
+            "target_id": "5a07e59fb0068cad",
+            "name": "intword large-number text formatting",
+            "description": "Converts numeric input to magnitude labels from thousand through decillion and googol, with configurable formatting, negative signs, rounding carry to the next magnitude, and localization hooks.",
+            "category": "Data processing",
+            "integration_notes": "Observed support includes powers, human_powers, _format_not_finite, bisect, postponed annotations, and imports of _ngettext, decimal_separator and NS_. Preserve magnitude-table alignment and the rounded-value carry comparison. The function checks finiteness before integer conversion, returns special strings for nonfinite values, returns str(value) on TypeError or ValueError during conversion, and returns integer text below 1000. Larger values use floating-point division, percent formatting, plural selection and decimal substitution. Only conversion is inside the exception handler; formatting and localization errors propagate. human_powers initialization calls NS_, whose implementation is absent. Resolve localization behavior and NumberOrString before integration. The supplied notice requires retaining its copyright and permission text in copies or substantial portions.",
+            "limitations": [
+              "same_file_reference is null: scoped excerpts supply supporting statements, but full-module context, import effects, initialization and dependency closure remain uncovered.",
+              "NumberOrString has an ambiguous-or-conditional-binding gap. i18n.py is indexed but its content is absent; translation state, NS_ behavior and localization side effects are unresolved.",
+              "No tests are supplied. Float conversion and division can lose precision or raise OverflowError; custom formatting can fail outside the conversion handler. References establish source inspection, not correctness."
+            ],
+            "explanation_refs": [
+              "3a216cd3510098163f683047",
+              "33ea2285076154a7cee12a9a",
+              "0b13b667e9b2fa6570f1a02f",
+              "e2ead4638d8a99769c3d7021",
+              "2307d5c1780f04b39fa566de",
+              "503d6dba3784d8c3158c6bc3",
+              "cc0dd3d05da4c983be176330",
+              "063ba91bf09694ea924c8cb5",
+              "934d8e16a574130462a207e1"
+            ]
+          }
+        ]
+      },
+      "summary": {
+        "overview": "One useful number-formatting entry point is evidenced, with scoped supporting definitions. Extraction requires resolving missing module and localization context; no tests are supplied.",
+        "languages": [
+          "Python"
+        ],
+        "frameworks": [],
+        "reusable_pieces": [
+          {
+            "name": "intword large-number text formatting",
+            "path": "src/humanize/number.py",
+            "description": "Converts numeric input to magnitude labels from thousand through decillion and googol, with configurable formatting, negative signs, rounding carry to the next magnitude, and localization hooks.",
+            "category": "Data processing",
+            "integration_notes": "Observed support includes powers, human_powers, _format_not_finite, bisect, postponed annotations, and imports of _ngettext, decimal_separator and NS_. Preserve magnitude-table alignment and the rounded-value carry comparison. The function checks finiteness before integer conversion, returns special strings for nonfinite values, returns str(value) on TypeError or ValueError during conversion, and returns integer text below 1000. Larger values use floating-point division, percent formatting, plural selection and decimal substitution. Only conversion is inside the exception handler; formatting and localization errors propagate. human_powers initialization calls NS_, whose implementation is absent. Resolve localization behavior and NumberOrString before integration. The supplied notice requires retaining its copyright and permission text in copies or substantial portions.",
+            "limitations": [
+              "same_file_reference is null: scoped excerpts supply supporting statements, but full-module context, import effects, initialization and dependency closure remain uncovered.",
+              "NumberOrString has an ambiguous-or-conditional-binding gap. i18n.py is indexed but its content is absent; translation state, NS_ behavior and localization side effects are unresolved.",
+              "No tests are supplied. Float conversion and division can lose precision or raise OverflowError; custom formatting can fail outside the conversion handler. References establish source inspection, not correctness.",
+              "Same-file context was omitted from the model's bounded evidence packet; helper, type, constant and enclosing-scope requirements need further review.",
+              "Scoped supporting blocks are syntactic observations, not complete module context or a resolved dependency closure; recorded gaps and omitted observations require review.",
+              "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection."
+            ],
+            "target_id": "5a07e59fb0068cad",
+            "dependencies": [
+              "__future__",
+              "bisect",
+              "fractions",
+              "gettext",
+              "importlib.resources",
+              "math",
+              "os",
+              "pathlib",
+              "threading",
+              "typing"
+            ],
+            "related_paths": [
+              "src/humanize/i18n.py"
+            ],
+            "test_paths": [],
+            "source_sampled": true,
+            "source_target": {
+              "id": "5a07e59fb0068cad",
+              "path": "src/humanize/number.py",
+              "symbol": "intword",
+              "kind": "declaration",
+              "imports": [
+                {
+                  "specifier": "__future__",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "bisect",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": ".i18n",
+                  "kind": "local",
+                  "resolved_path": "src/humanize/i18n.py"
+                },
+                {
+                  "specifier": "typing",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "math",
+                  "kind": "external",
+                  "resolved_path": null
+                },
+                {
+                  "specifier": "fractions",
+                  "kind": "external",
+                  "resolved_path": null
+                }
+              ],
+              "supporting_paths": [
+                "src/humanize/i18n.py"
+              ],
+              "unresolved": [],
+              "test_paths": [],
+              "notice_paths": [
+                "LICENCE"
+              ],
+              "reference": {
+                "id": "3a216cd3510098163f683047",
+                "path": "src/humanize/number.py",
+                "start_line": 223,
+                "end_line": 298,
+                "sha256": "8faa9b6f4aceb7a75717579712995fcaba46873a2fb5dfd8c987b5c9b938f3cf",
+                "kind": "declaration"
+              }
+            },
+            "explanation_refs": [
+              "3a216cd3510098163f683047",
+              "33ea2285076154a7cee12a9a",
+              "0b13b667e9b2fa6570f1a02f",
+              "e2ead4638d8a99769c3d7021",
+              "2307d5c1780f04b39fa566de",
+              "503d6dba3784d8c3158c6bc3",
+              "cc0dd3d05da4c983be176330",
+              "063ba91bf09694ea924c8cb5",
+              "934d8e16a574130462a207e1"
+            ]
+          }
+        ],
+        "analysis": {
+          "format": "repo-salvage/analysis-v2",
+          "outcome": "candidates",
+          "index": {
+            "format": "repo-salvage/source-index-v2",
+            "limits": {
+              "files": 64,
+              "initialFiles": 48,
+              "initialMetadataFiles": 12,
+              "initialLibraryFiles": 24,
+              "followupFiles": 16,
+              "initialBytes": 1500000,
+              "inspectionMilliseconds": 120000,
+              "fileBytes": 128000,
+              "totalBytes": 2000000,
+              "promptCharacters": 70000,
+              "candidates": 24
+            },
+            "files": [
+              {
+                "path": "LICENCE",
+                "sha256": "8ba6c18112a431400ad3c743f70670079b302545d98884fc2f28a91c383a0380",
+                "coverage": "complete",
+                "parser": "file",
+                "imports": []
+              },
+              {
+                "path": "pyproject.toml",
+                "sha256": "5d103b70ae346da85a8545d339ed1da083d2463f1822d7d44a42d2204c488396",
+                "coverage": "complete",
+                "parser": "file",
+                "imports": []
+              },
+              {
+                "path": "src/humanize/__init__.py",
+                "sha256": "69586bc9cba2dbe0daa63d9f82eed16f8511a9da1ccf2e1045cd5175a9028e40",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "__future__",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "humanize.filesize",
+                    "kind": "local",
+                    "resolved_path": "src/humanize/filesize.py"
+                  },
+                  {
+                    "specifier": "humanize.i18n",
+                    "kind": "local",
+                    "resolved_path": "src/humanize/i18n.py"
+                  },
+                  {
+                    "specifier": "humanize.lists",
+                    "kind": "local",
+                    "resolved_path": "src/humanize/lists.py"
+                  },
+                  {
+                    "specifier": "humanize.number",
+                    "kind": "local",
+                    "resolved_path": "src/humanize/number.py"
+                  },
+                  {
+                    "specifier": "humanize.time",
+                    "kind": "local",
+                    "resolved_path": "src/humanize/time.py"
+                  },
+                  {
+                    "specifier": "._version",
+                    "kind": "unresolved",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "src/humanize/i18n.py",
+                "sha256": "6de81719bcb5c30df5474607ca124262cbcc1ff2fea25293f31fcc5b8e0ec08c",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "__future__",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "gettext",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "threading",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "os",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "pathlib",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "importlib.resources",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "src/humanize/number.py",
+                "sha256": "8faa9b6f4aceb7a75717579712995fcaba46873a2fb5dfd8c987b5c9b938f3cf",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "__future__",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "bisect",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": ".i18n",
+                    "kind": "local",
+                    "resolved_path": "src/humanize/i18n.py"
+                  },
+                  {
+                    "specifier": "typing",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "math",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "fractions",
+                    "kind": "external",
+                    "resolved_path": null
+                  }
+                ]
+              },
+              {
+                "path": "tests/test_number.py",
+                "sha256": "bcdc8f2ae797dab71f84e7ecf7dc54d425792ba65996f4b161e1884495caa323",
+                "coverage": "complete",
+                "parser": "python",
+                "imports": [
+                  {
+                    "specifier": "__future__",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "math",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "typing",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "pytest",
+                    "kind": "external",
+                    "resolved_path": null
+                  },
+                  {
+                    "specifier": "humanize",
+                    "kind": "local",
+                    "resolved_path": "src/humanize/__init__.py"
+                  }
+                ]
+              }
+            ],
+            "skipped": [],
+            "inspection": {
+              "initial_paths": [
+                "LICENCE",
+                "pyproject.toml",
+                "src/humanize/number.py",
+                "src/humanize/i18n.py",
+                "src/humanize/__init__.py",
+                "tests/test_number.py"
+              ],
+              "followup_paths": [],
+              "fill_paths": [],
+              "deadline_reached": false
+            },
+            "targets_indexed": 22,
+            "targets_supplied": 1,
+            "omitted_targets": 0,
+            "references": [
+              {
+                "id": "3a216cd3510098163f683047",
+                "path": "src/humanize/number.py",
+                "start_line": 223,
+                "end_line": 298,
+                "sha256": "8faa9b6f4aceb7a75717579712995fcaba46873a2fb5dfd8c987b5c9b938f3cf",
+                "kind": "declaration"
+              },
+              {
+                "id": "934d8e16a574130462a207e1",
+                "path": "LICENCE",
+                "start_line": 1,
+                "end_line": 21,
+                "sha256": "8ba6c18112a431400ad3c743f70670079b302545d98884fc2f28a91c383a0380",
+                "kind": "file"
+              },
+              {
+                "id": "33ea2285076154a7cee12a9a",
+                "path": "src/humanize/number.py",
+                "start_line": 3,
+                "end_line": 3,
+                "sha256": "8faa9b6f4aceb7a75717579712995fcaba46873a2fb5dfd8c987b5c9b938f3cf",
+                "kind": "statement"
+              },
+              {
+                "id": "0b13b667e9b2fa6570f1a02f",
+                "path": "src/humanize/number.py",
+                "start_line": 80,
+                "end_line": 90,
+                "sha256": "8faa9b6f4aceb7a75717579712995fcaba46873a2fb5dfd8c987b5c9b938f3cf",
+                "kind": "declaration"
+              },
+              {
+                "id": "e2ead4638d8a99769c3d7021",
+                "path": "src/humanize/number.py",
+                "start_line": 11,
+                "end_line": 11,
+                "sha256": "8faa9b6f4aceb7a75717579712995fcaba46873a2fb5dfd8c987b5c9b938f3cf",
+                "kind": "statement"
+              },
+              {
+                "id": "2307d5c1780f04b39fa566de",
+                "path": "src/humanize/number.py",
+                "start_line": 7,
+                "end_line": 7,
+                "sha256": "8faa9b6f4aceb7a75717579712995fcaba46873a2fb5dfd8c987b5c9b938f3cf",
+                "kind": "statement"
+              },
+              {
+                "id": "503d6dba3784d8c3158c6bc3",
+                "path": "src/humanize/number.py",
+                "start_line": 207,
+                "end_line": 220,
+                "sha256": "8faa9b6f4aceb7a75717579712995fcaba46873a2fb5dfd8c987b5c9b938f3cf",
+                "kind": "statement"
+              },
+              {
+                "id": "cc0dd3d05da4c983be176330",
+                "path": "src/humanize/number.py",
+                "start_line": 206,
+                "end_line": 206,
+                "sha256": "8faa9b6f4aceb7a75717579712995fcaba46873a2fb5dfd8c987b5c9b938f3cf",
+                "kind": "statement"
+              },
+              {
+                "id": "063ba91bf09694ea924c8cb5",
+                "path": "src/humanize/number.py",
+                "start_line": 12,
+                "end_line": 12,
+                "sha256": "8faa9b6f4aceb7a75717579712995fcaba46873a2fb5dfd8c987b5c9b938f3cf",
+                "kind": "statement"
+              }
+            ],
+            "selection_policy": "repo-salvage/coverage-v4",
+            "scoped_contexts": [
+              {
+                "target_id": "5a07e59fb0068cad",
+                "observation": "python-ast-name-loads-v1",
+                "references": [
+                  {
+                    "symbol": "<future-import>",
+                    "reference_id": "33ea2285076154a7cee12a9a",
+                    "relation": "module-configuration"
+                  },
+                  {
+                    "symbol": "_format_not_finite",
+                    "reference_id": "0b13b667e9b2fa6570f1a02f",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "_ngettext",
+                    "reference_id": "e2ead4638d8a99769c3d7021",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "bisect",
+                    "reference_id": "2307d5c1780f04b39fa566de",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "human_powers",
+                    "reference_id": "503d6dba3784d8c3158c6bc3",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "powers",
+                    "reference_id": "cc0dd3d05da4c983be176330",
+                    "relation": "module-name"
+                  },
+                  {
+                    "symbol": "NS_",
+                    "reference_id": "063ba91bf09694ea924c8cb5",
+                    "relation": "module-name"
+                  }
+                ],
+                "gaps": [
+                  {
+                    "symbol": "NumberOrString",
+                    "reason": "ambiguous-or-conditional-binding"
+                  }
+                ],
+                "observations_omitted": 0
+              }
+            ]
+          }
+        },
+        "source_files": [
+          {
+            "path": "LICENCE",
+            "coverage": "complete",
+            "sampled_characters": 1078
+          }
+        ]
+      },
+      "selection": {
+        "requiredSymbol": "intword",
+        "selected": true,
+        "citations": [
+          {
+            "symbol": "powers",
+            "supplied": true,
+            "cited": true
+          },
+          {
+            "symbol": "human_powers",
+            "supplied": true,
+            "cited": true
+          },
+          {
+            "symbol": "_format_not_finite",
+            "supplied": true,
+            "cited": true
+          }
+        ],
+        "fullModuleSupplied": false,
+        "passed": true
+      },
+      "manualReview": "pending"
+    }
+  ]
+}

@@ -53,6 +53,7 @@ export async function executeJob(
       // Keep full index metadata/counts but discard unsupplied reference bodies.
       if (snap.index && snap.packet) {
         snap.index.references = snap.packet.references;
+        delete snap.index.support_graph;
         snap.files = [];
         snap.tree = [];
         snap.knownPaths = [];

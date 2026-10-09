@@ -1,0 +1,18 @@
+{
+  "format": "repo-salvage/scoped-support-input-seal-v1",
+  "frozenAt": "2026-10-09T11:28:50.870Z",
+  "files": {
+    "corpus.json": "2accf1b6b8f8e10579265a44aa8dbedef4499ec01ff1dbfd4f37e7b7dd23b245",
+    "controls.json": "8d01fc85cf7ed56f42b457321d4ac356e86b49ce6f658c6982dc4006300cb091",
+    "requests.json": "844c4037b756b285b42e72a1396da20204431104fea5f498b4d4acf6b471fe21",
+    "coverage.json": "d4a94bff06391c5fae937ba93850b44af8abb88cd716174fb4e2ce9ec35c4940",
+    "engine.mjs": "255370684c6876b5b71498e734239b85a8d069008726fde6a92a314acbdc76b0",
+    "run.mjs": "0c05c7257daeca79b661d97265bdc11fd5c9e4083e12c8c48dfae2e1d620bda9",
+    "suite.mjs": "42130a4c257c8c604d21e27b8b0f82512d08811405cb080098fd942328a3efd5",
+    "score.mjs": "b22edeb2127e4cbbe8054ce0f9adeb886b273761a80f81cd82baa91380d38e57",
+    "history/engine.json": "517960359f7f26f050b8b4717007789bc6cd6994387c4b6907dfea9351c6c49c",
+    "history/seal.json": "d47c9ff2249fc256f0013bf867a7183bad2c1114401265f999dbab3c2fd3f3de",
+    "../full-chain-evaluation/run.mjs": "4b644fd05de9be5a6484a69eb77ba434f12d350871f4ff2a520b22af06b4849b",
+    "../analysis-evaluation/trace.mjs": "57ad36ba43e560902b43fbff5e6b011ccdea535e855f75bce18f5ac6dad83b1e"
+  }
+}

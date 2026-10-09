@@ -141,3 +141,11 @@ and analysis identity are rechecked on cache hits. The request times out at 60
 seconds and never retries automatically. Narrow a `focus_too_broad` scope and
 check the pinned path on `focus_not_found`. Fetch remains the command for retaining
 an existing catalog part's original bytes and notices on disk.
+
+Coverage-v4 can include scoped Python supporting statements when the complete
+module does not fit. `same_file_reference` stays null in that case. Inspect the
+scoped reference links, binding/budget gaps and omission counters; member spellings
+are observations rather than receiver resolution or dependency closure. The client
+rejects dangling/cross-file links, inconsistent source hashes, false full-file
+context and unsupported observation labels. Partial excerpts do not independently
+verify a whole-file hash. Fetch exact pinned files and notices before adaptation.

@@ -186,7 +186,130 @@ export async function focusEvidence(base, listing, params, transport = fetch) {
     !Array.isArray(value.packet?.targets)
   )
     throw new Error("Unexpected focused evidence identity or format.");
+  if (value.packet.scoped_contexts !== undefined) {
+    if (
+      JSON.stringify(value.packet).length > value.focus.packet_character_limit
+    )
+      throw new Error("Invalid scoped evidence packet allowance.");
+    validateScopedEvidence(value.packet);
+  }
   return value;
+}
+
+/** Cross-reference checks complement the MCP schema; excerpts are not hash-verifiable whole files. */
+function validateScopedEvidence(packet) {
+  const bad = () => {
+    throw new Error("Invalid scoped evidence references or observations.");
+  };
+  if (
+    packet.format !== "repo-salvage/source-index-v2" ||
+    packet.selection_policy !== "repo-salvage/coverage-v4" ||
+    !Array.isArray(packet.scoped_contexts) ||
+    packet.scoped_contexts.length > 24
+  )
+    bad();
+  const refs = new Map();
+  for (const r of packet.references) {
+    if (
+      !r ||
+      !/^[a-f0-9]{24}$/.test(r.id) ||
+      refs.has(r.id) ||
+      !/^[a-f0-9]{64}$/.test(r.sha256) ||
+      !["file", "declaration", "statement"].includes(r.kind) ||
+      typeof r.content !== "string" ||
+      !Number.isSafeInteger(r.start_line) ||
+      !Number.isSafeInteger(r.end_line) ||
+      r.start_line < 1 ||
+      r.end_line < r.start_line
+    )
+      bad();
+    safePath(r.path);
+    if (
+      r.kind === "file" &&
+      createHash("sha256").update(r.content).digest("hex") !== r.sha256
+    )
+      bad();
+    refs.set(r.id, r);
+  }
+  const targets = new Map();
+  for (const t of packet.targets) {
+    if (
+      !t ||
+      !/^[a-f0-9]{16}$/.test(t.id) ||
+      targets.has(t.id) ||
+      !["declaration", "file"].includes(t.kind) ||
+      refs.get(t.reference_id)?.path !== t.path
+    )
+      bad();
+    targets.set(t.id, t);
+  }
+  if (
+    !Array.isArray(packet.contexts) ||
+    packet.contexts.length !== targets.size
+  )
+    bad();
+  const fullContexts = new Set();
+  for (const c of packet.contexts) {
+    const target = targets.get(c?.target_id);
+    if (!target || fullContexts.has(c.target_id)) bad();
+    fullContexts.add(c.target_id);
+    if (c.same_file_reference !== null) {
+      const full = refs.get(c.same_file_reference);
+      if (
+        !full ||
+        full.path !== target.path ||
+        full.sha256 !== refs.get(target.reference_id).sha256 ||
+        createHash("sha256").update(full.content).digest("hex") !== full.sha256
+      )
+        bad();
+    }
+  }
+  const seen = new Set();
+  for (const c of packet.scoped_contexts) {
+    const target = targets.get(c?.target_id);
+    if (
+      !target ||
+      seen.has(c.target_id) ||
+      c.observation !== "python-ast-name-loads-v1" ||
+      !Array.isArray(c.references) ||
+      c.references.length > 16 ||
+      !Array.isArray(c.gaps) ||
+      c.gaps.length > 12 ||
+      !Number.isSafeInteger(c.observations_omitted) ||
+      c.observations_omitted < 0
+    )
+      bad();
+    seen.add(c.target_id);
+    for (const r of c.references)
+      if (
+        !r ||
+        typeof r.symbol !== "string" ||
+        !r.symbol ||
+        refs.get(r.reference_id)?.path !== target.path ||
+        refs.get(r.reference_id)?.sha256 !==
+          refs.get(target.reference_id).sha256 ||
+        ![
+          "module-name",
+          "module-configuration",
+          "enclosing-class",
+          "class-member-spelling",
+        ].includes(r.relation)
+      )
+        bad();
+    for (const g of c.gaps)
+      if (
+        !g ||
+        typeof g.symbol !== "string" ||
+        !g.symbol ||
+        ![
+          "packet-budget",
+          "ambiguous-or-conditional-binding",
+          "annotation-only-binding",
+          "wildcard-import",
+        ].includes(g.reason)
+      )
+        bad();
+  }
 }
 
 export function identity(listing, part, version = 1) {
