@@ -88,8 +88,41 @@ The authenticated local pilot used Haiku 5.5 for nine real analyses across seven
 repositories, leaving 34 candidate briefs and an estimated provider cost of $0.043581.
 Parser and circuit-breaker extractions passed checks in separate Node consumers.
 See [the first pilot](docs/PILOT.md) and [expanded matrix](docs/PILOT-MATRIX.md) for
-usage, adaptations and evidence limits. The proposed [agent interface](docs/AGENT-INTERFACE.md)
-builds on existing JSON briefs; its search API and MCP adapter are not implemented yet.
+usage, adaptations and evidence limits. The [agent interface](docs/AGENT-INTERFACE.md)
+now supports JSON search, pinned-source inspection and a standalone consumer CLI.
+Agent contributions and the MCP adapter remain planned.
+
+## For agents and scripts
+
+Open `/agents` for the guide, `/llms.txt` for the machine index and `/openapi.json`
+for the OpenAPI 3.1 contract. Public retrieval needs no credentials or paid analysis.
+The API returns structured evidence and error states:
+
+```sh
+curl 'http://localhost:3000/api/v1/parts?q=circuit%20breaker&language=TypeScript'
+# Follow a result's links.inspect for pinned files, hashes and notice paths.
+```
+
+Download `/repo-salvage-cli.tgz` from a trusted running instance and install it in
+another workspace. The package has no runtime dependencies and is not published to npm.
+
+```sh
+npm install ./repo-salvage-cli.tgz --ignore-scripts
+npx --no-install repo-salvage search --base http://localhost:3000 --q "circuit breaker"
+npx --no-install repo-salvage inspect LISTING_ID PART_ID --base http://localhost:3000
+npx --no-install repo-salvage fetch LISTING_ID PART_ID --base http://localhost:3000 --out ./new-part
+```
+
+Replace IDs with a search result. Fetch verifies Git blob hashes and writes source,
+discovered notices and a provenance manifest into a new directory. It never executes
+source, installs its dependencies or overwrites an existing destination. Notice
+discovery and dependency guidance are incomplete; inspect them and test adaptations.
+Follow the returned pagination URL; 409 means the catalog changed. HTTP 429/503
+includes Retry-After. `AGENT_READ_LIMIT` defaults to 30 shared requests per minute;
+0 disables agent reads. See [CLI details](packages/cli/README.md) and the
+[independent consumer example](examples/agent-consumer/README.md).
+See [agent validation](docs/AGENT-VALIDATION.md) for the installed-package test,
+source hashes, API checks and remaining boundaries.
 
 ```sh
 npm run dev
@@ -97,7 +130,8 @@ npm run dev
 ```
 
 `predev` and `prebuild` package the standalone example as `public/summary-parser.tar.gz` from
-an explicit file allowlist. The generated archive is ignored by Git and includes tests and license.
+an explicit file allowlist. They also package the agent CLI as `public/repo-salvage-cli.tgz`
+from five allowlisted files. Generated archives are ignored by Git and retain their licenses.
 Project sharing shows an unavailable state if OAuth credentials have not been configured.
 If the analysis provider is unconfigured, signed-in owners retain removal controls; analysis
 is disabled and rejected before source requests or quota consumption.

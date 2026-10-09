@@ -90,6 +90,7 @@ export default async function RootLayout({
             <div className="footer-links">
               <Link href="/how-it-works">Field guide</Link>
               <Link href="/examples">Worked examples</Link>
+              <Link href="/agents">For agents</Link>
               <a
                 href="https://github.com/seanebones-lang/repo-salvage"
                 target="_blank"

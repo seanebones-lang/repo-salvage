@@ -4,6 +4,8 @@ import {
   snapshotRepo,
   resolveSourceCommit,
   isPublicRepo,
+  publicRepoStatus,
+  pinnedSourceTree,
   type GhRepo,
 } from "@/lib/github";
 
@@ -220,6 +222,48 @@ describe("immutable snapshots and visibility", () => {
       }),
     );
     expect(await isPublicRepo(1, 42)).toBe(true);
+  });
+});
+
+describe("agent source verification", () => {
+  it("distinguishes excluded identities from an unavailable upstream", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => json({}, 404)),
+    );
+    expect(await publicRepoStatus(1, 42)).toEqual({ status: "excluded" });
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => json({}, 500)),
+    );
+    expect(await publicRepoStatus(1, 42)).toEqual({ status: "unavailable" });
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => json({ id: 1, private: false, owner: { id: 99 } })),
+    );
+    expect(await publicRepoStatus(1, 42)).toEqual({ status: "excluded" });
+  });
+  it("uses pinned public trees and rejects incomplete results and mutable refs", async () => {
+    const transport = vi.fn(async (url: string, init: RequestInit) => {
+      expect(url).toContain(`/git/trees/${sha}?recursive=1`);
+      expect(init.headers).not.toHaveProperty("Authorization");
+      return json({
+        tree: [{ path: "LICENSE", mode: "100644", type: "blob", sha }],
+      });
+    });
+    vi.stubGlobal("fetch", transport);
+    expect(await pinnedSourceTree("author/repo", sha)).toHaveLength(1);
+    await expect(pinnedSourceTree("author/repo", "main")).rejects.toThrow(
+      /Invalid/,
+    );
+    expect(transport).toHaveBeenCalledTimes(1);
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => json({ tree: [], truncated: true })),
+    );
+    await expect(pinnedSourceTree("author/repo", sha)).rejects.toThrow(
+      /incomplete/,
+    );
   });
 });
 

@@ -1,12 +1,22 @@
 import { getListing, searchListings, allListings, type Listing } from "./db";
-import { verifiedPublicRepo } from "./github";
+import { verifiedPublicRepo, publicRepoStatus } from "./github";
 
-async function currentPublicListing(listing: Listing): Promise<Listing | null> {
+export class PublicInventoryUnavailable extends Error {}
+
+async function currentPublicListing(
+  listing: Listing,
+  strict = false,
+): Promise<Listing | null> {
   if (listing.moderation_hidden_at) return null;
-  const repo = await verifiedPublicRepo(
-    listing.github_repo_id,
-    listing.owner_id,
-  );
+  const status = strict
+    ? await publicRepoStatus(listing.github_repo_id, listing.owner_id)
+    : null;
+  if (status?.status === "unavailable") throw new PublicInventoryUnavailable();
+  const repo = status
+    ? status.status === "public"
+      ? status.repo
+      : null
+    : await verifiedPublicRepo(listing.github_repo_id, listing.owner_id);
   if (!repo) return null;
   const current = getListing(listing.id);
   if (
@@ -28,29 +38,56 @@ async function currentPublicListing(listing: Listing): Promise<Listing | null> {
 }
 
 // Public rendering and mutations recheck anonymous visibility and current ownership.
-export async function visibleListings(listings: Listing[]): Promise<Listing[]> {
+export async function visibleListings(
+  listings: Listing[],
+  strict = false,
+): Promise<Listing[]> {
   listings = listings.filter((l) => !l.moderation_hidden_at);
   const result: Listing[] = [];
   for (let offset = 0; offset < listings.length; offset += 8) {
     const batch = listings.slice(offset, offset + 8);
-    const visible = await Promise.all(batch.map(currentPublicListing));
+    const visible = await Promise.all(
+      batch.map((listing) => currentPublicListing(listing, strict)),
+    );
     result.push(
       ...visible.filter((listing): listing is Listing => listing !== null),
     );
   }
-  return result;
+  // Later batches can yield while an earlier listing changes locally.
+  return result.flatMap((verified) => {
+    const current = getListing(verified.id);
+    if (
+      !current ||
+      current.moderation_hidden_at ||
+      current.github_repo_id !== verified.github_repo_id ||
+      current.owner_id !== verified.owner_id
+    )
+      return [];
+    return [
+      {
+        ...current,
+        name: verified.name,
+        full_name: verified.full_name,
+        url: verified.url,
+        owner_login: verified.owner_login,
+      },
+    ];
+  });
 }
-export async function getPublicListing(id: number): Promise<Listing | null> {
+export async function getPublicListing(
+  id: number,
+  strict = false,
+): Promise<Listing | null> {
   if (!Number.isSafeInteger(id) || id < 1) return null;
   const l = getListing(id);
-  return l ? currentPublicListing(l) : null;
+  return l ? currentPublicListing(l, strict) : null;
 }
 export async function publicSearch(opts: Parameters<typeof searchListings>[0]) {
   return visibleListings(searchListings(opts));
 }
 
-export async function publicCatalog() {
+export async function publicCatalog(strict = false) {
   const stored = allListings();
-  const listings = await visibleListings(stored);
+  const listings = await visibleListings(stored, strict);
   return { listings, hidden: stored.length - listings.length };
 }

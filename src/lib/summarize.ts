@@ -133,6 +133,11 @@ export async function summarizeRepo(
     snap.knownPaths,
     snap.files.map((f) => f.path),
   );
+  summary.source_files = snap.files.map((file) => ({
+    path: file.path,
+    coverage: file.truncated ? "prefix" : "complete",
+    sampled_characters: file.content.length,
+  }));
   const partialPaths = new Set(
     snap.files.filter((f) => f.truncated).map((f) => f.path),
   );

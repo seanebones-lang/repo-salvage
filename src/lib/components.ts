@@ -63,6 +63,9 @@ export function filterComponents(
       listing.full_name,
       listing.owner_note,
       ...listing.summary.frameworks,
+      ...listing.summary.languages,
+      listing.language,
+      listing.license,
     ]
       .join(" ")
       .toLowerCase();
@@ -76,8 +79,23 @@ export function filterComponents(
     );
   });
   return selected.sort((a, b) => {
-    if (filters.sort === "name")
-      return a.piece.name.localeCompare(b.piece.name);
+    if (filters.sort === "relevance" && terms.length) {
+      const score = ({ piece }: ComponentEntry) =>
+        terms.reduce(
+          (sum, term) =>
+            sum +
+            (piece.name.toLowerCase().includes(term) ? 4 : 0) +
+            (piece.path.toLowerCase().includes(term) ? 2 : 0) +
+            (piece.description.toLowerCase().includes(term) ? 1 : 0),
+          0,
+        );
+      const relevance = score(b) - score(a);
+      if (relevance) return relevance;
+    }
+    if (filters.sort === "name") {
+      const name = a.piece.name.localeCompare(b.piece.name);
+      if (name) return name;
+    }
     if (filters.sort === "reviewed") {
       const reviewed =
         Number(!!b.piece.owner_reviewed_at) -

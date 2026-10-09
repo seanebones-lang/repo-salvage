@@ -125,6 +125,9 @@ describe("listing to consumer brief with real SQLite persistence and mocked exte
       source_sampled: true,
       test_paths: ["tests/parser.test.ts"],
     });
+    expect(listing.summary.source_files).toEqual([
+      { path: "src/parser.ts", coverage: "prefix", sampled_characters: 63 },
+    ]);
     expect(piece.limitations).toContain(
       "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction.",
     );

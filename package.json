@@ -3,16 +3,17 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/package-example.mjs",
+    "predev": "node scripts/package-example.mjs && node scripts/package-agent.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/package-example.mjs",
+    "prebuild": "node scripts/package-example.mjs && node scripts/package-agent.mjs",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run && npm run test:example",
+    "test": "vitest run && npm run test:example && npm run test:cli",
     "test:example": "node --test examples/summary-parser/consumer.test.mjs",
-    "format": "prettier --write src tests scripts examples docs package.json README.md .github/workflows/ci.yml",
-    "format:check": "prettier --check src tests scripts examples docs package.json README.md .github/workflows/ci.yml"
+    "test:cli": "npm --prefix packages/cli test",
+    "format": "prettier --write src tests scripts examples docs packages public/openapi.json package.json README.md .github/workflows/ci.yml",
+    "format:check": "prettier --check src tests scripts examples docs packages public/openapi.json package.json README.md .github/workflows/ci.yml"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",
@@ -27,6 +28,7 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "ajv": "8.20.0",
     "prettier": "3.9.9",
     "typescript": "^5.6.0",
     "vitest": "^5.0.3"
