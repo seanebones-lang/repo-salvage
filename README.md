@@ -119,6 +119,14 @@ A native Codex CLI pilot completed discovery-to-adaptation, and ten isolated ses
 answered ten frozen catalog questions exactly. See [the host pilot](examples/agent-host-pilot/README.md)
 for provenance, account-usage scope and reproducible test configuration.
 
+A later [ordinary-request discovery trial](examples/discovery-evaluation/README.md)
+selected the expected source in eight cases and rejected two unsupported requests,
+using fresh native MCP sessions over the production catalog. A separately generated
+[prose splitter adaptation](examples/prose-consumer/README.md) passed eight sealed
+consumer checks, including 1,000 deterministic round trips, in a clean Python
+workspace. These authored trials are distinct from general discovery accuracy,
+upstream certification and external adoption.
+
 ## For agents and scripts
 
 Open `/agents` for the guide, `/llms.txt` for the machine index and `/openapi.json`

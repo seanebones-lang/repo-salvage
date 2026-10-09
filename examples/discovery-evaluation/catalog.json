@@ -1,0 +1,963 @@
+{
+  "format": "repo-salvage/search-v2",
+  "catalog_revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+  "query": {
+    "q": "",
+    "language": "",
+    "license": "",
+    "category": "",
+    "sort": "latest",
+    "declaration": "",
+    "imports": ""
+  },
+  "pagination": { "page": 1, "limit": 50, "total": 34, "next": null },
+  "facets": {
+    "languages": [
+      "CSS",
+      "JavaScript",
+      "Jupyter Notebook",
+      "Python",
+      "Rust",
+      "SQL",
+      "Shell",
+      "TSX",
+      "TypeScript"
+    ],
+    "licenses": ["Apache-2.0", "MIT", "MPL-2.0"],
+    "categories": [
+      "API & networking",
+      "Authentication",
+      "Data processing",
+      "Developer tools",
+      "Other",
+      "Storage"
+    ]
+  },
+  "results": [
+    {
+      "listing_id": 9,
+      "part_id": "0cbfc41e1a97c092",
+      "name": "CID and Ed25519 sign/verify helpers",
+      "description": "Provides SigningKeypair generation and hex I/O, sign_node and verify_node over a canonicalized node excluding the signature field, plus compute_cid and verify_cid over serde JSON bytes. Includes unit tests for an unchanged node and a tampered payload.",
+      "category": "Authentication",
+      "repository": "seanebones-lang/witness",
+      "source_commit": "482ce52011d55c4991cd7dc73fa103c9527c43ab",
+      "primary_path": "core/src/signing.rs",
+      "languages": ["Rust", "Python", "SQL", "Shell"],
+      "repository_license": "MPL-2.0",
+      "observed_dependencies": [
+        "ed25519-dalek 2.x",
+        "sha2 0.10",
+        "hex 0.4",
+        "rand 0.8",
+        "serde",
+        "serde_json",
+        "chrono",
+        "uuid"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/9/0cbfc41e1a97c092",
+        "page": "/listing/9/parts/0cbfc41e1a97c092"
+      }
+    },
+    {
+      "listing_id": 9,
+      "part_id": "1f3a4a236c9b936e",
+      "name": "Append-only SQLite node store",
+      "description": "Storage struct that creates the SQLite file if missing, runs sqlx migrations, inserts nodes and parent edges in a transaction, fetches a node by UUID, and builds filtered queries over epistemic type, domain, author, date range and labels.",
+      "category": "Storage",
+      "repository": "seanebones-lang/witness",
+      "source_commit": "482ce52011d55c4991cd7dc73fa103c9527c43ab",
+      "primary_path": "core/src/storage.rs",
+      "languages": ["Rust", "Python", "SQL", "Shell"],
+      "repository_license": "MPL-2.0",
+      "observed_dependencies": [
+        "sqlx 0.7 with sqlite, chrono, uuid and json features",
+        "tokio",
+        "chrono",
+        "uuid",
+        "serde_json"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/9/1f3a4a236c9b936e",
+        "page": "/listing/9/parts/1f3a4a236c9b936e"
+      }
+    },
+    {
+      "listing_id": 9,
+      "part_id": "322e4d35c029cee7",
+      "name": "Canonical JSON fixity recorder",
+      "description": "Compares each manifest artifact digest with the file on disk, appends a fixity-check event to preservation-events.json, updates the manifest's digest for that events file, and writes canonical JSON using sorted keys and two-space indentation.",
+      "category": "Storage",
+      "repository": "seanebones-lang/witness",
+      "source_commit": "482ce52011d55c4991cd7dc73fa103c9527c43ab",
+      "primary_path": "reference/usgs-river-gauge/tools/record_fixity_check.py",
+      "languages": ["Rust", "Python", "SQL", "Shell"],
+      "repository_license": "MPL-2.0",
+      "observed_dependencies": [
+        "Python 3 standard library (argparse, hashlib, json, datetime, pathlib)"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/9/322e4d35c029cee7",
+        "page": "/listing/9/parts/322e4d35c029cee7"
+      }
+    },
+    {
+      "listing_id": 9,
+      "part_id": "3c004d393d45be75",
+      "name": "JSONL and CSV batch ingestion service",
+      "description": "IngestionService that validates premises, imports JSONL nodes after checking parent existence, CID match and optional signature, and imports CSV rows as observations via a column mapping.",
+      "category": "Data processing",
+      "repository": "seanebones-lang/witness",
+      "source_commit": "482ce52011d55c4991cd7dc73fa103c9527c43ab",
+      "primary_path": "core/src/ingestion.rs",
+      "languages": ["Rust", "Python", "SQL", "Shell"],
+      "repository_license": "MPL-2.0",
+      "observed_dependencies": [
+        "tokio (fs and io)",
+        "csv 1.3",
+        "serde_json",
+        "chrono"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/9/3c004d393d45be75",
+        "page": "/listing/9/parts/3c004d393d45be75"
+      }
+    },
+    {
+      "listing_id": 9,
+      "part_id": "4a8a7419608ee74f",
+      "name": "Append-only provenance schema",
+      "description": "SQLite schema with a nodes table constrained to observed, inferred and generated types, a narrative_diffs table, and an edges table with a CHECK constraint over six edge types and indexes on common query columns.",
+      "category": "Storage",
+      "repository": "seanebones-lang/witness",
+      "source_commit": "482ce52011d55c4991cd7dc73fa103c9527c43ab",
+      "primary_path": "core/migrations/001_initial_schema.sql",
+      "languages": ["Rust", "Python", "SQL", "Shell"],
+      "repository_license": "MPL-2.0",
+      "observed_dependencies": ["SQLite 3"],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/9/4a8a7419608ee74f",
+        "page": "/listing/9/parts/4a8a7419608ee74f"
+      }
+    },
+    {
+      "listing_id": 9,
+      "part_id": "f6e8f858028272b0",
+      "name": "USGS bundle extraction and verification scripts",
+      "description": "Python script that checks manifest.json artifact byte sizes and SHA-256 digests, and confirms that an extracted point's timestamp, exact value text and qualifiers occur in the raw response.json. It prints explicit NOT VERIFIED lines for publisher identity and accuracy.",
+      "category": "Developer tools",
+      "repository": "seanebones-lang/witness",
+      "source_commit": "482ce52011d55c4991cd7dc73fa103c9527c43ab",
+      "primary_path": "reference/usgs-river-gauge/tools/verify.py",
+      "languages": ["Rust", "Python", "SQL", "Shell"],
+      "repository_license": "MPL-2.0",
+      "observed_dependencies": [
+        "Python 3 standard library (argparse, hashlib, json, pathlib)"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/9/f6e8f858028272b0",
+        "page": "/listing/9/parts/f6e8f858028272b0"
+      }
+    },
+    {
+      "listing_id": 8,
+      "part_id": "224b2c8c7aa67266",
+      "name": "Witness-format evidence sink",
+      "description": "Second EvidenceSink implementation that writes records to a SQLite table with WAL mode and a busy-retry loop, plus a sibling JSONL file, refusing generated-class records and requiring premises for inferred records.",
+      "category": "Storage",
+      "repository": "seanebones-lang/deadbolt",
+      "source_commit": "71f2083062d4eed6874a35fff967c38b0d78306f",
+      "primary_path": "src/witness.rs",
+      "languages": ["Rust", "Python", "JavaScript"],
+      "repository_license": "Apache-2.0",
+      "observed_dependencies": [
+        "rusqlite (bundled SQLite)",
+        "serde_json",
+        "tempfile (tests)"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/8/224b2c8c7aa67266",
+        "page": "/listing/8/parts/224b2c8c7aa67266"
+      }
+    },
+    {
+      "listing_id": 8,
+      "part_id": "6d0917a422af8015",
+      "name": "Option extension trait",
+      "description": "Vendored option-ext 0.2.0 crate defining the OptionExt trait with contains, map_or2 and map_or_else2 methods for Option.",
+      "category": "Developer tools",
+      "repository": "seanebones-lang/deadbolt",
+      "source_commit": "71f2083062d4eed6874a35fff967c38b0d78306f",
+      "primary_path": "third-party/option-ext-0.2.0/src/lib.rs",
+      "languages": ["Rust", "Python", "JavaScript"],
+      "repository_license": "Apache-2.0",
+      "observed_dependencies": ["option-ext 0.2.0 (MPL-2.0)"],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/8/6d0917a422af8015",
+        "page": "/listing/8/parts/6d0917a422af8015"
+      }
+    },
+    {
+      "listing_id": 8,
+      "part_id": "7eae5e4fa55ea1e3",
+      "name": "Node sidecar client",
+      "description": "Dependency-free Node.js client for the Deadbolt HTTP sidecar supporting Unix socket and loopback TCP, exporting ensure, admit, registerChild, status, policy and spend, with deny-by-default error handling.",
+      "category": "API & networking",
+      "repository": "seanebones-lang/deadbolt",
+      "source_commit": "71f2083062d4eed6874a35fff967c38b0d78306f",
+      "primary_path": "examples/deadbolt_client.js",
+      "languages": ["Rust", "Python", "JavaScript"],
+      "repository_license": "Apache-2.0",
+      "observed_dependencies": ["Node.js core modules (http, net, os, path)"],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/8/7eae5e4fa55ea1e3",
+        "page": "/listing/8/parts/7eae5e4fa55ea1e3"
+      }
+    },
+    {
+      "listing_id": 8,
+      "part_id": "a723886d1a32c8bc",
+      "name": "Sample agent admission loop",
+      "description": "Example loop that calls ensure once and then admits a tool call on a fixed interval, exiting with code 2 on any non-allow decision and handling SIGTERM and SIGINT.",
+      "category": "Other",
+      "repository": "seanebones-lang/deadbolt",
+      "source_commit": "71f2083062d4eed6874a35fff967c38b0d78306f",
+      "primary_path": "examples/deadbolt_sample_agent.py",
+      "languages": ["Rust", "Python", "JavaScript"],
+      "repository_license": "Apache-2.0",
+      "observed_dependencies": [
+        "Python standard library (argparse, json, signal, sys, time)",
+        "deadbolt_client.py from examples/"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/8/a723886d1a32c8bc",
+        "page": "/listing/8/parts/a723886d1a32c8bc"
+      }
+    },
+    {
+      "listing_id": 8,
+      "part_id": "dcd37dda4bd28169",
+      "name": "Python stdlib HTTP sidecar client",
+      "description": "Stdlib-only Python client that calls a local deadbolt serve sidecar over Unix socket or loopback TCP, with ensure, admit, policy, spend, register_child and status functions that deny on any failure.",
+      "category": "API & networking",
+      "repository": "seanebones-lang/deadbolt",
+      "source_commit": "71f2083062d4eed6874a35fff967c38b0d78306f",
+      "primary_path": "examples/deadbolt_client.py",
+      "languages": ["Rust", "Python", "JavaScript"],
+      "repository_license": "Apache-2.0",
+      "observed_dependencies": [
+        "Python standard library (http.client, socket, json, os, urllib.parse)"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/8/dcd37dda4bd28169",
+        "page": "/listing/8/parts/dcd37dda4bd28169"
+      }
+    },
+    {
+      "listing_id": 7,
+      "part_id": "82952704e3c4cd0f",
+      "name": "AlertManager multi-channel sender",
+      "description": "Async alert dispatch to Telegram, Discord and SMTP email, with in-memory alert history capped at 1000 entries.",
+      "category": "API & networking",
+      "repository": "seanebones-lang/btcpredictor",
+      "source_commit": "aaac31375effca4d862e719d90ac078b8fb7696b",
+      "primary_path": "btc_predictor/alerting.py",
+      "languages": ["Python", "Jupyter Notebook"],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "aiohttp",
+        "smtplib (stdlib)",
+        "email.mime (stdlib)"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/7/82952704e3c4cd0f",
+        "page": "/listing/7/parts/82952704e3c4cd0f"
+      }
+    },
+    {
+      "listing_id": 7,
+      "part_id": "83da981c8ced245f",
+      "name": "WalkForwardBacktest.generate_windows",
+      "description": "Generates walk-forward train/test windows with a purge gap between training and test periods, advancing by a configurable step.",
+      "category": "Data processing",
+      "repository": "seanebones-lang/btcpredictor",
+      "source_commit": "aaac31375effca4d862e719d90ac078b8fb7696b",
+      "primary_path": "btc_predictor/backtest.py",
+      "languages": ["Python", "Jupyter Notebook"],
+      "repository_license": "MIT",
+      "observed_dependencies": ["numpy", "pandas", "datetime (stdlib)"],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/7/83da981c8ced245f",
+        "page": "/listing/7/parts/83da981c8ced245f"
+      }
+    },
+    {
+      "listing_id": 7,
+      "part_id": "87b6a59b3f501640",
+      "name": "Deterministic A/B variant assignment",
+      "description": "Assigns a user to variant A or B by hashing experiment id and user id, giving stable assignment for a given traffic split.",
+      "category": "Other",
+      "repository": "seanebones-lang/btcpredictor",
+      "source_commit": "aaac31375effca4d862e719d90ac078b8fb7696b",
+      "primary_path": "btc_predictor/ab_testing.py",
+      "languages": ["Python", "Jupyter Notebook"],
+      "repository_license": "MIT",
+      "observed_dependencies": ["hashlib (stdlib)"],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/7/87b6a59b3f501640",
+        "page": "/listing/7/parts/87b6a59b3f501640"
+      }
+    },
+    {
+      "listing_id": 7,
+      "part_id": "b7ddef413c771390",
+      "name": "CostTracker recording helpers",
+      "description": "Records API call, training and inference cost entries into a local buffer and optionally into Redis, using a configurable pricing table.",
+      "category": "Developer tools",
+      "repository": "seanebones-lang/btcpredictor",
+      "source_commit": "aaac31375effca4d862e719d90ac078b8fb7696b",
+      "primary_path": "btc_predictor/cost_tracking.py",
+      "languages": ["Python", "Jupyter Notebook"],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "redis.asyncio (optional)",
+        "asyncio (stdlib)",
+        "threading (stdlib)"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/7/b7ddef413c771390",
+        "page": "/listing/7/parts/b7ddef413c771390"
+      }
+    },
+    {
+      "listing_id": 7,
+      "part_id": "c488d813b6440f9c",
+      "name": "AsyncDataFetcher retry and cache helpers",
+      "description": "Async HTTP JSON fetch with semaphore limiting, retry on errors and 429 backoff, and Redis-backed JSON caching with md5 cache keys.",
+      "category": "API & networking",
+      "repository": "seanebones-lang/btcpredictor",
+      "source_commit": "aaac31375effca4d862e719d90ac078b8fb7696b",
+      "primary_path": "btc_predictor/data_sources.py",
+      "languages": ["Python", "Jupyter Notebook"],
+      "repository_license": "MIT",
+      "observed_dependencies": ["aiohttp", "redis.asyncio", "pandas", "numpy"],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/7/c488d813b6440f9c",
+        "page": "/listing/7/parts/c488d813b6440f9c"
+      }
+    },
+    {
+      "listing_id": 6,
+      "part_id": "6dcfd68c83d19424",
+      "name": "Evidence packet Ajv validator",
+      "description": "Compiles the packet JSON Schema with Ajv 2020 in strict mode with allErrors and ajv-formats, then adds runtime checks for source identifiers, sha256 hash format, RFC 3339 timestamps, span locators, verifiedAgainstSource, OBSERVED epistemic class, and deterministic assertion inputRefs.",
+      "category": "Data processing",
+      "repository": "seanebones-lang/evidencelens",
+      "source_commit": "49acea5a30a5a94b0961d89c9c8c0a450d355615",
+      "primary_path": "packages/evidence-schema/src/validate.ts",
+      "languages": ["TypeScript", "JavaScript", "Python"],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "ajv ^8.17.1",
+        "ajv-formats ^3.0.1",
+        "Node.js node:fs"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/6/6dcfd68c83d19424",
+        "page": "/listing/6/parts/6dcfd68c83d19424"
+      }
+    },
+    {
+      "listing_id": 6,
+      "part_id": "b9a7e9cfdef82ede",
+      "name": "Frozen-label mapping and per-class metrics script",
+      "description": "Maps four atomic decision answers to a semantic label with mapped_label and computes accuracy, macro F1, abstention rate, non-abstention coverage, and critical false reassurance counts from a confusion matrix in metrics. Uses only the Python standard library.",
+      "category": "Data processing",
+      "repository": "seanebones-lang/evidencelens",
+      "source_commit": "49acea5a30a5a94b0961d89c9c8c0a450d355615",
+      "primary_path": "research/EXP-EL004-expanded-semantic-relation/scripts/score-development.py",
+      "languages": ["TypeScript", "JavaScript", "Python"],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "Python 3 standard library (hashlib, json, math, statistics, collections, pathlib)"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/6/b9a7e9cfdef82ede",
+        "page": "/listing/6/parts/b9a7e9cfdef82ede"
+      }
+    },
+    {
+      "listing_id": 6,
+      "part_id": "e2ee88f5ab047987",
+      "name": "Packet snapshot preservation and fail-closed source resolution",
+      "description": "preserveSnapshot hashes an encoded snapshot payload with SHA-256, throws SNAPSHOT_HASH_MISMATCH when the hash differs from the expected value, and returns a PreservedSnapshot with a derived snapshotId. resolveScientificSource rejects requests with no identifier or missing resolvers before resolving PubMed, PubMed status and Crossref sources in parallel.",
+      "category": "Data processing",
+      "repository": "seanebones-lang/evidencelens",
+      "source_commit": "49acea5a30a5a94b0961d89c9c8c0a450d355615",
+      "primary_path": "packages/packet-builder/src/index.ts",
+      "languages": ["TypeScript", "JavaScript", "Python"],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "Node.js node:crypto",
+        "@evidencelens/evidence-schema",
+        "@evidencelens/source-adapters (canonicalJson and resolved source types)"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/6/e2ee88f5ab047987",
+        "page": "/listing/6/parts/e2ee88f5ab047987"
+      }
+    },
+    {
+      "listing_id": 6,
+      "part_id": "f3b6e4831cca1def",
+      "name": "Semantic case and partition validators",
+      "description": "Exports validateSemanticCases, which checks required string fields, a sha256 packetHash format, non-empty evidence spans, partition and origin values, excludedContextConfirmed, and duplicate caseIds, and validatePartitionIsolation, which rejects source or near-duplicate groups that cross partitions. The excerpt also shows createBlindedAssignments, whose body is truncated.",
+      "category": "Data processing",
+      "repository": "seanebones-lang/evidencelens",
+      "source_commit": "49acea5a30a5a94b0961d89c9c8c0a450d355615",
+      "primary_path": "packages/semantic-evaluation/src/index.ts",
+      "languages": ["TypeScript", "JavaScript", "Python"],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "Node.js node:crypto (createHash is called but its import is not visible in the supplied excerpt)"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/6/f3b6e4831cca1def",
+        "page": "/listing/6/parts/f3b6e4831cca1def"
+      }
+    },
+    {
+      "listing_id": 5,
+      "part_id": "1184c379f0e2e1d0",
+      "name": "Lightweight .env loader and env parsing helpers",
+      "description": "Standard-library helpers: _load_dotenv_files reads ./.env and ~/.personalragvault/.env without overwriting existing variables, and _int_env, _float_env, _bool_env, _parse_ingest_exclude_dirs validate and parse environment values.",
+      "category": "Developer tools",
+      "repository": "seanebones-lang/personal-RAG",
+      "source_commit": "7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66",
+      "primary_path": "src/config.py",
+      "languages": ["Python"],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/5/1184c379f0e2e1d0",
+        "page": "/listing/5/parts/1184c379f0e2e1d0"
+      }
+    },
+    {
+      "listing_id": 5,
+      "part_id": "2090359952bf0715",
+      "name": "Large-vault recommendation generator",
+      "description": "check_large_vault_recommendations maps a chunk count to advisory strings about compaction, metadata filters, hybrid search and presets, using fixed thresholds of 5000, 15000, 30000 and 60000 chunks.",
+      "category": "Developer tools",
+      "repository": "seanebones-lang/personal-RAG",
+      "source_commit": "7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66",
+      "primary_path": "src/diagnostics.py",
+      "languages": ["Python"],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/5/2090359952bf0715",
+        "page": "/listing/5/parts/2090359952bf0715"
+      }
+    },
+    {
+      "listing_id": 5,
+      "part_id": "ad68a2d44d29024b",
+      "name": "Recursive and prose text splitters",
+      "description": "Pure splitting functions: _recursive_split and _split_recursive break text by separators down to a max size, and _prose_split merges paragraphs up to chunk_max_size with recursive overflow handling.",
+      "category": "Data processing",
+      "repository": "seanebones-lang/personal-RAG",
+      "source_commit": "7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66",
+      "primary_path": "src/ingest/chunking/strategies.py",
+      "languages": ["Python"],
+      "repository_license": "MIT",
+      "observed_dependencies": ["numpy"],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/5/ad68a2d44d29024b",
+        "page": "/listing/5/parts/ad68a2d44d29024b"
+      }
+    },
+    {
+      "listing_id": 5,
+      "part_id": "d67c64de2434a7a4",
+      "name": "Optional Bearer token guard for FastAPI",
+      "description": "FastAPI dependency require_api_token that enforces an optional Bearer token read from PRV_API_TOKEN on each request, exempts /health and /version, and compares the token with secrets.compare_digest.",
+      "category": "Authentication",
+      "repository": "seanebones-lang/personal-RAG",
+      "source_commit": "7d979a2cecdc3e588a7d3e8b65cd2ef7664fec66",
+      "primary_path": "src/query/api.py",
+      "languages": ["Python"],
+      "repository_license": "MIT",
+      "observed_dependencies": ["fastapi", "pydantic"],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/5/d67c64de2434a7a4",
+        "page": "/listing/5/parts/d67c64de2434a7a4"
+      }
+    },
+    {
+      "listing_id": 3,
+      "part_id": "01a762bc95837106",
+      "name": "CircuitBreaker class",
+      "description": "Self-contained in-memory circuit breaker with CLOSED, OPEN and HALF_OPEN states, configurable failure threshold, reset timeout and monitoring window, plus execute, getState, getStats and reset methods.",
+      "category": "API & networking",
+      "repository": "seanebones-lang/Brainstormin-System",
+      "source_commit": "120f8b40de0446fe98c13c604ec4281d0f83185d",
+      "primary_path": "src/lib/circuitBreaker.ts",
+      "languages": ["TypeScript", "TSX", "CSS"],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/3/01a762bc95837106",
+        "page": "/listing/3/parts/01a762bc95837106"
+      }
+    },
+    {
+      "listing_id": 3,
+      "part_id": "5882553f89e2ff0e",
+      "name": "Next.js security headers and PWA config",
+      "description": "Next.js config combining next-pwa runtime caching rules, a bundle analyzer wrapper, a headers() function that sets HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy and Permissions-Policy, and webpack externals for openai and dompurify.",
+      "category": "Developer tools",
+      "repository": "seanebones-lang/Brainstormin-System",
+      "source_commit": "120f8b40de0446fe98c13c604ec4281d0f83185d",
+      "primary_path": "next.config.mjs",
+      "languages": ["TypeScript", "TSX", "CSS"],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "next",
+        "next-pwa",
+        "@next/bundle-analyzer",
+        "openai",
+        "isomorphic-dompurify"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/3/5882553f89e2ff0e",
+        "page": "/listing/3/parts/5882553f89e2ff0e"
+      }
+    },
+    {
+      "listing_id": 3,
+      "part_id": "8431493db61a00e6",
+      "name": "Session storage helpers",
+      "description": "Client-side helpers for reading and writing settings and sessions in localStorage, including date revival on parse and functions such as createSession, getAllSessions, deleteSession, addIdea and voteIdea.",
+      "category": "Storage",
+      "repository": "seanebones-lang/Brainstormin-System",
+      "source_commit": "120f8b40de0446fe98c13c604ec4281d0f83185d",
+      "primary_path": "src/lib/sessionManager.ts",
+      "languages": ["TypeScript", "TSX", "CSS"],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "crypto.randomUUID (browser API)",
+        "localStorage (browser API)"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/3/8431493db61a00e6",
+        "page": "/listing/3/parts/8431493db61a00e6"
+      }
+    },
+    {
+      "listing_id": 3,
+      "part_id": "a415179d1e4c281c",
+      "name": "Template catalogue",
+      "description": "Typed IdeaTemplate interface and an IDEA_TEMPLATES array of preset topic, style and numIdeas values grouped by category, with functions for listing categories and filtering templates.",
+      "category": "Other",
+      "repository": "seanebones-lang/Brainstormin-System",
+      "source_commit": "120f8b40de0446fe98c13c604ec4281d0f83185d",
+      "primary_path": "src/lib/templates.ts",
+      "languages": ["TypeScript", "TSX", "CSS"],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/3/a415179d1e4c281c",
+        "page": "/listing/3/parts/a415179d1e4c281c"
+      }
+    },
+    {
+      "listing_id": 3,
+      "part_id": "b93a4b052bca0a2f",
+      "name": "useSSEFetch hook",
+      "description": "React hook exported from useSSE.ts that streams a POST request using fetch and a ReadableStream reader, with retry/backoff options, abort handling and connection state. The file also exports a useSSE hook based on EventSource, which does not support POST bodies or custom headers.",
+      "category": "API & networking",
+      "repository": "seanebones-lang/Brainstormin-System",
+      "source_commit": "120f8b40de0446fe98c13c604ec4281d0f83185d",
+      "primary_path": "src/hooks/useSSE.ts",
+      "languages": ["TypeScript", "TSX", "CSS"],
+      "repository_license": "MIT",
+      "observed_dependencies": ["react"],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/3/b93a4b052bca0a2f",
+        "page": "/listing/3/parts/b93a4b052bca0a2f"
+      }
+    },
+    {
+      "listing_id": 3,
+      "part_id": "c4bd04c559ce9bac",
+      "name": "Retry and AI generation pattern",
+      "description": "Provider-agnostic generateIdeas async generator that builds an OpenAI-compatible client from baseURL, apiKey and model, wraps calls with a circuit breaker and retryWithBackoff, and parses streamed newline-delimited JSON into validated ideas.",
+      "category": "API & networking",
+      "repository": "seanebones-lang/Brainstormin-System",
+      "source_commit": "120f8b40de0446fe98c13c604ec4281d0f83185d",
+      "primary_path": "src/lib/ai.ts",
+      "languages": ["TypeScript", "TSX", "CSS"],
+      "repository_license": "MIT",
+      "observed_dependencies": ["openai", "zod"],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/3/c4bd04c559ce9bac",
+        "page": "/listing/3/parts/c4bd04c559ce9bac"
+      }
+    },
+    {
+      "listing_id": 1,
+      "part_id": "660817c3d6660356",
+      "name": "SQLite schema bootstrap and listing upsert",
+      "description": "Opens a better-sqlite3 database at DATABASE_PATH or a default path, creates listings, reports, summary_runs, active_analyses and request_limits tables, adds missing columns with ALTER TABLE, and upserts listings by github_repo_id with JSON summary storage.",
+      "category": "Storage",
+      "repository": "seanebones-lang/repo-salvage",
+      "source_commit": "b53bb1be0aaed349b86f971f854cdcd529b0371b",
+      "primary_path": "src/lib/db.ts",
+      "languages": ["TypeScript", "JavaScript"],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "better-sqlite3",
+        "node:path",
+        "node:fs",
+        "node:crypto"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/1/660817c3d6660356",
+        "page": "/listing/1/parts/660817c3d6660356"
+      }
+    },
+    {
+      "listing_id": 1,
+      "part_id": "7e77a9eb7d34fe85",
+      "name": "parseSummary model-output parser",
+      "description": "Parses model JSON text, drops reusable pieces whose path is not in the supplied tree, sanitizes free text (strips URLs and markdown characters, collapses whitespace) and caps lengths and piece count at 6.",
+      "category": "Data processing",
+      "repository": "seanebones-lang/repo-salvage",
+      "source_commit": "b53bb1be0aaed349b86f971f854cdcd529b0371b",
+      "primary_path": "src/lib/summarize.ts",
+      "languages": ["TypeScript", "JavaScript"],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "No external package is used by parseSummary itself; the same module imports @anthropic-ai/sdk for summarizeRepo"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/1/7e77a9eb7d34fe85",
+        "page": "/listing/1/parts/7e77a9eb7d34fe85"
+      }
+    },
+    {
+      "listing_id": 1,
+      "part_id": "afa5e151a3700649",
+      "name": "GitHub public fetch with rate-limit backoff and source commit resolution",
+      "description": "Sends unauthenticated-user public requests with app Basic credentials, records retry-after and rate-limit reset headers to block later public calls, and resolves a repository default branch to a 40-character commit SHA.",
+      "category": "API & networking",
+      "repository": "seanebones-lang/repo-salvage",
+      "source_commit": "b53bb1be0aaed349b86f971f854cdcd529b0371b",
+      "primary_path": "src/lib/github.ts",
+      "languages": ["TypeScript", "JavaScript"],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "react (cache)",
+        "Global fetch and AbortSignal.timeout"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/1/afa5e151a3700649",
+        "page": "/listing/1/parts/afa5e151a3700649"
+      }
+    },
+    {
+      "listing_id": 1,
+      "part_id": "e7bbc288c6315dee",
+      "name": "summarizeRepo prompt wrapper and output schema",
+      "description": "Builds a repository brief request that wraps supplied repository files in a repo_data tag with an untrusted-data instruction, and requests JSON matching a strict schema with additionalProperties false through the beta messages API.",
+      "category": "API & networking",
+      "repository": "seanebones-lang/repo-salvage",
+      "source_commit": "b53bb1be0aaed349b86f971f854cdcd529b0371b",
+      "primary_path": "src/lib/summarize.ts",
+      "languages": ["TypeScript", "JavaScript"],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "@anthropic-ai/sdk",
+        "Anthropic beta feature server-side-fallback-2026-07-01 as used in the sampled call"
+      ],
+      "evidence": {
+        "primary_file_coverage": "sampled_extent_unknown",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "not_audited",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/1/e7bbc288c6315dee",
+        "page": "/listing/1/parts/e7bbc288c6315dee"
+      }
+    }
+  ]
+}
