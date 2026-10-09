@@ -8,10 +8,18 @@ async function currentPublicListing(listing: Listing): Promise<Listing | null> {
     listing.owner_id,
   );
   if (!repo) return null;
+  const current = getListing(listing.id);
+  if (
+    !current ||
+    current.moderation_hidden_at ||
+    current.github_repo_id !== listing.github_repo_id ||
+    current.owner_id !== listing.owner_id
+  )
+    return null;
   // A renamed repository can leave its old slug available for another repository.
   // Use current links for the verified numeric identity; retain analysis-time metadata.
   return {
-    ...listing,
+    ...current,
     name: repo.name,
     full_name: repo.full_name,
     url: repo.html_url,

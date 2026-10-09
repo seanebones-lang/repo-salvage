@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
   listingsByOwner: vi.fn(),
   getListing: vi.fn(),
   searchListings: vi.fn(),
+  allListings: vi.fn(),
   verifiedPublicRepo: vi.fn(),
 }));
 vi.mock("@/auth", () => ({ getSession: mocks.getSession }));
@@ -15,6 +16,7 @@ vi.mock("@/lib/db", () => ({
   listingsByOwner: mocks.listingsByOwner,
   getListing: mocks.getListing,
   searchListings: mocks.searchListings,
+  allListings: mocks.allListings,
 }));
 vi.mock("@/lib/github", () => ({
   listPublicRepos: mocks.listPublicRepos,
@@ -25,6 +27,7 @@ vi.mock("@/app/dashboard/actions", () => ({
   salvage: vi.fn(),
 }));
 vi.mock("@/app/dashboard/repo-row", () => ({ default: () => null }));
+import Home from "@/app/page";
 import Dashboard from "@/app/dashboard/page";
 import ListingPage from "@/app/listing/[id]/page";
 import { getPublicListing, visibleListings } from "@/lib/public-listings";
@@ -133,5 +136,111 @@ describe("listing lifecycle", () => {
     );
     expect(html).toContain("Legacy summary");
     expect(html).not.toContain("/blob/");
+  });
+});
+
+describe("changes during public verification", () => {
+  it.each(["hidden", "deleted", "transferred"])(
+    "fails closed when a listing is %s while GitHub is responding",
+    async (change) => {
+      mocks.getListing.mockReturnValueOnce(listing).mockReturnValue(
+        change === "deleted"
+          ? null
+          : {
+              ...listing,
+              ...(change === "hidden"
+                ? { moderation_hidden_at: "now" }
+                : { owner_id: 99 }),
+            },
+      );
+      mocks.verifiedPublicRepo.mockResolvedValue({
+        name: listing.name,
+        full_name: listing.full_name,
+        html_url: listing.url,
+        owner: { login: "me" },
+      });
+      expect(await getPublicListing(7)).toBeNull();
+    },
+  );
+  it("uses the latest stored analysis after verification instead of an obsolete brief", async () => {
+    mocks.getListing.mockReturnValueOnce(listing).mockReturnValue({
+      ...listing,
+      source_sha: "b".repeat(40),
+      analyzed_at: "later",
+    });
+    mocks.verifiedPublicRepo.mockResolvedValue({
+      name: listing.name,
+      full_name: listing.full_name,
+      html_url: listing.url,
+      owner: { login: "me" },
+    });
+    expect(await getPublicListing(7)).toMatchObject({
+      source_sha: "b".repeat(40),
+      analyzed_at: "later",
+    });
+  });
+});
+
+describe("catalog pagination with populated inventory", () => {
+  function catalog() {
+    const rows = Array.from({ length: 3 }, (_, i) => ({
+      ...listing,
+      id: i + 1,
+      github_repo_id: i + 1,
+      summary: {
+        ...listing.summary,
+        languages: ["TypeScript"],
+        reusable_pieces: Array.from({ length: 6 }, (_, n) => ({
+          name: `Part ${i}-${n}`,
+          path: `part-${n}.ts`,
+          description: "Parses input",
+          category: "Data processing",
+        })),
+      },
+    }));
+    mocks.allListings.mockReturnValue(rows);
+    mocks.getListing.mockImplementation(
+      (id: number) => rows.find((row) => row.id === id) ?? null,
+    );
+    mocks.verifiedPublicRepo.mockResolvedValue({
+      name: "parser",
+      full_name: "me/parser",
+      html_url: "https://github.com/me/parser",
+      owner: { login: "me" },
+    });
+    return rows;
+  }
+  it("clamps the page, preserves filters in navigation and returns the final six components", async () => {
+    catalog();
+    const html = renderToStaticMarkup(
+      await Home({
+        searchParams: Promise.resolve({
+          q: "parses",
+          language: "TypeScript",
+          category: "Data processing",
+          sort: "name",
+          page: "999",
+        }),
+      }),
+    );
+    expect(html).toContain("18 matching parts");
+    expect(html).toContain("Page 2 of 2");
+    expect(html).toContain("Part 2-0");
+    expect(html).not.toContain("Part 0-0");
+    expect(html).toContain(
+      "q=parses&amp;language=TypeScript&amp;category=Data+processing&amp;sort=name&amp;page=1",
+    );
+  });
+  it("uses the first page for malformed page numbers and exposes clear filters for empty searches", async () => {
+    catalog();
+    const first = renderToStaticMarkup(
+      await Home({ searchParams: Promise.resolve({ page: "NaN" }) }),
+    );
+    expect(first).toContain("Page 1 of 2");
+    const empty = renderToStaticMarkup(
+      await Home({ searchParams: Promise.resolve({ q: "nonexistent" }) }),
+    );
+    expect(empty).toContain("0 matching parts");
+    expect(empty).toContain("Clear filters");
   });
 });

@@ -222,3 +222,79 @@ describe("durable request limits", () => {
     expect(m.takeRequest("report:one", 2, 1000, 6000)).toBe(true);
   });
 });
+
+describe("analysis publication reservations", () => {
+  it("serializes one repository and cancels publication after owner removal", () => {
+    m.db().prepare("DELETE FROM summary_runs").run();
+    m.upsertListing(base({ github_repo_id: 80, owner_id: 80 }));
+    const listing = m.listingsByOwner(80)[0];
+    const token = m.beginAnalysis(80, 80);
+    expect(() => m.beginAnalysis(80, 80)).toThrow(/in progress/);
+    m.deleteListing(listing.id, 80);
+    expect(
+      m.finishAnalysis(token, base({ github_repo_id: 80, owner_id: 80 })),
+    ).toBe(false);
+    expect(m.listingsByOwner(80)).toEqual([]);
+  });
+  it("does not let an expired attempt overwrite a newer analysis or release its reservation", () => {
+    m.db().prepare("DELETE FROM summary_runs").run();
+    const old = m.beginAnalysis(81, 81);
+    m.db()
+      .prepare("UPDATE active_analyses SET expires_at = 0 WHERE token = ?")
+      .run(old);
+    const current = m.beginAnalysis(81, 81);
+    m.releaseAnalysis(old);
+    expect(
+      m.finishAnalysis(old, base({ github_repo_id: 81, owner_id: 81 })),
+    ).toBe(false);
+    expect(
+      m.finishAnalysis(
+        current,
+        base({
+          github_repo_id: 81,
+          owner_id: 81,
+          summary_model: "new-analysis",
+        }),
+      ),
+    ).toBe(true);
+    expect(m.listingsByOwner(81)[0].summary_model).toBe("new-analysis");
+    expect(
+      m.finishAnalysis(current, base({ github_repo_id: 81, owner_id: 81 })),
+    ).toBe(false);
+  });
+  it("does not accept reports for removed or hidden listings", () => {
+    expect(m.addReport(999999, "orphan")).toBe(false);
+    m.upsertListing(base({ github_repo_id: 82 }));
+    const listing = m.allListings().find((l) => l.github_repo_id === 82)!;
+    expect(m.addReport(listing.id, "first")).toBe(true);
+    const report = m
+      .moderationReports()
+      .find((r) => r.listing_id === listing.id)!;
+    m.moderateReport(report.id, "hide");
+    expect(m.addReport(listing.id, "hidden")).toBe(false);
+    m.deleteListing(listing.id, 42);
+    expect(m.addReport(listing.id, "removed")).toBe(false);
+  });
+});
+
+describe("late requests and large moderation queues", () => {
+  it("rejects analysis started against a listing removed during the initial GitHub request", () => {
+    m.upsertListing(base({ github_repo_id: 90 }));
+    const baseline = m.analysisBaseline(90);
+    m.deleteListing(baseline!.id, 42);
+    expect(() => m.beginAnalysis(90, 42, baseline)).toThrow(/listing changed/);
+  });
+  it("makes every unresolved report reachable past the previous 200-report cutoff", () => {
+    m.db().prepare("DELETE FROM reports").run();
+    m.upsertListing(base({ github_repo_id: 91 }));
+    const id = m.analysisBaseline(91)!.id;
+    for (let i = 0; i < 205; i++) m.addReport(id, `Concern ${i}`);
+    expect(m.unresolvedReportCount()).toBe(205);
+    const pages = [1, 2, 3, 4, 5].flatMap((page) => m.moderationReports(page));
+    expect(pages).toHaveLength(205);
+    expect(new Set(pages.map((r) => r.id)).size).toBe(205);
+    expect(pages[204].reason).toBe("Concern 0");
+    expect(m.moderateReport(pages[204].id, "hide")).toBe(true);
+    expect(m.moderateReport(pages[204].id, "restore")).toBe(true);
+  });
+});

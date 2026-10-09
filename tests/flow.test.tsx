@@ -5,7 +5,11 @@ import os from "node:os";
 import path from "node:path";
 import { componentId } from "@/lib/components";
 
-const fixtures = vi.hoisted(() => ({ public: true, model: vi.fn() }));
+const fixtures = vi.hoisted(() => ({
+  public: true,
+  model: vi.fn(),
+  clientOptions: vi.fn(),
+}));
 vi.mock("@/auth", () => ({
   getSession: async () => ({
     ghId: 42,
@@ -16,6 +20,9 @@ vi.mock("@/auth", () => ({
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("@anthropic-ai/sdk", () => ({
   default: class {
+    constructor(options: unknown) {
+      fixtures.clientOptions(options);
+    }
     beta = { messages: { create: fixtures.model } };
   },
 }));
@@ -40,6 +47,7 @@ vi.mock("@/lib/github", () => ({
     files: [
       {
         path: "src/parser.ts",
+        truncated: true,
         content:
           "export function parse(text: string) { return text.split(','); }",
       },
@@ -63,6 +71,7 @@ let exportRoute: typeof import("@/app/api/listings/[id]/parts/[part]/route");
 let reportRoute: typeof import("@/app/api/listings/[id]/report/route");
 let Home: typeof import("@/app/page").default;
 beforeAll(async () => {
+  vi.stubEnv("ANTHROPIC_API_KEY", "test-only");
   process.env.DATABASE_PATH = path.join(
     fs.mkdtempSync(path.join(os.tmpdir(), "salvage-flow-")),
     "flow.db",
@@ -113,6 +122,13 @@ describe("listing to consumer brief with real SQLite persistence and mocked exte
     expect(piece).toMatchObject({
       source_sampled: true,
       test_paths: ["tests/parser.test.ts"],
+    });
+    expect(piece.limitations).toContain(
+      "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction.",
+    );
+    expect(fixtures.clientOptions).toHaveBeenCalledWith({
+      timeout: 120_000,
+      maxRetries: 0,
     });
     expect(fixtures.model.mock.calls[0][0]).toMatchObject({
       output_config: { format: { type: "json_schema" } },
@@ -203,6 +219,76 @@ describe("listing to consumer brief with real SQLite persistence and mocked exte
     form.set("id", String(listing.id));
     await actions.unlist(form);
     expect(db.getListing(listing.id)).toBeNull();
+    expect(db.moderationReports()).toEqual([]);
+  });
+});
+
+describe("deferred requests with real persistence", () => {
+  const publishForm = () => {
+    const form = new FormData();
+    form.set("repoId", "7");
+    return form;
+  };
+  it("does not resurrect a listing removed while the provider is still working", async () => {
+    fixtures.public = true;
+    expect(await actions.salvage(null, publishForm())).toHaveProperty("ok");
+    const listing = db.allListings()[0];
+    let resume!: (response: unknown) => void;
+    let notifyStarted!: () => void;
+    const started = new Promise<void>((resolve) => {
+      notifyStarted = resolve;
+    });
+    const result = await fixtures.model.mock.results[0].value;
+    fixtures.model.mockImplementationOnce(() => {
+      notifyStarted();
+      return new Promise((resolve) => {
+        resume = resolve;
+      });
+    });
+    const pending = actions.salvage(null, publishForm());
+    await started;
+    const remove = new FormData();
+    remove.set("id", String(listing.id));
+    await actions.unlist(remove);
+    resume(result);
+    expect(await pending).toHaveProperty("error");
+    expect(db.allListings()).toEqual([]);
+    expect(db.db().prepare("SELECT * FROM active_analyses").all()).toEqual([]);
+  });
+  it("does not create an orphan report when its listing is removed during body upload", async () => {
+    expect(await actions.salvage(null, publishForm())).toHaveProperty("ok");
+    const listing = db.allListings()[0];
+    let upload!: ReadableStreamDefaultController<Uint8Array>;
+    let notifyRead!: () => void;
+    const reading = new Promise<void>((resolve) => {
+      notifyRead = resolve;
+    });
+    const body = new ReadableStream<Uint8Array>(
+      {
+        start(controller) {
+          upload = controller;
+        },
+        pull() {
+          notifyRead();
+        },
+      },
+      { highWaterMark: 0 },
+    );
+    const request = new Request("http://localhost", {
+      method: "POST",
+      body,
+      duplex: "half",
+    } as RequestInit);
+    const pending = reportRoute.POST(request, {
+      params: Promise.resolve({ id: String(listing.id) }),
+    });
+    await reading;
+    const remove = new FormData();
+    remove.set("id", String(listing.id));
+    await actions.unlist(remove);
+    upload.enqueue(new TextEncoder().encode('{"reason":"Delayed report"}'));
+    upload.close();
+    expect((await pending).status).toBe(404);
     expect(db.moderationReports()).toEqual([]);
   });
 });

@@ -20,7 +20,8 @@ dependencies, integration guidance, limitations, and the evidence behind the rec
 5. Reports go to `/moderation`, restricted to numeric GitHub IDs in `MODERATOR_GITHUB_IDS`.
    Operators can hide or restore a listing and resolve reports. Hidden reports remain unresolved
    until restoration so the restore control is not lost. Hiding suppresses pages and downloads;
-   owner removal deletes the listing and its reports.
+   owner removal deletes the listing and its reports. The unresolved queue is paginated, so
+   older reports and restoration controls remain reachable.
 
 ## Evidence boundaries
 
@@ -64,7 +65,9 @@ For project sharing, configure:
 - `GLOBAL_DAILY_SUMMARY_LIMIT`: default 100 attempts for the entire installation over a
   rolling 24 hours. Set either allowance to 0 to stop analysis. Reservations are transactional;
   a failed attempt after reservation consumes quota. These are request allowances, not a
-  dollar budget; SDK retries and the provider's billing rules still apply.
+  dollar budget. SDK automatic retries are disabled and analysis requests time out after two
+  minutes; provider fallback and billing rules still apply. A timeout is not proof the provider
+  did no work.
 - Optional `MODERATOR_GITHUB_IDS`: comma-separated numeric GitHub user IDs. Empty means no
   moderator has access. Populate before public operation so reports have an operator.
 
@@ -76,6 +79,13 @@ npm run dev
 `predev` and `prebuild` package the standalone example as `public/summary-parser.tar.gz` from
 an explicit file allowlist. The generated archive is ignored by Git and includes tests and license.
 Project sharing shows an unavailable state if OAuth credentials have not been configured.
+If the analysis provider is unconfigured, signed-in owners retain removal controls; analysis
+is disabled and rejected before source requests or quota consumption.
+
+Analysis is serialized per repository with a ten-minute expiring reservation. Failed attempts
+release the reservation, and owner removal cancels in-flight publication. Requests based on a
+listing removed or replaced during the initial GitHub lookup must be refreshed. Re-analysis
+cannot resurrect a removed listing or overwrite a newer completed analysis.
 
 ## Verification
 
@@ -90,7 +100,8 @@ npm start
 
 The suite covers legacy database migration, ownership and visibility changes, source provenance,
 component filtering, model parsing, quota and report controls, server-side cookie handling,
-owner-review authorization and moderator authorization. An integration flow uses real SQLite
+owner-review authorization, moderator authorization, removal during analysis, overlapping
+requests, concurrent hiding, bounded source downloads and report queue pagination. An integration flow uses real SQLite
 persistence while mocking GitHub, login and the AI provider; it exercises listing, component search,
 owner review, brief export, report handling, hiding, restoring and removal. It does not substitute
 for a real OAuth callback or a live provider request.
@@ -105,6 +116,9 @@ node --test consumer.test.mjs
 Or download the archive from a running app, extract it into another directory and run the same
 command. Its README documents the original component's input-shape limitation. `/api/health`
 checks local database access; it does not verify GitHub OAuth, the AI provider or public traffic.
+
+See [the review and verification record](docs/REVIEW.md) for the hardened cases, evidence
+collected and remaining live gates.
 
 ## Production preparation
 
@@ -137,7 +151,10 @@ See [GitHub's public OAuth app rate limits](https://docs.github.com/en/rest/usin
 ## Current limits
 
 - AI guidance is derived from at most 14 selected code files, four manifests and a README,
-  with character bounds; it can miss dependencies or make incorrect recommendations.
+  with character bounds; it can miss dependencies or make incorrect recommendations. Raw
+  downloads have ten-second timeouts and a streamed 24 KB prefix limit. Each supplied file is
+  capped at 6,000 characters within a 70,000-character total. Briefs automatically disclose
+  when their primary file was truncated.
 - The app does not execute untrusted repository code or automatically certify extraction.
 - Live GitHub OAuth and a real analysis request require operator credentials and separate
   end-to-end validation. A green build or database health response does not establish either.

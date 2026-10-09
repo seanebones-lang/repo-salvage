@@ -238,3 +238,34 @@ describe("public API backoff", () => {
     expect(fetch).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("bounded source download", () => {
+  it("cancels an oversized streaming sample and labels the partial source", async () => {
+    const cancel = vi.fn();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: string, init: RequestInit) => {
+        expect(init.signal).toBeInstanceOf(AbortSignal);
+        if (url.includes("/git/trees/"))
+          return json({ tree: [{ path: "README.md", type: "blob" }] });
+        return new Response(
+          new ReadableStream({
+            start(controller) {
+              controller.enqueue(new TextEncoder().encode("x".repeat(50_000)));
+            },
+            cancel,
+          }),
+        );
+      }),
+    );
+    // Earlier rate-limit tests set a module-level backoff; a fresh module isolates it.
+    vi.resetModules();
+    const { snapshotRepo: snapshot } = await import("@/lib/github");
+    const snap = await snapshot("t", repo, sha);
+    expect(snap.files[0]).toMatchObject({
+      content: "x".repeat(6000),
+      truncated: true,
+    });
+    expect(cancel).toHaveBeenCalledTimes(1);
+  });
+});

@@ -1,14 +1,26 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSession } from "@/auth";
 import { isModerator } from "@/lib/moderation";
-import { moderationReports } from "@/lib/db";
+import { moderationReports, unresolvedReportCount } from "@/lib/db";
 import { handleReport } from "./actions";
 
 export const dynamic = "force-dynamic";
-export default async function ModerationPage() {
+export default async function ModerationPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
   const session = await getSession();
   if (!session || !isModerator(session.ghId)) notFound();
-  const reports = moderationReports();
+  const total = unresolvedReportCount();
+  const pages = Math.max(1, Math.ceil(total / 50));
+  const requested = Number((await searchParams).page);
+  const page =
+    Number.isSafeInteger(requested) && requested > 0
+      ? Math.min(requested, pages)
+      : 1;
+  const reports = moderationReports(page);
   return (
     <>
       <div className="page-heading">
@@ -20,6 +32,9 @@ export default async function ModerationPage() {
           listing visible.
         </p>
       </div>
+      <p className="small muted">
+        {total} unresolved {total === 1 ? "report" : "reports"}
+      </p>
       {!reports.length && <p className="notice">No unresolved reports.</p>}
       {reports.map((report) => (
         <section className="dashboard-panel" key={report.id}>
@@ -56,6 +71,29 @@ export default async function ModerationPage() {
           </form>
         </section>
       ))}
+      {pages > 1 && (
+        <nav className="pagination" aria-label="Report pages">
+          {page > 1 && (
+            <Link
+              className="button button-secondary"
+              href={`/moderation?page=${page - 1}`}
+            >
+              Previous
+            </Link>
+          )}
+          <span>
+            Page {page} of {pages}
+          </span>
+          {page < pages && (
+            <Link
+              className="button button-secondary"
+              href={`/moderation?page=${page + 1}`}
+            >
+              Next
+            </Link>
+          )}
+        </nav>
+      )}
     </>
   );
 }

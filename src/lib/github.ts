@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { sourcePrefix } from "./http";
 const API = "https://api.github.com";
 
 /** App credentials authenticate public API requests without granting a user's private-repo access. */
@@ -215,7 +216,7 @@ export type RepoSnapshot = {
   tree: string[];
   knownPaths: string[];
   sourceSha: string;
-  files: { path: string; content: string }[];
+  files: { path: string; content: string; truncated?: boolean }[];
 };
 
 /** Tree listing plus a bounded sample of manifests, README and source files. */
@@ -278,13 +279,19 @@ export async function snapshotRepo(
         `https://raw.githubusercontent.com/${repo.full_name}/${sourceSha}/${p.path.split("/").map(encodeURIComponent).join("/")}`,
         {
           cache: "no-store",
+          signal: AbortSignal.timeout(10_000),
         },
       );
       if (!res.ok) throw new Error(`Could not read sampled file: ${p.path}`);
-      const content = (await res.text()).slice(0, 6_000);
+      const prefix = await sourcePrefix(res);
+      const content = prefix.text.slice(0, Math.min(6_000, budget));
       if (!content.trim()) throw new Error(`Sampled file is empty: ${p.path}`);
       budget -= content.length;
-      files.push({ path: p.path, content });
+      files.push({
+        path: p.path,
+        content,
+        truncated: prefix.truncated || prefix.text.length > content.length,
+      });
     } catch {
       throw new Error(`Could not read sampled file: ${p.path}`);
     }
