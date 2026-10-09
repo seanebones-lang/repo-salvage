@@ -187,7 +187,7 @@ because an agent can discover them.
 
 ## MCP and discoverability (implemented)
 
-The installable `@repo-salvage/mcp@0.1.0` archive is linked at `/agents` and
+The installable `@repo-salvage/mcp@0.3.0` archive is linked at `/agents` and
 served at `/repo-salvage-mcp.tgz`. It uses Node.js 22+ and the pinned official SDK
 2.3.1 with Zod 4.6.5. A local MCP host launches the installed executable over
 stdio; there is no publicly hosted MCP HTTP endpoint. See
@@ -195,8 +195,10 @@ stdio; there is no publicly hosted MCP HTTP endpoint. See
 private-tool configuration. No npm registry publication or automatic client
 installation is claimed.
 
-Public tools are `repo_salvage_search_parts`, `repo_salvage_inspect_part` and
-`repo_salvage_read_part_file`. Search defaults to 10 results and preserves filters,
+Public tools are `repo_salvage_search_parts`, `repo_salvage_inspect_part`,
+`repo_salvage_read_part_file` and `repo_salvage_focus_evidence`. The focused tool
+uses the bounded pinned-source inspection described above.
+Search defaults to 10 results and preserves filters,
 page and catalog revision. Reading a file re-inspects the public part, restricts
 the URL to its pinned raw GitHub identity, verifies the entire file's Git blob
 hash and size, then returns a bounded UTF-8 text window. It writes no files,
