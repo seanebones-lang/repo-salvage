@@ -64,18 +64,29 @@ For project sharing, configure:
   before their eight-hour lifetime ends; automatic refresh is not implemented and refresh
   tokens are not retained. Legacy apps without token expiry are also supported.
 - `ANTHROPIC_API_KEY`: the existing Anthropic analysis provider.
-- Optional `SUMMARY_MODEL`: defaults to the model configured by the original project,
-  `claude-sonnet-5-5`. Confirm model availability for your account before a live rollout.
+- `ANTHROPIC_WORKSPACE_ID`: required for a personal or service-account key that is not
+  scoped to one workspace. Use the `wrkspc_` ID from Claude Console > Settings > Workspaces.
+- Optional `SUMMARY_MODEL`: defaults to `claude-haiku-5-5`, a low-cost model supporting
+  structured JSON output. Confirm model availability and summary quality for your account
+  before a live rollout. Set an explicit override to evaluate another compatible model.
 - Optional `DATABASE_PATH`: defaults to `data/salvage.db`.
 - `DAILY_SUMMARY_LIMIT`: default 10 attempts per user over a rolling 24 hours.
 - `GLOBAL_DAILY_SUMMARY_LIMIT`: default 100 attempts for the entire installation over a
   rolling 24 hours. Set either allowance to 0 to stop analysis. Reservations are transactional;
   a failed attempt after reservation consumes quota. These are request allowances, not a
   dollar budget. SDK automatic retries are disabled and analysis requests time out after two
-  minutes; provider fallback and billing rules still apply. A timeout is not proof the provider
-  did no work.
+  minutes; automatic model fallback is disabled and provider billing rules still apply.
+  A timeout is not proof the provider did no work.
+  Server logs record the actual response model, request ID, stop reason and provider-reported
+  token usage, including responses whose contents fail verification. They do not record keys,
+  owner notes, source content or generated summaries. Token usage is evidence for a cost estimate;
+  the provider's billing records remain authoritative.
 - Optional `MODERATOR_GITHUB_IDS`: comma-separated numeric GitHub user IDs. Empty means no
   moderator has access. Populate before public operation so reports have an operator.
+
+The first authenticated local pilot used Haiku 5.5 for two real analyses and took a recommended
+parser into a separate Node consumer. See [the pilot record](docs/PILOT.md) for token usage,
+cost estimates, extraction adaptations and the limits of this evidence.
 
 ```sh
 npm run dev
