@@ -1,0 +1,51 @@
+{
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "promptSha256": "5bbb364f4a07e55b4de7b531db1d7ddc638f8311eb4868541f1611e3a94088fb",
+  "trace": {
+    "sha256": "e1f6f32e3f866fdd29d101771827498b7f90999306cfadb1c6deb21c47d68a0e"
+  },
+  "latencyMs": 17077,
+  "billing": "Existing Codex account allowance; no API-key model call",
+  "inputSealSha256": "13aa1dd12cb944174b59ff931281400f788ad352be9c8641d77b7dc3b864c624",
+  "transportSuccess": true,
+  "failure": null,
+  "prohibitedEvents": [],
+  "usage": {
+    "input_tokens": 47542,
+    "cached_input_tokens": 27776,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 658,
+    "reasoning_output_tokens": 0
+  },
+  "response": {
+    "decision": "adapt",
+    "code": "/*\nMIT License\n\nCopyright (c) 2026 NextEleven\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n*/\n\npub fn recover(input: u64) -> u64 {\n    (input.wrapping_mul(17140840701312848879u64).rotate_left(17)\n        ^ 1930361707131028797u64)\n        .wrapping_add(7775068135324806024u64)\n}\n",
+    "finding": "The successful read supplied the complete src/helper.rs implementation from the same repository and pinned commit. recover delegates directly to transform; inlining its body preserves the exact u64 wrapping multiplication, rotation, XOR and wrapping addition. The full MIT notice is retained. Upstream build selection and compatibility remain unverified.",
+    "source": {
+      "repository": "authored/rust-budget",
+      "commit": "e1502ae57e8514366929a55af6b6b8d4d4b86026"
+    },
+    "used_reference_ids": [
+      "9b63259de7d85d9257917a0a",
+      "edd4ff3b0c7d6b7e577199d0",
+      "6e536aea4fee62b1920740e5",
+      "99b0a9e04ec5292052db427b",
+      "182e830dcd2e16ecd54f5928"
+    ],
+    "gap_history": [
+      {
+        "path": "src/helper.rs",
+        "reason": "packet-budget",
+        "status": "source_supplied"
+      }
+    ],
+    "needed_context": [],
+    "remaining_limitations": [
+      "upstream_build_unverified"
+    ]
+  },
+  "review": "pending",
+  "execution": "not_run"
+}

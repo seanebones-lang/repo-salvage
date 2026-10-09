@@ -1,0 +1,50 @@
+{
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "promptSha256": "c5c43b08442d3f7514205fe9bb38624e540cf5fc3031fb6f383ff07c953e9414",
+  "trace": {
+    "sha256": "ee50e4445c6121712a7efc43052f1a569866750b96711affcd2eb8f2db384af1"
+  },
+  "latencyMs": 18129,
+  "billing": "Existing Codex account allowance; no API-key model call",
+  "inputSealSha256": "13aa1dd12cb944174b59ff931281400f788ad352be9c8641d77b7dc3b864c624",
+  "transportSuccess": true,
+  "failure": null,
+  "prohibitedEvents": [],
+  "usage": {
+    "input_tokens": 48119,
+    "cached_input_tokens": 13696,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 644,
+    "reasoning_output_tokens": 0
+  },
+  "response": {
+    "decision": "adapt",
+    "code": "package consumer\n\nimport \"math/bits\"\n\n/*\nMIT License\n\nCopyright (c) 2026 NextEleven\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n*/\n\nfunc Recover(input uint64) uint64 {\n\treturn (bits.RotateLeft64(input*uint64(8767377737874238047), 17) ^ uint64(12695025475745279429)) + uint64(6925975293358458688)\n}\n",
+    "finding": "The successful read supplies the complete transform implementation in z_helper.go at the initial repository and pinned commit. Inlining it preserves uint64 wrapping multiplication and addition, rotation by 17 bits, and XOR exactly. The full MIT notice is preserved. Upstream build selection and compatibility remain unverified; the supplied helper has no conditional module declaration.",
+    "source": {
+      "repository": "authored/go-unread",
+      "commit": "5181e6f5c7b6ddd95b177039a28b34664058ed22"
+    },
+    "used_reference_ids": [
+      "bf379776fb0745c38ac2dd08",
+      "0d105826420e0a613fa268ee",
+      "306173ec2b748c2e5f040d45",
+      "182e830dcd2e16ecd54f5928"
+    ],
+    "gap_history": [
+      {
+        "path": "z_helper.go",
+        "reason": "not-inspected",
+        "status": "source_supplied"
+      }
+    ],
+    "needed_context": [],
+    "remaining_limitations": [
+      "upstream_build_unverified"
+    ]
+  },
+  "review": "pending",
+  "execution": "not_run"
+}

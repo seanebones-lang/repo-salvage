@@ -387,3 +387,10 @@ sufficient supporting evidence. Three authored gap/control pairs cover a packet
 budget, an unread Go peer and a conditional Rust module. Exact first decisions and
 reviewed standalone controls are retained; agent guidance explains how to request
 the needed pinned source while preserving the recorded uncertainty.
+
+The next [pinned helper recovery trial](examples/context-recovery/README.md) carries
+those stopping points into fresh MCP-enabled sessions. Three agents retrieve the
+missing pinned helper, retain the original gap and produce checked standalone
+adaptations. A matched corrupted-source case remains stopped after Git blob
+verification fails. Exact first traces and separate review/compiler records are
+preserved; the guided authored trial makes no upstream compatibility claim.

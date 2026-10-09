@@ -1,0 +1,18 @@
+[
+  {
+    "method": "GET",
+    "path": "/api/v2/parts/1003/evidence",
+    "query": "?path=z_helper.go&max_characters=24000",
+    "status": 503,
+    "response": {
+      "error": {
+        "code": "source_integrity_failed",
+        "message": "Pinned source bytes failed Git blob verification."
+      }
+    },
+    "sourceReads": [
+      "https://api.github.com/repos/authored/go-unread/git/trees/5181e6f5c7b6ddd95b177039a28b34664058ed22?recursive=1",
+      "https://raw.githubusercontent.com/authored/go-unread/5181e6f5c7b6ddd95b177039a28b34664058ed22/z_helper.go"
+    ]
+  }
+]

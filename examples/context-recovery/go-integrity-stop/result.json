@@ -1,0 +1,57 @@
+{
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "promptSha256": "c5c43b08442d3f7514205fe9bb38624e540cf5fc3031fb6f383ff07c953e9414",
+  "trace": {
+    "sha256": "85f2940456d9034fff492ec32483afb24e7978d9dd7e9cbf5c0f91e8d14d11a6"
+  },
+  "latencyMs": 11880,
+  "billing": "Existing Codex account allowance; no API-key model call",
+  "inputSealSha256": "13aa1dd12cb944174b59ff931281400f788ad352be9c8641d77b7dc3b864c624",
+  "transportSuccess": true,
+  "failure": null,
+  "prohibitedEvents": [],
+  "usage": {
+    "input_tokens": 44763,
+    "cached_input_tokens": 28928,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 345,
+    "reasoning_output_tokens": 0
+  },
+  "response": {
+    "decision": "needs_context",
+    "code": "",
+    "finding": "The requested z_helper.go read failed source verification: its bytes did not match the pinned Git blob. No helper implementation was supplied, so Recover's behavior and wrapping arithmetic cannot be adapted from verified evidence. Retrieval was not retried.",
+    "source": {
+      "repository": "authored/go-unread",
+      "commit": "5181e6f5c7b6ddd95b177039a28b34664058ed22"
+    },
+    "used_reference_ids": [
+      "bf379776fb0745c38ac2dd08",
+      "6d74366b6797a1aae442d13c",
+      "6e019eea2bc0e17c109aaf2b",
+      "5696fc7a77487e2e43e88edb",
+      "6ac118ac5909bc543aac2383"
+    ],
+    "gap_history": [
+      {
+        "path": "z_helper.go",
+        "reason": "not-inspected",
+        "status": "verification_failed"
+      }
+    ],
+    "needed_context": [
+      {
+        "path": "z_helper.go",
+        "reason": "source_integrity_failed"
+      }
+    ],
+    "remaining_limitations": [
+      "upstream_build_unverified",
+      "source_verification_failed"
+    ]
+  },
+  "review": "pending",
+  "execution": "not_run"
+}

@@ -182,6 +182,13 @@ npx --no-install repo-salvage fetch LISTING PART --base ORIGIN --out ./new-part`
           pending until that required source can be inspected. Ground the code
           in the supplied evidence, then test its standalone contract.
         </p>
+        <p>
+          After retrieving the missing file, match its repository and commit to
+          the original packet. Retain the earlier gap and cite the new supplied
+          source. Keep the adaptation pending if verification fails. A supplied
+          helper can support a standalone adaptation while upstream build
+          conditions remain unresolved.
+        </p>
         <pre>
           <code>{`npx --no-install repo-salvage evidence LISTING --base ORIGIN --path src/module.py --symbol Client.request --max-characters 24000
 GET /api/v2/parts/{listing}/evidence?path=src/module.py&symbol=Client.request

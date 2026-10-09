@@ -386,3 +386,28 @@ source citations, operator review and compiler checks are retained. The task
 explicitly instructs agents to stop when required behavior is unknown; this is
 controlled instruction-following evidence, not a guarantee about arbitrary hosts
 or an automatic server-side adaptation gate.
+
+### Recovering from a required source gap
+
+Call `repo_salvage_focus_evidence` with the original listing ID, the exact missing
+file path and an appropriate packet allowance (up to 24,000 characters). A direct
+file scope can supply a helper that was unread, omitted by the earlier packet or
+rejected by conservative module following. Inspect the returned complete source;
+verify that its repository and pinned commit match the initial packet before using
+it. Preserve the original gap reason and source identity in the consumer's record,
+then cite the newly supplied references. This consumer record is separate from the
+API's evidence response and is not a catalog certification.
+
+If a read returns `source_integrity_failed`, no verified source was supplied. Keep
+required context unresolved and code pending; do not use the failed transport bytes
+or invent an implementation. A successfully supplied helper does not resolve Rust
+feature selection, Go build constraints or full-project compatibility. Define and
+test a standalone contract while retaining those limits.
+
+The [pinned helper recovery trial](../examples/context-recovery/README.md) carries
+three earlier stop records into fresh native sessions. Each uses the installed MCP
+adapter to retrieve its helper, retain provenance and propose a standalone
+adaptation. A fourth matched case rejects corrupted helper bytes and stays stopped.
+These are guided authored fixtures, with production evidence-engine verification
+and a disposable HTTP fixture; they do not exercise live GitHub, database visibility
+routes, spontaneous recovery or a persistent host resume.

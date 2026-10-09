@@ -1,0 +1,40 @@
+{
+  "format": "repo-salvage/context-recovery-review-v1",
+  "at": "2026-10-09T21:56:04.822Z",
+  "inputSealSha256": "13aa1dd12cb944174b59ff931281400f788ad352be9c8641d77b7dc3b864c624",
+  "reviewer": "Implementing Codex operator; not blind independent review",
+  "cases": [
+    {
+      "id": "rust-budget-recovery",
+      "accepted": true,
+      "responseSha256": "c1cb273b5f48f28b167f2ea4a939d0722fd1b3554edc7a9f768727b17aeb876b",
+      "approvedForExecution": true,
+      "codeSha256": "b6b34987be0a121add8a8f32bdc40128a49dcce7f9d298ef03c792ca6b35cc6c",
+      "review": "Inspected the entire exact first adaptation and successful MCP result. Constants and operation order match the supplied complete helper: wrapping multiply, rotate-left 17, XOR, wrapping add. Rust uses explicit wrapping u64 operations; Go uses uint64 and standard math/bits only. Full MIT notice retained. No unsafe, IO, environment, process, external dependency, unresolved helper, tests, feature flags or main. Original gap and pinned identity retained; conditional Rust still records unresolved feature selection. Approved only for the frozen standalone compiler acceptance, not upstream build compatibility."
+    },
+    {
+      "id": "go-unread-recovery",
+      "accepted": true,
+      "responseSha256": "fc16d009c71a61e1ea9106d2237f594c7b309f2d16c2a4259fa81493b823ce49",
+      "approvedForExecution": true,
+      "codeSha256": "c7facf769f54a42fab696ff10749517032b316b78ad9ee08bc8df177a3e8a233",
+      "review": "Inspected the entire exact first adaptation and successful MCP result. Constants and operation order match the supplied complete helper: wrapping multiply, rotate-left 17, XOR, wrapping add. Rust uses explicit wrapping u64 operations; Go uses uint64 and standard math/bits only. Full MIT notice retained. No unsafe, IO, environment, process, external dependency, unresolved helper, tests, feature flags or main. Original gap and pinned identity retained; conditional Rust still records unresolved feature selection. Approved only for the frozen standalone compiler acceptance, not upstream build compatibility."
+    },
+    {
+      "id": "rust-conditional-recovery",
+      "accepted": true,
+      "responseSha256": "a64f04634b19dd8b2703c6f3ea480c3180e83ad56c41a1500a459cabee8d6b17",
+      "approvedForExecution": true,
+      "codeSha256": "bd33051e7d41fe81a81992bbbc3e366d4a187edb1820495754512533fa108e05",
+      "review": "Inspected the entire exact first adaptation and successful MCP result. Constants and operation order match the supplied complete helper: wrapping multiply, rotate-left 17, XOR, wrapping add. Rust uses explicit wrapping u64 operations; Go uses uint64 and standard math/bits only. Full MIT notice retained. No unsafe, IO, environment, process, external dependency, unresolved helper, tests, feature flags or main. Original gap and pinned identity retained; conditional Rust still records unresolved feature selection. Approved only for the frozen standalone compiler acceptance, not upstream build compatibility."
+    },
+    {
+      "id": "go-integrity-stop",
+      "accepted": true,
+      "responseSha256": "66a5101387ce8fbd7ee6d793597822024166aa157872dab0d61733796761f19f",
+      "approvedForExecution": false,
+      "codeSha256": null,
+      "review": "Inspected the entire first response and single failed MCP call. Production Git blob verification rejects the altered bytes, no helper source reaches the agent, code is empty, original not-inspected gap and pin are retained, and required source_integrity_failed context is explicit. No retry or compilation approved."
+    }
+  ]
+}
