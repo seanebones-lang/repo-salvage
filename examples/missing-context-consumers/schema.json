@@ -1,0 +1,59 @@
+{
+  "type": "object",
+  "properties": {
+    "decision": {
+      "type": "string",
+      "enum": [
+        "adapt",
+        "needs_context"
+      ]
+    },
+    "code": {
+      "type": "string"
+    },
+    "finding": {
+      "type": "string"
+    },
+    "used_reference_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "needed_context": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "packet-budget",
+              "not-inspected",
+              "package-mismatch",
+              "parser-unavailable",
+              "restricted-module",
+              "ambiguous-module-layout"
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "decision",
+    "code",
+    "finding",
+    "used_reference_ids",
+    "needed_context"
+  ],
+  "additionalProperties": false
+}

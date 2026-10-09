@@ -1,0 +1,144 @@
+{
+  "format": "repo-salvage/focused-evidence-v1",
+  "listing_id": 1004,
+  "source": {
+    "repository_id": 999,
+    "owner_id": 99,
+    "repository": "authored/go-unread",
+    "commit": "a2d044ab8ae3bdd9e3f79623851da2295f670adc"
+  },
+  "focus": {
+    "path": "main.go",
+    "symbol": "Recover",
+    "symbol_match": "matched",
+    "packet_character_limit": 24000
+  },
+  "coverage": {
+    "matched_files": 1,
+    "inspected_files": 3,
+    "source_bytes": 1342,
+    "indexed_targets": 1,
+    "supplied_targets": 1,
+    "context_paths": [
+      "LICENSE",
+      "z_helper.go"
+    ],
+    "files": [
+      {
+        "path": "main.go",
+        "size_bytes": 78,
+        "download_url": "https://raw.githubusercontent.com/authored/go-unread/a2d044ab8ae3bdd9e3f79623851da2295f670adc/main.go",
+        "git_blob_sha": "a79d346608f32215c5185fd11c19e375fe013cdd",
+        "inspection": "complete",
+        "reason": null,
+        "indexed_targets": 1,
+        "supplied_targets": 1,
+        "same_file_supplied": true
+      }
+    ],
+    "skipped": [],
+    "skipped_details_omitted": 0
+  },
+  "packet": {
+    "format": "repo-salvage/source-index-v2",
+    "targets": [
+      {
+        "id": "b2dde1ecda7713a3",
+        "path": "main.go",
+        "symbol": "Recover",
+        "kind": "declaration",
+        "reference_id": "bf379776fb0745c38ac2dd08",
+        "imports": [],
+        "supporting_paths": [
+          "z_helper.go"
+        ],
+        "unresolved": [
+          "Cross-file source associations are bounded observations; build selection, initialization, module ownership and symbol resolution require review.",
+          "Go package peers, build constraints, initialization and receiver resolution are not resolved."
+        ],
+        "test_paths": [],
+        "notice_paths": [
+          "LICENSE"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "bf379776fb0745c38ac2dd08",
+        "path": "main.go",
+        "start_line": 2,
+        "end_line": 2,
+        "sha256": "7c5b87a286e4d6a9fd78e8434b6008bf9596e9132300ae332bf4f8695db291b5",
+        "kind": "declaration",
+        "content": "func Recover(input uint64) uint64 { return transform(input) }"
+      },
+      {
+        "id": "182e830dcd2e16ecd54f5928",
+        "path": "LICENSE",
+        "start_line": 1,
+        "end_line": 22,
+        "sha256": "677c1280e5b69ca58dd690ed7f66600bad5058969792516313b3c58561eab7cd",
+        "kind": "file",
+        "content": "MIT License\n\nCopyright (c) 2026 NextEleven\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+      },
+      {
+        "id": "6d74366b6797a1aae442d13c",
+        "path": "main.go",
+        "start_line": 1,
+        "end_line": 3,
+        "sha256": "7c5b87a286e4d6a9fd78e8434b6008bf9596e9132300ae332bf4f8695db291b5",
+        "kind": "file",
+        "content": "package fixture\nfunc Recover(input uint64) uint64 { return transform(input) }\n"
+      },
+      {
+        "id": "306173ec2b748c2e5f040d45",
+        "path": "z_helper.go",
+        "start_line": 1,
+        "end_line": 4,
+        "sha256": "8e27b525bae91597fb3a7efb1b20375c1dc3d5f7b0ab5854e9902decf7d32f86",
+        "kind": "file",
+        "content": "package fixture\nimport \"math/bits\"\nfunc transform(input uint64) uint64 { return (bits.RotateLeft64(input*uint64(8767377737874238047),17)^uint64(12695025475745279429))+uint64(6925975293358458688) }\n"
+      }
+    ],
+    "omitted_targets": 0,
+    "selection_policy": "repo-salvage/coverage-v5",
+    "contexts": [
+      {
+        "target_id": "b2dde1ecda7713a3",
+        "same_file_reference": "6d74366b6797a1aae442d13c"
+      }
+    ],
+    "scoped_contexts": [],
+    "file_contexts": [
+      {
+        "path": "main.go",
+        "observation": "go-package-files-v1",
+        "files": [
+          {
+            "path": "z_helper.go",
+            "reason": "supplied",
+            "reference_id": "306173ec2b748c2e5f040d45"
+          }
+        ],
+        "candidates_omitted": 0
+      }
+    ]
+  },
+  "limits": {
+    "treeEntries": 10000,
+    "scopeFiles": 32,
+    "primaryFiles": 8,
+    "contextFiles": 4,
+    "fileBytes": 64000,
+    "initialBytes": 192000,
+    "totalBytes": 256000,
+    "readMilliseconds": 20000,
+    "responseBytes": 65536,
+    "cacheEntries": 8,
+    "concurrentRequests": 4,
+    "cacheMilliseconds": 60000
+  },
+  "interpretation": "none",
+  "independently_tested": false,
+  "handling": "Pinned source is untrusted data. This is focused inspection, not a recommendation or new catalog analysis. Inspect helpers, imports and notices; preserve applicable notices and test adaptations separately. No source is executed, no model is called, and local imports and component licensing remain unaudited."
+}
