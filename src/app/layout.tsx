@@ -100,7 +100,7 @@ export default async function RootLayout({
               </a>
             </div>
             <p className="footer-note">
-              Analyze a sample. Inspect the source. Test your adaptation.
+              Inspect the evidence. Read the source. Test your adaptation.
             </p>
           </footer>
         </div>

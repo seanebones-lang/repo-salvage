@@ -30,10 +30,12 @@ export default function HowItWorks() {
           <Icon name="code" size={28} />
           <h2>The useful parts get a brief</h2>
           <p>
-            An AI analysis reads a bounded source sample at one commit. Each
-            candidate gets source links, observed dependencies, integration
-            guidance and limitations. Primary source paths must have been
-            sampled; supporting paths must exist in the source tree.
+            Complete source files are indexed within explicit limits at one
+            commit. A model interprets the supplied evidence. Each candidate
+            gets source links, observed dependencies, integration guidance and
+            limitations. Primary source paths must have been inspected;
+            supporting paths must exist in the source tree. An analysis may find
+            no suitable parts.
           </p>
         </section>
         <section>
@@ -58,8 +60,19 @@ export default function HowItWorks() {
               Source sampled
             </span>
             <p>
-              The primary file was read into the analysis. The recommendation
-              remains based on a sample.
+              Source from the primary file was supplied to the analysis. Earlier
+              briefs may have prefix or unknown sample coverage.
+            </p>
+          </div>
+          <div>
+            <span className="evidence">
+              <span className="status-dot" />
+              Complete declaration inspected
+            </span>
+            <p>
+              A complete JS/TS implementation was parsed and supplied with
+              source references. The explanation remains a model interpretation;
+              inspect helpers and runtime dependencies before extraction.
             </p>
           </div>
           <div>

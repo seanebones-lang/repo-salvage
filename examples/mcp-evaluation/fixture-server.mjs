@@ -29,7 +29,7 @@ export async function serveFixture({ catalog, override } = {}) {
         .end(JSON.stringify({ error: { code: "not_found" } }));
       return;
     }
-    if (url.pathname === "/api/v1/parts") {
+    if (["/api/v1/parts", "/api/v2/parts"].includes(url.pathname)) {
       const q = url.searchParams.get("q") ?? "";
       const filters = ["language", "license", "category"];
       const revision = url.searchParams.get("revision");
@@ -65,6 +65,9 @@ export async function serveFixture({ catalog, override } = {}) {
       response.end(
         JSON.stringify({
           ...catalog.search,
+          format: url.pathname.includes("/v2/")
+            ? "repo-salvage/search-v2"
+            : "repo-salvage/search-v1",
           query: {
             q,
             language: url.searchParams.get("language") ?? "",
@@ -76,14 +79,14 @@ export async function serveFixture({ catalog, override } = {}) {
             page,
             limit,
             total: hits.length,
-            next: page * limit < hits.length ? `/api/v1/parts?${next}` : null,
+            next: page * limit < hits.length ? `${url.pathname}?${next}` : null,
           },
           results: hits.slice((page - 1) * limit, page * limit),
         }),
       );
       return;
     }
-    const match = /^\/api\/v1\/parts\/(\d+)\/([a-f0-9]{16})$/.exec(
+    const match = /^\/api\/v[12]\/parts\/(\d+)\/([a-f0-9]{16})$/.exec(
       url.pathname,
     );
     const part =
@@ -92,7 +95,15 @@ export async function serveFixture({ catalog, override } = {}) {
         (row) =>
           row.listing_id === Number(match[1]) && row.part_id === match[2],
       );
-    if (part) response.end(JSON.stringify(part));
+    if (part)
+      response.end(
+        JSON.stringify({
+          ...part,
+          format: url.pathname.includes("/v2/")
+            ? "repo-salvage/part-v2"
+            : "repo-salvage/part-v1",
+        }),
+      );
     else
       response
         .writeHead(404)

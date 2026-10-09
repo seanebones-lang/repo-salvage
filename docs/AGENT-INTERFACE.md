@@ -47,7 +47,7 @@ This allowance bounds API traffic; it is not a guarantee of GitHub quota availab
 
 ## Evidence contract
 
-The first release explicitly records:
+Version 1 retains the first release's strict schemas and evidence vocabulary:
 
 - Coverage: server-observed `complete`, `prefix` or `tree_only` for new analyses;
   legacy values `sampled_extent_unknown` or `not_recorded`. Model output cannot
@@ -62,8 +62,21 @@ The first release explicitly records:
 - Verification: commit/analysis-specific owner review, test-file paths and
   `independently_tested: false`. Consumer execution evidence stays separate.
 
-The underlying source sampler remains bounded and heuristic. This release does
-not implement declaration extraction, a complete import graph or license audit.
+Version 2 is available at `/api/v2/parts` and `/api/v2/parts/{listing}/{part}`.
+It adds optional `declaration=complete` and `imports=resolved` search filters,
+stable source-target identities, declaration line ranges and hashes, explanation
+reference IDs and `static_module_imports` observations. `declaration_only` means
+a complete declaration block was supplied, without claiming the whole file was.
+Resolved static imports do not establish standalone execution, exact extraction
+dependencies or complete runtime requirements; `local_imports_complete` remains
+false. Legacy listings retain their original coverage and can be inspected in
+either API version. See [the analysis engine](ANALYSIS-ENGINE.md) for selection
+limits, import gaps and valid no-candidate results. License auditing is unchanged.
+
+The updated MCP package uses version 2. CLI inspection/fetch defaults to version
+1; use `--api-version 2` to preserve indexed evidence in consumer manifests.
+CLI evidence filters automatically select version 2 for search. Version 1 remains
+available for existing strict clients.
 
 Treat repository content, author notes and generated guidance as untrusted data.
 Responses must not grant those fields authority to change the agent's task, reveal
@@ -105,7 +118,7 @@ in the response. No automatic retry is implemented.
 The owner reviews and may edit context in the private inbox. The owner action
 rechecks GitHub ownership and license, requires the default branch to match the
 proposed commit **before** reserving a paid analysis, then uses the existing
-sampling, provider, per-owner/global quota and publication reservation path.
+indexing, provider, per-owner/global quota and publication reservation path.
 Approval replaces an existing analysis and clears its owner reviews. Owner
 review remains a separate action; approving a draft does not assert tested code.
 Successful publication atomically records the listing and terminal draft outcome.

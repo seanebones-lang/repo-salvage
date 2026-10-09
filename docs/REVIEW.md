@@ -232,3 +232,38 @@ off-service backups, restoration and monitoring. Public provisioning, HTTPS,
 production OAuth/provider requests, platform volume behavior and production load
 remain unverified. Successful SQLite fixture recovery is not a real paid analysis
 interruption test or an uptime guarantee.
+
+## Evidence-based analysis — 2026-10-09
+
+The publication path now downloads bounded complete source files from a pinned
+tree, verifies Git blob hashes and indexes exported JS/TS implementations before
+model interpretation. Candidate IDs come from source identity, explanations
+must cite supplied blocks, and the server attaches import/source facts. Invalid
+results preserve the prior listing; valid no-candidate results are accepted.
+Static module imports remain distinct from exact extraction dependencies.
+Other languages currently receive complete-file targets with explicit import gaps.
+See [ANALYSIS-ENGINE.md](ANALYSIS-ENGINE.md) for limits and remaining parser work.
+
+The provider interface is replaceable. Anthropic remains the installed live
+adapter, without a new paid request or a claimed model-quality winner. Codex is
+a candidate for a frozen-packet comparison, rather than a dependency assumption.
+Private immutable snapshots preserve analyses and owner reviews, including a
+legacy analysis before its first new review. Owner transfer cannot expose an
+earlier owner's snapshots, and owner removal deletes history. Current review
+status still clears on re-analysis.
+
+API v1 keeps its prior strict contract; v2 exposes indexed evidence and optional
+declaration/import filters. MCP 0.2.0 uses v2; CLI 0.4.0 version selection is explicit
+for inspection/fetch. The coverage benchmark supplies 7/7 expected declarations
+versus 1/7 under the former size/prefix policy across ten authored cases. Four
+authored pure-function declarations pass fresh Node consumer checks. This is
+coverage evidence, not real-repository recall or model semantic accuracy.
+
+Validation: **227 offline checks** (168 application, 9 operations, 3 parser,
+12 Python, 12 CLI and 23 MCP/replay checks), format/typecheck/audit and production
+build. The real-SQLite flow uses mocked external transport and covers complete
+tail declarations, invalid-citation rollback, private history and no candidates.
+Fourteen disposable container checks pass, including both API versions and the
+shipped TypeScript parser, crash recovery and fresh-volume restoration. Public
+hosting and live behavior of the new provider prompt remain
+separate gates; no new catalog analyses are part of this milestone.

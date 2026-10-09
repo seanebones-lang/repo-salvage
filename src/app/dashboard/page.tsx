@@ -124,6 +124,9 @@ export default async function Dashboard() {
                 <Link className="text-link" href={`/listing/${l.id}`}>
                   Review parts <Icon name="arrow" size={15} />
                 </Link>
+                <Link className="text-link" href={`/dashboard/history/${l.id}`}>
+                  Analysis history
+                </Link>
                 <form action={unlist}>
                   <input type="hidden" name="id" value={l.id} />
                   <button className="button button-secondary button-small">
@@ -152,8 +155,8 @@ export default async function Dashboard() {
         <p className="small muted">
           Inactive projects come first, but any licensed project can contribute
           useful parts. Only projects you choose are stored. Each analysis sends
-          a bounded sample of public files to the AI provider. Inventory shows
-          up to 500 owned, non-fork public repositories.
+          bounded public source evidence to the configured AI provider.
+          Inventory shows up to 500 owned, non-fork public repositories.
         </p>
         {rows.map(({ r, stale }) => (
           <RepoRow

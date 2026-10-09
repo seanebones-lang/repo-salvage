@@ -47,9 +47,11 @@ export function PartCard({
             ? "Example tested independently"
             : piece.owner_reviewed_at
               ? "Owner reviewed"
-              : piece.source_sampled
-                ? "Source sampled"
-                : "AI identified"}
+              : piece.source_target?.kind === "declaration"
+                ? "Complete declaration inspected"
+                : piece.source_sampled
+                  ? "Source sampled"
+                  : "AI identified"}
         </span>
         <Link
           href={href}

@@ -69,9 +69,9 @@ export function PartDetail({
             <div className="section-number">01</div>
             <h2>What to take</h2>
             <p>
-              Start with the primary file. Supporting files below are candidates
-              identified in the analysis; inspect their imports before
-              extraction.
+              {piece.source_target?.kind === "declaration"
+                ? `The complete ${piece.source_target.symbol} declaration informed this brief, at lines ${piece.source_target.reference.start_line}–${piece.source_target.reference.end_line}. Inspect the surrounding file for same-file helpers and runtime assumptions. Supporting paths come from static module imports.`
+                : "Start with the primary file. Supporting files below are candidates identified in the analysis; inspect their imports before extraction."}
             </p>
             <div className="file-list">
               {files.map((file, i) => {
@@ -153,8 +153,8 @@ export function PartDetail({
             ) : (
               <p>
                 Specific limitations were not captured in this analysis. The
-                brief is based on a sample, and extraction and integration have
-                not been independently validated.
+                extraction and integration have not been independently
+                validated.
               </p>
             )}
             {!!piece.test_paths?.length && (
@@ -205,12 +205,18 @@ export function PartDetail({
                 />
                 <div>
                   <strong>
-                    {piece.source_sampled ? "Source sampled" : "AI identified"}
+                    {piece.source_target?.kind === "declaration"
+                      ? "Complete declaration inspected"
+                      : piece.source_sampled
+                        ? "Source sampled"
+                        : "AI identified"}
                   </strong>
                   <span>
-                    {piece.source_sampled
-                      ? "Primary file content informed this brief."
-                      : "Source sampling evidence is unavailable for this older brief."}
+                    {piece.source_target
+                      ? "Source locations are recorded; the explanation is a model interpretation, not an execution result."
+                      : piece.source_sampled
+                        ? "Primary file content informed this brief."
+                        : "Source sampling evidence is unavailable for this older brief."}
                   </span>
                 </div>
               </li>

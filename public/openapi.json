@@ -510,6 +510,293 @@
           }
         }
       }
+    },
+    "/api/v2/parts": {
+      "get": {
+        "operationId": "searchParts",
+        "summary": "Search public visible component briefs",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Case-insensitive AND terms across brief fields; lexical matching.",
+            "schema": {
+              "type": "string",
+              "maxLength": 256
+            }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "Exact language facet.",
+            "schema": {
+              "type": "string",
+              "maxLength": 40
+            }
+          },
+          {
+            "name": "license",
+            "in": "query",
+            "description": "Exact repository SPDX metadata; not a component license audit.",
+            "schema": {
+              "type": "string",
+              "maxLength": 80
+            }
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Exact component category.",
+            "schema": {
+              "type": "string",
+              "maxLength": 80,
+              "enum": [
+                "Authentication",
+                "Data processing",
+                "API & networking",
+                "UI & interaction",
+                "Developer tools",
+                "Storage",
+                "Other"
+              ]
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Deterministic ordering; query defaults to relevance (name/path matches), otherwise latest. Ties use analysis time and stable identities.",
+            "schema": {
+              "type": "string",
+              "maxLength": 10,
+              "enum": ["relevance", "latest", "name", "reviewed"]
+            }
+          },
+          {
+            "name": "revision",
+            "in": "query",
+            "description": "Returned catalog revision; changed inventory yields 409. Restart page 1.",
+            "schema": {
+              "type": "string",
+              "maxLength": 64,
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000,
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          },
+          {
+            "name": "declaration",
+            "in": "query",
+            "description": "Static source evidence filter; does not establish standalone execution or runtime dependency completeness.",
+            "schema": {
+              "type": "string",
+              "enum": ["complete"]
+            }
+          },
+          {
+            "name": "imports",
+            "in": "query",
+            "description": "Static source evidence filter; does not establish standalone execution or runtime dependency completeness.",
+            "schema": {
+              "type": "string",
+              "enum": ["resolved"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching parts and facets from a freshly verified catalog.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchV2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed, repeated or unknown query parameter.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "catalog_changed: restart pagination.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Verification or database unavailable; not an empty result.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "const": 60
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Shared installation read allowance reached; respect Retry-After. Default 30 valid requests per fixed minute, configurable with AGENT_READ_LIMIT.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "const": 60
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/parts/{id}/{part}": {
+      "get": {
+        "operationId": "inspectPart",
+        "summary": "Inspect pinned source, evidence and heuristic notice manifest",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          {
+            "name": "part",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{16}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pinned regular files, Git blob hashes and evidence boundaries.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartV2"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid identity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Missing, hidden, removed or inaccessible part.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Unpinned, unsupported or changed source analysis; inspect manually or retry.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Source/catalog verification unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "const": 60
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Shared installation read allowance reached; respect Retry-After. Default 30 valid requests per fixed minute, configurable with AGENT_READ_LIMIT.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds before retrying.",
+                "schema": {
+                  "type": "integer",
+                  "const": 60
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1151,6 +1438,840 @@
             "const": 50
           }
         }
+      },
+      "SourceReference": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{24}$"
+          },
+          "path": {
+            "type": "string"
+          },
+          "start_line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "end_line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "kind": {
+            "enum": ["declaration", "file"]
+          }
+        },
+        "required": ["id", "path", "start_line", "end_line", "sha256", "kind"],
+        "additionalProperties": false
+      },
+      "SourceTarget": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{16}$"
+          },
+          "path": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": ["declaration", "file"]
+          },
+          "imports": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "specifier": {
+                  "type": "string"
+                },
+                "kind": {
+                  "enum": ["local", "external", "unresolved", "dynamic"]
+                },
+                "resolved_path": {
+                  "type": ["string", "null"]
+                }
+              },
+              "required": ["specifier", "kind", "resolved_path"],
+              "additionalProperties": false
+            }
+          },
+          "supporting_paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "unresolved": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "test_paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "notice_paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reference": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{24}$"
+              },
+              "path": {
+                "type": "string"
+              },
+              "start_line": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "end_line": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "kind": {
+                "enum": ["declaration", "file"]
+              }
+            },
+            "required": [
+              "id",
+              "path",
+              "start_line",
+              "end_line",
+              "sha256",
+              "kind"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "id",
+          "path",
+          "symbol",
+          "kind",
+          "imports",
+          "supporting_paths",
+          "unresolved",
+          "test_paths",
+          "notice_paths",
+          "reference"
+        ],
+        "additionalProperties": false
+      },
+      "SearchV2": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "const": "repo-salvage/search-v2"
+          },
+          "catalog_revision": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "query": {
+            "type": "object",
+            "properties": {
+              "q": {
+                "type": "string"
+              },
+              "language": {
+                "type": "string"
+              },
+              "license": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string"
+              },
+              "sort": {
+                "type": "string"
+              },
+              "declaration": {
+                "type": "string"
+              },
+              "imports": {
+                "type": "string"
+              }
+            },
+            "required": ["q", "language", "license", "category", "sort"],
+            "additionalProperties": false
+          },
+          "pagination": {
+            "type": "object",
+            "properties": {
+              "page": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100000
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50
+              },
+              "total": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "next": {
+                "type": ["string", "null"]
+              }
+            },
+            "required": ["page", "limit", "total", "next"],
+            "additionalProperties": false
+          },
+          "facets": {
+            "type": "object",
+            "properties": {
+              "languages": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "licenses": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "categories": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "Authentication",
+                    "Data processing",
+                    "API & networking",
+                    "UI & interaction",
+                    "Developer tools",
+                    "Storage",
+                    "Other"
+                  ]
+                }
+              }
+            },
+            "required": ["languages", "licenses", "categories"],
+            "additionalProperties": false
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "listing_id": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "part_id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{16}$"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "Authentication",
+                    "Data processing",
+                    "API & networking",
+                    "UI & interaction",
+                    "Developer tools",
+                    "Storage",
+                    "Other"
+                  ]
+                },
+                "repository": {
+                  "type": "string"
+                },
+                "source_commit": {
+                  "type": ["string", "null"],
+                  "pattern": "^[a-f0-9]{40}$"
+                },
+                "primary_path": {
+                  "type": "string"
+                },
+                "languages": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "repository_license": {
+                  "type": ["string", "null"]
+                },
+                "observed_dependencies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "evidence": {
+                  "type": "object",
+                  "properties": {
+                    "primary_file_coverage": {
+                      "type": "string",
+                      "enum": [
+                        "complete",
+                        "prefix",
+                        "tree_only",
+                        "sampled_extent_unknown",
+                        "not_recorded",
+                        "declaration_only"
+                      ]
+                    },
+                    "declaration_coverage": {
+                      "enum": ["not_verified", "complete"]
+                    },
+                    "component_license_status": {
+                      "const": "not_audited"
+                    },
+                    "dependency_graph": {
+                      "enum": ["not_audited", "static_module_imports"]
+                    },
+                    "owner_reviewed_at": {
+                      "type": ["string", "null"]
+                    },
+                    "independently_tested": {
+                      "const": false
+                    }
+                  },
+                  "required": [
+                    "primary_file_coverage",
+                    "declaration_coverage",
+                    "component_license_status",
+                    "dependency_graph",
+                    "owner_reviewed_at",
+                    "independently_tested"
+                  ],
+                  "additionalProperties": false
+                },
+                "links": {
+                  "type": "object",
+                  "properties": {
+                    "inspect": {
+                      "type": "string"
+                    },
+                    "page": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["inspect", "page"],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "listing_id",
+                "part_id",
+                "name",
+                "description",
+                "category",
+                "repository",
+                "source_commit",
+                "primary_path",
+                "languages",
+                "repository_license",
+                "observed_dependencies",
+                "evidence",
+                "links"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 50
+          }
+        },
+        "required": [
+          "format",
+          "catalog_revision",
+          "query",
+          "pagination",
+          "facets",
+          "results"
+        ],
+        "additionalProperties": false
+      },
+      "PartV2": {
+        "type": "object",
+        "properties": {
+          "format": {
+            "const": "repo-salvage/part-v2"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "Authentication",
+              "Data processing",
+              "API & networking",
+              "UI & interaction",
+              "Developer tools",
+              "Storage",
+              "Other"
+            ]
+          },
+          "repository": {
+            "type": "string"
+          },
+          "source_commit": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{40}$"
+          },
+          "source_url": {
+            "type": "string"
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string"
+                },
+                "roles": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": ["primary", "supporting", "test", "notice"]
+                  },
+                  "minItems": 1
+                },
+                "analysis_coverage": {
+                  "type": "string",
+                  "enum": [
+                    "complete",
+                    "prefix",
+                    "tree_only",
+                    "sampled_extent_unknown",
+                    "not_recorded",
+                    "declaration_only"
+                  ]
+                },
+                "git_blob_sha": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{40}$"
+                },
+                "size_bytes": {
+                  "type": ["integer", "null"],
+                  "minimum": 0
+                },
+                "download_url": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "path",
+                "roles",
+                "analysis_coverage",
+                "git_blob_sha",
+                "size_bytes",
+                "download_url"
+              ],
+              "additionalProperties": false
+            },
+            "maxItems": 64
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "integration_notes": {
+            "type": ["string", "null"]
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "license": {
+            "type": ["string", "null"]
+          },
+          "license_notice": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "sampled_source": {
+                "type": "boolean"
+              },
+              "owner_reviewed_at": {
+                "type": ["string", "null"]
+              },
+              "independently_tested": {
+                "const": false
+              },
+              "test_files": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "analyzed_at": {
+                "type": ["string", "null"]
+              },
+              "model": {
+                "type": ["string", "null"]
+              },
+              "declaration_coverage": {
+                "enum": ["not_verified", "complete"]
+              },
+              "source_target": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "pattern": "^[a-f0-9]{16}$"
+                      },
+                      "path": {
+                        "type": "string"
+                      },
+                      "symbol": {
+                        "type": "string"
+                      },
+                      "kind": {
+                        "enum": ["declaration", "file"]
+                      },
+                      "imports": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "specifier": {
+                              "type": "string"
+                            },
+                            "kind": {
+                              "enum": [
+                                "local",
+                                "external",
+                                "unresolved",
+                                "dynamic"
+                              ]
+                            },
+                            "resolved_path": {
+                              "type": ["string", "null"]
+                            }
+                          },
+                          "required": ["specifier", "kind", "resolved_path"],
+                          "additionalProperties": false
+                        }
+                      },
+                      "supporting_paths": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "unresolved": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "test_paths": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "notice_paths": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "reference": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "pattern": "^[a-f0-9]{24}$"
+                          },
+                          "path": {
+                            "type": "string"
+                          },
+                          "start_line": {
+                            "type": "integer",
+                            "minimum": 1
+                          },
+                          "end_line": {
+                            "type": "integer",
+                            "minimum": 1
+                          },
+                          "sha256": {
+                            "type": "string",
+                            "pattern": "^[a-f0-9]{64}$"
+                          },
+                          "kind": {
+                            "enum": ["declaration", "file"]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "path",
+                          "start_line",
+                          "end_line",
+                          "sha256",
+                          "kind"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "path",
+                      "symbol",
+                      "kind",
+                      "imports",
+                      "supporting_paths",
+                      "unresolved",
+                      "test_paths",
+                      "notice_paths",
+                      "reference"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "explanation_refs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "source_references": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{24}$"
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "start_line": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "end_line": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    "kind": {
+                      "enum": ["declaration", "file"]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "path",
+                    "start_line",
+                    "end_line",
+                    "sha256",
+                    "kind"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "explanation_status": {
+                "const": "model_interpretation"
+              }
+            },
+            "required": [
+              "sampled_source",
+              "owner_reviewed_at",
+              "independently_tested",
+              "test_files",
+              "analyzed_at",
+              "model",
+              "declaration_coverage"
+            ],
+            "additionalProperties": false
+          },
+          "listing_id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "part_id": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{16}$"
+          },
+          "source": {
+            "type": "object",
+            "properties": {
+              "repository_id": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "owner_id": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "repository": {
+                "type": "string"
+              },
+              "commit": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{40}$"
+              }
+            },
+            "required": ["repository_id", "owner_id", "repository", "commit"],
+            "additionalProperties": false
+          },
+          "dependency_evidence": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "enum": ["not_audited", "static_module_imports"]
+              },
+              "empty_list_means": {
+                "const": "none_identified"
+              },
+              "local_imports_complete": {
+                "const": false
+              },
+              "observed_imports": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "specifier": {
+                      "type": "string"
+                    },
+                    "kind": {
+                      "enum": ["local", "external", "unresolved", "dynamic"]
+                    },
+                    "resolved_path": {
+                      "type": ["string", "null"]
+                    }
+                  },
+                  "required": ["specifier", "kind", "resolved_path"],
+                  "additionalProperties": false
+                }
+              },
+              "unresolved": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "scope": {
+                "const": "module_level_static_only"
+              }
+            },
+            "required": [
+              "status",
+              "empty_list_means",
+              "local_imports_complete"
+            ],
+            "additionalProperties": false
+          },
+          "licensing": {
+            "type": "object",
+            "properties": {
+              "repository_license": {
+                "type": ["string", "null"]
+              },
+              "component_license_status": {
+                "const": "not_audited"
+              },
+              "notice_discovery": {
+                "const": "filename_heuristic"
+              },
+              "notice_paths": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "third_party_paths": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "requires_manual_review": {
+                "const": true
+              }
+            },
+            "required": [
+              "repository_license",
+              "component_license_status",
+              "notice_discovery",
+              "notice_paths",
+              "third_party_paths",
+              "requires_manual_review"
+            ],
+            "additionalProperties": false
+          },
+          "handling": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "format",
+          "name",
+          "description",
+          "category",
+          "repository",
+          "source_commit",
+          "source_url",
+          "files",
+          "dependencies",
+          "integration_notes",
+          "limitations",
+          "license",
+          "license_notice",
+          "evidence",
+          "listing_id",
+          "part_id",
+          "source",
+          "dependency_evidence",
+          "licensing",
+          "handling"
+        ],
+        "additionalProperties": false
       }
     },
     "securitySchemes": {

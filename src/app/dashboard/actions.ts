@@ -14,7 +14,7 @@ import {
 import {
   getOwnedPublicRepo,
   lastHumanCommit,
-  snapshotRepo,
+  indexedSnapshotRepo,
   resolveSourceCommit,
   isPublicRepoFresh,
 } from "@/lib/github";
@@ -89,7 +89,7 @@ export async function salvage(
       sourceSha = await resolveSourceCommit(session.accessToken, repo);
     }
     const [snap, last] = await Promise.all([
-      snapshotRepo(session.accessToken, repo, sourceSha),
+      indexedSnapshotRepo(session.accessToken, repo, sourceSha),
       lastHumanCommit(session.accessToken, repo, sourceSha),
     ]);
     if (!(await isPublicRepoFresh(repo.id, session.ghId)))
@@ -138,7 +138,12 @@ export async function salvage(
     revalidatePath("/", "layout");
     revalidatePath("/dashboard");
     revalidatePath("/dashboard/agents");
-    return { ok: `Listed ${repo.full_name}` };
+    return {
+      ok:
+        summary.analysis?.outcome === "no_candidates"
+          ? `Analysis complete for ${repo.full_name}: no suitable components identified. You can inspect the result in your listings.`
+          : `Listed ${repo.full_name}`,
+    };
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Something went wrong" };
   } finally {

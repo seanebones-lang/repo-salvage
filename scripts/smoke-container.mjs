@@ -194,6 +194,7 @@ try {
     "/llms.txt",
     "/openapi.json",
     "/api/v1/parts",
+    "/api/v2/parts",
   ]) {
     const response = await fetch(origin + route, {
       signal: AbortSignal.timeout(10000),
@@ -223,6 +224,13 @@ try {
   }
   check(
     "application, agent API and all four downloads served from built image",
+  );
+  assert.equal(
+    execNode(
+      first,
+      "console.log(require('typescript').createSourceFile('test.ts','export const value = 1',99,true).statements.length)",
+    ),
+    "1",
   );
   execNode(
     first,

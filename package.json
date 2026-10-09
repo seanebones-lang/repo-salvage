@@ -17,7 +17,8 @@
     "test:mcp": "npm test --workspace @repo-salvage/mcp",
     "test:assignment": "python3 -m unittest discover -s examples/assignment-consumer -p 'test_*.py' -v",
     "test:operations": "node --test tests/deployment.test.mjs",
-    "test:container": "node scripts/smoke-container.mjs --run repo-salvage:readiness"
+    "test:container": "node scripts/smoke-container.mjs --run repo-salvage:readiness",
+    "test:analysis": "vitest run tests/source-index.test.ts tests/source-benchmark.test.ts tests/indexed-snapshot.test.ts tests/indexed-analysis.test.ts tests/indexed-flow.test.tsx"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",
@@ -25,7 +26,8 @@
     "next": "^15.0.0",
     "next-auth": "5.0.0-beta.32",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.11",
@@ -34,7 +36,6 @@
     "@types/react-dom": "^19.0.0",
     "ajv": "8.20.0",
     "prettier": "3.9.9",
-    "typescript": "^5.6.0",
     "vitest": "^5.0.3"
   },
   "overrides": {

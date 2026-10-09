@@ -3,6 +3,12 @@ import path from "node:path";
 import fs from "node:fs";
 import { randomUUID } from "node:crypto";
 import { componentId } from "./components";
+import type {
+  SourceTarget,
+  SourceReference,
+  indexRecord,
+} from "./source-index";
+import { createHash } from "node:crypto";
 
 export type ReusablePiece = {
   name: string;
@@ -16,6 +22,11 @@ export type ReusablePiece = {
   limitations?: string[];
   source_sampled?: boolean;
   owner_reviewed_at?: string;
+  target_id?: string;
+  source_target?: Omit<SourceTarget, "reference_id"> & {
+    reference: Omit<SourceReference, "content">;
+  };
+  explanation_refs?: string[];
 };
 
 export type Summary = {
@@ -23,6 +34,11 @@ export type Summary = {
   frameworks: string[];
   reusable_pieces: ReusablePiece[];
   overview: string;
+  analysis?: {
+    format: "repo-salvage/analysis-v2";
+    outcome: "candidates" | "no_candidates";
+    index: ReturnType<typeof indexRecord>;
+  };
   // Server-observed sampling metadata. Never accepted from generated JSON.
   source_files?: {
     path: string;
@@ -116,6 +132,11 @@ function open() {
   db.exec(
     "CREATE INDEX IF NOT EXISTS idx_reports_queue ON reports(resolved_at, at DESC, id DESC)",
   );
+  db.exec(`CREATE TABLE IF NOT EXISTS analysis_revisions (
+    revision_id TEXT PRIMARY KEY, listing_id INTEGER NOT NULL, owner_id INTEGER NOT NULL, source_sha TEXT,
+    analyzed_at TEXT, summary_model TEXT, summary_json TEXT NOT NULL,
+    recorded_at TEXT NOT NULL DEFAULT (datetime('now'))
+  ); CREATE INDEX IF NOT EXISTS idx_analysis_revisions_listing ON analysis_revisions(listing_id, recorded_at);`);
   return db;
 }
 
@@ -129,10 +150,15 @@ const hydrate = (r: Row): Listing => {
 export function upsertListing(
   l: Omit<Listing, "id" | "used_count" | "created_at">,
 ) {
-  const { summary, ...cols } = l;
-  db()
-    .prepare(
-      `INSERT INTO listings (github_repo_id, owner_login, owner_id, name, full_name, url, description, language,
+  db().transaction(() => {
+    const existing = db()
+      .prepare("SELECT * FROM listings WHERE github_repo_id = ?")
+      .get(l.github_repo_id) as Row | undefined;
+    if (existing) archiveAnalysis(existing);
+    const { summary, ...cols } = l;
+    db()
+      .prepare(
+        `INSERT INTO listings (github_repo_id, owner_login, owner_id, name, full_name, url, description, language,
         stars, forks, license, last_human_commit, owner_note, summary_json, source_sha, analyzed_at, summary_model)
        VALUES (@github_repo_id, @owner_login, @owner_id, @name, @full_name, @url, @description, @language,
         @stars, @forks, @license, @last_human_commit, @owner_note, @summary_json, @source_sha, @analyzed_at, @summary_model)
@@ -141,8 +167,52 @@ export function upsertListing(
         description=excluded.description, language=excluded.language, stars=excluded.stars, forks=excluded.forks,
         license=excluded.license, last_human_commit=excluded.last_human_commit, owner_note=excluded.owner_note,
         summary_json=excluded.summary_json, source_sha=excluded.source_sha, analyzed_at=excluded.analyzed_at, summary_model=excluded.summary_model`,
+      )
+      .run({ ...cols, summary_json: JSON.stringify(summary) });
+    archiveAnalysis(
+      db()
+        .prepare("SELECT * FROM listings WHERE github_repo_id = ?")
+        .get(l.github_repo_id) as Row,
+    );
+  })();
+}
+
+function archiveAnalysis(row: Row) {
+  const revision = createHash("sha256")
+    .update(
+      JSON.stringify([
+        row.id,
+        row.owner_id,
+        row.source_sha,
+        row.analyzed_at,
+        row.summary_model,
+        row.summary_json,
+      ]),
     )
-    .run({ ...cols, summary_json: JSON.stringify(summary) });
+    .digest("hex");
+  db()
+    .prepare(
+      "INSERT OR IGNORE INTO analysis_revisions (revision_id, listing_id, owner_id, source_sha, analyzed_at, summary_model, summary_json) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    )
+    .run(
+      revision,
+      row.id,
+      row.owner_id,
+      row.source_sha,
+      row.analyzed_at,
+      row.summary_model,
+      row.summary_json,
+    );
+}
+
+/** Private owner history; snapshots are append-only until explicit owner removal. */
+export function analysisHistory(id: number, ownerId: number) {
+  if (getListing(id)?.owner_id !== ownerId) return [];
+  return db()
+    .prepare(
+      "SELECT revision_id, source_sha, analyzed_at, summary_model, summary_json, recorded_at FROM (SELECT *, rowid AS sequence FROM analysis_revisions WHERE listing_id = ? AND owner_id = ? ORDER BY rowid DESC LIMIT 50) ORDER BY sequence DESC",
+    )
+    .all(id, ownerId);
 }
 
 export function getListing(id: number): Listing | null {
@@ -178,6 +248,7 @@ export function deleteListing(id: number, ownerId: number) {
         .run(listing.github_repo_id, ownerId);
     }
     db().prepare("DELETE FROM reports WHERE listing_id = ?").run(id);
+    db().prepare("DELETE FROM analysis_revisions WHERE listing_id = ?").run(id);
     db()
       .prepare("DELETE FROM listings WHERE id = ? AND owner_id = ?")
       .run(id, ownerId);
@@ -206,6 +277,9 @@ export function reviewComponent(
       return componentId(p) === partId;
     });
     if (!piece) return false;
+    archiveAnalysis(
+      db().prepare("SELECT * FROM listings WHERE id = ?").get(id) as Row,
+    );
     if (reviewed) piece.owner_reviewed_at = new Date().toISOString();
     else delete piece.owner_reviewed_at;
     db()
@@ -213,6 +287,9 @@ export function reviewComponent(
         "UPDATE listings SET summary_json = ? WHERE id = ? AND owner_id = ?",
       )
       .run(JSON.stringify(listing.summary), id, ownerId);
+    archiveAnalysis(
+      db().prepare("SELECT * FROM listings WHERE id = ?").get(id) as Row,
+    );
     return true;
   })();
 }

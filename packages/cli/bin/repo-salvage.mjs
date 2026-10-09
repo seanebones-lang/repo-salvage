@@ -4,7 +4,8 @@ import { fetchPart, inspect, search, baseUrl, drafts } from "../lib/client.mjs";
 const HELP = `Repo Salvage — agent client (Node.js 22+)
 
 repo-salvage search --base ORIGIN [--q TEXT] [--language NAME] [--license SPDX]
-                    [--category NAME] [--sort relevance|latest|name|reviewed] [--page N] [--limit N] [--revision HASH]
+                    [--category NAME] [--declaration complete] [--imports resolved]
+                    [--sort relevance|latest|name|reviewed] [--page N] [--limit N] [--revision HASH]
 repo-salvage inspect LISTING_ID PART_ID --base ORIGIN
 repo-salvage fetch LISTING_ID PART_ID --base ORIGIN --out NEW_DIRECTORY
                    [--include-related] [--include-tests]
@@ -17,6 +18,7 @@ Credentials are never command-line arguments. Draft creation makes no paid calls
 All output is JSON.
 Fetch downloads primary source and discovered notices; optional files require explicit flags.
 It never executes code or installs dependencies. Existing destinations are rejected.
+Use --api-version 2 on search, inspect or fetch for indexed evidence. Evidence search filters select version 2 automatically.
 Use the returned pagination.next or revision to detect a changing catalog.
 `;
 
@@ -39,6 +41,8 @@ try {
             "language",
             "license",
             "category",
+            "declaration",
+            "imports",
             "sort",
             "page",
             "limit",
@@ -50,6 +54,8 @@ try {
             ? ["base", "out", "include-related", "include-tests"]
             : ["base"],
     );
+    if (["search", "inspect", "fetch"].includes(command))
+      allowed.add("api-version");
     const options = {};
     while (args.length) {
       const key = args.shift();
@@ -69,10 +75,16 @@ try {
       }
     }
     const base = baseUrl(options.base ?? process.env.REPO_SALVAGE_URL ?? "");
+    const version = Number(
+      options["api-version"] ??
+        (options.declaration || options.imports ? 2 : 1),
+    );
+    if (![1, 2].includes(version))
+      throw new Error("--api-version must be 1 or 2.");
     let result;
     if (command === "search") {
-      const { base: _base, ...params } = options;
-      result = await search(base, params);
+      const { base: _base, "api-version": _version, ...params } = options;
+      result = await search(base, params, fetch, version);
     } else if (["prepare", "drafts"].includes(command)) {
       result = await drafts(base, {
         token: process.env.REPO_SALVAGE_TOKEN,
@@ -88,7 +100,13 @@ try {
           : {}),
       });
     } else if (command === "inspect")
-      result = await inspect(base, ...positional);
+      result = await inspect(
+        base,
+        positional[0],
+        positional[1],
+        fetch,
+        version,
+      );
     else
       result = await fetchPart({
         base,
@@ -97,6 +115,7 @@ try {
         out: options.out,
         includeRelated: !!options["include-related"],
         includeTests: !!options["include-tests"],
+        version,
       });
     process.stdout.write(JSON.stringify(result, null, 2) + "\n");
   }

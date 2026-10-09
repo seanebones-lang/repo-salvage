@@ -1,6 +1,6 @@
 # Repo Salvage MCP adapter
 
-Node.js 22+ local stdio server, `@repo-salvage/mcp@0.1.0`. Install the archive
+Node.js 22+ local stdio server, `@repo-salvage/mcp@0.2.0`. Install the archive
 linked from the application's `/agents` guide in a separate workspace:
 
 ```sh
@@ -39,7 +39,8 @@ reserved for MCP messages; help and startup failures use stderr without secrets.
 ## Public tools
 
 - `repo_salvage_search_parts`: AND lexical search with language, root license,
-  category and sort filters, page, limit and revision. Default limit 10; maximum 50. Use the returned next page number and revision with the same filters. A
+  category and sort filters, optional `declaration: complete` and `imports: resolved`,
+  page, limit and revision. Default limit 10; maximum 50. Use the returned next page number and revision with the same filters. A
   changed catalog returns a machine error; restart at page 1 without revision.
 - `repo_salvage_inspect_part`: full brief and pinned file/notice manifest,
   coverage, dependency and licensing boundaries.
@@ -48,6 +49,12 @@ reserved for MCP messages; help and startup failures use stderr without secrets.
   binary files require the CLI. Text windows default to 8000 and cap at 12000
   UTF-16 code units. Use `next_offset` to continue. Surrogate pairs are preserved.
   Each window verifies the complete file again; no server-side cursor or cache.
+
+Search and inspection use API version 2 and retain source-target IDs, complete
+declaration locators, explanation references and static module-import gaps when
+available. These facts describe inspected source; they do not establish consumer
+execution or a complete dependency graph. Existing version 1 adapters remain
+compatible with the service's version 1 responses.
 
 All public tools send no credential, execute no source, write no local files and
 invoke no paid analysis. Reading source does not retain notices on disk; read

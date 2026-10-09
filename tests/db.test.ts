@@ -47,6 +47,92 @@ beforeAll(async () => {
 });
 
 describe("listings", () => {
+  it("retains immutable analysis and review snapshots privately and removes history with its listing", () => {
+    m.upsertListing(base({ github_repo_id: 777 }));
+    const listing = m.allListings().find((l) => l.github_repo_id === 777)!;
+    const first = m.analysisHistory(listing.id, 42);
+    expect(first).toHaveLength(1);
+    expect(m.analysisHistory(listing.id, 999)).toEqual([]);
+    m.reviewComponent(
+      listing.id,
+      42,
+      componentId(listing.summary.reusable_pieces[0]),
+      listing.source_sha!,
+      listing.analyzed_at!,
+      true,
+    );
+    m.upsertListing(
+      base({
+        github_repo_id: 777,
+        analyzed_at: "2026-10-09",
+        summary: {
+          overview: "Nothing suitable",
+          languages: [],
+          frameworks: [],
+          reusable_pieces: [],
+        },
+      }),
+    );
+    expect(m.analysisHistory(listing.id, 42)).toHaveLength(3);
+    expect(m.analysisHistory(listing.id, 42)).toContainEqual(first[0]);
+    m.deleteListing(listing.id, 42);
+    expect(
+      m
+        .db()
+        .prepare(
+          "SELECT count(*) n FROM analysis_revisions WHERE listing_id = ?",
+        )
+        .get(listing.id),
+    ).toEqual({ n: 0 });
+  });
+  it("does not expose an earlier owner's snapshots after a repository transfer", () => {
+    m.upsertListing(base({ github_repo_id: 778 }));
+    const listing = m.allListings().find((l) => l.github_repo_id === 778)!;
+    m.upsertListing(
+      base({
+        github_repo_id: 778,
+        owner_id: 99,
+        owner_login: "new-owner",
+        owner_note: "New owner context",
+      }),
+    );
+    expect(m.analysisHistory(listing.id, 42)).toEqual([]);
+    expect(m.analysisHistory(listing.id, 99)).toHaveLength(1);
+    expect(
+      m
+        .db()
+        .prepare(
+          "SELECT count(*) n FROM analysis_revisions WHERE listing_id = ?",
+        )
+        .get(listing.id),
+    ).toEqual({ n: 2 });
+    m.deleteListing(listing.id, 99);
+  });
+  it("preserves a legacy unarchived analysis before changing its owner review", () => {
+    m.upsertListing(base({ github_repo_id: 779 }));
+    const listing = m.allListings().find((l) => l.github_repo_id === 779)!;
+    m.db()
+      .prepare("DELETE FROM analysis_revisions WHERE listing_id = ?")
+      .run(listing.id);
+    m.reviewComponent(
+      listing.id,
+      42,
+      componentId(listing.summary.reusable_pieces[0]),
+      listing.source_sha!,
+      listing.analyzed_at!,
+      true,
+    );
+    const snapshots = m.analysisHistory(listing.id, 42) as {
+      summary_json: string;
+    }[];
+    expect(snapshots).toHaveLength(2);
+    expect(JSON.parse(snapshots[1].summary_json)).toEqual(listing.summary);
+    expect(
+      JSON.parse(snapshots[0].summary_json).reusable_pieces[0]
+        .owner_reviewed_at,
+    ).toBeTruthy();
+    m.deleteListing(listing.id, 42);
+  });
   it("upserts by github repo id instead of duplicating", () => {
     m.upsertListing(base());
     m.upsertListing(base({ stars: 99 }));

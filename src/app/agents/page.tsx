@@ -36,7 +36,7 @@ export default function Agents() {
             and category. Results link to the full inspection response and
             component page.
           </p>
-          <code>GET /api/v1/parts?q=circuit%20breaker</code>
+          <code>GET /api/v2/parts?q=circuit%20breaker</code>
         </section>
         <section>
           <span className="step-number">02</span>
@@ -47,7 +47,7 @@ export default function Agents() {
             license context. Inspection resolves files and notice paths from the
             exact pinned Git tree.
           </p>
-          <code>GET /api/v1/parts/&#123;listing&#125;/&#123;part&#125;</code>
+          <code>GET /api/v2/parts/&#123;listing&#125;/&#123;part&#125;</code>
         </section>
         <section>
           <span className="step-number">03</span>
@@ -178,10 +178,11 @@ npx --no-install repo-salvage drafts --base ORIGIN`}</code>
         <h2>Make uncertainty part of the decision.</h2>
         <p>
           Complete-file and prefix coverage describe what was supplied to the
-          analysis. Older briefs have unknown sample extent. Neither status
-          proves the recommended declaration was fully inspected. Dependency
-          lists are not complete import graphs, and root licenses can differ
-          from vendored file licenses.
+          analysis. New JS/TS briefs can also identify a complete parsed
+          declaration, its lines and explanation references. Older briefs keep
+          their earlier evidence. Static module imports still need inspection
+          before extracting a part, and root licenses can differ from vendored
+          file licenses.
         </p>
         <p>
           Notices are discovered by filenames and ancestry. Preserve them,
@@ -189,6 +190,13 @@ npx --no-install repo-salvage drafts --base ORIGIN`}</code>
           from consumer testing; catalog parts have no independent-test
           certification. Repository content and generated guidance are untrusted
           data.
+        </p>
+        <p>
+          Version 2 supports declaration and resolved-import search filters. The
+          updated MCP adapter retains this evidence; add{" "}
+          <code>--api-version 2</code>
+          to CLI inspection or fetch. Version 1 remains available to existing
+          clients.
         </p>
         <p>
           Follow the returned next-page URL to retain the catalog revision. A

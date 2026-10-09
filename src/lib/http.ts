@@ -59,5 +59,5 @@ export async function sourcePrefix(response: Response, maxBytes = 24_000) {
     bytes.set(chunk, offset);
     offset += chunk.byteLength;
   }
-  return { text: new TextDecoder().decode(bytes), truncated };
+  return { text: new TextDecoder().decode(bytes), bytes, truncated };
 }

@@ -1,5 +1,18 @@
 import { cache } from "react";
+import { createHash } from "node:crypto";
 import { sourcePrefix } from "./http";
+import {
+  INDEX_LIMITS,
+  indexSources,
+  evidencePacket,
+  isCodePath,
+  isTestPath,
+  isManifestPath,
+  isNoticePath,
+  safeSourcePath,
+  type SourceIndex,
+  type EvidencePacket,
+} from "./source-index";
 const API = "https://api.github.com";
 
 /** App credentials authenticate public API requests without granting a user's private-repo access. */
@@ -250,9 +263,134 @@ export type RepoSnapshot = {
   knownPaths: string[];
   sourceSha: string;
   files: { path: string; content: string; truncated?: boolean }[];
+  index?: SourceIndex;
+  packet?: EvidencePacket;
 };
 
-/** Tree listing plus a bounded sample of manifests, README and source files. */
+/** Current analyzer: bounded complete source, deterministic indexing and explicit exclusions. */
+export async function indexedSnapshotRepo(
+  _token: string,
+  repo: GhRepo,
+  sourceSha: string,
+): Promise<RepoSnapshot> {
+  const tree = await pinnedSourceTree(repo.full_name, sourceSha);
+  if (tree.length > 10_000)
+    throw new Error("Repository exceeds the 10,000-entry indexing limit.");
+  const knownPaths = tree.filter((f) => f.type === "blob").map((f) => f.path);
+  const skipped: SourceIndex["skipped"] = [];
+  const eligible = tree.filter((file) => {
+    if (file.type !== "blob") return false;
+    const reason =
+      !safeSourcePath(file.path) || !["100644", "100755"].includes(file.mode)
+        ? "unsupported_path_or_mode"
+        : SKIP_DIR.test(file.path) || SKIP_FILE.test(file.path)
+          ? "excluded_generated_vendor_or_asset"
+          : !(
+                isCodePath(file.path) ||
+                isManifestPath(file.path) ||
+                isNoticePath(file.path) ||
+                /(^|\/)readme(?:\.md)?$/i.test(file.path)
+              )
+            ? "unsupported_file_type"
+            : (file.size ?? 0) > INDEX_LIMITS.fileBytes
+              ? "file_byte_limit"
+              : null;
+    if (reason) {
+      skipped.push({ path: file.path, reason });
+      return false;
+    }
+    return true;
+  });
+  const priority = (file: SourceFile) =>
+    isManifestPath(file.path) ||
+    isNoticePath(file.path) ||
+    /(^|\/)readme/i.test(file.path)
+      ? 0
+      : isTestPath(file.path)
+        ? 2
+        : 1;
+  // Round-robin directories at each priority prevents one large folder from
+  // exhausting the entire inventory allowance. Tiny utilities remain eligible.
+  const ordered: SourceFile[] = [];
+  for (const rank of [0, 1, 2]) {
+    const groups = new Map<string, SourceFile[]>();
+    for (const file of eligible
+      .filter((f) => priority(f) === rank)
+      .sort((a, b) => a.path.localeCompare(b.path))) {
+      const directory = file.path.split("/").slice(0, -1).join("/");
+      const group = groups.get(directory) ?? [];
+      group.push(file);
+      groups.set(directory, group);
+    }
+    while ([...groups.values()].some((g) => g.length))
+      for (const group of groups.values())
+        if (group.length) ordered.push(group.shift()!);
+  }
+  const files: RepoSnapshot["files"] = [];
+  let bytes = 0;
+  for (const file of ordered) {
+    if (
+      files.length >= INDEX_LIMITS.files ||
+      bytes >= INDEX_LIMITS.totalBytes
+    ) {
+      skipped.push({
+        path: file.path,
+        reason:
+          files.length >= INDEX_LIMITS.files
+            ? "file_count_limit"
+            : "repository_byte_limit",
+      });
+      continue;
+    }
+    const limit = Math.min(
+      INDEX_LIMITS.fileBytes,
+      INDEX_LIMITS.totalBytes - bytes,
+    );
+    const response = await fetch(
+      `https://raw.githubusercontent.com/${repo.full_name}/${sourceSha}/${file.path.split("/").map(encodeURIComponent).join("/")}`,
+      { cache: "no-store", signal: AbortSignal.timeout(10_000) },
+    );
+    if (!response.ok)
+      throw new Error(`Could not read indexed file: ${file.path}`);
+    const read = await sourcePrefix(response, limit + 1);
+    const body = Buffer.from(read.bytes);
+    const truncated = read.truncated || body.length > limit;
+    if (
+      !truncated &&
+      (!/^[a-f0-9]{40}$/.test(file.sha) ||
+        createHash("sha1")
+          .update(Buffer.concat([Buffer.from(`blob ${body.length}\0`), body]))
+          .digest("hex") !== file.sha)
+    )
+      throw new Error(
+        `Indexed source does not match its pinned Git blob: ${file.path}`,
+      );
+    let content: string;
+    try {
+      content = new TextDecoder("utf-8", {
+        fatal: !truncated,
+        ignoreBOM: true,
+      }).decode(body.subarray(0, limit));
+    } catch {
+      skipped.push({ path: file.path, reason: "unsupported_encoding" });
+      bytes += Math.min(body.length, limit);
+      continue;
+    }
+    bytes += Math.min(body.length, limit);
+    files.push({ path: file.path, content, truncated });
+  }
+  const index = indexSources(files, knownPaths, skipped);
+  return {
+    sourceSha,
+    knownPaths,
+    tree: knownPaths.slice(0, 300),
+    files,
+    index,
+    packet: evidencePacket(index),
+  };
+}
+
+/** Legacy baseline retained for offline comparisons; publication uses indexedSnapshotRepo. */
 export async function snapshotRepo(
   token: string,
   repo: GhRepo,

@@ -3,7 +3,7 @@ const m = vi.hoisted(() => ({
   getSession: vi.fn(),
   getOwnedPublicRepo: vi.fn(),
   resolveSourceCommit: vi.fn(),
-  snapshotRepo: vi.fn(),
+  indexedSnapshotRepo: vi.fn(),
   lastHumanCommit: vi.fn(),
   isPublicRepoFresh: vi.fn(),
   summarizeRepo: vi.fn(),
@@ -44,7 +44,7 @@ beforeEach(() => {
   });
   m.getOwnedPublicRepo.mockResolvedValue(repo);
   m.resolveSourceCommit.mockResolvedValue(sha);
-  m.snapshotRepo.mockResolvedValue(snap);
+  m.indexedSnapshotRepo.mockResolvedValue(snap);
   m.lastHumanCommit.mockResolvedValue(null);
   m.isPublicRepoFresh.mockResolvedValue(true);
   m.analysisIsActive.mockReturnValue(true);
@@ -64,7 +64,7 @@ describe("publication orchestration", () => {
   it("uses one resolved commit for sampling, history and saved provenance", async () => {
     expect(await salvage(null, form())).toHaveProperty("ok");
     expect(m.resolveSourceCommit).toHaveBeenCalledTimes(1);
-    expect(m.snapshotRepo).toHaveBeenCalledWith("token", repo, sha);
+    expect(m.indexedSnapshotRepo).toHaveBeenCalledWith("token", repo, sha);
     expect(m.lastHumanCommit).toHaveBeenCalledWith("token", repo, sha);
     expect(m.summarizeRepo).toHaveBeenCalledWith(repo, snap, null);
     expect(m.finishAnalysis).toHaveBeenCalledWith(
@@ -78,7 +78,7 @@ describe("publication orchestration", () => {
     );
   });
   it("does not invoke the model when the public sample fails", async () => {
-    m.snapshotRepo.mockRejectedValue(new Error("Unreadable sample"));
+    m.indexedSnapshotRepo.mockRejectedValue(new Error("Unreadable sample"));
     expect(await salvage(null, form())).toEqual({ error: "Unreadable sample" });
     expect(m.summarizeRepo).not.toHaveBeenCalled();
     expect(m.finishAnalysis).not.toHaveBeenCalled();
@@ -184,7 +184,7 @@ describe("analysis lifecycle", () => {
       throw new Error("Already running");
     });
     expect(await salvage(null, form())).toEqual({ error: "Already running" });
-    expect(m.snapshotRepo).not.toHaveBeenCalled();
+    expect(m.indexedSnapshotRepo).not.toHaveBeenCalled();
     expect(m.summarizeRepo).not.toHaveBeenCalled();
     expect(m.releaseAnalysis).not.toHaveBeenCalled();
   });
