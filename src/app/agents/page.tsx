@@ -254,12 +254,22 @@ npx --no-install repo-salvage drafts --base ORIGIN`}</code>
           acceptance checks. Their results apply to these adaptations; they do
           not certify catalog parts or the upstream projects.
         </p>
-        <a className="text-link" href="/rust-edit-distance.tar.gz" download>
-          Download Rust Unicode edit distance <Icon name="arrow" />
-        </a>
-        <a className="text-link" href="/go-rendezvous-consumer.tar.gz" download>
-          Download Go rendezvous selector <Icon name="arrow" />
-        </a>
+        <ul className="plain-list">
+          <li>
+            <a className="text-link" href="/rust-edit-distance.tar.gz" download>
+              Download Rust Unicode edit distance <Icon name="arrow" />
+            </a>
+          </li>
+          <li>
+            <a
+              className="text-link"
+              href="/go-rendezvous-consumer.tar.gz"
+              download
+            >
+              Download Go rendezvous selector <Icon name="arrow" />
+            </a>
+          </li>
+        </ul>
       </section>
     </>
   );
