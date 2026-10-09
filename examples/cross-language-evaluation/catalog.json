@@ -1,0 +1,307 @@
+{
+  "format": "repo-salvage/search-v2",
+  "catalog_revision": "5f6312e0e6797b57663115e6de355f07dcf758f7d3edb0f65b061572b471d1b0",
+  "query": {
+    "q": "",
+    "language": "",
+    "license": "",
+    "category": "",
+    "sort": "latest",
+    "declaration": "",
+    "imports": ""
+  },
+  "pagination": {
+    "page": 1,
+    "limit": 50,
+    "total": 10,
+    "next": null
+  },
+  "facets": {
+    "languages": [
+      "Go",
+      "JavaScript",
+      "Rust",
+      "TypeScript"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "categories": [
+      "Data processing",
+      "Developer tools",
+      "UI & interaction"
+    ]
+  },
+  "results": [
+    {
+      "listing_id": 2001,
+      "part_id": "0e492f028167418d",
+      "name": "String-only conditional class-name joining",
+      "description": "Joins nonempty primitive string arguments with spaces and ignores every non-string argument. This provides a distinct input policy from the mixed-input implementation.",
+      "category": "UI & interaction",
+      "repository": "lukeed/clsx",
+      "source_commit": "925494cf31bcd97d3337aacd34e659e80cae7fe2",
+      "primary_path": "src/lite.js",
+      "languages": [
+        "JavaScript"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "complete",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/2001/0e492f028167418d",
+        "page": "/listing/2001/parts/0e492f028167418d"
+      }
+    },
+    {
+      "listing_id": 2001,
+      "part_id": "3f74d651e5e71b2c",
+      "name": "Mixed-input class-name construction",
+      "description": "Joins truthy strings and numbers, recursively processes arrays, and includes object keys whose values are truthy. Empty conversions contribute no separator.",
+      "category": "UI & interaction",
+      "repository": "lukeed/clsx",
+      "source_commit": "925494cf31bcd97d3337aacd34e659e80cae7fe2",
+      "primary_path": "src/index.js",
+      "languages": [
+        "JavaScript"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "complete",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/2001/3f74d651e5e71b2c",
+        "page": "/listing/2001/parts/3f74d651e5e71b2c"
+      }
+    },
+    {
+      "listing_id": 2002,
+      "part_id": "0bd8081aee7919e0",
+      "name": "stringify: tokens to route syntax",
+      "description": "Serializes token data into route syntax, escaping text and quoting parameter names when required. Handles nested groups and checks following text to avoid absorbing identifier characters into names.",
+      "category": "Data processing",
+      "repository": "pillarjs/path-to-regexp",
+      "source_commit": "7dd6f8f7bd63ae8bffca0968144508228dc61729",
+      "primary_path": "src/index.ts",
+      "languages": [
+        "TypeScript"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "complete",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/2002/0bd8081aee7919e0",
+        "page": "/listing/2002/parts/0bd8081aee7919e0"
+      }
+    },
+    {
+      "listing_id": 2002,
+      "part_id": "1c08a0241fa129e8",
+      "name": "pathToRegexp: regex construction with capture keys",
+      "description": "Produces a RegExp and ordered capture keys from path strings, token data or alternatives. Provides delimiter, case sensitivity, trailing delimiter and end-boundary policies, with a 256-combination limit.",
+      "category": "Data processing",
+      "repository": "pillarjs/path-to-regexp",
+      "source_commit": "7dd6f8f7bd63ae8bffca0968144508228dc61729",
+      "primary_path": "src/index.ts",
+      "languages": [
+        "TypeScript"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "complete",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/2002/1c08a0241fa129e8",
+        "page": "/listing/2002/parts/1c08a0241fa129e8"
+      }
+    },
+    {
+      "listing_id": 2002,
+      "part_id": "8a2ecb76613f9986",
+      "name": "match: path matching and capture decoding",
+      "description": "Constructs a matcher returning false or a matched path plus named captures. Decodes parameters and splits decoded wildcard captures into segment arrays, with an option to disable decoding.",
+      "category": "Data processing",
+      "repository": "pillarjs/path-to-regexp",
+      "source_commit": "7dd6f8f7bd63ae8bffca0968144508228dc61729",
+      "primary_path": "src/index.ts",
+      "languages": [
+        "TypeScript"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "complete",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/2002/8a2ecb76613f9986",
+        "page": "/listing/2002/parts/8a2ecb76613f9986"
+      }
+    },
+    {
+      "listing_id": 2002,
+      "part_id": "a9addf65fddcaffd",
+      "name": "parse: route syntax to tokens",
+      "description": "Parses text, named parameters, wildcards and nested brace groups into TokenData. Supports escaped characters and quoted names, with indexed errors for several malformed constructs.",
+      "category": "Data processing",
+      "repository": "pillarjs/path-to-regexp",
+      "source_commit": "7dd6f8f7bd63ae8bffca0968144508228dc61729",
+      "primary_path": "src/index.ts",
+      "languages": [
+        "TypeScript"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "complete",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/2002/a9addf65fddcaffd",
+        "page": "/listing/2002/parts/a9addf65fddcaffd"
+      }
+    },
+    {
+      "listing_id": 2002,
+      "part_id": "d527788a30581234",
+      "name": "compile: parameterized path generation",
+      "description": "Builds a function that generates paths from strings or token data. Handles optional groups, encoded parameters and wildcard segment arrays, with missing-value and value-type checks.",
+      "category": "Data processing",
+      "repository": "pillarjs/path-to-regexp",
+      "source_commit": "7dd6f8f7bd63ae8bffca0968144508228dc61729",
+      "primary_path": "src/index.ts",
+      "languages": [
+        "TypeScript"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "complete",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/2002/d527788a30581234",
+        "page": "/listing/2002/parts/d527788a30581234"
+      }
+    },
+    {
+      "listing_id": 2003,
+      "part_id": "2024691f5db0279f",
+      "name": "Similarity metric benchmark harness",
+      "description": "Ten benchmark functions exercise string similarity entry points and generic Levenshtein on byte vectors. The supplied harness can serve as a starting point for timing the evidenced algorithms.",
+      "category": "Developer tools",
+      "repository": "rapidfuzz/strsim-rs",
+      "source_commit": "dacc84c0dc61eff0ee0ff66962bcf2e17018ad26",
+      "primary_path": "benches/benches.rs",
+      "languages": [
+        "Rust"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/2003/2024691f5db0279f",
+        "page": "/listing/2003/parts/2024691f5db0279f"
+      }
+    },
+    {
+      "listing_id": 2003,
+      "part_id": "a53b756e3aac9108",
+      "name": "String and sequence similarity implementations",
+      "description": "Public entry points implement Hamming, Jaro/Jaro-Winkler, Levenshtein, OSA, unrestricted Damerau-Levenshtein and Sørensen-Dice. Generic sequence variants and normalized string scores provide distinct comparison policies within one supplied module.",
+      "category": "Data processing",
+      "repository": "rapidfuzz/strsim-rs",
+      "source_commit": "dacc84c0dc61eff0ee0ff66962bcf2e17018ad26",
+      "primary_path": "src/lib.rs",
+      "languages": [
+        "Rust"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/2003/a53b756e3aac9108",
+        "page": "/listing/2003/parts/a53b756e3aac9108"
+      }
+    },
+    {
+      "listing_id": 2004,
+      "part_id": "bcc3ff29bff5adfd",
+      "name": "Rendezvous hashing construction and lookup",
+      "description": "New precomputes node hashes; Lookup combines a key hash with each node hash using xorshiftMult64 and selects the highest score. Empty membership returns an empty string, and tied scores retain the first node.",
+      "category": "Data processing",
+      "repository": "dgryski/go-rendezvous",
+      "source_commit": "9f7001d12a5f0021fd3283525f888b5814ccee27",
+      "primary_path": "rdv.go",
+      "languages": [
+        "Go"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "not_verified",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/2004/bcc3ff29bff5adfd",
+        "page": "/listing/2004/parts/bcc3ff29bff5adfd"
+      }
+    }
+  ]
+}

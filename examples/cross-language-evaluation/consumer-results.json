@@ -1,0 +1,28 @@
+{
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "promptSha256": "be2eb99a3c1097b29eb8e5dc4d66ddcfaea975182e8d36eecfbdf28909caab67",
+  "trace": {
+    "sha256": "13e3997538ddef08fe824dbf927988713e5c56c1686af847789102c05c6435d1"
+  },
+  "latencyMs": 19939,
+  "billing": "Existing Codex account allowance; no API-key model call",
+  "inputSealSha256": "ea95a9be5db615853c06f6629af39d23958ae265a46515db751e4cee6d1515a0",
+  "transportSuccess": true,
+  "failure": null,
+  "prohibitedEvents": [],
+  "usage": {
+    "input_tokens": 12375,
+    "cached_input_tokens": 0,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 729,
+    "reasoning_output_tokens": 51
+  },
+  "response": {
+    "code": "/*\nAdapted from lukeed/clsx, src/index.js\nRepository: https://github.com/lukeed/clsx\nPinned commit: 925494cf31bcd97d3337aacd34e659e80cae7fe2\nIntentional change: object handling uses enumerable own string-keyed properties only.\n\nMIT License\n\nCopyright (c) Luke Edwards <luke.edwards05@gmail.com> (lukeed.com)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n*/\n\nfunction toValue(value) {\n  if (!value) return '';\n\n  if (typeof value === 'string' || typeof value === 'number') {\n    return '' + value;\n  }\n\n  let result = '';\n\n  if (Array.isArray(value)) {\n    const length = value.length;\n    for (let i = 0; i < length; i++) {\n      const token = toValue(value[i]);\n      if (token) {\n        if (result) result += ' ';\n        result += token;\n      }\n    }\n  } else if (typeof value === 'object') {\n    for (const key of Object.keys(value)) {\n      if (value[key]) {\n        if (result) result += ' ';\n        result += key;\n      }\n    }\n  }\n\n  return result;\n}\n\nexport function classes(...values) {\n  let result = '';\n  for (const value of values) {\n    const token = toValue(value);\n    if (token) {\n      if (result) result += ' ';\n      result += token;\n    }\n  }\n  return result;\n}\n",
+    "finding": "Intentionally replaces inherited enumerable object-key handling with Object.keys(), restricting it to enumerable own string keys; symbol keys are ignored. Preserves order and duplicates, ignores falsey values and unsupported types, and adds no escaping, token validation, or deduplication. Callers must escape at the output boundary. Inputs must be acyclic; recursion depth and getters are not hardened. This proposal has not been executed or tested; acceptance is separate."
+  },
+  "manualReview": "pending",
+  "execution": "not_run"
+}

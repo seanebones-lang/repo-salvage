@@ -1,0 +1,112 @@
+{
+  "scope": "Six authored task-driven diagnostics over four public MIT repositories fresh to this project. Production captured indexed requests, four native analyses, disposable production catalog and installed MCP. One implementing reviewer; no general recall, training holdout, independence or upstream execution claim.",
+  "sources": [
+    {
+      "key": "lukeed/clsx:src/index.js",
+      "repository": "lukeed/clsx",
+      "commit": "925494cf31bcd97d3337aacd34e659e80cae7fe2",
+      "path": "src/index.js",
+      "sha256": "a577c500f65ed167cea489dd39c149c36880f959fc6ca24e4e1cc545cb7a53e1",
+      "blobSha": "c1f53ca795dd8c91c50622476143c4e232ece247",
+      "notice": {
+        "path": "license",
+        "sha256": "9a9edad7baae52622bddf3c15b2ef8a33d2c89f2d25408ad13e8a7481c6b0c97",
+        "blobSha": "fa6089faba3cf381229744c9f21ed3ae9ed5014a"
+      }
+    },
+    {
+      "key": "pillarjs/path-to-regexp:src/index.ts",
+      "repository": "pillarjs/path-to-regexp",
+      "commit": "7dd6f8f7bd63ae8bffca0968144508228dc61729",
+      "path": "src/index.ts",
+      "sha256": "baac1901f5391df6e256d91d8307e9890d6cbcfd3f0cb480d20fe03f86c16479",
+      "blobSha": "3ba8cc7d214512775ce417407861c0b08cfb1ae2",
+      "notice": {
+        "path": "LICENSE",
+        "sha256": "4eeb3271453a891df609e5a9f4ee79a68307f730c13417a3bfeffa604ac8cf25",
+        "blobSha": "983fbe8aec3f4e2d4add592bb1083b00d7366f66"
+      }
+    },
+    {
+      "key": "rapidfuzz/strsim-rs:src/lib.rs",
+      "repository": "rapidfuzz/strsim-rs",
+      "commit": "dacc84c0dc61eff0ee0ff66962bcf2e17018ad26",
+      "path": "src/lib.rs",
+      "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+      "blobSha": "309c06550922b88e717a6f1cb37f68c1705d9d3c",
+      "notice": {
+        "path": "LICENSE",
+        "sha256": "1e697ce8d21401fbf1bddd9b5c3fd4c4c79ae1e3bdf51f81761c85e11d5a89cd",
+        "blobSha": "8d1fbe1dce99c844df6c2c7c37c39616e22ed800"
+      }
+    },
+    {
+      "key": "dgryski/go-rendezvous:rdv.go",
+      "repository": "dgryski/go-rendezvous",
+      "commit": "9f7001d12a5f0021fd3283525f888b5814ccee27",
+      "path": "rdv.go",
+      "sha256": "d4a4033f42a6481ba40e2dc1bc6f4b87c0ba1ec071f1c4b35d90e2a170c8b09f",
+      "blobSha": "7a6f8203c67810356a413b9f56abf30a0429de59",
+      "notice": {
+        "path": "LICENSE",
+        "sha256": "11f46ac1bc076fc405c06fd087226e5dd87b9c2e6b8dfda5153c79b5b6f01362",
+        "blobSha": "22080f736a41a6fb2287c3f0cf5c5b25345279a4"
+      }
+    }
+  ],
+  "cases": [
+    {
+      "id": "nested-class-values",
+      "fragments": {
+        "lukeed/clsx:src/index.js": ["for (y in mix)", "toVal(mix[k])"]
+      }
+    },
+    {
+      "id": "encoded-route-builder",
+      "fragments": {
+        "pillarjs/path-to-regexp:src/index.ts": [
+          "export function compile",
+          "const { encode = encodeURIComponent",
+          "function tokenToFunction"
+        ]
+      }
+    },
+    {
+      "id": "unicode-edit-distance",
+      "fragments": {
+        "rapidfuzz/strsim-rs:src/lib.rs": [
+          "pub fn levenshtein",
+          "generic_levenshtein",
+          "self.0.chars()",
+          "let mut cache: Vec<usize>"
+        ]
+      }
+    },
+    {
+      "id": "node-selection",
+      "fragments": {
+        "dgryski/go-rendezvous:rdv.go": [
+          "mhash = xorshiftMult64",
+          "func (r *Rendezvous) Remove",
+          "if len(r.nodes) == 0"
+        ]
+      }
+    },
+    {
+      "id": "persistent-membership",
+      "fragments": {
+        "dgryski/go-rendezvous:rdv.go": [
+          "nodes map[string]int",
+          "nstr  []string",
+          "func (r *Rendezvous) Add"
+        ]
+      }
+    },
+    {
+      "id": "escaped-class-output",
+      "fragments": {
+        "lukeed/clsx:src/index.js": ["for (y in mix)", "str +="]
+      }
+    }
+  ]
+}

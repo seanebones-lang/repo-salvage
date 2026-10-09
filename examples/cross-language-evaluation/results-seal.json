@@ -1,0 +1,9 @@
+{
+  "format": "repo-salvage/cross-language-result-seal-v1",
+  "generatedSealSha256": "47e445b6233718e743f2099dfc0c1413c7743acd6a60493b5634fd4c45637d23",
+  "files": {
+    "discovery-results.json": "f97f99235774560827167a305c03378eaa3e4131c22205da5bec32c2d4176650",
+    "discovery-evidence.json": "dbafa5e85ad773b4ff9c7083976e8ed5d31ada80c02fa05ee475f3f8245667f3",
+    "review.json": "f9ba013d47249bb540b5a467bfe8cda69d9b2152cc4aacd2a84be49dae28a6c6"
+  }
+}

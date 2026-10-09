@@ -1,0 +1,742 @@
+{
+  "format": "repo-salvage/cross-language-discovery-v1",
+  "scope": "Six authored task-driven diagnostics over four public MIT repositories fresh to this project. Production captured indexed requests, four native analyses, disposable production catalog and installed MCP. One implementing reviewer; no general recall, training holdout, independence or upstream execution claim.",
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "suiteSealSha256": "47e445b6233718e743f2099dfc0c1413c7743acd6a60493b5634fd4c45637d23",
+  "archiveSha256": "57af157aaf59a8ba604a1057954697187424f6f0dab71edac9bcc6c9425797e3",
+  "catalogRevision": "5f6312e0e6797b57663115e6de355f07dcf758f7d3edb0f65b061572b471d1b0",
+  "billing": "Existing Codex account allowance; no API-key model calls",
+  "results": [
+    {
+      "id": "nested-class-values",
+      "promptSha256": "6cc619803fcb7103ddc5bb5760921c25404dc5b166977a8cbebc7f03291c06cd",
+      "answer": {
+        "answer": "lukeed/clsx:src/index.js",
+        "finding": "Read both complete implementations and the complete MIT license at commit 925494cf31bcd97d3337aacd34e659e80cae7fe2. src/index.js exports clsx (named and default), which filters falsey arguments and calls the required same-file toVal helper. toVal converts strings and numbers, recursively traverses arrays by index, and uses for...in to include object keys with truthy values. Nonempty results are joined with spaces in argument, array traversal and JavaScript object enumeration order. false, null, undefined, empty strings, 0 and NaN are omitted; truthy booleans, functions, symbols and bigints contribute nothing. src/lite.js only joins nonempty primitive string arguments, ignoring numbers, arrays and objects, so it does not meet the mixed-input requirement. Neither file imports dependencies; the full helper requires toVal and Array.isArray, plus compatible ES module integration. Object enumeration includes inherited enumerable keys and may invoke getters; arrays have no cycle detection or depth guard. Existing whitespace and duplicate classes remain; neither helper sanitizes HTML. The MIT notice credits Luke Edwards, requires retaining copyright and permission notices in copies or substantial portions, and disclaims warranty and liability. This is source inspection, not independent testing or a complete dependency/component licensing audit."
+      },
+      "expected": "lukeed/clsx:src/index.js",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "lukeed/clsx:src/index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 93139,
+        "cached_input_tokens": 66048,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 635,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 22072,
+      "trace": {
+        "sha256": "524e57155c9df6ed98fa595f686a9dba6f631b488334652829c067e7389d4178"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "class",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 2001,
+            "part_id": "3f74d651e5e71b2c"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 2001,
+            "part_id": "0e492f028167418d"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2001,
+            "part_id": "3f74d651e5e71b2c",
+            "path": "src/index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2001,
+            "part_id": "0e492f028167418d",
+            "path": "src/lite.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2001,
+            "part_id": "3f74d651e5e71b2c",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "encoded-route-builder",
+      "promptSha256": "36de445b01d017c91e1fd005b0d323f48136b5256ba29de58417ec383c7cb27d",
+      "answer": {
+        "answer": "pillarjs/path-to-regexp:src/index.ts",
+        "finding": "Recommend compile at commit 7dd6f8f7bd63ae8bffca0968144508228dc61729. Read the complete source across two windows and the complete MIT LICENSE (copyright 2014 Blake Embrey); retain its copyright and permission notice, including warranty disclaimer. compile accepts a route string or TokenData and returns a parameter-to-path function. Use explicit { encode: encodeURIComponent }; this also is the default. Named parameters require nonempty strings. Null or undefined values accumulate missing names, and the returned function throws TypeError('Missing parameters: ...'). Brace groups are optional: if their generation records missing values, their entire output is discarded and those missing names reset; type and encoder errors still propagate. Literal text is unchanged unless parse's separate encodePath callback transforms it. Encoded wildcards require nonempty string arrays, encode each element and join with delimiter (default '/'); encode:false instead requires a nonempty string and performs no escaping. Retain tokensToFunction, tokenToFunction, parse, TokenData, PathError, ID_START/ID_CONTINUE, DEFAULT_DELIMITER, NOOP_VALUE and relevant token/options/parameter types. The complete module has no imports, and package.json declares no runtime dependencies; upstream build tooling includes TypeScript and @borderless/ts-scripts. The parser requires Unicode property escape support. Source comparison confirms match consumes incoming paths through regexp.exec and decodes captures, while pathToRegexp constructs matching regexes and stringify serializes template syntax; compile supplies the requested URL-path generation. Limits: token objects bypass structural validation, custom encoding may throw or run before missing errors, and generation does not validate its output against a matching regex or construct query strings/origins. Component/dependency licensing is not independently audited. Nothing was executed or independently tested."
+      },
+      "expected": "pillarjs/path-to-regexp:src/index.ts",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "pillarjs/path-to-regexp:src/index.ts",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 137423,
+        "cached_input_tokens": 101504,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 799,
+        "reasoning_output_tokens": 20
+      },
+      "latencyMs": 34746,
+      "trace": {
+        "sha256": "d9ed5c56615c2b9adb4115c7b88e521bfee5f1a66096466c263ae671e326a463"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "path",
+            "language": "TypeScript",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 2002,
+            "part_id": "d527788a30581234"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 2002,
+            "part_id": "8a2ecb76613f9986"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2002,
+            "part_id": "d527788a30581234",
+            "path": "src/index.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2002,
+            "part_id": "d527788a30581234",
+            "path": "LICENSE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2002,
+            "part_id": "d527788a30581234",
+            "path": "src/index.ts",
+            "offset": 12000,
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_focus_evidence",
+          "arguments": {
+            "listing_id": 2002,
+            "path": "package.json",
+            "max_characters": 10000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "unicode-edit-distance",
+      "promptSha256": "a2319042a22393f60415f872d8f1b4fae7a9e77b113a526180a5d8ac66753885",
+      "answer": {
+        "answer": "rapidfuzz/strsim-rs:src/lib.rs",
+        "finding": "At commit dacc84c0dc61eff0ee0ff66962bcf2e17018ad26, levenshtein(&str, &str) -> usize delegates to generic_levenshtein through StringWrapper, whose IntoIterator implementation returns str::chars(). Comparisons therefore use Unicode scalar values, without grapheme segmentation or Unicode normalization. The recurrence takes the minimum of insertion +1, deletion +1, and diagonal + usize::from(a_elem != b_elem): ordinary unit-cost Levenshtein. Empty inputs yield the other string’s scalar count. In contrast, osa_distance adds a unit-cost adjacent-transposition branch using three rolling rows and restricts repeated substring edits; normalized_levenshtein returns 1 - distance/max(scalar counts), with 1.0 for two empty strings. The chosen implementation stores one Vec<usize> containing b’s scalar-count entries: O(|b|) auxiliary space rather than a full matrix or collected character arrays, but repeatedly decodes b for each scalar in a, taking O(|a||b| + |a| + |b|) time. It does not automatically put the shorter input second or return an edit script. Extraction requires levenshtein, generic_levenshtein, StringWrapper and its iterator implementation, plus standard-library Chars, min and Vec; Cargo.toml declares no external dependencies, edition 2021 and Rust 1.56. Allocation failure and extreme-size usize arithmetic are not explicitly handled. Read the complete MIT LICENSE: copyrights Danny Guo (2015), Titus Wormer (2016), and Akash Kurdekar (2018); retain copyright and permission notices in copies or substantial portions, including its warranty/liability disclaimer. Component licensing and dependency closure are not independently audited. This recommendation is based on source inspection, without execution or independent testing."
+      },
+      "expected": "rapidfuzz/strsim-rs:src/lib.rs",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "rapidfuzz/strsim-rs:src/lib.rs",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 92318,
+        "cached_input_tokens": 60672,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 722,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 31209,
+      "trace": {
+        "sha256": "aaa4ecd906140e174f205c1c8978ad93980f8e19d57ef93e0c3d27f9b97bd5a7"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "levenshtein",
+            "language": "Rust",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 2003,
+            "part_id": "a53b756e3aac9108"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2003,
+            "part_id": "a53b756e3aac9108",
+            "path": "src/lib.rs",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2003,
+            "part_id": "a53b756e3aac9108",
+            "path": "LICENSE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_focus_evidence",
+          "arguments": {
+            "listing_id": 2003,
+            "path": "Cargo.toml",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "node-selection",
+      "promptSha256": "ac0ddad7e5e92d0aee730124b3e302b3fa456ad9eb795a050e011c42d8b9db02",
+      "answer": {
+        "answer": "dgryski/go-rendezvous:rdv.go",
+        "finding": "Suitable for fixed, unique initial nodes at commit 9f7001d12a5f0021fd3283525f888b5814ccee27. Read complete rdv.go and LICENSE. New copies node strings in input order, builds a node-to-index map, and precomputes caller-supplied Hasher func(string) uint64 values. Lookup hashes the key once and maximizes the unsigned uint64 score xorshiftMult64(hash(key) XOR hash(node)). That helper applies XOR shifts right 12, left 25, right 27, then multiplies by 2685821657736338717 with uint64 wraparound. Strict > comparison retains the earliest input node among tied maximum scores. Empty membership returns \"\" without calling the hasher; an empty-string node makes that result ambiguous. Determinism requires a non-nil deterministic hasher and consistent input order, particularly for ties; hash quality is unspecified. Lookup is O(n), storage O(n).\nSupporting definitions are Rendezvous, Hasher, New, Lookup and xorshiftMult64, all in the same file, which has no imports or external implementation dependencies. The hash implementation must be supplied by the caller. No distributed membership service is involved.\nAdd works for a previously absent node with a valid hasher, but does not reject duplicates: it overwrites the map index while appending another slice entry. Remove is unusable as written: l := len(r.nstr) followed by r.nstr[l] always accesses out of bounds. It also lacks an absent-node check, uses slices [:l] that do not shorten them, and needs careful moved-node bookkeeping when removing the last node. Repair and verify removal before use. No synchronization or input validation is supplied.\nThe complete MIT notice names Copyright (c) 2017-2020 Damian Gryski and requires preserving the copyright and permission notice in copies or substantial portions; it includes the AS IS warranty and liability disclaimer. This recommendation is based on source inspection, not independent testing or a repository-wide dependency/license audit."
+      },
+      "expected": "dgryski/go-rendezvous:rdv.go",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "dgryski/go-rendezvous:rdv.go",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 81412,
+        "cached_input_tokens": 59136,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 709,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 29833,
+      "trace": {
+        "sha256": "9be0571ed35bdac8add37baefca1c03db264730a4c6ddcf98600483e19ff344e"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "rendezvous",
+            "language": "Go",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 2004,
+            "part_id": "bcc3ff29bff5adfd"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2004,
+            "part_id": "bcc3ff29bff5adfd",
+            "path": "LICENSE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2004,
+            "part_id": "bcc3ff29bff5adfd",
+            "path": "rdv.go",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "persistent-membership",
+      "promptSha256": "88c3df9df0c569e17ccf214dcf5019361ad642e0acef6f851bfcf88940f901c8",
+      "answer": {
+        "answer": "NO_MATCH",
+        "finding": "The unfiltered catalog contains 10 parts; node and membership searches identify only dgryski/go-rendezvous:rdv.go at commit 9f7001d12a5f0021fd3283525f888b5814ccee27. I read its complete implementation and LICENSE. Rendezvous stores membership exclusively in an in-memory map and string/hash slices. New hashes supplied nodes; Lookup applies xorshiftMult64 to the key hash XOR each node hash, selects the highest score, retains the first on ties, and returns an empty string for empty membership. Add updates only local memory and permits duplicates. Remove accesses index len(r.nstr), which is out of bounds; its slices also are not shortened and absent membership is unchecked. There is no persistence, restart recovery, locking, IPC, or coordination between processes. Supporting definitions are Rendezvous, Hasher and xorshiftMult64, all in the same file; there are no imports, but callers must supply a suitable deterministic hash function. The complete MIT notice requires retaining copyright and permission notices and disclaims warranties. Compared source from other catalog repositories joins class names, matches route strings, or computes string similarity; these provide no relevant shared-membership component. Those comparisons were scoped, not complete repository or dependency audits. No code was executed and no independent testing was performed."
+      },
+      "expected": "NO_MATCH",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "dgryski/go-rendezvous:rdv.go",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 217967,
+        "cached_input_tokens": 182400,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1217,
+        "reasoning_output_tokens": 123
+      },
+      "latencyMs": 51869,
+      "trace": {
+        "sha256": "49ff62e5f48285d8261c9cb67c7f7a7705f15d5534828e63d5f175a4f78d1cd5"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "node",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 2004,
+            "part_id": "bcc3ff29bff5adfd"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "membership",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "",
+            "limit": 8,
+            "page": 2,
+            "revision": "5f6312e0e6797b57663115e6de355f07dcf758f7d3edb0f65b061572b471d1b0"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2004,
+            "part_id": "bcc3ff29bff5adfd",
+            "path": "rdv.go",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2004,
+            "part_id": "bcc3ff29bff5adfd",
+            "path": "LICENSE",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_focus_evidence",
+          "arguments": {
+            "listing_id": 2002,
+            "path": "src/index.ts",
+            "symbol": "match",
+            "max_characters": 6000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_focus_evidence",
+          "arguments": {
+            "listing_id": 2001,
+            "path": "src/",
+            "max_characters": 6000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_focus_evidence",
+          "arguments": {
+            "listing_id": 2003,
+            "path": "src/lib.rs",
+            "symbol": "hamming",
+            "max_characters": 6000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_focus_evidence",
+          "arguments": {
+            "listing_id": 2003,
+            "path": "src/lib.rs",
+            "max_characters": 48000
+          },
+          "status": "failed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 2003,
+            "part_id": "a53b756e3aac9108"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2003,
+            "part_id": "a53b756e3aac9108",
+            "path": "src/lib.rs",
+            "max_characters": 4500
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "escaped-class-output",
+      "promptSha256": "62017fd142277d68beb016322669e1a94c835aee778d0d3b9dc969ae97479bfb",
+      "answer": {
+        "answer": "NO_MATCH",
+        "finding": "Compared complete lukeed/clsx src/index.js and src/lite.js at commit 925494cf31bcd97d3337aacd34e659e80cae7fe2. The mixed-input clsx depends on same-file toVal: truthy strings/numbers are concatenated, arrays recursively traversed, and object keys included when mix[key] is truthy. Its for...in has no own-property guard, so inherited enumerable keys qualify; reads can invoke getters. Neither definition tokenizes, deduplicates or HTML-escapes: repeated 'a' yields 'a a', and quotes, ampersands and angle brackets remain raw. Lite merely joins nonempty primitive strings and ignores objects, arrays and numbers; it likewise preserves duplicates and hostile attribute characters. Both files have no imports and named/default exports; mixed extraction requires toVal and Array.isArray. Mixed also lacks cycle/depth protection and omits zero/NaN. Read the complete shared MIT license: Luke Edwards copyright and permission notice must accompany copies or substantial portions; warranty and liability are disclaimed. Unfiltered catalog pagination revealed no other plausible class composer across its languages. These are source-inspection conclusions, not independent testing or a dependency/license audit."
+      },
+      "expected": "NO_MATCH",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "lukeed/clsx:src/index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 124157,
+        "cached_input_tokens": 94080,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 719,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 26303,
+      "trace": {
+        "sha256": "d64c817630bdf5962552ff59f8fa159a260d9abb9ffa4f4f6659a3f59dc07859"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "class",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 2001,
+            "part_id": "3f74d651e5e71b2c"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 2001,
+            "part_id": "0e492f028167418d"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2001,
+            "part_id": "0e492f028167418d",
+            "path": "src/lite.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2001,
+            "part_id": "3f74d651e5e71b2c",
+            "path": "src/index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 2001,
+            "part_id": "3f74d651e5e71b2c",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "",
+            "limit": 8,
+            "page": 2,
+            "revision": "5f6312e0e6797b57663115e6de355f07dcf758f7d3edb0f65b061572b471d1b0"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    }
+  ],
+  "manualReview": "pending"
+}

@@ -384,3 +384,22 @@ An online private backup preceded the local migration. The seven real listings,
 serialized catalog row hash matched before and after startup. No pilot repository
 was re-analyzed during this milestone. Hosting and a live provider restart/billing
 experiment remain unvalidated.
+
+### Fresh four-language interpretation and retrieval
+
+The [cross-language epoch](../examples/cross-language-evaluation/README.md)
+freezes four exact coverage-v4 production requests and six authored discovery
+tasks before native model use. Four generated briefs and six installed-MCP
+sessions passed their distinct structural and source-bound retrieval gates.
+The complete source actually retrieved in one JavaScript task then supported a
+first unedited adaptation that passed six isolated checks, including 1,000
+bounded generated input comparisons. Source/notices, model response, implementing
+review and adaptation execution remain separate records.
+
+Rust and Go were retrieved through whole-file fallback parts. This evidence
+supports limited file-level discovery, not declaration AST indexing, resolved
+imports or dependency closure. The pinned Go removal defect was explicitly
+reported by both analysis and discovery; static lookup remains a conditional
+starting point. No upstream modules or tests were run. This four-source,
+ten-part catalog is too small to establish general search recall or a language
+performance comparison.
