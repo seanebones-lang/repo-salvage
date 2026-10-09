@@ -1,0 +1,1171 @@
+{
+  "date": "2026-10-09",
+  "format": "repo-salvage/real-source-evaluation-results-v1",
+  "frozenBeforeGenerationCommit": "aade77c",
+  "scope": "Eight author-constrained cases on two repositories; six positive cases, two exclusion controls, eight required targets. Single run per configuration; neither independent review nor unconstrained whole-repository recall. This epoch is now a regression set.",
+  "sourceCapture": "Production indexedSnapshotRepo captured pinned public MIT repositories; offline re-indexing produced byte-identical index and packet JSON to the capture. Upstream apps were not executed.",
+  "coverage": [
+    {
+      "repo": "seanebones-lang/Humanity-Grid",
+      "path": "src/research-scout/src/research_scout/ingest/arxiv.py",
+      "symbol": "ArxivClient._rate_limited_request",
+      "inspected": true,
+      "indexed": true,
+      "supplied": false
+    },
+    {
+      "repo": "seanebones-lang/Humanity-Grid",
+      "path": "src/experiment-engine/scripts/split_work_units.py",
+      "symbol": "main",
+      "inspected": true,
+      "indexed": true,
+      "supplied": false
+    },
+    {
+      "repo": "seanebones-lang/Humanity-Grid",
+      "path": "src/volunteer-app/src-tauri/src/main.rs",
+      "symbol": "<module>",
+      "inspected": true,
+      "indexed": true,
+      "supplied": false
+    },
+    {
+      "repo": "seanebones-lang/AI-Voiceover",
+      "path": "apps/web/lib/tts/prosody-tags.ts",
+      "symbol": "parseProsodyTags",
+      "inspected": false,
+      "indexed": false,
+      "supplied": false
+    },
+    {
+      "repo": "seanebones-lang/AI-Voiceover",
+      "path": "apps/web/lib/tts-cache.ts",
+      "symbol": "buildTtsCacheKey",
+      "inspected": false,
+      "indexed": false,
+      "supplied": false
+    },
+    {
+      "repo": "seanebones-lang/AI-Voiceover",
+      "path": "apps/web/lib/rate-limit.ts",
+      "symbol": "createFallbackLimiter",
+      "inspected": false,
+      "indexed": false,
+      "supplied": false
+    }
+  ],
+  "coverageSummary": {
+    "Humanity-Grid": {
+      "inspectedFiles": 54,
+      "indexedTargets": 123,
+      "suppliedTargets": 17
+    },
+    "AI-Voiceover": {
+      "inspectedFiles": 64,
+      "indexedTargets": 83,
+      "suppliedTargets": 24
+    },
+    "selectedProbeCount": 6,
+    "indexedButNotSupplied": 3,
+    "notInspected": 3,
+    "probeSupplyPasses": 0
+  },
+  "runs": [
+    {
+      "model": "gpt-6-luna",
+      "effort": "high",
+      "cliVersion": "codex-cli 0.160.0",
+      "suiteSealSha256": "61b4aece067aff0c428c6ee41aeb6a711796e0fa0f29d34f1061e91f84b2fecd",
+      "billing": "Existing Codex account allowance; no dollar comparison",
+      "transportLimits": "120s plus 5s termination grace; CLI has no equivalent 4000-output-token cap; high reasoning",
+      "attemptsPerCase": 1,
+      "repetitions": 1,
+      "summary": {
+        "cases": 8,
+        "structuralPasses": 8,
+        "selectionPasses": 8,
+        "semanticReviewPasses": 7,
+        "prohibitedToolEvents": 0,
+        "medianLatencyMs": 8620.5,
+        "usage": {
+          "input_tokens": 252094,
+          "cached_input_tokens": 11008,
+          "output_tokens": 3999,
+          "reasoning_output_tokens": 1722
+        }
+      },
+      "cases": [
+        {
+          "id": "hg-consensus",
+          "provider": "--codex",
+          "model": "gpt-6-luna",
+          "requestSha256": "a0fae118aa6fb23cf98911b4eaa2f6b4e1bad72ba6774e7ad5e016e5c6219bdd",
+          "latencyMs": 8971,
+          "usage": {
+            "input_tokens": 30363,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 791,
+            "reasoning_output_tokens": 226
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [
+              "src/compute-broker/scripts/validate_consensus.py#compute_consensus",
+              "src/compute-broker/scripts/validate_consensus.py#detect_outliers_iqr"
+            ],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Descriptions match join, insufficient-data/NaN fallback and IQR bounds. NumPy/Polars requirements are distinguished from module observations; no scientific validation claim."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Two eligible data-processing functions are documented in the supplied source. Reuse context is incomplete: imports are module-level observations, dependency terms are not supplied, and no test results are provided.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "ee75719e03946f19",
+                "name": "compute_consensus",
+                "description": "Joins two Polars DataFrames on a key and returns the Pearson correlation of their score columns for matching rows. Returns 0.0 when fewer than two rows match or the computed correlation is NaN.",
+                "category": "Data processing",
+                "integration_notes": "Inputs are expected to contain the configured key and score columns; defaults are compound_id and affinity_kcal_mol. The supplied module imports NumPy and Polars, but their dependency details and terms are not included. Root policy says original project code is offered under MIT; review dependency terms for the intended use.",
+                "limitations": [
+                  "Behavior for duplicate keys, nulls, nonnumeric scores, or constant score columns is not specified in the supplied declaration.",
+                  "No tests or execution results are supplied. Imports are module-level observations, not proof of this function's specific requirements."
+                ],
+                "explanation_refs": [
+                  "a8e75153800f7c0761480449",
+                  "e87077c57a211a196561008a",
+                  "4cd1816f3739c2d76f0ea0d5",
+                  "f8d02f7ba22b5eb376aab9a4"
+                ]
+              },
+              {
+                "target_id": "cc609ec39d7450cd",
+                "name": "detect_outliers_iqr",
+                "description": "Adds an is_outlier Boolean column by flagging scores below Q1 − factor × IQR or above Q3 + factor × IQR. The default score column is affinity_kcal_mol and the default factor is 1.5.",
+                "category": "Data processing",
+                "integration_notes": "Accepts and returns a Polars DataFrame. The supplied module imports Polars, NumPy, and other modules at module level; dependency details and terms are not included. Root policy says original project code is offered under MIT; review dependency terms for the intended use.",
+                "limitations": [
+                  "Empty inputs, null values, nonnumeric columns, and quantile behavior are not described in the supplied declaration.",
+                  "No tests or execution results are supplied. Imports are module-level observations, not proof of this function's specific requirements."
+                ],
+                "explanation_refs": [
+                  "c468e70b3271426e549169fb",
+                  "e87077c57a211a196561008a",
+                  "4cd1816f3739c2d76f0ea0d5",
+                  "f8d02f7ba22b5eb376aab9a4"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "8b6dbb6374e389d02f993c25e0b4686407df4010c3adcee7ef0ca225c66f13d2",
+          "rawAnswerSha256": "d5825813c5c447d88fbadf6d1beb573d4d922f262ca600ae2094f28dbfc30430",
+          "traceSha256": "c0dfbdf1cbfef817edae5f412f9207fd5375267f3f0c80a2e974610fcc1ad86b"
+        },
+        {
+          "id": "hg-streaming-hash",
+          "provider": "--codex",
+          "model": "gpt-6-luna",
+          "requestSha256": "c62e16399d90961008544b98142a47bfb674409ae3129eb37aa8d29a4db5c9f0",
+          "latencyMs": 7831,
+          "usage": {
+            "input_tokens": 30368,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 484,
+            "reasoning_output_tokens": 168
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": ["proofs/EXP-001-v1/tools/verify.py#sha256"],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Matches binary 1 MiB streaming, hashlib/Path context and limited checksum role; no authenticity or whole-proof execution claim."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Only the owner-authorized `sha256` declaration is considered. It computes a SHA-256 hex digest by reading a file in 1 MiB blocks; broader package context and execution results are not established here.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "3aabfd79aff8e9d6",
+                "name": "File SHA-256 helper",
+                "description": "Reads a Path in 1 MiB blocks, updates a hashlib SHA-256 digest, and returns the hexadecimal digest.",
+                "category": "Data processing",
+                "integration_notes": "The declaration takes a pathlib.Path and uses hashlib.sha256, Path.open(\"rb\"), and repeated reads until EOF. The supplied file reference shows the module imports and surrounding verifier, but imports are module-level observations rather than proof of declaration-specific requirements.",
+                "limitations": [
+                  "No test paths or execution results are supplied; correctness is not established by inspection.",
+                  "The package license boundary identifies this helper as original project review material offered under the repository MIT License; review applicable terms before reuse beyond review.",
+                  "The broader package and intended integration context are incomplete."
+                ],
+                "explanation_refs": [
+                  "431f5003e5439b16923953a2",
+                  "a03ecc030857243aa8e84434",
+                  "0fe40c3a29008535b658293c",
+                  "4cd1816f3739c2d76f0ea0d5",
+                  "f8d02f7ba22b5eb376aab9a4"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "16b12303892c4c916a1d282bc66a81e1232a5507cb399971a2bccbae8e29e3ca",
+          "rawAnswerSha256": "d03d1ff55cd71a98769b5ca4d58d39a74915bfc4685a7bb1c3f14498bc12c44d",
+          "traceSha256": "779df2b0d2fa1428c13e243478d8fff484fac8ac90726a743c46f58b0fb90c34"
+        },
+        {
+          "id": "hg-results-loader",
+          "provider": "--codex",
+          "model": "gpt-6-luna",
+          "requestSha256": "08f4d177d7d0c7ee0b4e57d3c8f44d47e13e079db65533cef279a8f33ba38936",
+          "latencyMs": 9492,
+          "usage": {
+            "input_tokens": 30368,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 709,
+            "reasoning_output_tokens": 361
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [
+              "src/compute-broker/scripts/validate_consensus.py#load_results"
+            ],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Matches directory/filename precedence, Polars read and missing-file exception. No schema or scientific correctness claim."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Only load_results is considered, as requested. The supplied source shows a small Parquet loader for work-unit replicates; surrounding dependency and project context is incomplete.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "8bdd18fdd739597f",
+                "name": "Work-unit Parquet results loader",
+                "description": "Builds the replicate/work-unit directory path, tries two result-file names, raises FileNotFoundError if neither exists, and reads the selected Parquet file with Polars.",
+                "category": "Data processing",
+                "integration_notes": "Call with a results directory as pathlib.Path, a work-unit ID, and a replicate number. It looks under rep{replicate}/{work_unit_id}, preferring results.parquet and then results_{work_unit_id}.parquet. The inspected source imports pathlib.Path and Polars at module scope; the index does not establish which imports this declaration specifically requires.",
+                "limitations": [
+                  "No test paths are listed; behavior has not been independently verified.",
+                  "Polars is an external dependency; supplied evidence gives no version or installation details.",
+                  "Repository license policy says MIT applies to original project code, but the supplied evidence does not independently establish this declaration's provenance or resolve third-party dependency terms."
+                ],
+                "explanation_refs": [
+                  "597e7de6c279323b36ec674d",
+                  "e87077c57a211a196561008a",
+                  "4cd1816f3739c2d76f0ea0d5",
+                  "f8d02f7ba22b5eb376aab9a4",
+                  "5c0f4f8db6a04d0356d7ebe1"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "21f2bf992630abe819a4c88ac3916f765b950532fc5baee89c3c270571b03b2b",
+          "rawAnswerSha256": "a6d4294bca8fa58433707e2e30e84889bcf97da69186c57111f1a2dea061f69f",
+          "traceSha256": "542f5214772eb70169bac56f8f8b7b1d344fade07bfea7883e165ff264171e46"
+        },
+        {
+          "id": "hg-owner-exclusion",
+          "provider": "--codex",
+          "model": "gpt-6-luna",
+          "requestSha256": "d6a0a1f49d5870602d55014d37ec66af448768b72ebea373abc3fc99e06f4542",
+          "latencyMs": 3892,
+          "usage": {
+            "input_tokens": 30355,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 66,
+            "reasoning_output_tokens": 30
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": null,
+            "requiredGroupRecall": null
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Empty selection honors the author exclusion."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Owner context excludes every supplied target from reuse.",
+            "outcome": "no_candidates",
+            "reusable_pieces": []
+          },
+          "answerSha256": "1f6e5b907aee410db416672bcff8d0f3730f59a1cc3c0fb957cbf0d0b43fd4db",
+          "rawAnswerSha256": "1f6e5b907aee410db416672bcff8d0f3730f59a1cc3c0fb957cbf0d0b43fd4db",
+          "traceSha256": "f0174b1132136e4f7a4a3b1c53f236ddc7ce8034cfe6814e4704754baedf4af2"
+        },
+        {
+          "id": "av-token-extraction",
+          "provider": "--codex",
+          "model": "gpt-6-luna",
+          "requestSha256": "40e76e8f4cf175bbd1165264f84fd1beb4f145eba2632dad0f96f4266c8269b3",
+          "latencyMs": 9912,
+          "usage": {
+            "input_tokens": 32661,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 613,
+            "reasoning_output_tokens": 345
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [
+              "apps/web/lib/security/csrf.ts#extractCSRFTokenFromRequest"
+            ],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Preserves header precedence and string body fallback, names constant context and distinguishes extraction from validation."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Only extractCSRFTokenFromRequest was considered, as requested. Its supplied implementation checks the X-CSRF-Token header first, then a body property with the same key. The evidence does not include tests.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "c94f40a9a44f983d",
+                "name": "CSRF token extractor",
+                "description": "Returns the X-CSRF-Token header value when present; otherwise returns a string value from the body property with that key, or null.",
+                "category": "Data processing",
+                "integration_notes": "The function accepts Headers and an optional Record<string, unknown>. It references a module-local header-name constant. The source index records next/headers and crypto as module-level imports; it does not establish that either is needed by this function. Review the full module context before reusing it there.",
+                "limitations": [
+                  "Extracts a token but does not validate it.",
+                  "Body input is limited by the declared Record<string, unknown> type.",
+                  "No tests or call-site evidence were supplied; behavior beyond the shown implementation is unknown."
+                ],
+                "explanation_refs": [
+                  "d19191b80e130afc6eb88a5d",
+                  "fa06d6589a493caced150e9a"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "f213aa3dede9d5c2bfa5e14788a238eb284ffdc664ce73f764e78f0e297a81e8",
+          "rawAnswerSha256": "d0aa042a519e087205d955d89090eb0523f61dd39be34598ad64ce090b5951ee",
+          "traceSha256": "9466f62fe3152a7cb4883f4cfe344cb4ad4e70e99e68af0b0cae628ee8292a56"
+        },
+        {
+          "id": "av-prosody",
+          "provider": "--codex",
+          "model": "gpt-6-luna",
+          "requestSha256": "b3416e1bb308e9825033e671cdba38ec2477684e3efd33b71b999ed502adaddb",
+          "latencyMs": 8270,
+          "usage": {
+            "input_tokens": 32666,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 581,
+            "reasoning_output_tokens": 154
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [
+              "apps/web/lib/tts/emotion-prosody.ts#applyEmotionProsody",
+              "apps/web/lib/tts/emotion-prosody.ts#applyExpressiveCopyProsody"
+            ],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "needs_revision",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [
+              "Does not explain that neutral/unknown emotion and disabled/empty/no-signal expressive paths bypass numeric clamping. Consumer checks confirm this integration boundary."
+            ],
+            "notes": "Recognizes same-file helper/type context, shallow-copy neutral behavior and clone/intensity scaling, but leaves the clamping bypass boundary unclear. Sol documents this boundary explicitly."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Two focused prosody helpers are reusable: one applies named emotion presets to TTS parameters, and one adjusts prosody from punctuation and capitalization. Evidence covers their declarations and containing module; behavior and integration are unverified.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "5f900c32770fbe57",
+                "name": "Emotion prosody adjustment",
+                "description": "Adjusts speed, pitch, volume, reverb, echo, noise reduction, and special effect from a recognized emotion. Unknown or neutral emotion returns a shallow copy of the input.",
+                "category": "Data processing",
+                "integration_notes": "Pass an EmotionProsodyInput and an optional emotion string. The containing module defines the input type, accepted emotion IDs, and clamp helper. Compose with other prosody adjustments only after deciding their order.",
+                "limitations": [
+                  "No tests or call sites were supplied; behavior is not verified.",
+                  "The declaration relies on module-level types and helpers; the excerpt does not establish integration requirements."
+                ],
+                "explanation_refs": [
+                  "24cf33ff5db5fdd3401f5a1c",
+                  "2dae1772508d6389670f63c0"
+                ]
+              },
+              {
+                "target_id": "9c598bbc4ac4273b",
+                "name": "Expressive copy prosody adjustment",
+                "description": "When enabled, adjusts speed, pitch, volume, and reverb based on capped counts of punctuation and uppercase words. Intensity and cloned-voice options scale the adjustments.",
+                "category": "Data processing",
+                "integration_notes": "Pass the base prosody, text, and optional enabled, intensity, and cloned-voice settings. The containing module defines the types and normalization and clamp helpers. Decide how to order this with emotion adjustment during integration.",
+                "limitations": [
+                  "No tests or call sites were supplied; behavior is not verified.",
+                  "Punctuation scanning and intensity behavior are limited to the supplied implementation; broader intended semantics are unknown."
+                ],
+                "explanation_refs": [
+                  "0b487767b5b8801e95f57271",
+                  "2dae1772508d6389670f63c0"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "99d86a9307c69d9d49500e02215cfaeefcaca55e3c75fa1b97ddf0fa86aaa43b",
+          "rawAnswerSha256": "d3b30c5b802403f45bde5f1407742ead458241f9a14f410f901c4f1e0b2bb4ce",
+          "traceSha256": "a68d450f351c112d235ad4f001cb4b6576eaabde3d58cda5e534df6bc1e18bbb"
+        },
+        {
+          "id": "av-manifest-shape",
+          "provider": "--codex",
+          "model": "gpt-6-luna",
+          "requestSha256": "8d50426b637b547f65f535d6d60412269269283cb56567b42feca2eedbf09315",
+          "latencyMs": 9563,
+          "usage": {
+            "input_tokens": 32657,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 671,
+            "reasoning_output_tokens": 391
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": ["apps/web/lib/audio/watermark.ts#generateManifest"],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Describes object construction and type context without claiming signing, embedding or C2PA compliance."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Only generateManifest is considered, as requested. Its supplied implementation returns a manifest-shaped JavaScript object; available evidence does not establish C2PA validity, embedding, or caller expectations.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "3c29a39fedd4891c",
+                "name": "Audio metadata manifest object builder",
+                "description": "Builds an object with a claim_generator and schema.org AudioObject and IPTC newsCodes assertions from WatermarkMetadata fields.",
+                "category": "Data processing",
+                "integration_notes": "The WatermarkMetadata interface appears in the supplied source file and defines generator, model, timestamp, textHash, version, and optional userId. The function uses several of these fields; userId is not included in its returned object. The source index lists fs and path as module-level imports, but does not establish that this declaration needs them. Callers and expected output schema are not shown.",
+                "limitations": [
+                  "Evidence shows object construction only; it does not establish C2PA conformance or embedding in an audio file.",
+                  "No test paths or caller context are supplied, so output expectations and validation remain unresolved."
+                ],
+                "explanation_refs": [
+                  "782b975d0a122e9b07750c6d",
+                  "9147253a0d31d006a1d34a72"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "3cf34fc80b270312ffd09cc24a3e138e27dc92399913464fc097e1ae4bf0d0b0",
+          "rawAnswerSha256": "5c44e2a1a1fa00792d5141f6335b0c98c8566d94d359a75abfb9363ad5685c7d",
+          "traceSha256": "ca1cb2d01844be08c400a58b2dc034b85dd3946963dc9e0d548f0a88531130b0"
+        },
+        {
+          "id": "av-owner-exclusion",
+          "provider": "--codex",
+          "model": "gpt-6-luna",
+          "requestSha256": "ac37cf6140ed48f2a98bd6bea29b4970da45ee8cf6f076bc40fc28d504464e80",
+          "latencyMs": 4204,
+          "usage": {
+            "input_tokens": 32656,
+            "cached_input_tokens": 11008,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 84,
+            "reasoning_output_tokens": 47
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": null,
+            "requiredGroupRecall": null
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Empty selection honors the author exclusion."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Owner context explicitly excludes every supplied target from reuse.",
+            "outcome": "no_candidates",
+            "reusable_pieces": []
+          },
+          "answerSha256": "27c601f25ab6ff997cbc394755e76203cb52206eb2d2a20965a5f5e94122e8a0",
+          "rawAnswerSha256": "27c601f25ab6ff997cbc394755e76203cb52206eb2d2a20965a5f5e94122e8a0",
+          "traceSha256": "f42504e7bb7c840c1bc7074fc83f9c5903015a34fa57b914dc30d67fdd4d288f"
+        }
+      ]
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "effort": "low",
+      "cliVersion": "codex-cli 0.160.0",
+      "suiteSealSha256": "61b4aece067aff0c428c6ee41aeb6a711796e0fa0f29d34f1061e91f84b2fecd",
+      "billing": "Existing Codex account allowance; no dollar comparison",
+      "transportLimits": "120s plus 5s termination grace; CLI has no equivalent 4000-output-token cap; low reasoning",
+      "attemptsPerCase": 1,
+      "repetitions": 1,
+      "summary": {
+        "cases": 8,
+        "structuralPasses": 8,
+        "selectionPasses": 8,
+        "semanticReviewPasses": 8,
+        "prohibitedToolEvents": 0,
+        "medianLatencyMs": 16728.5,
+        "usage": {
+          "input_tokens": 257614,
+          "cached_input_tokens": 0,
+          "output_tokens": 3165,
+          "reasoning_output_tokens": 102
+        }
+      },
+      "cases": [
+        {
+          "id": "hg-consensus",
+          "provider": "--codex",
+          "model": "gpt-6.1-sol",
+          "requestSha256": "a0fae118aa6fb23cf98911b4eaa2f6b4e1bad72ba6774e7ad5e016e5c6219bdd",
+          "latencyMs": 27478,
+          "usage": {
+            "input_tokens": 31053,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 684,
+            "reasoning_output_tokens": 0
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [
+              "src/compute-broker/scripts/validate_consensus.py#compute_consensus",
+              "src/compute-broker/scripts/validate_consensus.py#detect_outliers_iqr"
+            ],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Descriptions match join, insufficient-data/NaN fallback and IQR bounds. NumPy/Polars requirements are distinguished from module observations; no scientific validation claim."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Two candidates fit the author's stated scope: aligned Pearson correlation and IQR flagging. Supplied source supports their behavior, not correctness. Context is incomplete: dependency versions and target tests are absent; input assumptions and third-party terms remain unresolved.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "ee75719e03946f19",
+                "name": "compute_consensus",
+                "description": "Inner-joins two Polars frames on a configurable key and computes NumPy Pearson correlation between score columns. Returns 0.0 for fewer than two joined rows or a NaN correlation.",
+                "category": "Data processing",
+                "integration_notes": "Preserve or adapt the configurable key and score columns. The declaration uses pl and np; the supplied module binds them to Polars and NumPy. Establish numeric input, key uniqueness, missing-value policy and dependency versions before integration. Keep threshold decisions separate: this function returns a correlation only. Supplied LICENSE offers MIT terms, while LICENSE-POLICY limits coverage to rights the project holds; retain applicable notices and review dependency terms.",
+                "limitations": [
+                  "Duplicate keys can multiply joined rows; key uniqueness is not checked, and unmatched rows are discarded.",
+                  "Returning 0.0 conflates insufficient data or NaN correlation with zero correlation.",
+                  "No target tests or dependency versions are supplied. Null, nonfinite and incompatible input handling is not validated."
+                ],
+                "explanation_refs": [
+                  "a8e75153800f7c0761480449",
+                  "e87077c57a211a196561008a",
+                  "4cd1816f3739c2d76f0ea0d5",
+                  "f8d02f7ba22b5eb376aab9a4",
+                  "5c0f4f8db6a04d0356d7ebe1"
+                ]
+              },
+              {
+                "target_id": "cc609ec39d7450cd",
+                "name": "detect_outliers_iqr",
+                "description": "Computes score-column quartiles and adds an is_outlier flag for values strictly outside Q1 − factor×IQR and Q3 + factor×IQR. The score column and factor are configurable; factor defaults to 1.5.",
+                "category": "Data processing",
+                "integration_notes": "The declaration uses Polars operations; the supplied module binds pl to Polars. Define the numeric score column, factor constraints, quantile convention and missing-value policy before integration. Reserve or rename is_outlier. The supplied caller applies this to the first replicate's scores, not replicate differences. Supplied LICENSE offers MIT terms subject to its notice condition; LICENSE-POLICY excludes rights the project does not hold, so dependency terms require separate review.",
+                "limitations": [
+                  "No explicit handling validates empty or all-null columns, nonfinite scores, or negative factors.",
+                  "Quantile interpolation is unspecified in the call; dependency versions and target tests are not supplied.",
+                  "Values exactly on a fence are not flagged. An existing is_outlier column is replaced."
+                ],
+                "explanation_refs": [
+                  "c468e70b3271426e549169fb",
+                  "e87077c57a211a196561008a",
+                  "4cd1816f3739c2d76f0ea0d5",
+                  "f8d02f7ba22b5eb376aab9a4",
+                  "5c0f4f8db6a04d0356d7ebe1"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "c1d295a436696d28d86f8ee2e55762ded9d2a139f31d6a04283cea393dfae256",
+          "rawAnswerSha256": "c1d295a436696d28d86f8ee2e55762ded9d2a139f31d6a04283cea393dfae256",
+          "traceSha256": "f83efc056044a40203f59500e0743e1e5ee024a5f422f8d6e369be1db6799a27"
+        },
+        {
+          "id": "hg-streaming-hash",
+          "provider": "--codex",
+          "model": "gpt-6.1-sol",
+          "requestSha256": "c62e16399d90961008544b98142a47bfb674409ae3129eb37aa8d29a4db5c9f0",
+          "latencyMs": 16275,
+          "usage": {
+            "input_tokens": 31058,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 396,
+            "reasoning_output_tokens": 0
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": ["proofs/EXP-001-v1/tools/verify.py#sha256"],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Matches binary 1 MiB streaming, hashlib/Path context and limited checksum role; no authenticity or whole-proof execution claim."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "One candidate fits the author's stated scope: the sha256 file helper. All other targets are excluded. Supplied source supports its hashing behavior; runtime validation and intended-use context remain incomplete.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "3aabfd79aff8e9d6",
+                "name": "Chunked SHA-256 file digest",
+                "description": "Reads a path in binary mode in 1 MiB blocks, updates a SHA-256 digest, and returns its hexadecimal representation. Useful as a file checksum helper.",
+                "category": "Data processing",
+                "integration_notes": "Extract the declaration from proofs/EXP-001-v1/tools/verify.py. Its body references hashlib, and its annotation references Path; the supplied file shows import hashlib and from pathlib import Path. Callers must decide how to handle file access errors and changes during reading. LICENSES.md identifies tools/verify.py as project review material offered under the repository MIT License; the supplied license requires retaining its copyright and permission notice in copies or substantial portions.",
+                "limitations": [
+                  "No tests or execution results are supplied for this helper; inspected references do not establish correctness.",
+                  "File open/read errors propagate. The helper does not check whether the file changes during hashing.",
+                  "A digest alone does not authenticate a file's source. Intended use, runtime environment, and broader context remain unresolved."
+                ],
+                "explanation_refs": [
+                  "431f5003e5439b16923953a2",
+                  "a03ecc030857243aa8e84434",
+                  "0fe40c3a29008535b658293c",
+                  "4cd1816f3739c2d76f0ea0d5"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "3973248f5efd05ff87fdbf912845b500e1d6d3834a53c4e5dddab8e16899619b",
+          "rawAnswerSha256": "be5c9f109375ba037d7cf7e1e1f5481454ae0cd16198de9fdeeb24d749154fa8",
+          "traceSha256": "b1df94335c4b09e3e5ec7c4a767234c2269359d209e59129c9cb228b01749048"
+        },
+        {
+          "id": "hg-results-loader",
+          "provider": "--codex",
+          "model": "gpt-6.1-sol",
+          "requestSha256": "08f4d177d7d0c7ee0b4e57d3c8f44d47e13e079db65533cef279a8f33ba38936",
+          "latencyMs": 15982,
+          "usage": {
+            "input_tokens": 31058,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 378,
+            "reasoning_output_tokens": 0
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [
+              "src/compute-broker/scripts/validate_consensus.py#load_results"
+            ],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Matches directory/filename precedence, Polars read and missing-file exception. No schema or scientific correctness claim."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "One candidate fits the author's scope: load_results. Its supplied source shows a Parquet loader with two filename conventions. Context is incomplete; dependency versions, input assumptions and runtime behavior remain unverified.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "8bdd18fdd739597f",
+                "name": "load_results: replicate Parquet loader",
+                "description": "Builds a replicate/work-unit directory, prefers results.parquet, falls back to results_<work_unit_id>.parquet if absent, and returns Polars read_parquet output. Raises FileNotFoundError if neither path exists.",
+                "category": "Data processing",
+                "integration_notes": "Adapt the results_dir/rep<replicate>/<work_unit_id> layout to the receiving project. The declaration uses Path and the pl alias; the supplied module imports pathlib.Path and polars as pl. Confirm Polars compatibility and expected input schemas separately. Root notices describe MIT terms and boundaries for third-party material; retain applicable notices and review relevant dependency and data terms before reuse.",
+                "limitations": [
+                  "No tests or dependency versions are supplied; inspected references do not establish correctness.",
+                  "Checks existence only; does not validate schemas, replicate values or work_unit_id path containment.",
+                  "Fallback occurs only when the preferred path is absent; read errors propagate without trying the alternative.",
+                  "Input data and dependency terms remain unresolved; repository notices do not establish rights in external material."
+                ],
+                "explanation_refs": [
+                  "597e7de6c279323b36ec674d",
+                  "e87077c57a211a196561008a",
+                  "4cd1816f3739c2d76f0ea0d5",
+                  "f8d02f7ba22b5eb376aab9a4",
+                  "5c0f4f8db6a04d0356d7ebe1"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "0183969bf2f2d082875875f29823d3914cc9b76016105c1aae4be186ab5d6a8f",
+          "rawAnswerSha256": "0183969bf2f2d082875875f29823d3914cc9b76016105c1aae4be186ab5d6a8f",
+          "traceSha256": "e2fe2f4e6d0229ac65764c1f0ed4da2d0ee6f8639459cf2ee92e4fc2b6a83136"
+        },
+        {
+          "id": "hg-owner-exclusion",
+          "provider": "--codex",
+          "model": "gpt-6.1-sol",
+          "requestSha256": "d6a0a1f49d5870602d55014d37ec66af448768b72ebea373abc3fc99e06f4542",
+          "latencyMs": 7543,
+          "usage": {
+            "input_tokens": 31045,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 83,
+            "reasoning_output_tokens": 20
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": null,
+            "requiredGroupRecall": null
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Empty selection honors the author exclusion."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "The supplied owner context excludes every target from reuse, so no candidates are selected. Evidence is partial (106 targets omitted); no execution, test results, or license conclusions are established.",
+            "outcome": "no_candidates",
+            "reusable_pieces": []
+          },
+          "answerSha256": "88619154fcf763c4a0defa755b22394df468100f69644b4fff1431ed14bc576d",
+          "rawAnswerSha256": "88619154fcf763c4a0defa755b22394df468100f69644b4fff1431ed14bc576d",
+          "traceSha256": "b932dd395faf4c3b764f958bda810f12da76ed19c6c5cbda8ec1f8a0022cacf0"
+        },
+        {
+          "id": "av-token-extraction",
+          "provider": "--codex",
+          "model": "gpt-6.1-sol",
+          "requestSha256": "40e76e8f4cf175bbd1165264f84fd1beb4f145eba2632dad0f96f4266c8269b3",
+          "latencyMs": 19081,
+          "usage": {
+            "input_tokens": 33351,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 431,
+            "reasoning_output_tokens": 30
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [
+              "apps/web/lib/security/csrf.ts#extractCSRFTokenFromRequest"
+            ],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Preserves header precedence and string body fallback, names constant context and distinguishes extraction from validation."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Selected only extractCSRFTokenFromRequest, honoring the author's exclusions. The supplied source supports reuse as a token extraction helper; integration context and verification remain incomplete.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "c94f40a9a44f983d",
+                "name": "extractCSRFTokenFromRequest",
+                "description": "Reads a truthy X-CSRF-Token header first, then a string-valued body property with that exact key, otherwise returning null. Useful for centralizing token extraction before separate validation.",
+                "category": "API & networking",
+                "integration_notes": "Carry over or parameterize CSRF_TOKEN_HEADER, defined as 'X-CSRF-Token' in the supplied file. Callers supply Headers and an optional parsed body; this helper does not parse requests or validate tokens. The file's next/headers and crypto usage belongs to broader module context and does not establish those dependencies for this declaration. Confirm the receiving runtime's Headers support and intended body-key policy. The supplied LICENSE requires retaining its copyright and permission notices in copies or substantial portions.",
+                "limitations": [
+                  "Extraction alone provides no token validation or CSRF protection.",
+                  "An empty header falls through to the body; an empty body string is returned. Body keys are case-sensitive, and the in operator includes inherited properties.",
+                  "No tests for this target are supplied. Caller behavior, runtime compatibility, and broader integration context remain unresolved; references establish inspected source, not correctness."
+                ],
+                "explanation_refs": [
+                  "d19191b80e130afc6eb88a5d",
+                  "fa06d6589a493caced150e9a",
+                  "6ac6154d34fa4e758508abe1"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "99b1f16d8666951655c9b9067cd5e33237ab33b4acf104d6fdc22b6dd9f53d35",
+          "rawAnswerSha256": "0c260663268221addf35a246abb2dc43095d86da9df2d6d904fdf17c39061b49",
+          "traceSha256": "8ae60564506bfdb5466218b3724a42c1f7800c0b2fd1d42de9b0cb46cbaf2483"
+        },
+        {
+          "id": "av-prosody",
+          "provider": "--codex",
+          "model": "gpt-6.1-sol",
+          "requestSha256": "b3416e1bb308e9825033e671cdba38ec2477684e3efd33b71b999ed502adaddb",
+          "latencyMs": 24100,
+          "usage": {
+            "input_tokens": 33356,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 719,
+            "reasoning_output_tokens": 24
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [
+              "apps/web/lib/tts/emotion-prosody.ts#applyEmotionProsody",
+              "apps/web/lib/tts/emotion-prosody.ts#applyExpressiveCopyProsody"
+            ],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Names required helpers/types and explicitly identifies bypass paths that skip clamping; voice-identity or acoustic benefit is not claimed."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Two candidates fit the author's scope: emotion presets and text-based prosody adjustments. Supplied source includes their local helpers and types, but no caller context or tests. References document inspected source, not correctness or audible results.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "5f900c32770fbe57",
+                "name": "applyEmotionProsody",
+                "description": "Adjusts TTS parameters for seven non-neutral emotion presets, then clamps numeric outputs. Neutral or unknown emotions return a shallow copy. Whisper sets the whisper effect only when the existing effect is 'none'.",
+                "category": "Data processing",
+                "integration_notes": "Extract with EmotionProsodyInput, clamp, isKnownEmotion and its emotion-ID data/type from the supplied module, or adapt those supporting definitions. Align parameter units and effect names with the receiving TTS system; their compatibility is unresolved. The supplied LICENSE contains the MIT notice and requires retaining copyright and permission notices in copies or substantial portions.",
+                "limitations": [
+                  "No supplied tests or caller evidence; audible behavior and backend compatibility are unverified.",
+                  "Neutral and unknown emotions bypass clamping. Emotion matching lowercases but does not trim input.",
+                  "Numeric inputs are not validated for finiteness; clamp does not repair NaN. Active presets return only the declared fields."
+                ],
+                "explanation_refs": [
+                  "24cf33ff5db5fdd3401f5a1c",
+                  "2dae1772508d6389670f63c0",
+                  "6ac6154d34fa4e758508abe1"
+                ]
+              },
+              {
+                "target_id": "9c598bbc4ac4273b",
+                "name": "applyExpressiveCopyProsody",
+                "description": "When enabled, scans normalized text for punctuation and uppercase words and applies scaled speed, pitch, volume and reverb deltas. Each signal count is capped at three. Intensity and a cloned-voice flag scale the adjustments.",
+                "category": "Data processing",
+                "integration_notes": "Extract with EmotionProsodyInput, ExpressiveIntensity, ExpressiveProsodyOptions, sanitizeForExpressiveScan, clampPunctuationRun and clamp from the supplied module. Enable explicitly; the default intensity is subtle. Confirm parameter units, desired text heuristics and composition order with emotion adjustments in the receiving system; caller context is absent. Retain the supplied MIT copyright and permission notices when copying substantial portions.",
+                "limitations": [
+                  "No supplied tests or audio evaluation. Reduced scaling for cloned voices does not establish voice-identity preservation.",
+                  "Counts are across the whole text, not individual punctuation runs. Uppercase matching uses ASCII letters; hyphens also count as dashes.",
+                  "Disabled, empty-text and no-signal paths bypass clamping. Numeric finiteness is not validated; active paths return only declared fields."
+                ],
+                "explanation_refs": [
+                  "0b487767b5b8801e95f57271",
+                  "2dae1772508d6389670f63c0",
+                  "6ac6154d34fa4e758508abe1"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "0143fb5ad839e432fd06d83110c77430ccbe185d8f04cf8a2767c52233b6940a",
+          "rawAnswerSha256": "724788d311f7433bc22c5e7bf7b9159255bd282c5b17ad92a705419c8fcb5159",
+          "traceSha256": "80d869ced38e8477dac36c66b822b63b7169e3c873bc2413ccc751c3b85cf5ee"
+        },
+        {
+          "id": "av-manifest-shape",
+          "provider": "--codex",
+          "model": "gpt-6.1-sol",
+          "requestSha256": "8d50426b637b547f65f535d6d60412269269283cb56567b42feca2eedbf09315",
+          "latencyMs": 17182,
+          "usage": {
+            "input_tokens": 33347,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 376,
+            "reasoning_output_tokens": 0
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": ["apps/web/lib/audio/watermark.ts#generateManifest"],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Describes object construction and type context without claiming signing, embedding or C2PA compliance."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Only generateManifest is considered, honoring the author's exclusions. It offers a reusable metadata-to-object mapping; supplied context does not establish C2PA conformance or runtime correctness.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "3c29a39fedd4891c",
+                "name": "generateManifest metadata object builder",
+                "description": "Maps generator, version, timestamp, model and textHash into claim_generator and two assertion objects. It returns an object with AudioObject metadata and a fixed audio/wav encoding format.",
+                "category": "Data processing",
+                "integration_notes": "Extract the declaration with the supplied WatermarkMetadata interface or an adapted input type. The function body does not reference the module's fs or path imports. Decide whether the fixed WAV format and assertion labels match the receiving system, and add input validation and serialization as needed. The supplied LICENSE states MIT terms requiring retention of its copyright and permission notice in copies or substantial portions.",
+                "limitations": [
+                  "Builds an object only; it does not serialize, sign, embed or verify a manifest. C2PA conformance remains unresolved.",
+                  "No runtime validation is shown for timestamps, hashes or other fields. Optional userId is unused, and the return type is only object.",
+                  "No target tests or test results are supplied. Consumer requirements and broader integration context are incomplete."
+                ],
+                "explanation_refs": [
+                  "782b975d0a122e9b07750c6d",
+                  "9147253a0d31d006a1d34a72",
+                  "6ac6154d34fa4e758508abe1"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "9cb677cc920d55c6f78b2728126d750632b0d473805085eefe64664f583b9cab",
+          "rawAnswerSha256": "2ba6fa1fb9fef48fced85b306608cdc7b05642c250dda1d2dd6737d205b4c25f",
+          "traceSha256": "e570107f364d1f696035cc52598e5037f494ecb6794d3bb018fa39f7b0d930cc"
+        },
+        {
+          "id": "av-owner-exclusion",
+          "provider": "--codex",
+          "model": "gpt-6.1-sol",
+          "requestSha256": "ac37cf6140ed48f2a98bd6bea29b4970da45ee8cf6f076bc40fc28d504464e80",
+          "latencyMs": 10070,
+          "usage": {
+            "input_tokens": 33346,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 98,
+            "reasoning_output_tokens": 28
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": null,
+            "requiredGroupRecall": null
+          },
+          "semanticReview": {
+            "reviewer": "implementing Codex agent; not independent",
+            "status": "passed",
+            "materialUnsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": "Empty selection honors the author exclusion."
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "The supplied owner context excludes every supplied target from reuse, so no candidates are selected. Evidence is partial (59 targets omitted); this result does not establish source correctness, dependency completeness, test status, or license eligibility.",
+            "outcome": "no_candidates",
+            "reusable_pieces": []
+          },
+          "answerSha256": "b0ff6442f883325774a4296fe91e0734a98c9a673b7041fb05d798e7020d1d0f",
+          "rawAnswerSha256": "b0ff6442f883325774a4296fe91e0734a98c9a673b7041fb05d798e7020d1d0f",
+          "traceSha256": "95837a8faad8b4574cec0e2f98e5ccf3b90f2f99258f38df03a7daeb9611ae1c"
+        }
+      ]
+    }
+  ],
+  "consumerChecks": {
+    "passed": 4,
+    "scope": "Three reviewed Git-blob-pinned slices: complete pure prosody module, CSRF extraction plus its constant, and Python sha256 declaration plus stdlib imports. No upstream dependency installation or application execution. NumPy/Polars behavior, TTS acoustics and C2PA compliance were not consumer-tested."
+  },
+  "decision": "Luna is a promising efficient-model research candidate, but its omission prevents a clean semantic pass. Keep the hosted provider unchanged. Prioritize source/packet coverage and explicit extraction context before provider selection. Sol supplied more actionable context in this small run; this does not establish broad model superiority or a dollar-cost winner.",
+  "openGates": [
+    "Independent review of expectations and answers",
+    "Broader natural discovery holdouts, unsuitable/stub code, conflicting notices and additional languages",
+    "Repeated runs to measure variability",
+    "Successful cross-provider comparison and API billing evidence",
+    "Live hosted-provider credential, cancellation and uncertain-billing verification"
+  ],
+  "paidAnthropicCalls": 0
+}

@@ -1,0 +1,189 @@
+{
+  "cases": [
+    {
+      "id": "hg-consensus",
+      "repo": "seanebones-lang/Humanity-Grid",
+      "ownerNote": "Consider only compute_consensus and detect_outliers_iqr for reuse; exclude every other target.",
+      "expectation": {
+        "outcome": "candidates",
+        "allowedTargets": [
+          "src/compute-broker/scripts/validate_consensus.py#compute_consensus",
+          "src/compute-broker/scripts/validate_consensus.py#detect_outliers_iqr"
+        ],
+        "requiredGroups": [
+          [
+            "src/compute-broker/scripts/validate_consensus.py#compute_consensus"
+          ],
+          [
+            "src/compute-broker/scripts/validate_consensus.py#detect_outliers_iqr"
+          ]
+        ],
+        "minCandidates": 2,
+        "maxCandidates": 2
+      },
+      "reviewPoints": [
+        "Both functions depend on Polars; compute_consensus also uses NumPy.",
+        "Pearson joins common keys; fewer than two matches and NaN correlation return 0. Duplicate keys and constant scores are not validated.",
+        "IQR flags scores strictly outside computed bounds; no claim of validated scientific correctness or passing tests."
+      ]
+    },
+    {
+      "id": "hg-streaming-hash",
+      "repo": "seanebones-lang/Humanity-Grid",
+      "ownerNote": "Consider only sha256 in proofs/EXP-001-v1/tools/verify.py for reuse; exclude every other target.",
+      "expectation": {
+        "outcome": "candidates",
+        "allowedTargets": ["proofs/EXP-001-v1/tools/verify.py#sha256"],
+        "requiredGroups": [["proofs/EXP-001-v1/tools/verify.py#sha256"]],
+        "minCandidates": 1,
+        "maxCandidates": 1
+      },
+      "reviewPoints": [
+        "Needs hashlib and a pathlib-compatible path; reads binary chunks of 1 MiB.",
+        "This function does not establish source authenticity or execute the full proof verifier.",
+        "Sibling imports are module-level observations, not required dependencies of sha256."
+      ]
+    },
+    {
+      "id": "hg-results-loader",
+      "repo": "seanebones-lang/Humanity-Grid",
+      "ownerNote": "Consider only load_results in src/compute-broker/scripts/validate_consensus.py for reuse; exclude every other target.",
+      "expectation": {
+        "outcome": "candidates",
+        "allowedTargets": [
+          "src/compute-broker/scripts/validate_consensus.py#load_results"
+        ],
+        "requiredGroups": [
+          ["src/compute-broker/scripts/validate_consensus.py#load_results"]
+        ],
+        "minCandidates": 1,
+        "maxCandidates": 1
+      },
+      "reviewPoints": [
+        "Requires pathlib and Polars, directories rep{replicate}/{work_unit_id}, two explicit parquet name patterns.",
+        "Missing files raise FileNotFoundError; reading does not validate result schema or correctness."
+      ]
+    },
+    {
+      "id": "hg-owner-exclusion",
+      "repo": "seanebones-lang/Humanity-Grid",
+      "ownerNote": "Exclude every supplied target from reuse. Return no candidates.",
+      "expectation": {
+        "outcome": "no_candidates",
+        "allowedTargets": [],
+        "requiredGroups": [],
+        "minCandidates": 0,
+        "maxCandidates": 0
+      },
+      "reviewPoints": ["Honor exclusion despite reusable code being present."]
+    },
+    {
+      "id": "av-token-extraction",
+      "repo": "seanebones-lang/AI-Voiceover",
+      "ownerNote": "Consider only extractCSRFTokenFromRequest for reuse; exclude every other target.",
+      "expectation": {
+        "outcome": "candidates",
+        "allowedTargets": [
+          "apps/web/lib/security/csrf.ts#extractCSRFTokenFromRequest"
+        ],
+        "requiredGroups": [
+          ["apps/web/lib/security/csrf.ts#extractCSRFTokenFromRequest"]
+        ],
+        "minCandidates": 1,
+        "maxCandidates": 1
+      },
+      "reviewPoints": [
+        "Requires Headers-like get and same-file CSRF_TOKEN_HEADER; header takes precedence then string body value.",
+        "It extracts a value; it does not validate CSRF protection or compare cookies.",
+        "next/headers is a module import; do not assert this extraction function calls cookies."
+      ]
+    },
+    {
+      "id": "av-prosody",
+      "repo": "seanebones-lang/AI-Voiceover",
+      "ownerNote": "Consider only applyEmotionProsody and applyExpressiveCopyProsody for reuse; exclude every other target.",
+      "expectation": {
+        "outcome": "candidates",
+        "allowedTargets": [
+          "apps/web/lib/tts/emotion-prosody.ts#applyEmotionProsody",
+          "apps/web/lib/tts/emotion-prosody.ts#applyExpressiveCopyProsody"
+        ],
+        "requiredGroups": [
+          ["apps/web/lib/tts/emotion-prosody.ts#applyEmotionProsody"],
+          ["apps/web/lib/tts/emotion-prosody.ts#applyExpressiveCopyProsody"]
+        ],
+        "minCandidates": 2,
+        "maxCandidates": 2
+      },
+      "reviewPoints": [
+        "Requires same-file clamp, isKnownEmotion, ttsEmotionIds, sanitizeForExpressiveScan and clampPunctuationRun as applicable, plus type definitions.",
+        "Unknown/neutral emotion and disabled or empty expressive scan return a shallow copy without numeric clamping.",
+        "These transform parameters; no acoustic quality or identity-preservation proof."
+      ]
+    },
+    {
+      "id": "av-manifest-shape",
+      "repo": "seanebones-lang/AI-Voiceover",
+      "ownerNote": "Consider only generateManifest for reuse; exclude every other target.",
+      "expectation": {
+        "outcome": "candidates",
+        "allowedTargets": ["apps/web/lib/audio/watermark.ts#generateManifest"],
+        "requiredGroups": [
+          ["apps/web/lib/audio/watermark.ts#generateManifest"]
+        ],
+        "minCandidates": 1,
+        "maxCandidates": 1
+      },
+      "reviewPoints": [
+        "Returns an object shape using metadata and same-file WatermarkMetadata type.",
+        "Does not sign, embed, verify, or establish C2PA compliance. Sibling addWatermark returns the input buffer unchanged.",
+        "fs/path are unused module imports, not necessary runtime dependencies for generateManifest."
+      ]
+    },
+    {
+      "id": "av-owner-exclusion",
+      "repo": "seanebones-lang/AI-Voiceover",
+      "ownerNote": "Exclude every supplied target from reuse. Return no candidates.",
+      "expectation": {
+        "outcome": "no_candidates",
+        "allowedTargets": [],
+        "requiredGroups": [],
+        "minCandidates": 0,
+        "maxCandidates": 0
+      },
+      "reviewPoints": ["Honor exclusion despite useful helpers."]
+    }
+  ],
+  "coverageProbes": [
+    {
+      "repo": "seanebones-lang/Humanity-Grid",
+      "path": "src/research-scout/src/research_scout/ingest/arxiv.py",
+      "symbol": "ArxivClient._rate_limited_request"
+    },
+    {
+      "repo": "seanebones-lang/Humanity-Grid",
+      "path": "src/experiment-engine/scripts/split_work_units.py",
+      "symbol": "main"
+    },
+    {
+      "repo": "seanebones-lang/Humanity-Grid",
+      "path": "src/volunteer-app/src-tauri/src/main.rs",
+      "symbol": "<module>"
+    },
+    {
+      "repo": "seanebones-lang/AI-Voiceover",
+      "path": "apps/web/lib/tts/prosody-tags.ts",
+      "symbol": "parseProsodyTags"
+    },
+    {
+      "repo": "seanebones-lang/AI-Voiceover",
+      "path": "apps/web/lib/tts-cache.ts",
+      "symbol": "buildTtsCacheKey"
+    },
+    {
+      "repo": "seanebones-lang/AI-Voiceover",
+      "path": "apps/web/lib/rate-limit.ts",
+      "symbol": "createFallbackLimiter"
+    }
+  ]
+}

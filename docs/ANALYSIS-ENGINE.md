@@ -222,10 +222,30 @@ and fresh-consumer success; do not use model self-confidence as a quality score.
 Retain failures and compare repetitions without changing fixtures to fit answers.
 
 The Python parser and bounded follow-up inspection are implemented.
-Durable background jobs are now implemented. The next increment is an independently
-reviewed holdout comparison, followed by selection and live verification of the
-hosted provider adapter. Automatic installation/execution of arbitrary repository
+Durable background jobs are now implemented. A separate
+[real-source evaluation](../examples/analysis-evaluation/holdout/README.md) freezes
+eight constrained cases on two pinned public MIT repositories. Luna/high and
+Sol/low both passed all structural and required-selection checks; implementing-agent
+source review found one Luna omission about numeric-clamping bypass. Sol supplied
+more explicit extraction context in this small sample. This is not independent
+review, natural discovery recall, a repeated-run estimate or a dollar-cost comparison.
+
+The evaluation also identified six source probes that never reached the model:
+three indexed targets omitted from the packet and three files absent from inspection.
+Fairer bounded source and target selection, explicit extraction context and a fresh
+independently reviewed corpus should precede choosing and live-verifying the hosted
+provider adapter. Automatic installation/execution of arbitrary repository
 code is not part of the public analyzer.
+
+The real-source milestone adds ten offline evaluation/consumer checks, bringing
+the full local suite to 287 checks. Archived model answers replay their exact
+request hashes, structural/reference validation and required-selection scores.
+Type checking, formatting, production build and dependency audit passed; the
+audit reported zero vulnerabilities. The live preview remained healthy, with
+seven listings, 34 briefs, nine summary runs and no analysis jobs. Listing and
+summary-run rows matched the private pre-job backup exactly. The sixteen explicit
+Codex evaluation invocations used the operator's account allowance; no Anthropic
+calls or hosted catalog analyses were made for this milestone.
 
 ## Job milestone validation
 
