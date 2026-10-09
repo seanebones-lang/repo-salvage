@@ -1,0 +1,18 @@
+[
+  {
+    "id": "rust",
+    "repository": "rapidfuzz/strsim-rs",
+    "path": "src/lib.rs",
+    "symbol": "levenshtein",
+    "max_characters": 12000,
+    "listing_id": 991
+  },
+  {
+    "id": "go",
+    "repository": "dgryski/go-rendezvous",
+    "path": "rdv.go",
+    "symbol": "Rendezvous.Lookup",
+    "max_characters": 6000,
+    "listing_id": 992
+  }
+]

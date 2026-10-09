@@ -310,7 +310,10 @@ describe("focused complete source evidence", () => {
   });
   it("omits a complete block when it cannot fit rather than supplying a source prefix", async () => {
     transport([
-      { path: "main.rs", content: "//" + "x".repeat(5000) + "\nfn main(){}" },
+      {
+        path: "main.rs",
+        content: 'fn main(){ let x="' + "x".repeat(5000) + '"; }',
+      },
     ]);
     const data = await focusedEvidence(
       identity.full_name,

@@ -39,7 +39,7 @@ enclosing class context. The helper receives source as stdin data through
 limits. Linux also caps CPU time and address space. Target code is never imported
 or executed. Invalid/newer grammar and incompatible encoding withhold targets.
 A missing/failed parser falls back to complete-file evidence with explicit gaps.
-Other languages receive complete-file targets with uninspected-import context.
+Go and Rust use the isolated CST process described below. Remaining languages receive complete-file targets with uninspected-import context.
 File fallback also applies when no recognized declaration exists.
 
 Static imports and re-exports are inspected at module level. Relative imports
@@ -99,7 +99,7 @@ so wrappers link to it without duplicating its transitive metadata. Every comple
 body, locator, gap and counter still counts toward the original allowance. A zero
 omission counter does not establish complete dependencies. Scoped blocks take
 priority over remaining supporting/test files and manifests, so one kind of context
-can displace another. Non-Python support continues to use complete file context.
+can displace another. In archived coverage-v4, non-Python support uses complete file context.
 
 Each selected target has a `contexts` entry identifying its complete same-file
 reference, or null when that body did not fit. The prompt requires checking
@@ -403,3 +403,40 @@ reported by both analysis and discovery; static lookup remains a conditional
 starting point. No upstream modules or tests were run. This four-source,
 ten-part catalog is too small to establish general search recall or a language
 performance comparison.
+
+## Go/Rust concrete syntax and coverage-v5
+
+Current analysis and focused evidence use coverage-v5. The trusted Node child reads
+source as JSON stdin, parses with web-tree-sitter 0.27.1 and bundled official MIT
+Go 0.25.0 / Rust 0.24.0 grammar WASM, and verifies grammar SHA-256 before loading.
+It never imports, installs, compiles or executes target code. No target toolchain
+is required. The child receives a minimal environment without provider secrets,
+a five-second timeout, a 128 MB V8 heap setting, bounded input/output and bounded
+node/observation traversals. The V8 heap setting is not a total process/RSS limit.
+Malformed trees withhold declarations; unavailable/budget-exhausted parsing falls
+back to explicit complete-file evidence. Grammar assets and runtime WASM are
+traced into the standalone server and exercised in read-only container checks.
+
+Go functions, receiver methods, grouped types and aliases retain complete units.
+Rust functions, structs/enums/types/traits/unions, impls and direct impl methods
+retain complete units and preceding attributes. Constants/statics and Go package
+variables are supporting statements rather than primary parts. Opaque modules
+and macro bodies are not advertised as extracted declarations. Duplicate symbol
+names receive source-coordinate suffixes; conditional definitions remain gaps.
+
+When full-file context is absent, `go-cst-names-v1` and `rust-cst-names-v1` supply
+complete supporting units from unique same-file names, conservative member
+spellings, observed Go receiver types and Rust enclosing impls. Local spellings,
+ambiguous/conditional definitions, opaque modules/macros and wildcard imports
+remain gaps. Every config/import statement is source context, not a requirement
+to install its package. Go package peers, build conditions and initialization,
+Rust module lookup, cfg evaluation, macro expansion, trait dispatch and runtime
+behavior are not resolved. No zero-omission count proves dependency closure.
+The previous packet policies remain available for frozen evaluation replay.
+
+The [separately frozen consumer trial](../examples/rust-go-consumers/README.md)
+uses exact pinned strsim-rs and go-rendezvous focused responses. One Rust and one
+Go first proposal passed predeclared standalone acceptance after implementing-agent
+review. The Go adaptation intentionally repairs the captured Remove defect and
+changes the API to report validation/lookup/removal status. No upstream module
+was compiled/executed, and no current listing or public catalog record was changed.

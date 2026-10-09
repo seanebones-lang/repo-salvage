@@ -1,0 +1,23 @@
+{
+  "format": "repo-salvage/rust-go-consumer-execution-v1",
+  "at": "2026-10-09T19:45:52.119Z",
+  "inputSealSha256": "f4e406e88051b9eb983d79ac97a26a5c29b6e4526c191185495ade061b460566",
+  "reviewSha256": "d6c6eb0f27bb1c1a99b6fceb14a2dc3ee32964bd9d104e60222a2a791a788bfd",
+  "scope": "Only inspected standalone adaptations compiled/executed; no captured upstream module execution. Operator-reviewed, not blind.",
+  "results": [
+    {
+      "language": "rust",
+      "status": "passed",
+      "compiler": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "codeSha256": "929b0f245b0e5723cefd30bcb701945f1ff7f8bfa373e3f51c9d2ac84b9a4e27",
+      "output": "\nrunning 3 tests\ntest exhaustive_small_unicode_against_full_matrix ... ok\ntest long_asymmetric_inputs ... ok\ntest published_examples_and_empty ... ok\n\ntest result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s\n\n"
+    },
+    {
+      "language": "go",
+      "status": "passed",
+      "compiler": "go version go1.27.2 darwin/arm64",
+      "codeSha256": "8c2a7cfe52b6e07ff1bf2cfa759b1f218e31a6ccdfd20ef0e0c3842bc477621a",
+      "output": "=== RUN   TestValidationAndHashCalls\n--- PASS: TestValidationAndHashCalls (0.00s)\n=== RUN   TestTieOrderAndSwapRepair\n--- PASS: TestTieOrderAndSwapRepair (0.00s)\n=== RUN   TestDeterministicMutationOracle\n--- PASS: TestDeterministicMutationOracle (0.00s)\nPASS\nok  \texample.com/repo-salvage/rendezvous-consumer\t0.193s\n"
+    }
+  ]
+}

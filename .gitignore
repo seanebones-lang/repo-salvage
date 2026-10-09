@@ -18,3 +18,6 @@ packages/mcp/src/contracts.json
 public/assignment-consumer.tar.gz
 __pycache__/
 public/integer-word-consumer.tar.gz
+
+public/rust-edit-distance.tar.gz
+public/go-rendezvous-consumer.tar.gz

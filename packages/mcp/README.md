@@ -1,6 +1,6 @@
 # Repo Salvage MCP adapter
 
-Node.js 22+ local stdio server, `@repo-salvage/mcp@0.3.4`. Install the archive
+Node.js 22+ local stdio server, `@repo-salvage/mcp@0.4.0`. Install the archive
 linked from the application's `/agents` guide in a separate workspace:
 
 ```sh

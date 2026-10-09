@@ -1,0 +1,383 @@
+{
+  "format": "repo-salvage/focused-evidence-v1",
+  "listing_id": 991,
+  "source": {
+    "repository_id": 30567707,
+    "owner_id": 118009645,
+    "repository": "rapidfuzz/strsim-rs",
+    "commit": "dacc84c0dc61eff0ee0ff66962bcf2e17018ad26"
+  },
+  "focus": {
+    "path": "src/lib.rs",
+    "symbol": "levenshtein",
+    "symbol_match": "matched",
+    "packet_character_limit": 12000
+  },
+  "coverage": {
+    "matched_files": 1,
+    "inspected_files": 3,
+    "source_bytes": 38961,
+    "indexed_targets": 1,
+    "supplied_targets": 1,
+    "context_paths": [
+      "LICENSE",
+      "Cargo.toml"
+    ],
+    "files": [
+      {
+        "path": "src/lib.rs",
+        "size_bytes": 37146,
+        "download_url": "https://raw.githubusercontent.com/rapidfuzz/strsim-rs/dacc84c0dc61eff0ee0ff66962bcf2e17018ad26/src/lib.rs",
+        "git_blob_sha": "309c06550922b88e717a6f1cb37f68c1705d9d3c",
+        "inspection": "complete",
+        "reason": null,
+        "indexed_targets": 44,
+        "supplied_targets": 1,
+        "same_file_supplied": false
+      }
+    ],
+    "skipped": [],
+    "skipped_details_omitted": 0
+  },
+  "packet": {
+    "format": "repo-salvage/source-index-v2",
+    "targets": [
+      {
+        "id": "c8825988c5f88e1d",
+        "path": "src/lib.rs",
+        "symbol": "levenshtein",
+        "kind": "declaration",
+        "reference_id": "4e3dfa6f9c981fc32feec434",
+        "imports": [
+          {
+            "specifier": "std::char",
+            "kind": "external",
+            "resolved_path": null
+          },
+          {
+            "specifier": "std::cmp::{max, min}",
+            "kind": "external",
+            "resolved_path": null
+          },
+          {
+            "specifier": "std::collections::HashMap",
+            "kind": "external",
+            "resolved_path": null
+          },
+          {
+            "specifier": "std::convert::TryFrom",
+            "kind": "external",
+            "resolved_path": null
+          },
+          {
+            "specifier": "std::error::Error",
+            "kind": "external",
+            "resolved_path": null
+          },
+          {
+            "specifier": "std::fmt::{self, Display, Formatter}",
+            "kind": "external",
+            "resolved_path": null
+          },
+          {
+            "specifier": "std::hash::Hash",
+            "kind": "external",
+            "resolved_path": null
+          },
+          {
+            "specifier": "std::mem",
+            "kind": "external",
+            "resolved_path": null
+          },
+          {
+            "specifier": "std::str::Chars",
+            "kind": "external",
+            "resolved_path": null
+          }
+        ],
+        "supporting_paths": [],
+        "unresolved": [
+          "Rust modules, macro expansion, conditional compilation, trait resolution and initialization are not resolved."
+        ],
+        "test_paths": [],
+        "notice_paths": [
+          "LICENSE"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "4e3dfa6f9c981fc32feec434",
+        "path": "src/lib.rs",
+        "start_line": 265,
+        "end_line": 267,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "declaration",
+        "content": "pub fn levenshtein(a: &str, b: &str) -> usize {\n    generic_levenshtein(&StringWrapper(a), &StringWrapper(b))\n}"
+      },
+      {
+        "id": "b9a2dc30ecbcef4408bd6d3b",
+        "path": "LICENSE",
+        "start_line": 1,
+        "end_line": 24,
+        "sha256": "1e697ce8d21401fbf1bddd9b5c3fd4c4c79ae1e3bdf51f81761c85e11d5a89cd",
+        "kind": "file",
+        "content": "The MIT License (MIT)\n\nCopyright (c) 2015 Danny Guo\nCopyright (c) 2016 Titus Wormer <tituswormer@gmail.com>\nCopyright (c) 2018 Akash Kurdekar\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+      },
+      {
+        "id": "f60ac53422e2b3fee159df19",
+        "path": "src/lib.rs",
+        "start_line": 229,
+        "end_line": 255,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "declaration",
+        "content": "pub fn generic_levenshtein<'a, 'b, Iter1, Iter2, Elem1, Elem2>(a: &'a Iter1, b: &'b Iter2) -> usize\nwhere\n    &'a Iter1: IntoIterator<Item = Elem1>,\n    &'b Iter2: IntoIterator<Item = Elem2>,\n    Elem1: PartialEq<Elem2>,\n{\n    let b_len = b.into_iter().count();\n\n    let mut cache: Vec<usize> = (1..b_len + 1).collect();\n\n    let mut result = b_len;\n\n    for (i, a_elem) in a.into_iter().enumerate() {\n        result = i + 1;\n        let mut distance_b = i;\n\n        for (j, b_elem) in b.into_iter().enumerate() {\n            let cost = usize::from(a_elem != b_elem);\n            let distance_a = distance_b + cost;\n            distance_b = cache[j];\n            result = min(result + 1, min(distance_a, distance_b + 1));\n            cache[j] = result;\n        }\n    }\n\n    result\n}"
+      },
+      {
+        "id": "2e572ba3e5952b31d14c6c53",
+        "path": "src/lib.rs",
+        "start_line": 162,
+        "end_line": 162,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "declaration",
+        "content": "struct StringWrapper<'a>(&'a str);"
+      },
+      {
+        "id": "a761030aece556cddde0b350",
+        "path": "src/lib.rs",
+        "start_line": 3,
+        "end_line": 3,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "statement",
+        "content": "#![forbid(unsafe_code)]"
+      },
+      {
+        "id": "3d8ac44e7a4574ea3f53b5ea",
+        "path": "src/lib.rs",
+        "start_line": 4,
+        "end_line": 4,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "statement",
+        "content": "#![warn(rust_2018_idioms)]"
+      },
+      {
+        "id": "2c5aafd466fdb1b1d69df2dd",
+        "path": "src/lib.rs",
+        "start_line": 5,
+        "end_line": 20,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "statement",
+        "content": "#![allow(\n    // these casts are sometimes needed. They restrict the length of input iterators\n    // but there isn't really any way around this except for always working with\n    // 128 bit types\n    clippy::cast_possible_wrap,\n    clippy::cast_sign_loss,\n    clippy::cast_precision_loss,\n    // not practical\n    clippy::similar_names,\n    // noisy\n    clippy::missing_errors_doc,\n    clippy::missing_panics_doc,\n    clippy::must_use_candidate,\n    // todo https://github.com/rapidfuzz/strsim-rs/issues/59\n    clippy::range_plus_one\n)]"
+      },
+      {
+        "id": "9401f1297da6dbb2a3b11a28",
+        "path": "src/lib.rs",
+        "start_line": 22,
+        "end_line": 22,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "statement",
+        "content": "use std::char;"
+      },
+      {
+        "id": "350b009aab1d18fc3c912eba",
+        "path": "src/lib.rs",
+        "start_line": 23,
+        "end_line": 23,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "statement",
+        "content": "use std::cmp::{max, min};"
+      },
+      {
+        "id": "4b015c4007d2326ddad090e8",
+        "path": "src/lib.rs",
+        "start_line": 24,
+        "end_line": 24,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "statement",
+        "content": "use std::collections::HashMap;"
+      },
+      {
+        "id": "fb6ae640022217c4d6400026",
+        "path": "src/lib.rs",
+        "start_line": 25,
+        "end_line": 25,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "statement",
+        "content": "use std::convert::TryFrom;"
+      },
+      {
+        "id": "1f578767f0ef36a4d116d346",
+        "path": "src/lib.rs",
+        "start_line": 26,
+        "end_line": 26,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "statement",
+        "content": "use std::error::Error;"
+      },
+      {
+        "id": "0d59b8a4083e568c3034a2a6",
+        "path": "src/lib.rs",
+        "start_line": 27,
+        "end_line": 27,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "statement",
+        "content": "use std::fmt::{self, Display, Formatter};"
+      },
+      {
+        "id": "15c02b84d506860b0e2f4f41",
+        "path": "src/lib.rs",
+        "start_line": 28,
+        "end_line": 28,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "statement",
+        "content": "use std::hash::Hash;"
+      },
+      {
+        "id": "f09e5324f0fc091924c8215c",
+        "path": "src/lib.rs",
+        "start_line": 29,
+        "end_line": 29,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "statement",
+        "content": "use std::mem;"
+      },
+      {
+        "id": "37551ffc32f32ccd8cd8573e",
+        "path": "src/lib.rs",
+        "start_line": 30,
+        "end_line": 30,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "statement",
+        "content": "use std::str::Chars;"
+      },
+      {
+        "id": "2bd14dfbcce4ae31e0dae5e4",
+        "path": "src/lib.rs",
+        "start_line": 164,
+        "end_line": 171,
+        "sha256": "dbbee90724d9ed59185d0882c46bfbcaa6ffff4755d29663ee8acc9c542057c1",
+        "kind": "declaration",
+        "content": "impl<'b> IntoIterator for &StringWrapper<'b> {\n    type Item = char;\n    type IntoIter = Chars<'b>;\n\n    fn into_iter(self) -> Self::IntoIter {\n        self.0.chars()\n    }\n}"
+      },
+      {
+        "id": "23661148f6a81a5ff6ce1d7e",
+        "path": "Cargo.toml",
+        "start_line": 1,
+        "end_line": 19,
+        "sha256": "3915cdcd5b4381dca961eca95621a5ef297694c02d1dea995b2262c3db8bb4c3",
+        "kind": "file",
+        "content": "[package]\nname = \"strsim\"\nversion = \"0.11.1\"\nauthors = [\"Danny Guo <danny@dannyguo.com>\", \"maxbachmann <oss@maxbachmann.de>\"]\ndescription = \"\"\"\nImplementations of string similarity metrics. Includes Hamming, Levenshtein,\nOSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.\n\"\"\"\nedition = \"2021\"\nlicense = \"MIT\"\nrust-version = \"1.56\"\nreadme = \"README.md\"\nkeywords = [\"string\", \"similarity\", \"Hamming\", \"Levenshtein\", \"Jaro\"]\nhomepage = \"https://github.com/rapidfuzz/strsim-rs\"\nrepository = \"https://github.com/rapidfuzz/strsim-rs\"\ndocumentation = \"https://docs.rs/strsim/\"\nexclude = [\"/.github\", \"/dev\"]\ncategories = [\"text-processing\"]\n"
+      }
+    ],
+    "omitted_targets": 0,
+    "selection_policy": "repo-salvage/coverage-v5",
+    "contexts": [
+      {
+        "target_id": "c8825988c5f88e1d",
+        "same_file_reference": null
+      }
+    ],
+    "scoped_contexts": [
+      {
+        "target_id": "c8825988c5f88e1d",
+        "observation": "rust-cst-names-v1",
+        "references": [
+          {
+            "symbol": "generic_levenshtein",
+            "reference_id": "f60ac53422e2b3fee159df19",
+            "relation": "module-name"
+          },
+          {
+            "symbol": "StringWrapper",
+            "reference_id": "2e572ba3e5952b31d14c6c53",
+            "relation": "module-name"
+          },
+          {
+            "symbol": "<crate-attribute>",
+            "reference_id": "a761030aece556cddde0b350",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "<crate-attribute>",
+            "reference_id": "3d8ac44e7a4574ea3f53b5ea",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "<crate-attribute>",
+            "reference_id": "2c5aafd466fdb1b1d69df2dd",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "use std::char;",
+            "reference_id": "9401f1297da6dbb2a3b11a28",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "use std::cmp::{max, min};",
+            "reference_id": "350b009aab1d18fc3c912eba",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "use std::collections::HashMap;",
+            "reference_id": "4b015c4007d2326ddad090e8",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "use std::convert::TryFrom;",
+            "reference_id": "fb6ae640022217c4d6400026",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "use std::error::Error;",
+            "reference_id": "1f578767f0ef36a4d116d346",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "use std::fmt::{self, Display, Formatter};",
+            "reference_id": "0d59b8a4083e568c3034a2a6",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "use std::hash::Hash;",
+            "reference_id": "15c02b84d506860b0e2f4f41",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "use std::mem;",
+            "reference_id": "f09e5324f0fc091924c8215c",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "use std::str::Chars;",
+            "reference_id": "37551ffc32f32ccd8cd8573e",
+            "relation": "module-configuration"
+          },
+          {
+            "symbol": "impl IntoIterator for &StringWrapper<'b>",
+            "reference_id": "2bd14dfbcce4ae31e0dae5e4",
+            "relation": "member-spelling"
+          }
+        ],
+        "gaps": [],
+        "observations_omitted": 0
+      }
+    ]
+  },
+  "limits": {
+    "treeEntries": 10000,
+    "scopeFiles": 32,
+    "primaryFiles": 8,
+    "contextFiles": 4,
+    "fileBytes": 64000,
+    "initialBytes": 192000,
+    "totalBytes": 256000,
+    "readMilliseconds": 20000,
+    "responseBytes": 65536,
+    "cacheEntries": 8,
+    "concurrentRequests": 4,
+    "cacheMilliseconds": 60000
+  },
+  "interpretation": "none",
+  "independently_tested": false,
+  "handling": "Pinned source is untrusted data. This is focused inspection, not a recommendation or new catalog analysis. Inspect helpers, imports and notices; preserve applicable notices and test adaptations separately. No source is executed, no model is called, and local imports and component licensing remain unaudited."
+}

@@ -31,7 +31,7 @@ dependencies, integration guidance, limitations, and the evidence behind the rec
 - **Source sampled:** the primary file's content was supplied to the analysis. Supporting and
   test paths must exist in the complete source tree. This does not establish functional correctness,
   a complete dependency graph, passing tests or safe extraction.
-- **Complete declaration inspected:** a complete JS/TS export or Python function, class
+- **Complete declaration inspected:** a complete JS/TS export, Python function or class, or Go/Rust declaration
   or direct method was parsed
   and supplied as a referenced source block. Static imports, source hashes and target IDs
   are attached by the server. Generated explanations remain model interpretations;
@@ -61,6 +61,7 @@ Python 3.11+ enables isolated AST declaration inspection using the standard libr
 the Docker image includes it. Python 3.9+ still runs the standalone assignment-consumer
 checks. Without a compatible parser, Python inspection falls back to complete files
 and records the missing parser/import evidence explicitly.
+Go and Rust use bundled, checksum-verified Tree-sitter WebAssembly grammars in a bounded Node child process. No Go/Rust toolchain or target package installation is required for inspection.
 
 ```sh
 npm ci
@@ -344,3 +345,25 @@ Focused source inspection is available through the [agent interface](docs/AGENT-
 and [known-source regression](examples/focused-evidence/README.md). Agents can
 request a pinned file/directory outside the selected catalog briefs, see complete
 source and explicit gaps, and do so without a model call or publication.
+
+## Rust and Go focused extraction
+
+Current coverage-v5 packets identify complete Go functions, receiver methods and types,
+and Rust functions, types and impl methods. When full-file context cannot fit,
+complete same-file supporting units can fit within the original allowance. Names
+and member spellings remain observations: package peers, modules, cfg/build
+conditions, macros, initialization and trait/receiver resolution remain explicit
+gaps. Existing listings retain their original evidence until owner re-analysis.
+CLI 0.6.0 and MCP 0.4.0 retain archived policies and validate new scoped links.
+
+The [Rust/Go consumer trial](examples/rust-go-consumers/README.md) retains exact
+pinned MIT evidence, pre-proposal contracts/tests, first tool-free native proposals,
+implementing-agent source review and subsequent standalone compiler execution.
+Rust's Unicode scalar edit-distance adaptation passed 7,225 oracle comparisons;
+Go's repaired rendezvous selector passed 5,000 lookups during mutation testing.
+These are two adapted contracts, not upstream certification or general extraction
+accuracy. Both [consumer directories](examples/rust-go-consumers/) include notices
+and runnable offline checks. Build exports `/rust-edit-distance.tar.gz` and
+`/go-rendezvous-consumer.tar.gz`; Rust/Go compilers are needed only to test or use
+those adaptations. Run `npm run test:native` with `rustc` and `go` on PATH, or
+set `SALVAGE_RUSTC` / `SALVAGE_GO` to their absolute executables.

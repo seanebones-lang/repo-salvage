@@ -22,3 +22,22 @@ examples/cross-language-evaluation/consumer-results.json
 examples/cross-language-evaluation/consumer.mjs
 examples/cross-language-evaluation/consumer-execution.json
 examples/cross-language-evaluation/discovery-evidence.json
+
+# Preserve pre-proposal Rust/Go evidence, contracts, drivers and exact first outputs.
+examples/rust-go-consumers/input-seal.json
+examples/rust-go-consumers/go-input-seal.json
+examples/rust-go-consumers/cases.json
+examples/rust-go-consumers/corpus.json
+examples/rust-go-consumers/freeze.mjs
+examples/rust-go-consumers/proposal.mjs
+examples/rust-go-consumers/proposal-corrected.mjs
+examples/rust-go-consumers/check.mjs
+examples/rust-go-consumers/check-native.mjs
+examples/rust-go-consumers/rust/evidence.json
+examples/rust-go-consumers/rust/result.json
+examples/rust-go-consumers/go/evidence.json
+examples/rust-go-consumers/go/result.json
+examples/rust-go-consumers/rust/consumer.rs
+examples/rust-go-consumers/go/consumer.go
+examples/rust-go-consumers/execution.json
+examples/rust-go-consumers/review.json

@@ -179,3 +179,51 @@ test("coverage-v4 rejects dangling, duplicate, cross-file and unsupported scoped
     );
   }
 });
+
+test("coverage-v5 Rust scoped units and Go receiver declarations replay through CLI validation", async () => {
+  const { serveFixture } =
+    await import("../../../examples/rust-go-consumers/fixture.mjs");
+  const f = await serveFixture();
+  try {
+    for (const c of f.cases) {
+      const { listing_id, ...params } = c.parameters;
+      assert.deepEqual(
+        await focusEvidence(f.origin, listing_id, params),
+        c.response,
+      );
+    }
+  } finally {
+    await f.close();
+  }
+  assert.ok(
+    f.requests.every(
+      (r) => r.method === "GET" && r.authorization === undefined,
+    ),
+  );
+});
+test("coverage-v5 rejects native observations on old policy, wrong language and impossible relations", async () => {
+  const { fixtures } =
+    await import("../../../examples/rust-go-consumers/fixture.mjs");
+  const c = (await fixtures())[0];
+  const { listing_id, ...params } = c.parameters;
+  for (const edit of [
+    (v) => (v.packet.selection_policy = "repo-salvage/coverage-v4"),
+    (v) => (v.packet.scoped_contexts[0].observation = "go-cst-names-v1"),
+    (v) =>
+      (v.packet.scoped_contexts[0].references[0].relation = "receiver-type"),
+    (v) =>
+      (v.packet.scoped_contexts[0].references[0].relation =
+        "class-member-spelling"),
+  ]) {
+    const v = structuredClone(c.response);
+    edit(v);
+    await assert.rejects(
+      focusEvidence(
+        "http://127.0.0.1:1",
+        listing_id,
+        params,
+        async () => new Response(JSON.stringify(v)),
+      ),
+    );
+  }
+});

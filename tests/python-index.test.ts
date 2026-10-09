@@ -84,7 +84,7 @@ describe("Python AST source evidence", () => {
     const prior = evidencePacket(index, undefined, "repo-salvage/coverage-v1");
     const current = evidencePacket(index);
     expect(prior.targets.some((t) => t.symbol === "PublicCache")).toBe(false);
-    expect(current.selection_policy).toBe("repo-salvage/coverage-v4");
+    expect(current.selection_policy).toBe("repo-salvage/coverage-v5");
     expect(current.targets[0].symbol).toBe("PublicCache");
     expect(current.targets).toHaveLength(24);
     expect(index.targets.some((t) => t.symbol === "PublicCache.lookup")).toBe(

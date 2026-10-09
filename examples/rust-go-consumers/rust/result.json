@@ -1,0 +1,28 @@
+{
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "promptSha256": "49f8f823a2de788fc22dad408e7f1dc72770c2f8beaff6377ca22a558d7f2455",
+  "trace": {
+    "sha256": "b70636df049a015b07718242ec823291cd944a460c19eb7d12d6ebce7583a496"
+  },
+  "latencyMs": 17660,
+  "billing": "Existing Codex account allowance; no API-key model call",
+  "inputSealSha256": "f4e406e88051b9eb983d79ac97a26a5c29b6e4526c191185495ade061b460566",
+  "transportSuccess": true,
+  "failure": null,
+  "prohibitedEvents": [],
+  "usage": {
+    "input_tokens": 16081,
+    "cached_input_tokens": 0,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 566,
+    "reasoning_output_tokens": 61
+  },
+  "response": {
+    "code": "// Adapted from rapidfuzz/strsim-rs, src/lib.rs (MIT), pinned commit\n// dacc84c0dc61eff0ee0ff66962bcf2e17018ad26.\n// Copyright (c) 2015 Danny Guo\n// Copyright (c) 2016 Titus Wormer <tituswormer@gmail.com>\n// Copyright (c) 2018 Akash Kurdekar\n// The upstream LICENSE, containing the full MIT permission notice and\n// disclaimer, must accompany redistribution.\n\n#![forbid(unsafe_code)]\n\n/// Returns unit-cost Levenshtein distance over Unicode scalar values.\n/// No normalization or grapheme segmentation is performed.\npub fn edit_distance(a: &str, b: &str) -> usize {\n    let a_len = a.chars().count();\n    let b_len = b.chars().count();\n    let (longer, shorter, short_len) = if a_len >= b_len {\n        (a, b, b_len)\n    } else {\n        (b, a, a_len)\n    };\n\n    // Each entry holds the previous row until it is overwritten.\n    let mut cache: Vec<usize> = (1..=short_len).collect();\n    let mut result = short_len;\n\n    for (i, long_char) in longer.chars().enumerate() {\n        result = i + 1;\n        let mut diagonal = i;\n\n        for (j, short_char) in shorter.chars().enumerate() {\n            let above = cache[j];\n            let substitution = diagonal + usize::from(long_char != short_char);\n            result = (result + 1).min(substitution.min(above + 1));\n            diagonal = above;\n            cache[j] = result;\n        }\n    }\n\n    result\n}\n",
+    "finding": "Adapted the supplied rolling-row recurrence, choosing the shorter char sequence for O(min(char counts)) DP memory without char storage. Handles empty strings and unit-cost edits over Rust chars; standard library only. Supplied units are inspected observations, not evidence of upstream compilation, full dependency closure, or certification. This adaptation was not independently compiled or tested."
+  },
+  "review": "pending",
+  "execution": "not_run"
+}
