@@ -4,8 +4,11 @@ import { getSession } from "@/auth";
 import {
   deleteListing,
   getListing,
-  takeSummaryRun,
-  upsertListing,
+  beginAnalysis,
+  analysisBaseline,
+  analysisIsActive,
+  finishAnalysis,
+  releaseAnalysis,
   reviewComponent,
 } from "@/lib/db";
 import {
@@ -25,6 +28,11 @@ export async function salvage(
 ): Promise<ActionState> {
   const session = await getSession();
   if (!session) return { error: "Sign in first." };
+  if (!process.env.ANTHROPIC_API_KEY)
+    return {
+      error:
+        "Analysis is not configured on this installation yet. Your existing listings remain removable.",
+    };
   const repoId = Number(form.get("repoId"));
   if (!Number.isSafeInteger(repoId) || repoId < 1)
     return { error: "Choose a valid repository." };
@@ -32,6 +40,8 @@ export async function salvage(
     String(form.get("note") ?? "")
       .trim()
       .slice(0, 280) || null;
+  const baseline = analysisBaseline(repoId);
+  let analysisToken: string | undefined;
   try {
     const repo = await getOwnedPublicRepo(
       session.accessToken,
@@ -44,11 +54,7 @@ export async function salvage(
           "Add a recognized license to the repository before listing it for reuse. GitHub must identify its SPDX license.",
       };
     }
-    if (!takeSummaryRun(session.ghId))
-      return {
-        error:
-          "The daily analysis allowance is exhausted for your account or this installation. Try again tomorrow.",
-      };
+    analysisToken = beginAnalysis(repo.id, session.ghId, baseline);
     const sourceSha = await resolveSourceCommit(session.accessToken, repo);
     const [snap, last] = await Promise.all([
       snapshotRepo(session.accessToken, repo, sourceSha),
@@ -56,10 +62,15 @@ export async function salvage(
     ]);
     if (!(await isPublicRepoFresh(repo.id, session.ghId)))
       throw new Error("Repository is no longer public or owned by you");
+    if (!analysisIsActive(analysisToken))
+      return {
+        error:
+          "This analysis was canceled or expired. It has not been published.",
+      };
     const { summary, model } = await summarizeRepo(repo, snap, note);
     if (!(await isPublicRepoFresh(repo.id, session.ghId)))
       throw new Error("Repository is no longer public or owned by you");
-    upsertListing({
+    const published = finishAnalysis(analysisToken, {
       github_repo_id: repo.id,
       owner_login: repo.owner.login,
       owner_id: session.ghId,
@@ -81,11 +92,18 @@ export async function salvage(
       analyzed_at: new Date().toISOString(),
       summary_model: model,
     });
-    revalidatePath("/");
+    if (!published)
+      return {
+        error:
+          "This analysis was canceled or expired. It has not been published.",
+      };
+    revalidatePath("/", "layout");
     revalidatePath("/dashboard");
     return { ok: `Listed ${repo.full_name}` };
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Something went wrong" };
+  } finally {
+    if (analysisToken) releaseAnalysis(analysisToken);
   }
 }
 
@@ -132,6 +150,6 @@ export async function unlist(form: FormData) {
   const id = Number(form.get("id"));
   if (getListing(id)?.owner_id !== session.ghId) return;
   deleteListing(id, session.ghId);
-  revalidatePath("/");
+  revalidatePath("/", "layout");
   revalidatePath("/dashboard");
 }

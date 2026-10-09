@@ -36,6 +36,7 @@ export async function POST(
       { error: "too many reports" },
       { status: 429, headers: { "Retry-After": "3600" } },
     );
-  addReport(id, text);
+  if (!addReport(id, text))
+    return NextResponse.json({ error: "not found" }, { status: 404 });
   return NextResponse.json({ ok: true });
 }

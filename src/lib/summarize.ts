@@ -66,7 +66,7 @@ export async function summarizeRepo(
   ownerNote: string | null,
 ): Promise<{ summary: Summary; model: string }> {
   if (!snap.files.length) throw new Error("No sampled content to summarize");
-  const client = new Anthropic();
+  const client = new Anthropic({ timeout: 120_000, maxRetries: 0 });
   const body = [
     `Repository: ${repo.full_name}`,
     `Description: ${repo.description ?? "(none)"}`,
@@ -104,6 +104,17 @@ export async function summarizeRepo(
     snap.knownPaths,
     snap.files.map((f) => f.path),
   );
+  const partialPaths = new Set(
+    snap.files.filter((f) => f.truncated).map((f) => f.path),
+  );
+  for (const piece of summary.reusable_pieces) {
+    if (partialPaths.has(piece.path)) {
+      piece.limitations = [
+        ...(piece.limitations ?? []),
+        "Only a prefix of the primary source file was analyzed. Inspect the complete file before extraction.",
+      ];
+    }
+  }
   return { summary, model: res.model };
 }
 

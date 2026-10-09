@@ -1,6 +1,7 @@
 import Database from "better-sqlite3";
 import path from "node:path";
 import fs from "node:fs";
+import { randomUUID } from "node:crypto";
 import { componentId } from "./components";
 
 export type ReusablePiece = {
@@ -82,6 +83,7 @@ function open() {
     CREATE TABLE IF NOT EXISTS reports (id INTEGER PRIMARY KEY AUTOINCREMENT, listing_id INTEGER NOT NULL, reason TEXT NOT NULL, at TEXT NOT NULL DEFAULT (datetime('now')));
     CREATE TABLE IF NOT EXISTS summary_runs (owner_id INTEGER NOT NULL, at TEXT NOT NULL DEFAULT (datetime('now')));
     CREATE INDEX IF NOT EXISTS idx_summary_runs ON summary_runs(owner_id, at);
+    CREATE TABLE IF NOT EXISTS active_analyses (github_repo_id INTEGER PRIMARY KEY, owner_id INTEGER NOT NULL, token TEXT NOT NULL UNIQUE, expires_at INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS request_limits (key TEXT PRIMARY KEY, count INTEGER NOT NULL, expires_at INTEGER NOT NULL);
   `);
   const columns = new Set(
@@ -105,6 +107,9 @@ function open() {
   );
   if (!reportColumns.has("resolved_at"))
     db.exec("ALTER TABLE reports ADD COLUMN resolved_at TEXT");
+  db.exec(
+    "CREATE INDEX IF NOT EXISTS idx_reports_queue ON reports(resolved_at, at DESC, id DESC)",
+  );
   return db;
 }
 
@@ -150,7 +155,11 @@ export function listingsByOwner(ownerId: number): Listing[] {
 
 export function deleteListing(id: number, ownerId: number) {
   db().transaction(() => {
-    if (getListing(id)?.owner_id !== ownerId) return;
+    const listing = getListing(id);
+    if (listing?.owner_id !== ownerId) return;
+    db()
+      .prepare("DELETE FROM active_analyses WHERE github_repo_id = ?")
+      .run(listing.github_repo_id);
     db().prepare("DELETE FROM reports WHERE listing_id = ?").run(id);
     db()
       .prepare("DELETE FROM listings WHERE id = ? AND owner_id = ?")
@@ -291,6 +300,82 @@ export function takeSummaryRun(ownerId: number): boolean {
   })();
 }
 
+export function analysisBaseline(
+  repoId: number,
+): { id: number; analyzed_at: string | null } | null {
+  return (
+    (db()
+      .prepare("SELECT id, analyzed_at FROM listings WHERE github_repo_id = ?")
+      .get(repoId) as { id: number; analyzed_at: string | null } | undefined) ??
+    null
+  );
+}
+
+/** Serialize paid analysis per repository; owner removal cancels its publication token. */
+export function beginAnalysis(
+  repoId: number,
+  ownerId: number,
+  expected = analysisBaseline(repoId),
+): string {
+  return db().transaction(() => {
+    const current = analysisBaseline(repoId);
+    if (
+      current?.id !== expected?.id ||
+      current?.analyzed_at !== expected?.analyzed_at
+    )
+      throw new Error(
+        "This listing changed while GitHub was responding. Refresh before analyzing it again.",
+      );
+    db()
+      .prepare("DELETE FROM active_analyses WHERE expires_at <= ?")
+      .run(Date.now());
+    if (
+      db()
+        .prepare("SELECT 1 FROM active_analyses WHERE github_repo_id = ?")
+        .get(repoId)
+    )
+      throw new Error(
+        "This repository already has an analysis in progress. Wait for it to finish before trying again.",
+      );
+    if (!takeSummaryRun(ownerId))
+      throw new Error(
+        "The daily analysis allowance is exhausted for your account or this installation. Try again tomorrow.",
+      );
+    const token = randomUUID();
+    db()
+      .prepare("INSERT INTO active_analyses VALUES (?, ?, ?, ?)")
+      .run(repoId, ownerId, token, Date.now() + 600_000);
+    return token;
+  })();
+}
+
+export function analysisIsActive(token: string): boolean {
+  return !!db()
+    .prepare("SELECT 1 FROM active_analyses WHERE token = ? AND expires_at > ?")
+    .get(token, Date.now());
+}
+
+export function finishAnalysis(
+  token: string,
+  listing: Parameters<typeof upsertListing>[0],
+): boolean {
+  return db().transaction(() => {
+    const active = db()
+      .prepare(
+        "SELECT 1 FROM active_analyses WHERE token = ? AND github_repo_id = ? AND owner_id = ? AND expires_at > ?",
+      )
+      .get(token, listing.github_repo_id, listing.owner_id, Date.now());
+    if (!active) return false;
+    upsertListing(listing);
+    releaseAnalysis(token);
+    return true;
+  })();
+}
+
+export function releaseAnalysis(token: string) {
+  db().prepare("DELETE FROM active_analyses WHERE token = ?").run(token);
+}
+
 export function takeRequest(
   key: string,
   limit: number,
@@ -313,9 +398,13 @@ export function takeRequest(
 }
 
 export function addReport(listingId: number, reason: string) {
-  db()
-    .prepare("INSERT INTO reports (listing_id, reason) VALUES (?, ?)")
-    .run(listingId, reason.slice(0, 500));
+  return (
+    db()
+      .prepare(
+        "INSERT INTO reports (listing_id, reason) SELECT id, ? FROM listings WHERE id = ? AND moderation_hidden_at IS NULL",
+      )
+      .run(reason.slice(0, 500), listingId).changes > 0
+  );
 }
 
 export type ModerationReport = {
@@ -327,12 +416,19 @@ export type ModerationReport = {
   full_name: string | null;
   moderation_hidden_at: string | null;
 };
-export function moderationReports(): ModerationReport[] {
+export function unresolvedReportCount(): number {
+  return (
+    db()
+      .prepare("SELECT COUNT(*) AS n FROM reports WHERE resolved_at IS NULL")
+      .get() as { n: number }
+  ).n;
+}
+export function moderationReports(page = 1): ModerationReport[] {
   return db()
     .prepare(
-      "SELECT reports.*, listings.full_name, listings.moderation_hidden_at FROM reports LEFT JOIN listings ON listings.id = reports.listing_id WHERE resolved_at IS NULL ORDER BY at DESC LIMIT 200",
+      "SELECT reports.*, listings.full_name, listings.moderation_hidden_at FROM reports LEFT JOIN listings ON listings.id = reports.listing_id WHERE resolved_at IS NULL ORDER BY at DESC, reports.id DESC LIMIT 50 OFFSET ?",
     )
-    .all() as ModerationReport[];
+    .all((Math.max(1, Math.floor(page)) - 1) * 50) as ModerationReport[];
 }
 export function moderateReport(
   reportId: number,

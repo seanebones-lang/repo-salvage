@@ -12,6 +12,7 @@ type Props = {
   listingId: number | null;
   note: string | null;
   license: string | null;
+  analysisEnabled: boolean;
 };
 
 export default function RepoRow({
@@ -22,6 +23,7 @@ export default function RepoRow({
   listingId,
   note,
   license,
+  analysisEnabled,
 }: Props) {
   const [state, action, pending] = useActionState<ActionState, FormData>(
     salvage,
@@ -58,7 +60,7 @@ export default function RepoRow({
         <div className="form-row">
           <button
             className="button button-primary"
-            disabled={pending || !licensed}
+            disabled={pending || !licensed || !analysisEnabled}
           >
             {pending
               ? "Reading source & preparing briefs…"

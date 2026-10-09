@@ -7,8 +7,11 @@ const m = vi.hoisted(() => ({
   lastHumanCommit: vi.fn(),
   isPublicRepoFresh: vi.fn(),
   summarizeRepo: vi.fn(),
-  takeSummaryRun: vi.fn(),
-  upsertListing: vi.fn(),
+  beginAnalysis: vi.fn(),
+  analysisBaseline: vi.fn(),
+  analysisIsActive: vi.fn(),
+  finishAnalysis: vi.fn(),
+  releaseAnalysis: vi.fn(),
   getListing: vi.fn(),
   deleteListing: vi.fn(),
   reviewComponent: vi.fn(),
@@ -33,6 +36,7 @@ const snap = {
 };
 beforeEach(() => {
   vi.resetAllMocks();
+  vi.stubEnv("ANTHROPIC_API_KEY", "test-only");
   m.getSession.mockResolvedValue({
     ghId: 42,
     login: "me",
@@ -43,7 +47,9 @@ beforeEach(() => {
   m.snapshotRepo.mockResolvedValue(snap);
   m.lastHumanCommit.mockResolvedValue(null);
   m.isPublicRepoFresh.mockResolvedValue(true);
-  m.takeSummaryRun.mockReturnValue(true);
+  m.analysisIsActive.mockReturnValue(true);
+  m.beginAnalysis.mockReturnValue("analysis-token");
+  m.finishAnalysis.mockReturnValue(true);
   m.summarizeRepo.mockResolvedValue({
     summary: { overview: "x", reusable_pieces: [] },
     model: "returned-model",
@@ -61,7 +67,8 @@ describe("publication orchestration", () => {
     expect(m.snapshotRepo).toHaveBeenCalledWith("token", repo, sha);
     expect(m.lastHumanCommit).toHaveBeenCalledWith("token", repo, sha);
     expect(m.summarizeRepo).toHaveBeenCalledWith(repo, snap, null);
-    expect(m.upsertListing).toHaveBeenCalledWith(
+    expect(m.finishAnalysis).toHaveBeenCalledWith(
+      "analysis-token",
       expect.objectContaining({
         owner_id: 42,
         source_sha: sha,
@@ -74,7 +81,7 @@ describe("publication orchestration", () => {
     m.snapshotRepo.mockRejectedValue(new Error("Unreadable sample"));
     expect(await salvage(null, form())).toEqual({ error: "Unreadable sample" });
     expect(m.summarizeRepo).not.toHaveBeenCalled();
-    expect(m.upsertListing).not.toHaveBeenCalled();
+    expect(m.finishAnalysis).not.toHaveBeenCalled();
   });
   it.each(["before", "after"])(
     "stops publication when visibility changes %s the model call",
@@ -85,7 +92,7 @@ describe("publication orchestration", () => {
           .mockResolvedValueOnce(true)
           .mockResolvedValueOnce(false);
       expect(await salvage(null, form())).toHaveProperty("error");
-      expect(m.upsertListing).not.toHaveBeenCalled();
+      expect(m.finishAnalysis).not.toHaveBeenCalled();
       if (when === "before") expect(m.summarizeRepo).not.toHaveBeenCalled();
     },
   );
@@ -102,7 +109,7 @@ describe("publication orchestration", () => {
     async (license) => {
       m.getOwnedPublicRepo.mockResolvedValue({ ...repo, license });
       expect(await salvage(null, form())).toHaveProperty("error");
-      expect(m.takeSummaryRun).not.toHaveBeenCalled();
+      expect(m.beginAnalysis).not.toHaveBeenCalled();
       expect(m.summarizeRepo).not.toHaveBeenCalled();
     },
   );
@@ -153,4 +160,47 @@ describe("owner review authorization", () => {
     );
     expect(m.reviewComponent).not.toHaveBeenCalled();
   });
+});
+
+describe("analysis lifecycle", () => {
+  it("does not report success for a canceled publication", async () => {
+    m.finishAnalysis.mockReturnValue(false);
+    expect(await salvage(null, form())).toEqual({
+      error:
+        "This analysis was canceled or expired. It has not been published.",
+    });
+    expect(m.releaseAnalysis).toHaveBeenCalledWith("analysis-token");
+  });
+  it("releases its reservation after provider failure so a later attempt can run", async () => {
+    m.summarizeRepo.mockRejectedValue(new Error("Provider timed out"));
+    expect(await salvage(null, form())).toEqual({
+      error: "Provider timed out",
+    });
+    expect(m.releaseAnalysis).toHaveBeenCalledWith("analysis-token");
+    expect(m.finishAnalysis).not.toHaveBeenCalled();
+  });
+  it("rejects overlapping analyses before fetching source or invoking the provider", async () => {
+    m.beginAnalysis.mockImplementation(() => {
+      throw new Error("Already running");
+    });
+    expect(await salvage(null, form())).toEqual({ error: "Already running" });
+    expect(m.snapshotRepo).not.toHaveBeenCalled();
+    expect(m.summarizeRepo).not.toHaveBeenCalled();
+    expect(m.releaseAnalysis).not.toHaveBeenCalled();
+  });
+});
+
+it("stops an unconfigured analysis before GitHub calls or quota consumption", async () => {
+  vi.stubEnv("ANTHROPIC_API_KEY", "");
+  expect(await salvage(null, form())).toHaveProperty("error");
+  expect(m.getOwnedPublicRepo).not.toHaveBeenCalled();
+  expect(m.beginAnalysis).not.toHaveBeenCalled();
+});
+
+it("avoids the provider request when removal has canceled the analysis during source sampling", async () => {
+  m.analysisIsActive.mockReturnValue(false);
+  expect(await salvage(null, form())).toHaveProperty("error");
+  expect(m.summarizeRepo).not.toHaveBeenCalled();
+  expect(m.finishAnalysis).not.toHaveBeenCalled();
+  expect(m.releaseAnalysis).toHaveBeenCalledWith("analysis-token");
 });

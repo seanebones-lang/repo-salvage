@@ -11,8 +11,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run && npm run test:example",
     "test:example": "node --test examples/summary-parser/consumer.test.mjs",
-    "format": "prettier --write src tests scripts examples package.json README.md .github/workflows/ci.yml",
-    "format:check": "prettier --check src tests scripts examples package.json README.md .github/workflows/ci.yml"
+    "format": "prettier --write src tests scripts examples docs package.json README.md .github/workflows/ci.yml",
+    "format:check": "prettier --check src tests scripts examples docs package.json README.md .github/workflows/ci.yml"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",

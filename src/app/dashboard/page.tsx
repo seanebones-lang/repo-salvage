@@ -58,6 +58,7 @@ export default async function Dashboard() {
         </div>
       </>
     );
+  const analysisEnabled = !!process.env.ANTHROPIC_API_KEY;
   const ownedListings = listingsByOwner(session.ghId);
   let repos: GhRepo[] = [];
   let loadError = false;
@@ -131,6 +132,12 @@ export default async function Dashboard() {
       </section>
       <section className="dashboard-section">
         <h2>Your public projects</h2>
+        {!analysisEnabled && (
+          <p className="notice">
+            Analysis is not configured on this installation yet. You can still
+            remove your existing listings above.
+          </p>
+        )}
         {loadError && (
           <p className="err">
             Couldn't load your repos from GitHub. Your stored listings can still
@@ -153,6 +160,7 @@ export default async function Dashboard() {
             listingId={listed.get(r.id)?.id ?? null}
             note={listed.get(r.id)?.owner_note ?? null}
             license={r.license?.spdx_id ?? null}
+            analysisEnabled={analysisEnabled}
           />
         ))}
         {!loadError && !rows.length && (
