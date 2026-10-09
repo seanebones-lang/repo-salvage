@@ -1,0 +1,92 @@
+{
+  "type": "object",
+  "properties": {
+    "decision": {
+      "type": "string",
+      "enum": ["adapt", "needs_context"]
+    },
+    "code": {
+      "type": "string"
+    },
+    "finding": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "repository": {
+          "type": "string"
+        },
+        "commit": {
+          "type": "string"
+        }
+      },
+      "required": ["repository", "commit"],
+      "additionalProperties": false
+    },
+    "used_reference_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "gap_history": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["source_supplied", "verification_failed"]
+          }
+        },
+        "required": ["path", "reason", "status"],
+        "additionalProperties": false
+      }
+    },
+    "needed_context": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": ["path", "reason"],
+        "additionalProperties": false
+      }
+    },
+    "remaining_limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "upstream_build_unverified",
+          "conditional_module_unresolved",
+          "source_verification_failed"
+        ]
+      }
+    }
+  },
+  "required": [
+    "decision",
+    "code",
+    "finding",
+    "source",
+    "used_reference_ids",
+    "gap_history",
+    "needed_context",
+    "remaining_limitations"
+  ],
+  "additionalProperties": false
+}

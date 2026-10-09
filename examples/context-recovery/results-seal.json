@@ -1,0 +1,77 @@
+{
+  "format": "repo-salvage/context-recovery-result-seal-v1",
+  "inputs": [
+    {
+      "path": "input-seal.json",
+      "sha256": "13aa1dd12cb944174b59ff931281400f788ad352be9c8641d77b7dc3b864c624"
+    },
+    {
+      "path": "review.json",
+      "sha256": "10019daa598013ccfba94c292ee49b1b1457f8147fbb3ca04b9a3a3ea0e3d461"
+    },
+    {
+      "path": "execution.json",
+      "sha256": "226022d6f181c9a4cbd4920d7f8ddd618fbbf3172a8b49da0b1d765e2fd150f1"
+    },
+    {
+      "path": "rust-budget-recovery/trace.jsonl",
+      "sha256": "e1f6f32e3f866fdd29d101771827498b7f90999306cfadb1c6deb21c47d68a0e"
+    },
+    {
+      "path": "rust-budget-recovery/requests.json",
+      "sha256": "e7da22ec07cdc2a5f03018439b1a3cfa9b9cfa774df31f1a0b02c9e39ac4115b"
+    },
+    {
+      "path": "rust-budget-recovery/result.json",
+      "sha256": "f853ece9f5c6190488c2315f31d58e0d0f97bd06e655d8476cbe13cefebaaf74"
+    },
+    {
+      "path": "rust-budget-recovery/consumer.rs",
+      "sha256": "b6b34987be0a121add8a8f32bdc40128a49dcce7f9d298ef03c792ca6b35cc6c"
+    },
+    {
+      "path": "go-unread-recovery/trace.jsonl",
+      "sha256": "ee50e4445c6121712a7efc43052f1a569866750b96711affcd2eb8f2db384af1"
+    },
+    {
+      "path": "go-unread-recovery/requests.json",
+      "sha256": "e1de1c222fd3c2e95a7e9ac5344707e6b59b42f0a825c2719bb2d0acf3d47b18"
+    },
+    {
+      "path": "go-unread-recovery/result.json",
+      "sha256": "fa2a43180ce237a71901227b991f30635eda7dfe422867146f96e1f60aeb1a76"
+    },
+    {
+      "path": "go-unread-recovery/consumer.go",
+      "sha256": "c7facf769f54a42fab696ff10749517032b316b78ad9ee08bc8df177a3e8a233"
+    },
+    {
+      "path": "rust-conditional-recovery/trace.jsonl",
+      "sha256": "2bb2aa7140b44e6129275d7922e265478f5a04c0fc0011995a42affe424f1a15"
+    },
+    {
+      "path": "rust-conditional-recovery/requests.json",
+      "sha256": "73cf0bdadff4685dd2dc54b67bdafdf8e35674cdd86cda14b1628e77d4720c83"
+    },
+    {
+      "path": "rust-conditional-recovery/result.json",
+      "sha256": "b951cb50cbe728d867b9b7460e576342978de0573cc35af9fd718ecfd8d50434"
+    },
+    {
+      "path": "rust-conditional-recovery/consumer.rs",
+      "sha256": "bd33051e7d41fe81a81992bbbc3e366d4a187edb1820495754512533fa108e05"
+    },
+    {
+      "path": "go-integrity-stop/trace.jsonl",
+      "sha256": "85f2940456d9034fff492ec32483afb24e7978d9dd7e9cbf5c0f91e8d14d11a6"
+    },
+    {
+      "path": "go-integrity-stop/requests.json",
+      "sha256": "bea8ec6afda75ac3a8a3f1711b6c11939b6d0ed7bbf190486373a820cd1e5e4f"
+    },
+    {
+      "path": "go-integrity-stop/result.json",
+      "sha256": "db78402ff486159666959526c7964ed4fefbd3c063b5fc5eb10e249e6009488e"
+    }
+  ]
+}

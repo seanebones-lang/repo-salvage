@@ -1,0 +1,84 @@
+{
+  "format": "repo-salvage/authored-context-recovery-v1",
+  "scope": "Synthetic sources reused from frozen missing-context epoch; parser input only, never executed; prior stop copied into a fresh host session",
+  "cases": [
+    {
+      "id": "rust-budget-recovery",
+      "pair": "rust-budget",
+      "language": "rust",
+      "repo": "authored/rust-budget",
+      "commit": "e1502ae57e8514366929a55af6b6b8d4d4b86026",
+      "listing_id": 1001,
+      "path": "src/lib.rs",
+      "symbol": "recover",
+      "max_characters": 5000,
+      "files": {
+        "src/lib.rs": "mod helper;\npub fn recover(input: u64) -> u64 { helper::transform(input) }\n",
+        "src/helper.rs": "pub fn transform(input: u64) -> u64 { (input.wrapping_mul(17140840701312848879u64).rotate_left(17) ^ 1930361707131028797u64).wrapping_add(7775068135324806024u64) }\n// padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding padding \n",
+        "LICENSE": "MIT License\n\nCopyright (c) 2026 NextEleven\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+      },
+      "priorCase": "rust-budget-gap",
+      "corruptHelper": false
+    },
+    {
+      "id": "go-unread-recovery",
+      "pair": "go-unread",
+      "language": "go",
+      "repo": "authored/go-unread",
+      "commit": "5181e6f5c7b6ddd95b177039a28b34664058ed22",
+      "listing_id": 1003,
+      "path": "main.go",
+      "symbol": "Recover",
+      "max_characters": 24000,
+      "files": {
+        "main.go": "package fixture\nfunc Recover(input uint64) uint64 { return transform(input) }\n",
+        "z_helper.go": "package fixture\nimport \"math/bits\"\nfunc transform(input uint64) uint64 { return (bits.RotateLeft64(input*uint64(8767377737874238047),17)^uint64(12695025475745279429))+uint64(6925975293358458688) }\n",
+        "LICENSE": "MIT License\n\nCopyright (c) 2026 NextEleven\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n",
+        "a0_noise.go": "package fixture\nfunc unrelated0() uint64 {return 0}\n",
+        "a1_noise.go": "package fixture\nfunc unrelated1() uint64 {return 1}\n",
+        "a2_noise.go": "package fixture\nfunc unrelated2() uint64 {return 2}\n"
+      },
+      "priorCase": "go-unread-gap",
+      "corruptHelper": false
+    },
+    {
+      "id": "rust-conditional-recovery",
+      "pair": "rust-conditional",
+      "language": "rust",
+      "repo": "authored/rust-conditional",
+      "commit": "97393c6c862b42a616a69d8c02c37d40fb0a5555",
+      "listing_id": 1005,
+      "path": "src/lib.rs",
+      "symbol": "recover",
+      "max_characters": 24000,
+      "files": {
+        "src/lib.rs": "#[cfg(feature = \"selected\")]\nmod helper;\npub fn recover(input: u64) -> u64 { helper::transform(input) }\n",
+        "src/helper.rs": "pub fn transform(input: u64) -> u64 { (input.wrapping_mul(11631429482058935943u64).rotate_left(17) ^ 5186101085955123136u64).wrapping_add(17372779912890775596u64) }\n",
+        "LICENSE": "MIT License\n\nCopyright (c) 2026 NextEleven\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+      },
+      "priorCase": "rust-conditional-gap",
+      "corruptHelper": false
+    },
+    {
+      "id": "go-integrity-stop",
+      "pair": "go-unread",
+      "language": "go",
+      "repo": "authored/go-unread",
+      "commit": "5181e6f5c7b6ddd95b177039a28b34664058ed22",
+      "listing_id": 1003,
+      "path": "main.go",
+      "symbol": "Recover",
+      "max_characters": 24000,
+      "files": {
+        "main.go": "package fixture\nfunc Recover(input uint64) uint64 { return transform(input) }\n",
+        "z_helper.go": "package fixture\nimport \"math/bits\"\nfunc transform(input uint64) uint64 { return (bits.RotateLeft64(input*uint64(8767377737874238047),17)^uint64(12695025475745279429))+uint64(6925975293358458688) }\n",
+        "LICENSE": "MIT License\n\nCopyright (c) 2026 NextEleven\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n",
+        "a0_noise.go": "package fixture\nfunc unrelated0() uint64 {return 0}\n",
+        "a1_noise.go": "package fixture\nfunc unrelated1() uint64 {return 1}\n",
+        "a2_noise.go": "package fixture\nfunc unrelated2() uint64 {return 2}\n"
+      },
+      "priorCase": "go-unread-gap",
+      "corruptHelper": true
+    }
+  ]
+}

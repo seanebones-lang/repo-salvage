@@ -1,0 +1,52 @@
+{
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "promptSha256": "11158f674d2ad889e8ff830af46081d9995ba7c94d874dcf339276b45c00048e",
+  "trace": {
+    "sha256": "2bb2aa7140b44e6129275d7922e265478f5a04c0fc0011995a42affe424f1a15"
+  },
+  "latencyMs": 19706,
+  "billing": "Existing Codex account allowance; no API-key model call",
+  "inputSealSha256": "13aa1dd12cb944174b59ff931281400f788ad352be9c8641d77b7dc3b864c624",
+  "transportSuccess": true,
+  "failure": null,
+  "prohibitedEvents": [],
+  "usage": {
+    "input_tokens": 45353,
+    "cached_input_tokens": 27776,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 667,
+    "reasoning_output_tokens": 0
+  },
+  "response": {
+    "decision": "adapt",
+    "code": "/*\nMIT License\n\nCopyright (c) 2026 NextEleven\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n*/\n\npub fn recover(input: u64) -> u64 {\n    (input.wrapping_mul(11631429482058935943u64).rotate_left(17)\n        ^ 5186101085955123136u64)\n        .wrapping_add(17372779912890775596u64)\n}\n",
+    "finding": "The response supplies the complete src/helper.rs implementation at the same repository and pinned commit as the initial evidence. Inlining transform preserves its u64 wrapping multiplication, 17-bit left rotation, XOR and wrapping addition exactly. The full MIT notice is retained. Upstream feature selection and build compatibility remain unresolved; neither source execution nor build verification was performed.",
+    "source": {
+      "repository": "authored/rust-conditional",
+      "commit": "97393c6c862b42a616a69d8c02c37d40fb0a5555"
+    },
+    "used_reference_ids": [
+      "e105b86a23d51df4b267a855",
+      "16d954e5c12865b595da7937",
+      "4ce1d6abaf970aed033e6387",
+      "98028d4d6ee558f3e470a19f",
+      "182e830dcd2e16ecd54f5928"
+    ],
+    "gap_history": [
+      {
+        "path": "src/helper.rs",
+        "reason": "restricted-module",
+        "status": "source_supplied"
+      }
+    ],
+    "needed_context": [],
+    "remaining_limitations": [
+      "upstream_build_unverified",
+      "conditional_module_unresolved"
+    ]
+  },
+  "review": "pending",
+  "execution": "not_run"
+}

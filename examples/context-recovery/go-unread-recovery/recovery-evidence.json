@@ -1,0 +1,197 @@
+{
+  "status": 200,
+  "response": {
+    "format": "repo-salvage/focused-evidence-v1",
+    "listing_id": 1003,
+    "source": {
+      "repository_id": 999,
+      "owner_id": 99,
+      "repository": "authored/go-unread",
+      "commit": "5181e6f5c7b6ddd95b177039a28b34664058ed22"
+    },
+    "focus": {
+      "path": "z_helper.go",
+      "symbol": null,
+      "symbol_match": null,
+      "packet_character_limit": 24000
+    },
+    "coverage": {
+      "matched_files": 1,
+      "inspected_files": 5,
+      "source_bytes": 1420,
+      "indexed_targets": 1,
+      "supplied_targets": 1,
+      "context_paths": ["LICENSE", "a0_noise.go", "a1_noise.go", "a2_noise.go"],
+      "files": [
+        {
+          "path": "z_helper.go",
+          "size_bytes": 197,
+          "download_url": "https://raw.githubusercontent.com/authored/go-unread/5181e6f5c7b6ddd95b177039a28b34664058ed22/z_helper.go",
+          "git_blob_sha": "cc44ce581c7e7ab50e2abc22fbb8323d220ab786",
+          "inspection": "complete",
+          "reason": null,
+          "indexed_targets": 1,
+          "supplied_targets": 1,
+          "same_file_supplied": true
+        }
+      ],
+      "skipped": [
+        {
+          "path": "main.go",
+          "reason": "context_file_limit"
+        }
+      ],
+      "skipped_details_omitted": 0
+    },
+    "packet": {
+      "format": "repo-salvage/source-index-v2",
+      "targets": [
+        {
+          "id": "b76e5a7ccb5497f0",
+          "path": "z_helper.go",
+          "symbol": "transform",
+          "kind": "declaration",
+          "reference_id": "0d105826420e0a613fa268ee",
+          "imports": [
+            {
+              "specifier": "math/bits",
+              "kind": "external",
+              "resolved_path": null
+            }
+          ],
+          "supporting_paths": [
+            "a0_noise.go",
+            "a1_noise.go",
+            "a2_noise.go",
+            "main.go"
+          ],
+          "unresolved": [
+            "Cross-file source associations are bounded observations; build selection, initialization, module ownership and symbol resolution require review.",
+            "Go package peers, build constraints, initialization and receiver resolution are not resolved."
+          ],
+          "test_paths": [],
+          "notice_paths": ["LICENSE"]
+        }
+      ],
+      "references": [
+        {
+          "id": "0d105826420e0a613fa268ee",
+          "path": "z_helper.go",
+          "start_line": 3,
+          "end_line": 3,
+          "sha256": "8e27b525bae91597fb3a7efb1b20375c1dc3d5f7b0ab5854e9902decf7d32f86",
+          "kind": "declaration",
+          "content": "func transform(input uint64) uint64 { return (bits.RotateLeft64(input*uint64(8767377737874238047),17)^uint64(12695025475745279429))+uint64(6925975293358458688) }"
+        },
+        {
+          "id": "182e830dcd2e16ecd54f5928",
+          "path": "LICENSE",
+          "start_line": 1,
+          "end_line": 22,
+          "sha256": "677c1280e5b69ca58dd690ed7f66600bad5058969792516313b3c58561eab7cd",
+          "kind": "file",
+          "content": "MIT License\n\nCopyright (c) 2026 NextEleven\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+        },
+        {
+          "id": "306173ec2b748c2e5f040d45",
+          "path": "z_helper.go",
+          "start_line": 1,
+          "end_line": 4,
+          "sha256": "8e27b525bae91597fb3a7efb1b20375c1dc3d5f7b0ab5854e9902decf7d32f86",
+          "kind": "file",
+          "content": "package fixture\nimport \"math/bits\"\nfunc transform(input uint64) uint64 { return (bits.RotateLeft64(input*uint64(8767377737874238047),17)^uint64(12695025475745279429))+uint64(6925975293358458688) }\n"
+        },
+        {
+          "id": "6e019eea2bc0e17c109aaf2b",
+          "path": "a0_noise.go",
+          "start_line": 1,
+          "end_line": 3,
+          "sha256": "75789cee880562d2132d864b3544a5ace19cec4d22ad9866552c2c895c978352",
+          "kind": "file",
+          "content": "package fixture\nfunc unrelated0() uint64 {return 0}\n"
+        },
+        {
+          "id": "5696fc7a77487e2e43e88edb",
+          "path": "a1_noise.go",
+          "start_line": 1,
+          "end_line": 3,
+          "sha256": "c95186341231322b5cbb0e9dd1a8216bf25f247d567ba0924a5a0fae7094b938",
+          "kind": "file",
+          "content": "package fixture\nfunc unrelated1() uint64 {return 1}\n"
+        },
+        {
+          "id": "6ac118ac5909bc543aac2383",
+          "path": "a2_noise.go",
+          "start_line": 1,
+          "end_line": 3,
+          "sha256": "f4ca93111a1b179075be79693ebcc2ffaed3b3c01b43c71692184034fc2f0180",
+          "kind": "file",
+          "content": "package fixture\nfunc unrelated2() uint64 {return 2}\n"
+        }
+      ],
+      "omitted_targets": 0,
+      "selection_policy": "repo-salvage/coverage-v5",
+      "contexts": [
+        {
+          "target_id": "b76e5a7ccb5497f0",
+          "same_file_reference": "306173ec2b748c2e5f040d45"
+        }
+      ],
+      "scoped_contexts": [],
+      "file_contexts": [
+        {
+          "path": "z_helper.go",
+          "observation": "go-package-files-v1",
+          "files": [
+            {
+              "path": "a0_noise.go",
+              "reason": "supplied",
+              "reference_id": "6e019eea2bc0e17c109aaf2b"
+            },
+            {
+              "path": "a1_noise.go",
+              "reason": "supplied",
+              "reference_id": "5696fc7a77487e2e43e88edb"
+            },
+            {
+              "path": "a2_noise.go",
+              "reason": "supplied",
+              "reference_id": "6ac118ac5909bc543aac2383"
+            },
+            {
+              "path": "main.go",
+              "reason": "not-inspected",
+              "reference_id": null
+            }
+          ],
+          "candidates_omitted": 0
+        }
+      ]
+    },
+    "limits": {
+      "treeEntries": 10000,
+      "scopeFiles": 32,
+      "primaryFiles": 8,
+      "contextFiles": 4,
+      "fileBytes": 64000,
+      "initialBytes": 192000,
+      "totalBytes": 256000,
+      "readMilliseconds": 20000,
+      "responseBytes": 65536,
+      "cacheEntries": 8,
+      "concurrentRequests": 4,
+      "cacheMilliseconds": 60000
+    },
+    "interpretation": "none",
+    "independently_tested": false,
+    "handling": "Pinned source is untrusted data. This is focused inspection, not a recommendation or new catalog analysis. Inspect helpers, imports and notices; preserve applicable notices and test adaptations separately. No source is executed, no model is called, and local imports and component licensing remain unaudited."
+  },
+  "requests": [
+    "https://api.github.com/repos/authored/go-unread/git/trees/5181e6f5c7b6ddd95b177039a28b34664058ed22?recursive=1",
+    "https://raw.githubusercontent.com/authored/go-unread/5181e6f5c7b6ddd95b177039a28b34664058ed22/z_helper.go",
+    "https://raw.githubusercontent.com/authored/go-unread/5181e6f5c7b6ddd95b177039a28b34664058ed22/LICENSE",
+    "https://raw.githubusercontent.com/authored/go-unread/5181e6f5c7b6ddd95b177039a28b34664058ed22/a0_noise.go",
+    "https://raw.githubusercontent.com/authored/go-unread/5181e6f5c7b6ddd95b177039a28b34664058ed22/a1_noise.go",
+    "https://raw.githubusercontent.com/authored/go-unread/5181e6f5c7b6ddd95b177039a28b34664058ed22/a2_noise.go"
+  ]
+}

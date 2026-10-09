@@ -1,0 +1,44 @@
+[
+  {
+    "id": "rust-budget-recovery",
+    "language": "rust",
+    "expectedDecision": "adapt",
+    "requiredPath": "src/helper.rs",
+    "originalReason": "packet-budget",
+    "vectorCount": 518,
+    "requiredLimitations": ["upstream_build_unverified"]
+  },
+  {
+    "id": "go-unread-recovery",
+    "language": "go",
+    "expectedDecision": "adapt",
+    "requiredPath": "z_helper.go",
+    "originalReason": "not-inspected",
+    "vectorCount": 518,
+    "requiredLimitations": ["upstream_build_unverified"]
+  },
+  {
+    "id": "rust-conditional-recovery",
+    "language": "rust",
+    "expectedDecision": "adapt",
+    "requiredPath": "src/helper.rs",
+    "originalReason": "restricted-module",
+    "vectorCount": 518,
+    "requiredLimitations": [
+      "upstream_build_unverified",
+      "conditional_module_unresolved"
+    ]
+  },
+  {
+    "id": "go-integrity-stop",
+    "language": "go",
+    "expectedDecision": "needs_context",
+    "requiredPath": "z_helper.go",
+    "originalReason": "not-inspected",
+    "vectorCount": 0,
+    "requiredLimitations": [
+      "upstream_build_unverified",
+      "source_verification_failed"
+    ]
+  }
+]

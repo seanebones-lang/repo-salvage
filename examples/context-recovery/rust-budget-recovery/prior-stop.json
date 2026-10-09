@@ -1,0 +1,15 @@
+{
+  "decision": "needs_context",
+  "code": "",
+  "finding": "The selected recover declaration calls helper::transform. src/lib.rs declares mod helper, but the required src/helper.rs implementation was omitted for packet-budget. Exact input/output behavior and wrapping arithmetic cannot be determined without that source.",
+  "used_reference_ids": [
+    "9b63259de7d85d9257917a0a",
+    "edd4ff3b0c7d6b7e577199d0"
+  ],
+  "needed_context": [
+    {
+      "path": "src/helper.rs",
+      "reason": "packet-budget"
+    }
+  ]
+}

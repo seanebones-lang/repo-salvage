@@ -1,0 +1,60 @@
+{
+  "format": "repo-salvage/context-recovery-execution-v1",
+  "at": "2026-10-09T21:56:11.456Z",
+  "inputSealSha256": "13aa1dd12cb944174b59ff931281400f788ad352be9c8641d77b7dc3b864c624",
+  "reviewSha256": "10019daa598013ccfba94c292ee49b1b1457f8147fbb3ca04b9a3a3ea0e3d461",
+  "scope": "Only reviewed standalone controls executed; authored upstream fixtures stay parser input; negative turns never compiled; no provider calls",
+  "results": [
+    {
+      "id": "rust-budget-recovery",
+      "status": "passed",
+      "codeSha256": "b6b34987be0a121add8a8f32bdc40128a49dcce7f9d298ef03c792ca6b35cc6c",
+      "compiled": true,
+      "executed": true,
+      "compiler": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "output": [
+        {
+          "optimize": false,
+          "output": "\nrunning 1 test\ntest independent_vectors ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+        },
+        {
+          "optimize": true,
+          "output": "\nrunning 1 test\ntest independent_vectors ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+        }
+      ]
+    },
+    {
+      "id": "go-unread-recovery",
+      "status": "passed",
+      "codeSha256": "c7facf769f54a42fab696ff10749517032b316b78ad9ee08bc8df177a3e8a233",
+      "compiled": true,
+      "executed": true,
+      "compiler": "go version go1.27.2 darwin/arm64",
+      "output": "=== RUN   TestIndependentVectors\n--- PASS: TestIndependentVectors (0.00s)\nPASS\nok  \trepo-salvage.example/missing-context-control\t0.231s\n"
+    },
+    {
+      "id": "rust-conditional-recovery",
+      "status": "passed",
+      "codeSha256": "bd33051e7d41fe81a81992bbbc3e366d4a187edb1820495754512533fa108e05",
+      "compiled": true,
+      "executed": true,
+      "compiler": "rustc 1.95.0 (59807616e 2026-04-14)",
+      "output": [
+        {
+          "optimize": false,
+          "output": "\nrunning 1 test\ntest independent_vectors ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+        },
+        {
+          "optimize": true,
+          "output": "\nrunning 1 test\ntest independent_vectors ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n"
+        }
+      ]
+    },
+    {
+      "id": "go-integrity-stop",
+      "status": "needs_context",
+      "compiled": false,
+      "executed": false
+    }
+  ]
+}

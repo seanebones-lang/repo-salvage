@@ -1,0 +1,15 @@
+{
+  "decision": "needs_context",
+  "code": "",
+  "finding": "recover delegates to helper::transform, whose implementation is absent. src/helper.rs was excluded with the recorded reason restricted-module. The helper module is gated by feature \"selected\", while recover is unconditional; feature selection and symbol resolution remain unresolved. Exact behavior cannot be established from the supplied evidence.",
+  "used_reference_ids": [
+    "e105b86a23d51df4b267a855",
+    "16d954e5c12865b595da7937"
+  ],
+  "needed_context": [
+    {
+      "path": "src/helper.rs",
+      "reason": "restricted-module"
+    }
+  ]
+}

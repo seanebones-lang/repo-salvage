@@ -1,0 +1,148 @@
+{
+  "format": "repo-salvage/context-recovery-input-seal-v1",
+  "at": "2026-10-09T21:54:16.053196+00:00",
+  "parentMain": "39349d2dd7303d7954d094212ecd5653db8c5c29",
+  "archiveSha256": "3282ea04d40eb6a48cc1faa076ade5dd1a58b9069105497efdcf5b32ffb92bb3",
+  "inputs": [
+    {
+      "path": "check-native.mjs",
+      "sha256": "fece5e973e6792432bb827ed383135a4e482e2d6ff68d1e1be63156b58877e27"
+    },
+    {
+      "path": "controls.json",
+      "sha256": "6afb894e280ff1a34a468670e2f21549e3c049bcbacde211292fa3379766dc34"
+    },
+    {
+      "path": "corpus.json",
+      "sha256": "a7447aaca88b3bf03ad2a59b4ca1ff80cb26b19e8827e526ff434be3a18d08d5"
+    },
+    {
+      "path": "fixture.mjs",
+      "sha256": "a3af9801f6b4c7a54bf2d15628fb139a90049242c8ef733a70b4bdf0c668a947"
+    },
+    {
+      "path": "go-integrity-stop/LICENSE",
+      "sha256": "677c1280e5b69ca58dd690ed7f66600bad5058969792516313b3c58561eab7cd"
+    },
+    {
+      "path": "go-integrity-stop/initial-evidence.json",
+      "sha256": "12db1316612ebda68caf0ce62b9f3883eb1ec545ee28c58158483bb50dfd7134"
+    },
+    {
+      "path": "go-integrity-stop/prior-stop.json",
+      "sha256": "8c5d79bfd60553ee0dccd914b207da723efa65eb829fc3faf608fc18b1cf54b0"
+    },
+    {
+      "path": "go-integrity-stop/recovery-evidence.json",
+      "sha256": "d9574e6ab6ce66b3a72adfe012715077c3ad7d246ed38f1f239dd537554453cc"
+    },
+    {
+      "path": "go-integrity-stop/task.txt",
+      "sha256": "2ead9a9983c0b3fe03ba334806c7ecbcca7d91832bbd81fc970dd1d4e5602865"
+    },
+    {
+      "path": "go-unread-recovery/LICENSE",
+      "sha256": "677c1280e5b69ca58dd690ed7f66600bad5058969792516313b3c58561eab7cd"
+    },
+    {
+      "path": "go-unread-recovery/acceptance_test.go",
+      "sha256": "16d56e0b3df18cc76712e353ad52210a97644de66c1d6510f7f5fd095c0d1ce0"
+    },
+    {
+      "path": "go-unread-recovery/go.mod",
+      "sha256": "ba8a8c3326dcdf8dd2c98ea0c88695f5eb5db141b21f6a7986230d26ff5a48bc"
+    },
+    {
+      "path": "go-unread-recovery/initial-evidence.json",
+      "sha256": "12db1316612ebda68caf0ce62b9f3883eb1ec545ee28c58158483bb50dfd7134"
+    },
+    {
+      "path": "go-unread-recovery/prior-stop.json",
+      "sha256": "8c5d79bfd60553ee0dccd914b207da723efa65eb829fc3faf608fc18b1cf54b0"
+    },
+    {
+      "path": "go-unread-recovery/recovery-evidence.json",
+      "sha256": "9a30b5a2951a3200992ce0fdb00c9f7ca2d4c79334c6e56298ce7bcb72e217f6"
+    },
+    {
+      "path": "go-unread-recovery/task.txt",
+      "sha256": "2ead9a9983c0b3fe03ba334806c7ecbcca7d91832bbd81fc970dd1d4e5602865"
+    },
+    {
+      "path": "go-unread-recovery/vectors.json",
+      "sha256": "7942210684909c877c086c6e40151867220aa7e768001b1de75ae70bc11ae1e3"
+    },
+    {
+      "path": "native.mjs",
+      "sha256": "197a995a863fd9c76aa10ba7e727d25968d12988ae70320c84c06e1120fbe317"
+    },
+    {
+      "path": "proposal.mjs",
+      "sha256": "83c11d73004089f988639c1b6b2353dc80a9f0f3c753e740db7a4ed4ad7cdfe0"
+    },
+    {
+      "path": "rust-budget-recovery/LICENSE",
+      "sha256": "677c1280e5b69ca58dd690ed7f66600bad5058969792516313b3c58561eab7cd"
+    },
+    {
+      "path": "rust-budget-recovery/acceptance.rs",
+      "sha256": "e17aa4ae571a34096c390ab2d0a6af6b02364d698e23730933f719bd117440fd"
+    },
+    {
+      "path": "rust-budget-recovery/initial-evidence.json",
+      "sha256": "42d55e3a73aa293db07aaf8adfec0b5d38faf6ef7bb255eeb13e412dcdae0df9"
+    },
+    {
+      "path": "rust-budget-recovery/prior-stop.json",
+      "sha256": "ca33d714cabaea95272ddfbc6951282926ccf0ce2f2c934243cacff5ffd87bcc"
+    },
+    {
+      "path": "rust-budget-recovery/recovery-evidence.json",
+      "sha256": "fbf9ee5a7cfc6a2bc6b28d6eb8f0e500a8030f646143670d171a86f0e83ecaaf"
+    },
+    {
+      "path": "rust-budget-recovery/task.txt",
+      "sha256": "2dfdd55a47134d4f8f070deb3f16fd0caeab789aa1e3b6bacd97eaeb4c071de3"
+    },
+    {
+      "path": "rust-budget-recovery/vectors.json",
+      "sha256": "63e75e9132d0c878fd22bb55e42ef27f2cfbbf91b943f5119bc69beaa3519ede"
+    },
+    {
+      "path": "rust-conditional-recovery/LICENSE",
+      "sha256": "677c1280e5b69ca58dd690ed7f66600bad5058969792516313b3c58561eab7cd"
+    },
+    {
+      "path": "rust-conditional-recovery/acceptance.rs",
+      "sha256": "653d463448956203861bda954e9cf52185a91d75c2ce9873c5cfc070ecf9efde"
+    },
+    {
+      "path": "rust-conditional-recovery/initial-evidence.json",
+      "sha256": "fddc364b5e823e3b2ae7dab4e530e48459525212c271102bcd144b4d074d3842"
+    },
+    {
+      "path": "rust-conditional-recovery/prior-stop.json",
+      "sha256": "7471770bdc222b4ef6dfd39c00ff4c65c883cd8b953115aea42504d33cd28f98"
+    },
+    {
+      "path": "rust-conditional-recovery/recovery-evidence.json",
+      "sha256": "022ca3df353a1003ccce370e3360500ab031b44873cd2f9ce92f1e4f286a2d49"
+    },
+    {
+      "path": "rust-conditional-recovery/task.txt",
+      "sha256": "2dfdd55a47134d4f8f070deb3f16fd0caeab789aa1e3b6bacd97eaeb4c071de3"
+    },
+    {
+      "path": "rust-conditional-recovery/vectors.json",
+      "sha256": "a573c1a66e945cf2195f65a6cac49cda3c276deb16171bd28f02ae2469f15468"
+    },
+    {
+      "path": "schema.json",
+      "sha256": "15ebb8a4a7958c68d482877bc69d8f6612993ffdbfe0713d4a4ae38da09aeee1"
+    },
+    {
+      "path": "suite.mjs",
+      "sha256": "36e03ca85b5bcba0739447b2715fb4fd4b52ba20ec86870c72fb6766966bc1cb"
+    }
+  ]
+}
