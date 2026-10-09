@@ -122,6 +122,7 @@ beforeAll(async () => {
 beforeEach(() => {
   vi.resetAllMocks();
   for (const table of [
+    "analysis_job_requests",
     "analysis_jobs",
     "active_analyses",
     "summary_runs",
@@ -143,6 +144,29 @@ afterAll(() => {
   vi.unstubAllEnvs();
 });
 describe("durable queue and fencing with real SQLite", () => {
+  it("replays a refreshed form's key after its reused job has finished", () => {
+    const first = enqueue(),
+      refreshedKey = randomUUID();
+    expect(enqueue({ key: refreshedKey }).id).toBe(first.id);
+    const lease = j.claimNextJob()!;
+    j.finishJob(lease, "failed", "fixture", "Fixture stop");
+    expect(j.jobForKey(42, refreshedKey)?.id).toBe(first.id);
+    expect(enqueue({ key: refreshedKey }).id).toBe(first.id);
+    expect(() => enqueue({ key: refreshedKey, note: "changed" })).toThrow(
+      /different/,
+    );
+    expect(d.db().prepare("SELECT * FROM summary_runs").all()).toHaveLength(1);
+    expect(j.jobForKey(99, refreshedKey)).toBeNull();
+  });
+  it("bounds request aliases without starting another job or consuming quota", () => {
+    const first = enqueue();
+    for (let n = 1; n < 32; n++) expect(enqueue().id).toBe(first.id);
+    expect(() => enqueue()).toThrow(/Too many repeated/);
+    expect(d.db().prepare("SELECT * FROM summary_runs").all()).toHaveLength(1);
+    expect(
+      d.db().prepare("SELECT * FROM analysis_job_requests").all(),
+    ).toHaveLength(32);
+  });
   it("replays the same nonce and active context without reserving a second allowance", () => {
     const first = enqueue();
     expect(enqueue({ key: first.request_key }).id).toBe(first.id);
@@ -347,6 +371,18 @@ describe("durable queue and fencing with real SQLite", () => {
     expect(d.allListings()).toEqual([]);
     expect(j.jobById(job.id, 42)?.checkpoint_json).toBeNull();
   });
+  it("removes request aliases along with the owner's listing and job history", async () => {
+    const first = enqueue(),
+      key = randomUUID();
+    enqueue({ key });
+    await w.runNextJob({ generate: async () => response() });
+    d.deleteListing(d.allListings()[0].id, 42);
+    expect(j.jobById(first.id, 42)).toBeNull();
+    expect(j.jobForKey(42, key)).toBeNull();
+    expect(d.db().prepare("SELECT * FROM analysis_job_requests").all()).toEqual(
+      [],
+    );
+  });
   it("expires queued jobs and prunes terminal details after seven days", () => {
     const job = enqueue();
     d.db().prepare("UPDATE analysis_jobs SET deadline=0").run();
@@ -355,6 +391,9 @@ describe("durable queue and fencing with real SQLite", () => {
     d.db().prepare("UPDATE analysis_jobs SET updated_at=0").run();
     j.recoverJobs();
     expect(j.jobById(job.id, 42)).toBeNull();
+    expect(d.db().prepare("SELECT * FROM analysis_job_requests").all()).toEqual(
+      [],
+    );
   });
   it("refuses oversized checkpoints before any provider request", () => {
     enqueue();

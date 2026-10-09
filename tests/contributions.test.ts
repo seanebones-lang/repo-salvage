@@ -91,6 +91,7 @@ afterAll(() => {
 beforeEach(() => {
   vi.resetAllMocks();
   for (const table of [
+    "analysis_job_requests",
     "analysis_jobs",
     "agent_drafts",
     "agent_credentials",

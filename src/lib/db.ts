@@ -150,6 +150,10 @@ function open() {
   );
   CREATE INDEX IF NOT EXISTS idx_analysis_jobs_queue ON analysis_jobs(status, created_at);
   CREATE INDEX IF NOT EXISTS idx_analysis_jobs_owner ON analysis_jobs(owner_id, created_at);`);
+  db.exec(`CREATE TABLE IF NOT EXISTS analysis_job_requests (
+    owner_id INTEGER NOT NULL, request_key TEXT NOT NULL, job_id TEXT NOT NULL,
+    PRIMARY KEY(owner_id, request_key)
+  ); CREATE INDEX IF NOT EXISTS idx_analysis_job_requests_job ON analysis_job_requests(job_id);`);
   return db;
 }
 
@@ -249,6 +253,11 @@ export function deleteListing(id: number, ownerId: number) {
     db()
       .prepare("DELETE FROM active_analyses WHERE github_repo_id = ?")
       .run(listing.github_repo_id);
+    db()
+      .prepare(
+        "DELETE FROM analysis_job_requests WHERE job_id IN (SELECT id FROM analysis_jobs WHERE repo_id = ? AND owner_id = ?)",
+      )
+      .run(listing.github_repo_id, ownerId);
     db()
       .prepare("DELETE FROM analysis_jobs WHERE repo_id = ? AND owner_id = ?")
       .run(listing.github_repo_id, ownerId);

@@ -79,10 +79,26 @@ export function jobForKey(ownerId: number, key: string): AnalysisJob | null {
   return (
     (db()
       .prepare(
-        "SELECT * FROM analysis_jobs WHERE owner_id = ? AND request_key = ?",
+        `SELECT j.* FROM analysis_jobs j WHERE j.owner_id = ? AND
+        (j.request_key = ? OR EXISTS (SELECT 1 FROM analysis_job_requests r WHERE r.job_id = j.id AND r.owner_id = j.owner_id AND r.request_key = ?))`,
       )
-      .get(ownerId, key) as AnalysisJob) ?? null
+      .get(ownerId, key, key) as AnalysisJob) ?? null
   );
+}
+/** Keep refreshed-form retries idempotent even after the reused active job finishes. */
+function recordRequest(jobId: string, ownerId: number, key: string) {
+  const count = db()
+    .prepare("SELECT COUNT(*) AS n FROM analysis_job_requests WHERE job_id = ?")
+    .get(jobId) as { n: number };
+  if (count.n >= 32)
+    throw Error(
+      "Too many repeated submissions. Open this repository's progress from your analysis jobs.",
+    );
+  db()
+    .prepare(
+      "INSERT INTO analysis_job_requests (owner_id,request_key,job_id) VALUES (?,?,?)",
+    )
+    .run(ownerId, key, jobId);
 }
 export function jobsForOwner(ownerId: number) {
   return db()
@@ -141,8 +157,10 @@ export function enqueueAnalysis(input: {
         running.owner_id === input.ownerId &&
         running.payload_hash === hash &&
         running.source_sha === input.sourceSha
-      )
+      ) {
+        recordRequest(running.id, input.ownerId, input.key);
         return running;
+      }
       throw Error(
         "This repository already has an analysis in progress. Open its progress page first.",
       );
@@ -191,6 +209,7 @@ export function enqueueAnalysis(input: {
         now,
         now + JOB_DEADLINE_MS,
       );
+    recordRequest(id, input.ownerId, input.key);
     return jobById(id, input.ownerId)!;
   })();
 }
@@ -288,6 +307,11 @@ export function recoverJobs(now = Date.now()) {
         "DELETE FROM analysis_jobs WHERE status IN ('succeeded','failed','canceled','needs_attention') AND updated_at < ?",
       )
       .run(now - 7 * 86_400_000);
+    db()
+      .prepare(
+        "DELETE FROM analysis_job_requests WHERE job_id NOT IN (SELECT id FROM analysis_jobs)",
+      )
+      .run();
   })();
 }
 export function claimNextJob(now = Date.now()): AnalysisJob | null {

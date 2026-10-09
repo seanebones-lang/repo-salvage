@@ -106,9 +106,11 @@ its credential scope, expiration, moderation and pinned-commit checks.
 
 The queued job stores the numeric repository/owner IDs, selected commit, requested
 model, edited note, draft ID and an idempotency key. It stores no OAuth or provider
-credentials. The same submission key and effective context return the same job,
+credentials. The same submission key and effective context return the same retained job,
 including terminal jobs; changed context under that key is rejected. A refreshed
-form also reuses matching active work. Allowances are reserved once at enqueue.
+form also reuses matching active work and remembers its key after completion.
+Each job accepts at most 32 such keys; further submissions must use its progress
+page. Keys expire with the job record or explicit owner removal. Allowances are reserved once at enqueue.
 The queue admits at most 20 active jobs globally and two per owner.
 
 `ANALYSIS_WORKER_ENABLED=1` starts the worker through Next.js Node instrumentation.
@@ -227,7 +229,7 @@ code is not part of the public analyzer.
 
 ## Job milestone validation
 
-The 2026-10-09 validation passed 274 offline checks: 215 application tests,
+The 2026-10-09 validation passed 277 offline checks: 218 application tests,
 nine deployment/backup checks, three parser-consumer checks, 12 Python-consumer
 checks, 12 CLI checks and 23 MCP/replay checks. Type checking, formatting,
 production compilation with the worker flag enabled, and dependency audit also
