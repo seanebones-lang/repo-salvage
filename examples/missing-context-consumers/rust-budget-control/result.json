@@ -1,0 +1,36 @@
+{
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "promptSha256": "cffc3c4f4bec95abfd1c6237ea878b8077736c9a8327b5edd7e0208ecc4cb0fe",
+  "trace": {
+    "sha256": "4a81bec3b12d3ce7a27e804f10e364e2ef8d2cddf328037081ff793e40da07b4"
+  },
+  "latencyMs": 12146,
+  "billing": "Existing Codex account allowance; no API-key model call",
+  "inputSealSha256": "ef671abb4bad1f88b17c3508ecda0719cdf2579819a23f8987d0f385e3473aed",
+  "transportSuccess": true,
+  "failure": null,
+  "prohibitedEvents": [],
+  "usage": {
+    "input_tokens": 14239,
+    "cached_input_tokens": 0,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 489,
+    "reasoning_output_tokens": 31
+  },
+  "response": {
+    "decision": "adapt",
+    "code": "/*\nMIT License\n\nCopyright (c) 2026 NextEleven\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n*/\n\npub fn recover(input: u64) -> u64 {\n    (input.wrapping_mul(17140840701312848879u64).rotate_left(17)\n        ^ 1930361707131028797u64)\n        .wrapping_add(7775068135324806024u64)\n}\n",
+    "finding": "The supplied module declaration connects recover to the fully supplied helper implementation. Inlining it preserves the exact constants, operation order, rotation, and wrapping arithmetic. The MIT notice is retained. No required upstream conditions remain unresolved in the supplied source; compilation and testing were not performed.",
+    "used_reference_ids": [
+      "9b63259de7d85d9257917a0a",
+      "edd4ff3b0c7d6b7e577199d0",
+      "99b0a9e04ec5292052db427b",
+      "182e830dcd2e16ecd54f5928"
+    ],
+    "needed_context": []
+  },
+  "review": "pending",
+  "execution": "not_run"
+}

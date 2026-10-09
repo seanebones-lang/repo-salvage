@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a12295-03ab-7bd3-9e54-8a7a317913a3"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"{\"decision\":\"needs_context\",\"code\":\"\",\"finding\":\"recover delegates to helper::transform, whose implementation is absent. src/helper.rs was excluded with the recorded reason restricted-module. The helper module is gated by feature \\\"selected\\\", while recover is unconditional; feature selection and symbol resolution remain unresolved. Exact behavior cannot be established from the supplied evidence.\",\"used_reference_ids\":[\"e105b86a23d51df4b267a855\",\"16d954e5c12865b595da7937\"],\"needed_context\":[{\"path\":\"src/helper.rs\",\"reason\":\"restricted-module\"}]}"}}
+{"type":"turn.completed","usage":{"input_tokens":12943,"cached_input_tokens":0,"cache_write_input_tokens":0,"output_tokens":127,"reasoning_output_tokens":0}}

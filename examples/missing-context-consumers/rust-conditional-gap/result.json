@@ -1,0 +1,39 @@
+{
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "promptSha256": "270e6d30de1090d71614b113c4765264e94e737b5793be57458abef07df92c8f",
+  "trace": {
+    "sha256": "5c9384d51363e843105978f1ba0c6c41cf3e416e2cf549559c2c4d09eece69cb"
+  },
+  "latencyMs": 6314,
+  "billing": "Existing Codex account allowance; no API-key model call",
+  "inputSealSha256": "ef671abb4bad1f88b17c3508ecda0719cdf2579819a23f8987d0f385e3473aed",
+  "transportSuccess": true,
+  "failure": null,
+  "prohibitedEvents": [],
+  "usage": {
+    "input_tokens": 12943,
+    "cached_input_tokens": 0,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 127,
+    "reasoning_output_tokens": 0
+  },
+  "response": {
+    "decision": "needs_context",
+    "code": "",
+    "finding": "recover delegates to helper::transform, whose implementation is absent. src/helper.rs was excluded with the recorded reason restricted-module. The helper module is gated by feature \"selected\", while recover is unconditional; feature selection and symbol resolution remain unresolved. Exact behavior cannot be established from the supplied evidence.",
+    "used_reference_ids": [
+      "e105b86a23d51df4b267a855",
+      "16d954e5c12865b595da7937"
+    ],
+    "needed_context": [
+      {
+        "path": "src/helper.rs",
+        "reason": "restricted-module"
+      }
+    ]
+  },
+  "review": "pending",
+  "execution": "not_run"
+}
