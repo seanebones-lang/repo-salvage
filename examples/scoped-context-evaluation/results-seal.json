@@ -1,0 +1,9 @@
+{
+  "format": "repo-salvage/scoped-support-output-seal-v1",
+  "inputSealSha256": "83633834fb6c77451f5810387c9ba0a758627b490acfe51c9d3d64ee8c68212c",
+  "files": {
+    "results.json": "c562a3f5cd4d768f96d69268bbc37ef4972ca1792cecc73cdbd1de9039465aab",
+    "review.json": "a42f4e61c64678d9f14d572a6fd4e100e0c7e61be11cc082d638ccb201a5b7a5",
+    "focus-fixture.mjs": "36eae4c3e29e66bbc466e5dd74c932f35798a7874649d3abf5f69aed76788d65"
+  }
+}

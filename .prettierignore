@@ -5,3 +5,6 @@ examples/full-chain-evaluation/catalog.json
 examples/full-chain-evaluation/summary.json
 # Preserve the exact native response records before the post-run review seal.
 examples/context-diversity-evaluation/results.json
+
+# Preserve the exact native scoped-support response records.
+examples/scoped-context-evaluation/results.json

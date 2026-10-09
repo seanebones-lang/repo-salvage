@@ -1,0 +1,25 @@
+{
+  "format": "repo-salvage/scoped-support-review-v1",
+  "inputSealSha256": "83633834fb6c77451f5810387c9ba0a758627b490acfe51c9d3d64ee8c68212c",
+  "reviewer": "Implementing operator; not independent review",
+  "cases": [
+    {
+      "id": "schedule-scoped",
+      "passed": true,
+      "notes": [
+        "Scheduler citations include the complete constructor, readiness check and execution member, with module imports and logger initialization. Callback timing, last_run mutation, cancellation before/after invocation and uncaught callback exceptions agree with the supplied bodies.",
+        "The response correctly identifies absent Job._schedule_next_run and Job.do implementations, absent full Job/module context, and the fact that zero omitted observations does not establish dependency closure.",
+        "Other candidates accurately describe same-day weekday handling, ordered ValueError-only parsing and decorator registration. No source execution, standalone guarantee or passing-test claim."
+      ]
+    },
+    {
+      "id": "humanize-focused",
+      "passed": true,
+      "notes": [
+        "The response cites the supplied magnitude threshold table, initialized label pairs, finite-value helper, imported translation hooks and the notice. Finite conversion, negative-prefix handling, sub-thousand integer output, rounding carry and uncaught formatting/localization failures match the source.",
+        "The last threshold stays googol for larger finite values; the response does not invent additional labels. Its stated possible float precision loss and uncaught OverflowError follow from the observed float conversion/division and narrow TypeError/ValueError handler.",
+        "The conditional NumberOrString gap, absent i18n body and unknown translation initialization are explicit. The intword-only focused scope was authored before the run; this is an interpretation/citation diagnostic, not unprompted catalog discovery. No full-module, dependency-closure or test claim."
+      ]
+    }
+  ]
+}

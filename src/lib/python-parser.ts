@@ -1,6 +1,20 @@
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 
+export type PythonSupportCandidate = {
+  symbol: string;
+  start_byte: number;
+  end_byte: number;
+  kind: "declaration" | "statement";
+  relation:
+    | "module-name"
+    | "module-configuration"
+    | "enclosing-class"
+    | "class-member-spelling";
+  fallback_members?: PythonSupportCandidate[];
+  fallback_members_omitted?: number;
+};
+
 export type PythonParse = {
   path: string;
   status: "ok" | "parse_error" | "unsupported_encoding" | "unavailable";
@@ -11,6 +25,11 @@ export type PythonParse = {
     context: string | null;
   }[];
   imports: { specifier: string; dynamic: boolean }[];
+  support_graph?: (Omit<PythonSupportCandidate, "relation"> & {
+    candidates: PythonSupportCandidate[];
+    gaps: { symbol: string; reason: string }[];
+    observations_omitted: number;
+  })[];
 };
 
 /** Isolated trusted parser process; source is stdin data, never an executable path. */

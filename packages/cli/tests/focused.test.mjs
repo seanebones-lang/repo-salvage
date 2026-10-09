@@ -92,3 +92,90 @@ test("focus client retains actionable errors and makes no automatic retry", asyn
   );
   assert.equal(calls, 1);
 });
+
+test("coverage-v4 scoped evidence replays exact pinned constants and omissions through the CLI", async () => {
+  const { focusedFixture } =
+    await import("../../../examples/scoped-context-evaluation/focus-fixture.mjs");
+  const c = await focusedFixture();
+  const { listing_id, ...params } = c.parameters;
+  const actual = await focusEvidence(
+    "http://127.0.0.1:1",
+    listing_id,
+    params,
+    async () => new Response(JSON.stringify(c.response)),
+  );
+  assert.deepEqual(actual, c.response);
+  assert.equal(actual.packet.contexts[0].same_file_reference, null);
+  assert.ok(
+    actual.packet.references.some(
+      (r) => r.kind === "statement" && r.content.startsWith("powers ="),
+    ),
+  );
+  assert.equal(
+    actual.packet.scoped_contexts[0].gaps[0].symbol,
+    "NumberOrString",
+  );
+});
+test("coverage-v4 rejects dangling, duplicate, cross-file and unsupported scoped observations", async () => {
+  const { focusedFixture } =
+    await import("../../../examples/scoped-context-evaluation/focus-fixture.mjs");
+  const c = await focusedFixture();
+  const { listing_id, ...params } = c.parameters;
+  const edits = [
+    (v) => {
+      v.packet.scoped_contexts[0].references[0].reference_id = "f".repeat(24);
+    },
+    (v) => {
+      v.packet.scoped_contexts[0].target_id = "f".repeat(16);
+    },
+    (v) => {
+      v.packet.scoped_contexts.push(v.packet.scoped_contexts[0]);
+    },
+    (v) => {
+      v.packet.references[0].path = "other.py";
+    },
+    (v) => {
+      v.packet.scoped_contexts[0].observation = "complete-closure";
+    },
+    (v) => {
+      v.packet.scoped_contexts[0].gaps[0].reason = "verified";
+    },
+    (v) => {
+      v.packet.scoped_contexts[0].observations_omitted = -1;
+    },
+    (v) => {
+      v.packet.references.push(v.packet.references[0]);
+    },
+    (v) => {
+      v.packet.contexts[0].same_file_reference = "f".repeat(24);
+    },
+    (v) => {
+      v.packet.contexts[0].same_file_reference =
+        v.packet.targets[0].reference_id;
+    },
+    (v) => {
+      v.packet.contexts = [];
+    },
+    (v) => {
+      v.packet.references.find(
+        (r) => r.id === v.packet.scoped_contexts[0].references[0].reference_id,
+      ).sha256 = "f".repeat(64);
+    },
+    (v) => {
+      v.packet.references.find((r) => r.kind === "file").content += "tampered";
+    },
+  ];
+  for (const edit of edits) {
+    const value = structuredClone(c.response);
+    edit(value);
+    await assert.rejects(
+      focusEvidence(
+        "http://127.0.0.1:1",
+        listing_id,
+        params,
+        async () => new Response(JSON.stringify(value)),
+      ),
+      /scoped evidence/,
+    );
+  }
+});

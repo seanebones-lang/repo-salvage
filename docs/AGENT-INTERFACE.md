@@ -106,8 +106,8 @@ stored commit. Numeric public ownership, current repository name, local moderati
 and analysis identity are rechecked after inspection, including cache hits.
 
 This is a fresh source inspection with `interpretation: "none"`, not a model call,
-new recommendation or publication. It returns the coverage-v3 packet, complete
-blocks and same-file context, file inventory with Git hashes and pinned download
+new recommendation or publication. It returns the coverage-v4 packet, complete
+blocks, same-file context and scoped Python support, file inventory with Git hashes and pinned download
 URLs, inspection/packet omissions and observed import gaps. `not_indexed` means no
 indexed declaration matched; available complete-file context can still expose a
 helper. It does not certify the helper or manufacture a target identity.
@@ -291,3 +291,19 @@ validation, public exclusions, source/owner-review changes during asynchronous
 lookups, stable pagination, bounded input and shared read limits. CLI tests cover
 real HTTP JSON behavior, safe local file handling, hash failures and byte limits.
 Measure GitHub allowance use and performance at larger catalog sizes before scaling.
+
+## Scoped supporting source
+
+Coverage-v4 adds optional `packet.scoped_contexts` while preserving
+`contexts[].same_file_reference`: only a complete containing-file body satisfies
+that field. Supporting references can be complete declarations or `statement`
+blocks, with locators hashing the complete inspected file. They are not assembled
+into a runnable module. Inspect the recorded binding/budget gaps and omission
+counters; absent entries and zero counters do not prove a dependency closure.
+Class-member spellings do not resolve receiver types.
+
+CLI 0.5.1 and MCP 0.3.4 retain older packets and accept these scoped blocks. The
+client checks target/reference links, same-file source-hash consistency, full-file
+context hashes and supported observation labels. Partial excerpts cannot independently
+verify their complete-file hash; retain exact pinned files and notices with fetch
+and validate adaptations separately.

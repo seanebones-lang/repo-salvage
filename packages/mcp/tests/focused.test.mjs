@@ -10,7 +10,11 @@ import {
   serveFocusFixture,
 } from "../../../examples/focused-evidence/fixture-server.mjs";
 const suite = await focusCases();
-for (const policy of ["repo-salvage/coverage-v2", "repo-salvage/coverage-v3"])
+for (const policy of [
+  "repo-salvage/coverage-v2",
+  "repo-salvage/coverage-v3",
+  "repo-salvage/coverage-v4",
+])
   test(`focused stdio accepts ${policy} alongside archived packets`, async () => {
     const c = structuredClone(suite.cases[0]);
     c.response.packet.selection_policy = policy;
@@ -95,3 +99,50 @@ for (const c of suite.cases)
       await fixture.close();
     }
   });
+
+test("scoped constants, citations and gaps survive MCP transport; malformed links return a tool error", async () => {
+  const { focusedFixture } =
+    await import("../../../examples/scoped-context-evaluation/focus-fixture.mjs");
+  const c = await focusedFixture();
+  let value = c.response;
+  const server = http.createServer((_request, response) => {
+    response.setHeader("Content-Type", "application/json");
+    response.end(JSON.stringify(value));
+  });
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const client = new Client({ name: "scoped-consumer", version: "1.0.0" });
+  try {
+    await client.connect(
+      new StdioClientTransport({
+        command: process.execPath,
+        args: [
+          fileURLToPath(new URL("../dist/index.js", import.meta.url)),
+          "--base",
+          `http://127.0.0.1:${server.address().port}`,
+        ],
+        stderr: "pipe",
+      }),
+    );
+    const good = await client.callTool({
+      name: "repo_salvage_focus_evidence",
+      arguments: c.parameters,
+    });
+    assert.ok(!good.isError, JSON.stringify(good));
+    assert.deepEqual(good.structuredContent, c.response);
+    assert.equal(
+      good.structuredContent.packet.contexts[0].same_file_reference,
+      null,
+    );
+    value = structuredClone(c.response);
+    value.packet.scoped_contexts[0].references[0].reference_id = "f".repeat(24);
+    const bad = await client.callTool({
+      name: "repo_salvage_focus_evidence",
+      arguments: c.parameters,
+    });
+    assert.equal(bad.isError, true);
+    assert.equal(bad.structuredContent, undefined);
+  } finally {
+    await client.close();
+    await new Promise((resolve) => server.close(resolve));
+  }
+});

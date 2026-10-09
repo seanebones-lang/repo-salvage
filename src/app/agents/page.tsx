@@ -162,8 +162,11 @@ npx --no-install repo-salvage fetch LISTING PART --base ORIGIN --out ./new-part`
           Use a listing ID from search to inspect an exact file or a directory
           ending in /. Name a symbol to focus on one indexed declaration. The
           response includes complete source blocks when they fit, same-file
-          context and explicit inspection gaps. An unexported helper can be
-          inspected in its containing file without being labeled a catalog part.
+          context and explicit inspection gaps. For large Python modules, scoped
+          supporting blocks may fit while complete module context remains
+          absent. Inspect their recorded gaps; they do not establish complete
+          dependencies. An unexported helper can be inspected in its containing
+          file without being labeled a catalog part.
         </p>
         <pre>
           <code>{`npx --no-install repo-salvage evidence LISTING --base ORIGIN --path src/module.py --symbol Client.request --max-characters 24000

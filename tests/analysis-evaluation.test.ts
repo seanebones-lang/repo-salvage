@@ -36,7 +36,13 @@ describe("frozen interpretation controls", () => {
       expect(
         createHash("sha256").update(JSON.stringify(request)).digest("hex"),
       ).toBe(record.requestSha256);
-      expect(record.index).toEqual(index);
+      const { support_graph: _support, ...historicalIndex } = index;
+      expect(record.index).toEqual({
+        ...historicalIndex,
+        references: historicalIndex.references.filter(
+          (r) => r.kind !== "statement",
+        ),
+      });
       expect(record.packet).toEqual(packet);
       for (const symbol of c.allowedSymbols)
         expect(packet.targets.some((t) => t.symbol === symbol)).toBe(true);

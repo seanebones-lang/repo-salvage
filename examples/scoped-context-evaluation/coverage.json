@@ -1,0 +1,1002 @@
+[
+  {
+    "id": "schedule-scoped",
+    "repository": "dbader/schedule",
+    "primaryUnchanged": true,
+    "before": {
+      "policy": "repo-salvage/coverage-v3",
+      "characters": 50754,
+      "targets": [
+        {
+          "id": "3e156df5ed233184",
+          "path": "setup.py",
+          "symbol": "read_file"
+        },
+        {
+          "id": "a29f6a620efc1b85",
+          "path": "docs/conf.py",
+          "symbol": "<module>"
+        },
+        {
+          "id": "bcdc91d5e34c2d07",
+          "path": "schedule/__init__.py",
+          "symbol": "ScheduleError"
+        },
+        {
+          "id": "2315c81359b13272",
+          "path": "schedule/__init__.py",
+          "symbol": "ScheduleValueError"
+        },
+        {
+          "id": "cd9a2ef1a989b8ee",
+          "path": "schedule/__init__.py",
+          "symbol": "IntervalError"
+        },
+        {
+          "id": "5153ec4d125481de",
+          "path": "schedule/__init__.py",
+          "symbol": "CancelJob"
+        },
+        {
+          "id": "4f9ffb49f49b13f2",
+          "path": "schedule/__init__.py",
+          "symbol": "every"
+        },
+        {
+          "id": "af4ff3920f39cf51",
+          "path": "schedule/__init__.py",
+          "symbol": "idle_seconds"
+        },
+        {
+          "id": "dc6ea11f62cd3fe9",
+          "path": "schedule/__init__.py",
+          "symbol": "get_jobs"
+        },
+        {
+          "id": "41431f3ddcb93e41",
+          "path": "schedule/__init__.py",
+          "symbol": "next_run"
+        },
+        {
+          "id": "ea72d01741063256",
+          "path": "schedule/__init__.py",
+          "symbol": "repeat"
+        },
+        {
+          "id": "a0059415e870e065",
+          "path": "schedule/__init__.py",
+          "symbol": "Scheduler"
+        },
+        {
+          "id": "321b3d5527de858d",
+          "path": "schedule/__init__.py",
+          "symbol": "run_pending"
+        },
+        {
+          "id": "9704c27560d659dd",
+          "path": "schedule/__init__.py",
+          "symbol": "cancel_job"
+        },
+        {
+          "id": "d5f038dc8dd9758c",
+          "path": "schedule/__init__.py",
+          "symbol": "clear"
+        },
+        {
+          "id": "fbed67480cec60f6",
+          "path": "schedule/__init__.py",
+          "symbol": "run_all"
+        },
+        {
+          "id": "570a9f7e94562324",
+          "path": "schedule/__init__.py",
+          "symbol": "_weekday_index"
+        },
+        {
+          "id": "483f5477d16536d6",
+          "path": "schedule/__init__.py",
+          "symbol": "_move_to_next_weekday"
+        },
+        {
+          "id": "e3fb73b02a166bde",
+          "path": "schedule/__init__.py",
+          "symbol": "Job._is_overdue"
+        },
+        {
+          "id": "378b99ca07930447",
+          "path": "schedule/__init__.py",
+          "symbol": "Job.__lt__"
+        },
+        {
+          "id": "6e0ba010176f5aa3",
+          "path": "schedule/__init__.py",
+          "symbol": "Scheduler.every"
+        },
+        {
+          "id": "f5a3c6d38899716a",
+          "path": "schedule/__init__.py",
+          "symbol": "Job._decode_datetimestr"
+        },
+        {
+          "id": "4913385ba388bf57",
+          "path": "schedule/__init__.py",
+          "symbol": "Scheduler.get_jobs"
+        },
+        {
+          "id": "131702a4313b6050",
+          "path": "schedule/__init__.py",
+          "symbol": "Job.tag"
+        }
+      ],
+      "fullFiles": [
+        "docs/conf.py",
+        "LICENSE.txt",
+        "setup.py",
+        "pyproject.toml"
+      ],
+      "scopedContexts": null
+    },
+    "after": {
+      "policy": "repo-salvage/coverage-v4",
+      "characters": 66816,
+      "targets": [
+        {
+          "id": "3e156df5ed233184",
+          "path": "setup.py",
+          "symbol": "read_file"
+        },
+        {
+          "id": "a29f6a620efc1b85",
+          "path": "docs/conf.py",
+          "symbol": "<module>"
+        },
+        {
+          "id": "bcdc91d5e34c2d07",
+          "path": "schedule/__init__.py",
+          "symbol": "ScheduleError"
+        },
+        {
+          "id": "2315c81359b13272",
+          "path": "schedule/__init__.py",
+          "symbol": "ScheduleValueError"
+        },
+        {
+          "id": "cd9a2ef1a989b8ee",
+          "path": "schedule/__init__.py",
+          "symbol": "IntervalError"
+        },
+        {
+          "id": "5153ec4d125481de",
+          "path": "schedule/__init__.py",
+          "symbol": "CancelJob"
+        },
+        {
+          "id": "4f9ffb49f49b13f2",
+          "path": "schedule/__init__.py",
+          "symbol": "every"
+        },
+        {
+          "id": "af4ff3920f39cf51",
+          "path": "schedule/__init__.py",
+          "symbol": "idle_seconds"
+        },
+        {
+          "id": "dc6ea11f62cd3fe9",
+          "path": "schedule/__init__.py",
+          "symbol": "get_jobs"
+        },
+        {
+          "id": "41431f3ddcb93e41",
+          "path": "schedule/__init__.py",
+          "symbol": "next_run"
+        },
+        {
+          "id": "ea72d01741063256",
+          "path": "schedule/__init__.py",
+          "symbol": "repeat"
+        },
+        {
+          "id": "a0059415e870e065",
+          "path": "schedule/__init__.py",
+          "symbol": "Scheduler"
+        },
+        {
+          "id": "321b3d5527de858d",
+          "path": "schedule/__init__.py",
+          "symbol": "run_pending"
+        },
+        {
+          "id": "9704c27560d659dd",
+          "path": "schedule/__init__.py",
+          "symbol": "cancel_job"
+        },
+        {
+          "id": "d5f038dc8dd9758c",
+          "path": "schedule/__init__.py",
+          "symbol": "clear"
+        },
+        {
+          "id": "fbed67480cec60f6",
+          "path": "schedule/__init__.py",
+          "symbol": "run_all"
+        },
+        {
+          "id": "570a9f7e94562324",
+          "path": "schedule/__init__.py",
+          "symbol": "_weekday_index"
+        },
+        {
+          "id": "483f5477d16536d6",
+          "path": "schedule/__init__.py",
+          "symbol": "_move_to_next_weekday"
+        },
+        {
+          "id": "e3fb73b02a166bde",
+          "path": "schedule/__init__.py",
+          "symbol": "Job._is_overdue"
+        },
+        {
+          "id": "378b99ca07930447",
+          "path": "schedule/__init__.py",
+          "symbol": "Job.__lt__"
+        },
+        {
+          "id": "6e0ba010176f5aa3",
+          "path": "schedule/__init__.py",
+          "symbol": "Scheduler.every"
+        },
+        {
+          "id": "f5a3c6d38899716a",
+          "path": "schedule/__init__.py",
+          "symbol": "Job._decode_datetimestr"
+        },
+        {
+          "id": "4913385ba388bf57",
+          "path": "schedule/__init__.py",
+          "symbol": "Scheduler.get_jobs"
+        },
+        {
+          "id": "131702a4313b6050",
+          "path": "schedule/__init__.py",
+          "symbol": "Job.tag"
+        }
+      ],
+      "fullFiles": [
+        "docs/conf.py",
+        "LICENSE.txt",
+        "setup.py",
+        "pyproject.toml"
+      ],
+      "scopedContexts": [
+        {
+          "target_id": "bcdc91d5e34c2d07",
+          "observation": "python-ast-name-loads-v1",
+          "references": [],
+          "gaps": [],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "2315c81359b13272",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "ScheduleError",
+              "reference_id": "33cb999a2ed84c4e52eb2ca7",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "cd9a2ef1a989b8ee",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "ScheduleValueError",
+              "reference_id": "ac13fe303d2efd1b6f3a3c29",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "5153ec4d125481de",
+          "observation": "python-ast-name-loads-v1",
+          "references": [],
+          "gaps": [],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "4f9ffb49f49b13f2",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "default_scheduler",
+              "reference_id": "9448503fca95016a213840fd",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Job.__init__",
+              "reference_id": "c4d1e3fd616b708ed77a4947",
+              "relation": "class-member-spelling"
+            },
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Hashable",
+              "reference_id": "2705b3481f4dcd857bd52af5",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Optional",
+              "reference_id": "90efc3fc411ae0546027db96",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "datetime",
+              "reference_id": "c695d655f02e8a5369293eef",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "functools",
+              "reference_id": "2bdba43ab79ab91a88260f3c",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [
+            {
+              "symbol": "Job",
+              "reason": "packet-budget"
+            }
+          ],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "af4ff3920f39cf51",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "Optional",
+              "reference_id": "90efc3fc411ae0546027db96",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "default_scheduler",
+              "reference_id": "9448503fca95016a213840fd",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "dc6ea11f62cd3fe9",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "Hashable",
+              "reference_id": "2705b3481f4dcd857bd52af5",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "List",
+              "reference_id": "90efc3fc411ae0546027db96",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "default_scheduler",
+              "reference_id": "9448503fca95016a213840fd",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Job.__init__",
+              "reference_id": "c4d1e3fd616b708ed77a4947",
+              "relation": "class-member-spelling"
+            },
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "datetime",
+              "reference_id": "c695d655f02e8a5369293eef",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "functools",
+              "reference_id": "2bdba43ab79ab91a88260f3c",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [
+            {
+              "symbol": "Job",
+              "reason": "packet-budget"
+            }
+          ],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "41431f3ddcb93e41",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "Hashable",
+              "reference_id": "2705b3481f4dcd857bd52af5",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Optional",
+              "reference_id": "90efc3fc411ae0546027db96",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "datetime",
+              "reference_id": "c695d655f02e8a5369293eef",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "default_scheduler",
+              "reference_id": "9448503fca95016a213840fd",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "ea72d01741063256",
+          "observation": "python-ast-name-loads-v1",
+          "references": [],
+          "gaps": [],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "a0059415e870e065",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "CancelJob",
+              "reference_id": "7c3abc970e22e6a2edcd5945",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Hashable",
+              "reference_id": "2705b3481f4dcd857bd52af5",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "List",
+              "reference_id": "90efc3fc411ae0546027db96",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "datetime",
+              "reference_id": "c695d655f02e8a5369293eef",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "logger",
+              "reference_id": "182d18da763680d1ce2bfe50",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "time",
+              "reference_id": "23caae7c74e3baaac696046d",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Job.__init__",
+              "reference_id": "c4d1e3fd616b708ed77a4947",
+              "relation": "class-member-spelling"
+            },
+            {
+              "symbol": "Job.should_run",
+              "reference_id": "75d833f330ecca9bba43e244",
+              "relation": "class-member-spelling"
+            },
+            {
+              "symbol": "Job.run",
+              "reference_id": "b7891f2bae80de6a8a0076b9",
+              "relation": "class-member-spelling"
+            },
+            {
+              "symbol": "logging",
+              "reference_id": "e3ce266b27074df0873c2057",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "functools",
+              "reference_id": "2bdba43ab79ab91a88260f3c",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [
+            {
+              "symbol": "Job",
+              "reason": "packet-budget"
+            }
+          ],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "321b3d5527de858d",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "default_scheduler",
+              "reference_id": "9448503fca95016a213840fd",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "9704c27560d659dd",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "default_scheduler",
+              "reference_id": "9448503fca95016a213840fd",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Job.__init__",
+              "reference_id": "c4d1e3fd616b708ed77a4947",
+              "relation": "class-member-spelling"
+            },
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Hashable",
+              "reference_id": "2705b3481f4dcd857bd52af5",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Optional",
+              "reference_id": "90efc3fc411ae0546027db96",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "datetime",
+              "reference_id": "c695d655f02e8a5369293eef",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "functools",
+              "reference_id": "2bdba43ab79ab91a88260f3c",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [
+            {
+              "symbol": "Job",
+              "reason": "packet-budget"
+            }
+          ],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "d5f038dc8dd9758c",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "Hashable",
+              "reference_id": "2705b3481f4dcd857bd52af5",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Optional",
+              "reference_id": "90efc3fc411ae0546027db96",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "default_scheduler",
+              "reference_id": "9448503fca95016a213840fd",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "fbed67480cec60f6",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "default_scheduler",
+              "reference_id": "9448503fca95016a213840fd",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "570a9f7e94562324",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "ScheduleValueError",
+              "reference_id": "ac13fe303d2efd1b6f3a3c29",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "483f5477d16536d6",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "_weekday_index",
+              "reference_id": "f0c337144f9ec65406f95b45",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "datetime",
+              "reference_id": "c695d655f02e8a5369293eef",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "e3fb73b02a166bde",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "datetime",
+              "reference_id": "c695d655f02e8a5369293eef",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Job.__init__",
+              "reference_id": "c4d1e3fd616b708ed77a4947",
+              "relation": "class-member-spelling"
+            },
+            {
+              "symbol": "Hashable",
+              "reference_id": "2705b3481f4dcd857bd52af5",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Optional",
+              "reference_id": "90efc3fc411ae0546027db96",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "functools",
+              "reference_id": "2bdba43ab79ab91a88260f3c",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [
+            {
+              "symbol": "Job",
+              "reason": "packet-budget"
+            }
+          ],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "378b99ca07930447",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "Job.__init__",
+              "reference_id": "c4d1e3fd616b708ed77a4947",
+              "relation": "class-member-spelling"
+            },
+            {
+              "symbol": "Hashable",
+              "reference_id": "2705b3481f4dcd857bd52af5",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Optional",
+              "reference_id": "90efc3fc411ae0546027db96",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "datetime",
+              "reference_id": "c695d655f02e8a5369293eef",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "functools",
+              "reference_id": "2bdba43ab79ab91a88260f3c",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [
+            {
+              "symbol": "Job",
+              "reason": "packet-budget"
+            }
+          ],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "6e0ba010176f5aa3",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "enclosing-class"
+            },
+            {
+              "symbol": "Job.__init__",
+              "reference_id": "c4d1e3fd616b708ed77a4947",
+              "relation": "class-member-spelling"
+            },
+            {
+              "symbol": "Hashable",
+              "reference_id": "2705b3481f4dcd857bd52af5",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Optional",
+              "reference_id": "90efc3fc411ae0546027db96",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "datetime",
+              "reference_id": "c695d655f02e8a5369293eef",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "functools",
+              "reference_id": "2bdba43ab79ab91a88260f3c",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [
+            {
+              "symbol": "Job",
+              "reason": "packet-budget"
+            }
+          ],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "f5a3c6d38899716a",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "List",
+              "reference_id": "90efc3fc411ae0546027db96",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "datetime",
+              "reference_id": "c695d655f02e8a5369293eef",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Job.__init__",
+              "reference_id": "c4d1e3fd616b708ed77a4947",
+              "relation": "class-member-spelling"
+            },
+            {
+              "symbol": "Hashable",
+              "reference_id": "2705b3481f4dcd857bd52af5",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "functools",
+              "reference_id": "2bdba43ab79ab91a88260f3c",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [
+            {
+              "symbol": "Job",
+              "reason": "packet-budget"
+            }
+          ],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "4913385ba388bf57",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "enclosing-class"
+            },
+            {
+              "symbol": "Hashable",
+              "reference_id": "2705b3481f4dcd857bd52af5",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "List",
+              "reference_id": "90efc3fc411ae0546027db96",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [],
+          "observations_omitted": 0
+        },
+        {
+          "target_id": "131702a4313b6050",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "Hashable",
+              "reference_id": "2705b3481f4dcd857bd52af5",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Job.__init__",
+              "reference_id": "c4d1e3fd616b708ed77a4947",
+              "relation": "class-member-spelling"
+            },
+            {
+              "symbol": "Optional",
+              "reference_id": "90efc3fc411ae0546027db96",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "Scheduler",
+              "reference_id": "66bf9de18a73ae4c37bfef0a",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "datetime",
+              "reference_id": "c695d655f02e8a5369293eef",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "functools",
+              "reference_id": "2bdba43ab79ab91a88260f3c",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [
+            {
+              "symbol": "Job",
+              "reason": "packet-budget"
+            }
+          ],
+          "observations_omitted": 0
+        }
+      ]
+    }
+  },
+  {
+    "id": "humanize-focused",
+    "repository": "python-humanize/humanize",
+    "primaryUnchanged": true,
+    "before": {
+      "policy": "repo-salvage/coverage-v3",
+      "characters": 11029,
+      "targets": [
+        {
+          "id": "5a07e59fb0068cad",
+          "path": "src/humanize/number.py",
+          "symbol": "intword"
+        }
+      ],
+      "fullFiles": ["LICENCE", "src/humanize/i18n.py"],
+      "scopedContexts": null
+    },
+    "after": {
+      "policy": "repo-salvage/coverage-v4",
+      "characters": 8376,
+      "targets": [
+        {
+          "id": "5a07e59fb0068cad",
+          "path": "src/humanize/number.py",
+          "symbol": "intword"
+        }
+      ],
+      "fullFiles": ["LICENCE"],
+      "scopedContexts": [
+        {
+          "target_id": "5a07e59fb0068cad",
+          "observation": "python-ast-name-loads-v1",
+          "references": [
+            {
+              "symbol": "<future-import>",
+              "reference_id": "33ea2285076154a7cee12a9a",
+              "relation": "module-configuration"
+            },
+            {
+              "symbol": "_format_not_finite",
+              "reference_id": "0b13b667e9b2fa6570f1a02f",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "_ngettext",
+              "reference_id": "e2ead4638d8a99769c3d7021",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "bisect",
+              "reference_id": "2307d5c1780f04b39fa566de",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "human_powers",
+              "reference_id": "503d6dba3784d8c3158c6bc3",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "powers",
+              "reference_id": "cc0dd3d05da4c983be176330",
+              "relation": "module-name"
+            },
+            {
+              "symbol": "NS_",
+              "reference_id": "063ba91bf09694ea924c8cb5",
+              "relation": "module-name"
+            }
+          ],
+          "gaps": [
+            {
+              "symbol": "NumberOrString",
+              "reason": "ambiguous-or-conditional-binding"
+            }
+          ],
+          "observations_omitted": 0
+        }
+      ]
+    }
+  }
+]

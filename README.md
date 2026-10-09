@@ -152,6 +152,14 @@ authored capability groups while retaining its missing full-module context. The
 new prompt favors distinct capabilities without filling a six-part quota. These
 bounded operator reviews do not establish a general recall or causal prompt effect.
 
+A [scoped-support follow-up](examples/scoped-context-evaluation/README.md) adds
+complete Python supporting statements when a whole module cannot fit. The retained
+scheduling analysis now cites constructor/execution evidence; a fresh focused
+formatter trial cites magnitude constants and finite-value handling. Both preserve
+missing-module and dependency uncertainty. Current clients validate scoped links
+and distinguish excerpts from complete file context; the bounded trials do not
+certify extraction or general analysis quality.
+
 ## For agents and scripts
 
 Open `/agents` for the guide, `/llms.txt` for the machine index and `/openapi.json`

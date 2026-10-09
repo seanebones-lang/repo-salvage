@@ -1,0 +1,48 @@
+{
+  "format": "repo-salvage/scoped-support-controls-v1",
+  "scope": "Two bounded operator diagnostics: retained scheduling analysis and fresh focused humanize interpretation. No causal or general recall inference.",
+  "cases": [
+    {
+      "id": "schedule-scoped",
+      "repository": "dbader/schedule",
+      "path": null,
+      "symbol": null,
+      "packetCharacters": 70000,
+      "requiredSymbol": "Scheduler",
+      "supportSymbols": [
+        "Job.__init__",
+        "Job.should_run",
+        "Job.run",
+        "logger",
+        "datetime",
+        "time"
+      ],
+      "requiredCitations": ["Job.__init__", "Job.run"],
+      "reviewPoints": [
+        "Constructor fields and scheduler association are supported; complete Job class and module remain absent.",
+        "Job.run returns CancelJob before invoking an overdue callback; normal callback invocation updates last_run and calls missing _schedule_next_run. Do not invent that implementation.",
+        "Scheduler removes jobs on CancelJob type or instance. Static class-member spelling does not prove receiver types or complete closure."
+      ]
+    },
+    {
+      "id": "humanize-focused",
+      "repository": "python-humanize/humanize",
+      "path": "src/humanize/number.py",
+      "symbol": "intword",
+      "packetCharacters": 12000,
+      "requiredSymbol": "intword",
+      "supportSymbols": [
+        "powers",
+        "human_powers",
+        "_format_not_finite",
+        "_ngettext"
+      ],
+      "requiredCitations": ["powers", "human_powers", "_format_not_finite"],
+      "reviewPoints": [
+        "Complete power thresholds and labels, finite-value helper and translation import are supplied. No full number module or i18n implementation is supplied.",
+        "Inspect infinity/NaN, negative and small magnitudes, rounding across a scale boundary and beyond the largest threshold; state behavior from supplied branches.",
+        "Conditional NumberOrString binding remains a gap; do not assert locale state, dependency closure, standalone use or tests. The older policy could instead supply full i18n source; this profile prioritizes local supporting arithmetic evidence."
+      ]
+    }
+  ]
+}

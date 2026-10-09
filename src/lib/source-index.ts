@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import path from "node:path";
 import ts from "typescript";
-import { parsePythonFiles } from "./python-parser";
+import { parsePythonFiles, type PythonSupportCandidate } from "./python-parser";
 import {
   fairPathOrder,
   sourceRole,
@@ -34,7 +34,7 @@ export type SourceReference = {
   start_line: number;
   end_line: number;
   sha256: string;
-  kind: "declaration" | "file";
+  kind: "declaration" | "file" | "statement";
   content: string;
 };
 export type ImportEvidence = {
@@ -66,12 +66,36 @@ export type SourceIndex = {
   targets: SourceTarget[];
   references: SourceReference[];
   skipped: { path: string; reason: string }[];
+  support_graph?: {
+    reference_id: string;
+    candidates: SupportCandidate[];
+    gaps: { symbol: string; reason: string }[];
+    observations_omitted: number;
+  }[];
   inspection?: {
     initial_paths: string[];
     followup_paths: string[];
     fill_paths: string[];
     deadline_reached: boolean;
   };
+};
+type SupportCandidate = {
+  symbol: string;
+  reference_id: string;
+  relation: PythonSupportCandidate["relation"];
+  fallback_members?: SupportCandidate[];
+  fallback_members_omitted?: number;
+};
+export type ScopedContext = {
+  target_id: string;
+  observation: "python-ast-name-loads-v1";
+  references: {
+    symbol: string;
+    reference_id: string;
+    relation: SupportCandidate["relation"];
+  }[];
+  gaps: { symbol: string; reason: string }[];
+  observations_omitted: number;
 };
 export type EvidencePacket = {
   format: typeof INDEX_VERSION;
@@ -81,8 +105,10 @@ export type EvidencePacket = {
   selection_policy?:
     | "repo-salvage/coverage-v1"
     | "repo-salvage/coverage-v2"
-    | "repo-salvage/coverage-v3";
+    | "repo-salvage/coverage-v3"
+    | "repo-salvage/coverage-v4";
   contexts?: { target_id: string; same_file_reference: string | null }[];
+  scoped_contexts?: ScopedContext[];
 };
 const digest = (value: string) =>
   createHash("sha256").update(value).digest("hex");
@@ -328,11 +354,11 @@ export function indexSources(
         path: file.path,
         reason: "python_parser_unavailable",
       });
-    const add = (
-      symbol: string,
+    const referenceFor = (
       start: number,
       end: number,
-      kind: SourceTarget["kind"],
+      kind: SourceReference["kind"],
+      deduplicate = false,
     ) => {
       const content = file.content.slice(start, end);
       const lineSeparator = /\r\n|\r|\n/;
@@ -340,7 +366,6 @@ export function indexSources(
         .slice(0, start)
         .split(lineSeparator).length;
       const endLine = startLine + content.split(lineSeparator).length - 1;
-      const id = digest(JSON.stringify([file.path, symbol, kind])).slice(0, 16);
       const reference = {
         id: digest(JSON.stringify([file.path, hash, start, end])).slice(0, 24),
         path: file.path,
@@ -350,7 +375,27 @@ export function indexSources(
         kind,
         content,
       };
+      if (deduplicate) {
+        const existing = index.references.find(
+          (r) => r.id === reference.id && r.kind === kind,
+        );
+        if (existing) return existing;
+        // A single statement can occupy the entire file. Reuse its complete-file
+        // locator rather than shadowing a legacy reference with a new kind.
+        const sameSpan = index.references.find((r) => r.id === reference.id);
+        if (sameSpan) return sameSpan;
+      }
       index.references.push(reference);
+      return reference;
+    };
+    const add = (
+      symbol: string,
+      start: number,
+      end: number,
+      kind: SourceTarget["kind"],
+    ) => {
+      const reference = referenceFor(start, end, kind);
+      const id = digest(JSON.stringify([file.path, symbol, kind])).slice(0, 16);
       if (!isCodePath(file.path) || isTestPath(file.path)) return;
       const target: SourceTarget = {
         id,
@@ -384,6 +429,45 @@ export function indexSources(
           target.unresolved.push(
             `Enclosing Python class context required: ${declaration.context}`,
           );
+      }
+      const supportReference = (node: {
+        start_byte: number;
+        end_byte: number;
+        kind: "declaration" | "statement";
+      }) => {
+        if (
+          !Number.isSafeInteger(node.start_byte) ||
+          !Number.isSafeInteger(node.end_byte) ||
+          node.start_byte < 0 ||
+          node.end_byte > body.length ||
+          node.start_byte >= node.end_byte
+        )
+          throw new Error("Invalid Python support source range.");
+        return referenceFor(
+          body.subarray(0, node.start_byte).toString("utf8").length,
+          body.subarray(0, node.end_byte).toString("utf8").length,
+          node.kind,
+          true,
+        );
+      };
+      const candidate = (node: PythonSupportCandidate): SupportCandidate => ({
+        symbol: node.symbol,
+        reference_id: supportReference(node).id,
+        relation: node.relation,
+        ...(node.fallback_members
+          ? {
+              fallback_members: node.fallback_members.map(candidate),
+              fallback_members_omitted: node.fallback_members_omitted ?? 0,
+            }
+          : {}),
+      });
+      for (const node of py.support_graph ?? []) {
+        (index.support_graph ??= []).push({
+          reference_id: supportReference(node).id,
+          candidates: node.candidates.map(candidate),
+          gaps: node.gaps,
+          observations_omitted: node.observations_omitted,
+        });
       }
     }
     if (source) {
@@ -481,7 +565,7 @@ export function evidencePacket(
   characterLimit = INDEX_LIMITS.promptCharacters,
   policy: NonNullable<
     EvidencePacket["selection_policy"]
-  > = "repo-salvage/coverage-v3",
+  > = "repo-salvage/coverage-v4",
 ): EvidencePacket {
   const packet: EvidencePacket = {
     format: INDEX_VERSION,
@@ -490,6 +574,7 @@ export function evidencePacket(
     omitted_targets: index.targets.length,
     selection_policy: policy,
     contexts: [],
+    ...(policy === "repo-salvage/coverage-v4" ? { scoped_contexts: [] } : {}),
   };
   if (
     !Number.isInteger(characterLimit) ||
@@ -642,7 +727,7 @@ export function evidencePacket(
     (a, b) =>
       // Defer private-only Python declaration context; other languages and file
       // targets keep their turns. File size breaks ties; no bodies are cut.
-      (policy === "repo-salvage/coverage-v3"
+      (["repo-salvage/coverage-v3", "repo-salvage/coverage-v4"].includes(policy)
         ? Number(privatePythonPaths.has(a)) - Number(privatePythonPaths.has(b))
         : 0) ||
       (files.get(a)?.content.length ?? Infinity) -
@@ -666,6 +751,116 @@ export function evidencePacket(
       });
       packet.references.splice(oldReferences);
     }
+  }
+  if (policy === "repo-salvage/coverage-v4") {
+    const graph = new Map(index.support_graph?.map((g) => [g.reference_id, g]));
+    const primaryReferences = new Set(
+      packet.targets.map((t) => t.reference_id),
+    );
+    const work: {
+      context: ScopedContext;
+      queue: SupportCandidate[];
+      visited: Set<string>;
+    }[] = [];
+    const supportFits = () =>
+      JSON.stringify(packet).length <= characterLimit - 128;
+    for (const target of packet.targets) {
+      if (
+        packet.contexts!.find((c) => c.target_id === target.id)
+          ?.same_file_reference ||
+        !graph.has(target.reference_id)
+      )
+        continue;
+      const context: ScopedContext = {
+        target_id: target.id,
+        observation: "python-ast-name-loads-v1",
+        references: [],
+        gaps: [],
+        observations_omitted: 0,
+      };
+      packet.scoped_contexts!.push(context);
+      if (!supportFits()) {
+        packet.scoped_contexts!.pop();
+        continue;
+      }
+      const node = graph.get(target.reference_id)!;
+      context.gaps = node.gaps.slice(0, 12);
+      context.observations_omitted =
+        node.observations_omitted + Math.max(0, node.gaps.length - 12);
+      if (!supportFits()) {
+        context.observations_omitted += context.gaps.length;
+        context.gaps = [];
+      }
+      work.push({
+        context,
+        queue: [...node.candidates],
+        visited: new Set([target.reference_id]),
+      });
+    }
+    // Fair turns across targets. Names and member spellings are observations,
+    // never proven scope/receiver resolution. Whole nodes either fit or stay out.
+    const gap = (context: ScopedContext, symbol: string, reason: string) => {
+      if (context.gaps.some((g) => g.symbol === symbol && g.reason === reason))
+        return;
+      if (context.gaps.length >= 12) {
+        context.observations_omitted++;
+        return;
+      }
+      context.gaps.push({ symbol, reason });
+      if (!supportFits()) {
+        context.gaps.pop();
+        context.observations_omitted++;
+      }
+    };
+    for (let turn = 0; turn < 16; turn++) {
+      for (const state of work) {
+        while (
+          state.queue.length &&
+          state.visited.has(state.queue[0].reference_id)
+        )
+          state.queue.shift();
+        const c = state.queue.shift();
+        if (!c) continue;
+        state.visited.add(c.reference_id);
+        const oldLength = packet.references.length;
+        const entry = {
+          symbol: c.symbol,
+          reference_id: c.reference_id,
+          relation: c.relation,
+        };
+        state.context.references.push(entry);
+        if (!add(references.get(c.reference_id)) || !supportFits()) {
+          state.context.references.pop();
+          packet.references.splice(oldLength);
+          gap(state.context, c.symbol, "packet-budget");
+          if (c.fallback_members) {
+            state.queue.push(...c.fallback_members);
+            state.context.observations_omitted +=
+              c.fallback_members_omitted ?? 0;
+          }
+          continue;
+        }
+        // Another supplied primary has its own context entry. Link to it rather
+        // than duplicating its transitive observation metadata for every wrapper.
+        const node = primaryReferences.has(c.reference_id)
+          ? undefined
+          : graph.get(c.reference_id);
+        if (node) {
+          state.queue.push(...node.candidates);
+          for (const g of node.gaps) gap(state.context, g.symbol, g.reason);
+          state.context.observations_omitted += node.observations_omitted;
+        }
+      }
+    }
+    for (const state of work)
+      state.context.observations_omitted += new Set(
+        state.queue
+          .filter((c) => !state.visited.has(c.reference_id))
+          .map((c) => c.reference_id),
+      ).size;
+    // Counter digit growth must obey the same envelope allowance too.
+    while (!fits() && packet.scoped_contexts!.length)
+      packet.scoped_contexts!.pop();
   }
   for (const file of [
     ...new Set(
@@ -693,5 +888,8 @@ export function indexRecord(index: SourceIndex, packet: EvidencePacket) {
       ({ content: _content, ...reference }) => reference,
     ),
     selection_policy: packet.selection_policy ?? "legacy-v2",
+    ...(packet.scoped_contexts
+      ? { scoped_contexts: packet.scoped_contexts }
+      : {}),
   };
 }

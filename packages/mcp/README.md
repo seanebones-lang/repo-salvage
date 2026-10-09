@@ -1,6 +1,6 @@
 # Repo Salvage MCP adapter
 
-Node.js 22+ local stdio server, `@repo-salvage/mcp@0.3.3`. Install the archive
+Node.js 22+ local stdio server, `@repo-salvage/mcp@0.3.4`. Install the archive
 linked from the application's `/agents` guide in a separate workspace:
 
 ```sh
@@ -116,3 +116,11 @@ builds and exercises a real stdio process with the official SDK client and local
 HTTP fixtures. `npm run build` creates the downloadable archive. The build copies
 the maintained CLI HTTP client and OpenAPI schemas into generated, ignored source
 inputs; no separate search, authentication or licensing implementation is created.
+
+Coverage-v4 can include scoped Python supporting statements when the complete
+module does not fit. `same_file_reference` stays null in that case. Inspect the
+scoped reference links, binding/budget gaps and omission counters; member spellings
+are observations rather than receiver resolution or dependency closure. The client
+rejects dangling/cross-file links, inconsistent source hashes, false full-file
+context and unsupported observation labels. Partial excerpts do not independently
+verify a whole-file hash. Fetch exact pinned files and notices before adaptation.

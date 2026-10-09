@@ -66,18 +66,40 @@ blocks, within a 70,000-character evidence allowance. A declaration that cannot
 fit is omitted, never cut into a prefix. Python public top-level declarations
 receive an earlier turn than private helpers and enclosed methods; this naming
 hint does not prove an API or dependency completeness. Private targets remain
-eligible. The earlier coverage-v1 and coverage-v2 ordering is retained for frozen evaluation
-replay. Policy `repo-salvage/coverage-v3` gives
+eligible. The earlier coverage-v1, coverage-v2 and coverage-v3 ordering is retained for frozen evaluation
+replay. Policy `repo-salvage/coverage-v4` gives
 files one candidate turn at a time, preferring conventional library areas. Within
 a file, implementation shape, observed module dependencies, syntactic same-file
 binding references and declaration size affect scheduling. Binding observations
 are not a complete closure or scope analysis. Seventy percent of the allowance
 is reserved for primary selections; a single larger complete block may use the
 whole allowance. Notices precede complete same-file context, then supporting/test
-files and manifests. For same-file context, coverage-v3 defers private-only Python
+files and manifests. For same-file context, coverage-v3 and coverage-v4 defer private-only Python
 declaration files; selected public Python declarations and other languages retain
 normal turns, with size breaking ties. This does not remove private targets or
 prove an API. Every JSON field and escape counts toward the allowance.
+
+When a Python declaration lacks a complete same-file body, coverage-v4 can add
+`scoped_contexts`: complete supporting AST declarations and statements, including
+imports, assignments and future imports. Unique unconditional module bindings
+are matched to syntactic name loads. Explicit function locals are excluded from
+body observations; defaults, annotations and decorators still use enclosing-scope
+observations. Repeated, conditional, deleted and annotation-only bindings are
+reported as gaps, as are wildcard imports. Dynamic binding and nested scopes
+remain incomplete; these are not exact extraction dependencies.
+
+A supporting class that does not fit stays omitted. Complete constructor/member
+excerpts may be offered from constructor and attribute spellings, without
+synthesizing a class header or proving receiver types. Supporting nodes take fair
+turns across selected targets, at most 16 distinct nodes per target; parser name
+observations cap at 24 and fallback members at 8. Gaps cap at 12, with additional
+observations counted. An absent scoped entry means the observation was unavailable
+or its metadata did not fit. Another supplied primary has its own context entry,
+so wrappers link to it without duplicating its transitive metadata. Every complete
+body, locator, gap and counter still counts toward the original allowance. A zero
+omission counter does not establish complete dependencies. Scoped blocks take
+priority over remaining supporting/test files and manifests, so one kind of context
+can displace another. Non-Python support continues to use complete file context.
 
 Each selected target has a `contexts` entry identifying its complete same-file
 reference, or null when that body did not fit. The prompt requires checking
@@ -87,8 +109,11 @@ and avoids filling slots with thin wrappers when broader implementations are
 evidenced. Six is a maximum, not a quota. This instruction is not a server-enforced
 quality score or publication authority; the previous prompt remains available for
 frozen replay.
+The scoped-support-v1 prompt instructs the model to inspect and cite scoped blocks
+while retaining full-module and scope/receiver uncertainty.
 The server adds a missing-context limitation independently of model prose when
-that context is absent. Legacy saved packets remain valid. Indexing a dependency
+that context is absent, and a separate scoped-support limitation when scoped
+observations exist. Legacy saved packets remain valid. Indexing a dependency
 does not imply its body was supplied to the model; complete-file context still
 does not prove that external dependencies or enclosing runtime context are complete.
 The final serialized request has a separate 100,000-character guard and a
