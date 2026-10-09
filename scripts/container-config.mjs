@@ -1,6 +1,11 @@
 import path from "node:path";
 
 export function containerConfig(env) {
+  if (
+    env.ANALYSIS_WORKER_ENABLED !== undefined &&
+    !["0", "1"].includes(env.ANALYSIS_WORKER_ENABLED)
+  )
+    throw new Error("ANALYSIS_WORKER_ENABLED must be 0 or 1.");
   if (!env.AUTH_SECRET || env.AUTH_SECRET.trim().length < 32)
     throw new Error("AUTH_SECRET must contain at least 32 characters.");
   let origin;

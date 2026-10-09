@@ -137,6 +137,19 @@ function open() {
     analyzed_at TEXT, summary_model TEXT, summary_json TEXT NOT NULL,
     recorded_at TEXT NOT NULL DEFAULT (datetime('now'))
   ); CREATE INDEX IF NOT EXISTS idx_analysis_revisions_listing ON analysis_revisions(listing_id, recorded_at);`);
+  db.exec(`CREATE TABLE IF NOT EXISTS analysis_jobs (
+    id TEXT PRIMARY KEY, owner_id INTEGER NOT NULL, repo_id INTEGER NOT NULL,
+    repo_name TEXT NOT NULL, source_sha TEXT NOT NULL, note TEXT, draft_id TEXT,
+    request_key TEXT NOT NULL, payload_hash TEXT NOT NULL, analysis_token TEXT NOT NULL,
+    model TEXT NOT NULL, status TEXT NOT NULL, created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL, deadline INTEGER NOT NULL,
+    lease_token TEXT, lease_expires_at INTEGER, inspection_attempts INTEGER NOT NULL DEFAULT 0,
+    provider_started_at INTEGER, request_hash TEXT, checkpoint_json TEXT,
+    response_json TEXT, result_json TEXT, error_code TEXT, error_message TEXT,
+    listing_id INTEGER, UNIQUE(owner_id, request_key)
+  );
+  CREATE INDEX IF NOT EXISTS idx_analysis_jobs_queue ON analysis_jobs(status, created_at);
+  CREATE INDEX IF NOT EXISTS idx_analysis_jobs_owner ON analysis_jobs(owner_id, created_at);`);
   return db;
 }
 
@@ -236,6 +249,9 @@ export function deleteListing(id: number, ownerId: number) {
     db()
       .prepare("DELETE FROM active_analyses WHERE github_repo_id = ?")
       .run(listing.github_repo_id);
+    db()
+      .prepare("DELETE FROM analysis_jobs WHERE repo_id = ? AND owner_id = ?")
+      .run(listing.github_repo_id, ownerId);
     if (
       db()
         .prepare("SELECT 1 FROM sqlite_master WHERE name = 'agent_drafts'")
@@ -468,6 +484,15 @@ export function finishAnalysis(
 
 export function releaseAnalysis(token: string) {
   db().prepare("DELETE FROM active_analyses WHERE token = ?").run(token);
+  db()
+    .prepare(
+      `UPDATE analysis_jobs SET status = 'canceled', updated_at = ?,
+    lease_token = NULL, lease_expires_at = NULL, checkpoint_json = NULL,
+    response_json = NULL, result_json = NULL, error_code = 'canceled',
+    error_message = 'Publication was canceled.'
+    WHERE analysis_token = ? AND status IN ('queued','inspecting','generating','publishing')`,
+    )
+    .run(Date.now(), token);
 }
 
 export function takeRequest(

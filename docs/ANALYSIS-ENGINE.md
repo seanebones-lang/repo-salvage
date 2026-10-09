@@ -96,6 +96,72 @@ An operator-controlled evaluation is distinct from a hosted multi-user service.
 Do not copy a developer's personal authentication material into a web container.
 Choose runtime integration, credentials and budgets explicitly after evaluation.
 
+## Durable analysis jobs
+
+Owner approval now queues a SQLite job and returns immediately after eligibility and
+commit checks. `/dashboard/jobs` lists the owner's latest 50 jobs; each job page
+polls a session-authenticated, `private, no-store` progress endpoint. Agent bearer
+credentials cannot start paid jobs or read this endpoint. Draft approval retains
+its credential scope, expiration, moderation and pinned-commit checks.
+
+The queued job stores the numeric repository/owner IDs, selected commit, requested
+model, edited note, draft ID and an idempotency key. It stores no OAuth or provider
+credentials. The same submission key and effective context return the same job,
+including terminal jobs; changed context under that key is rejected. A refreshed
+form also reuses matching active work. Allowances are reserved once at enqueue.
+The queue admits at most 20 active jobs globally and two per owner.
+
+`ANALYSIS_WORKER_ENABLED=1` starts the worker through Next.js Node instrumentation.
+It runs in the long-lived application process, requires a persistent SQLite volume,
+and is disabled during builds and Edge loading. This is a single-instance deployment
+architecture, not a serverless queue or an independently scalable worker service.
+The worker continues recovery housekeeping without a configured provider key but
+cannot dispatch new generation until a key is configured. `/api/health` returns 503
+if the enabled worker is missing or its timer has not ticked for 30 seconds.
+
+Jobs advance through `queued`, `inspecting`, `generating` and `publishing` to a
+terminal status. An atomic 60-second lease admits one worker at a time across
+processes; a ten-second heartbeat renews it. Every write and publication is fenced
+by the current lease and owner authorization. The worker freshly checks public,
+non-fork ownership and a recognized license by numeric repository ID before source
+inspection, before interpretation and before publication. It uses public-data
+credentials, never a persisted owner's bearer token. Renames retain numeric identity
+and use current names when publishing the pinned commit.
+
+Recovery is deliberately asymmetric:
+
+| Last durable state                                | Restart behavior                                                                            |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Source inspection interrupted before a checkpoint | Inspect the same commit again, at most three inspection attempts.                           |
+| Source checkpoint saved, provider not dispatched  | Reuse the checkpoint and make the originally approved request.                              |
+| Provider intent saved, no response saved          | Pause as `needs_attention`; no automatic provider retry. The request may have been charged. |
+| Response saved, validation interrupted            | Revalidate the stored response without another generation.                                  |
+| Validated result saved, publication interrupted   | Recheck ownership and authorization, then publish the saved result.                         |
+| Listing and job success committed                 | Return the saved success; publication and job completion share one SQLite transaction.      |
+
+A provider intent and request hash are committed **before** dispatch. A response is
+committed **before** evidence validation. Each checkpoint/response/result field is
+capped at 2 MB; the indexed checkpoint retains evidence supplied to interpretation
+and index metadata while discarding other source bodies. The database is private
+and ordinary backups include active job state. A saved response from an older
+application version must pass the currently installed evidence validator to resume.
+
+Jobs have a one-day lifetime. Expiration, cancellation, revoked/dismissed/expired
+draft authority, or explicit owner removal prevent late publication. Terminal jobs
+scrub stored source/response/result bodies; their private progress records are
+retained seven days, and published analysis history follows existing retention.
+Removing a listing deletes its related job records too. Provider requests already
+sent cannot be recalled; cancellation is a publication boundary. A deliberate new
+attempt selects the current branch commit, consumes another allowance and may incur
+another charge. Uncertain requests are never described as charge-free. A queued
+approval remains approved if operators later lower the daily allowance to zero;
+stop the worker or cancel jobs to halt existing approvals.
+
+The local tests and container recovery drill use disposable SQLite databases,
+synthetic requests and fixture responses. They verify recovery and publication
+fencing without making paid calls. They do not establish provider billing behavior,
+production OAuth behavior, or a real model request killed in flight.
+
 ## Identity, history and backwards compatibility
 
 New component IDs derive from source path, symbol and target kind; changing a
@@ -154,6 +220,30 @@ and fresh-consumer success; do not use model self-confidence as a quality score.
 Retain failures and compare repetitions without changing fixtures to fit answers.
 
 The Python parser and bounded follow-up inspection are implemented.
-After comparison, choose a provider adapter and tackle resumable background jobs
-as separate validated increments. Automatic installation/execution of arbitrary
-repository code is not part of the public analyzer.
+Durable background jobs are now implemented. The next increment is an independently
+reviewed holdout comparison, followed by selection and live verification of the
+hosted provider adapter. Automatic installation/execution of arbitrary repository
+code is not part of the public analyzer.
+
+## Job milestone validation
+
+The 2026-10-09 validation passed 274 offline checks: 215 application tests,
+nine deployment/backup checks, three parser-consumer checks, 12 Python-consumer
+checks, 12 CLI checks and 23 MCP/replay checks. Type checking, formatting,
+production compilation with the worker flag enabled, and dependency audit also
+passed; the audit reported zero vulnerabilities. The build did not start a worker.
+
+Seventeen arm64 container checks passed, including SIGKILL recovery of saved
+source and response checkpoints, an uncertain request remaining paused, private
+progress access, replacement-container storage and backup/restore. The drill used
+no real credentials or provider calls. CI repeats the container drill on Linux amd64.
+A separate disposable, signed-in browser fixture verified that polling changes a
+queued job into owner-attention controls and displays the possible-charge warning
+without a page reload or a model call. The ordinary local preview reports
+`database: "ready"` and `worker: "ready"`.
+
+An online private backup preceded the local migration. The seven real listings,
+34 candidate briefs and nine recorded analysis attempts remained unchanged; the
+serialized catalog row hash matched before and after startup. No pilot repository
+was re-analyzed during this milestone. Hosting and a live provider restart/billing
+experiment remain unvalidated.

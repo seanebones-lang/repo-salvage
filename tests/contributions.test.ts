@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import {
   afterAll,
   beforeAll,
@@ -30,6 +31,7 @@ vi.mock("@/lib/github", () => ({
   pinnedSourceTree: mocks.tree,
   isPublicRepoFresh: mocks.fresh,
   getOwnedPublicRepo: mocks.owned,
+  getPublicOwnedRepoFresh: mocks.owned,
   resolveSourceCommit: mocks.resolve,
   indexedSnapshotRepo: mocks.snapshot,
   lastHumanCommit: mocks.last,
@@ -40,6 +42,18 @@ let d: typeof import("@/lib/db");
 let route: typeof import("@/app/api/v1/drafts/route");
 let actions: typeof import("@/app/dashboard/actions");
 let issuer: typeof import("@/app/dashboard/agents/actions");
+async function completeAnalysis(data: FormData) {
+  data.set("requestKey", randomUUID());
+  const queued = await actions.salvage(null, data);
+  if (!queued?.jobId) return queued;
+  const { runNextJob } = await import("@/lib/analysis-worker");
+  const { jobById } = await import("@/lib/analysis-jobs");
+  await runNextJob();
+  const job = jobById(queued.jobId, 42);
+  return job?.status === "succeeded"
+    ? { ok: "Analysis completed" }
+    : { error: job?.error_message ?? "Canceled" };
+}
 const sha = "a".repeat(40);
 const repo = {
   id: 1,
@@ -60,6 +74,7 @@ beforeAll(async () => {
   vi.stubEnv("DATABASE_PATH", path.join(directory, "test.db"));
   vi.stubEnv("DAILY_SUMMARY_LIMIT", "100");
   vi.stubEnv("GLOBAL_DAILY_SUMMARY_LIMIT", "100");
+  vi.stubEnv("ANALYSIS_WORKER_ENABLED", "1");
   vi.stubEnv("ANTHROPIC_API_KEY", "test-placeholder");
   d = await import("@/lib/db");
   c = await import("@/lib/contributions");
@@ -76,6 +91,7 @@ afterAll(() => {
 beforeEach(() => {
   vi.resetAllMocks();
   for (const table of [
+    "analysis_jobs",
     "agent_drafts",
     "agent_credentials",
     "listings",
@@ -361,17 +377,16 @@ describe("private proposals", () => {
 describe("owner-controlled paid publication", () => {
   it("requires owner approval, uses owner-edited context, and consumes a draft once", async () => {
     const { draft } = await proposal();
-    expect(await actions.salvage(null, reviewForm(draft.id))).toHaveProperty(
-      "ok",
-    );
+    expect(await completeAnalysis(reviewForm(draft.id))).toHaveProperty("ok");
     expect(mocks.summarize).toHaveBeenCalledWith(
       repo,
       expect.objectContaining({ sourceSha: sha }),
       "Owner-edited context",
+      expect.any(Object),
     );
     expect(c.draftById(draft.id, 42)?.status).toBe("published");
     expect(d.allListings()).toHaveLength(1);
-    expect(await actions.salvage(null, reviewForm(draft.id))).toHaveProperty(
+    expect(await completeAnalysis(reviewForm(draft.id))).toHaveProperty(
       "error",
     );
     expect(mocks.summarize).toHaveBeenCalledTimes(1);
@@ -380,7 +395,7 @@ describe("owner-controlled paid publication", () => {
   it("rejects moved commits and foreign drafts before charging", async () => {
     const { draft } = await proposal();
     mocks.resolve.mockResolvedValue("b".repeat(40));
-    expect(await actions.salvage(null, reviewForm(draft.id))).toHaveProperty(
+    expect(await completeAnalysis(reviewForm(draft.id))).toHaveProperty(
       "error",
     );
     expect(mocks.summarize).not.toHaveBeenCalled();
@@ -390,7 +405,7 @@ describe("owner-controlled paid publication", () => {
       login: "other",
       accessToken: "x",
     });
-    expect(await actions.salvage(null, reviewForm(draft.id))).toHaveProperty(
+    expect(await completeAnalysis(reviewForm(draft.id))).toHaveProperty(
       "error",
     );
   });
@@ -408,7 +423,7 @@ describe("owner-controlled paid publication", () => {
         if (mode === "unlisting") d.deleteListing(d.allListings()[0].id, 42);
         return { summary: exampleListing.summary, model: "mock" };
       });
-      expect(await actions.salvage(null, reviewForm(draft.id))).toHaveProperty(
+      expect(await completeAnalysis(reviewForm(draft.id))).toHaveProperty(
         "error",
       );
       expect(d.allListings()).toEqual([]);
@@ -419,7 +434,7 @@ describe("owner-controlled paid publication", () => {
   it("resets a failed analysis for deliberate retry and recovers a crashed reservation", async () => {
     const { draft } = await proposal();
     mocks.summarize.mockRejectedValue(new Error("provider test failure"));
-    expect(await actions.salvage(null, reviewForm(draft.id))).toHaveProperty(
+    expect(await completeAnalysis(reviewForm(draft.id))).toHaveProperty(
       "error",
     );
     expect(c.draftById(draft.id, 42)?.status).toBe("pending");
@@ -431,7 +446,7 @@ describe("owner-controlled paid publication", () => {
     const { draft } = await proposal();
     d.upsertListing({ ...exampleListing, github_repo_id: 1, owner_id: 42 });
     d.db().prepare("UPDATE listings SET moderation_hidden_at = 'hidden'").run();
-    expect(await actions.salvage(null, reviewForm(draft.id))).toHaveProperty(
+    expect(await completeAnalysis(reviewForm(draft.id))).toHaveProperty(
       "error",
     );
     expect(mocks.summarize).not.toHaveBeenCalled();

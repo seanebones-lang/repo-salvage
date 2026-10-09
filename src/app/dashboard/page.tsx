@@ -6,6 +6,7 @@ import { listingsByOwner } from "@/lib/db";
 import { unlist } from "./actions";
 import type { GhRepo } from "@/lib/github";
 import RepoRow from "./repo-row";
+import { randomUUID } from "node:crypto";
 
 export const dynamic = "force-dynamic";
 const YEAR = 365 * 24 * 3600 * 1000;
@@ -58,7 +59,9 @@ export default async function Dashboard() {
         </div>
       </>
     );
-  const analysisEnabled = !!process.env.ANTHROPIC_API_KEY;
+  const analysisEnabled =
+    !!process.env.ANTHROPIC_API_KEY &&
+    process.env.ANALYSIS_WORKER_ENABLED === "1";
   const ownedListings = listingsByOwner(session.ghId);
   let repos: GhRepo[] = [];
   let loadError = false;
@@ -87,6 +90,10 @@ export default async function Dashboard() {
         </p>
       </div>
       <p>
+        <Link className="text-link" href="/dashboard/jobs">
+          Open analysis jobs
+        </Link>
+        {" · "}
         <Link className="text-link" href="/dashboard/agents">
           Manage agent credentials and contribution drafts
         </Link>
@@ -169,6 +176,7 @@ export default async function Dashboard() {
             note={listed.get(r.id)?.owner_note ?? null}
             license={r.license?.spdx_id ?? null}
             analysisEnabled={analysisEnabled}
+            requestKey={randomUUID()}
           />
         ))}
         {!loadError && !rows.length && (

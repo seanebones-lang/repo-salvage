@@ -13,7 +13,8 @@ dependencies, integration guidance, limitations, and the evidence behind the rec
    analyzed commit. Download or copy the JSON reuse brief.
 3. Authors sign in with GitHub (`read:user`), choose an owned, non-fork public repository with
    a recognized SPDX license, and add optional context. Complete bounded source files are
-   indexed before a model interprets the evidence through a replaceable provider interface.
+   indexed in a durable background job before a model interprets the evidence through a
+   replaceable provider interface. Owners can close the page and return to `/dashboard/jobs`.
    The installed live adapter currently uses Anthropic. A valid analysis can find no suitable parts.
 4. Authors review individual briefs. Reviews apply only to that source commit and analysis
    timestamp. Re-analysis replaces briefs and clears reviews; private history preserves earlier
@@ -84,10 +85,15 @@ For project sharing, configure:
 - Optional `SUMMARY_MODEL`: defaults to `claude-haiku-5-5`, a low-cost model supporting
   structured JSON output. Confirm model availability and summary quality for your account
   before a live rollout. Set an explicit override to evaluate another compatible model.
+- `ANALYSIS_WORKER_ENABLED=1`: starts the background worker in a long-lived Node server.
+  Included in the example environment and Docker runtime; set `0` to disable it. Builds
+  and Edge runtimes do not start workers. This queue is not supported on serverless hosts.
 - Optional `DATABASE_PATH`: defaults to `data/salvage.db`.
 - `DAILY_SUMMARY_LIMIT`: default 10 attempts per user over a rolling 24 hours.
 - `GLOBAL_DAILY_SUMMARY_LIMIT`: default 100 attempts for the entire installation over a
-  rolling 24 hours. Set either allowance to 0 to stop analysis. Reservations are transactional;
+  rolling 24 hours. Set either allowance to 0 to stop new analysis approvals. Already queued
+  approvals retain their reservation; disable/restart the worker or cancel jobs to stop them.
+  Reservations are transactional;
   a failed attempt after reservation consumes quota. These are request allowances, not a
   dollar budget. SDK automatic retries are disabled and analysis requests time out after two
   minutes; automatic model fallback is disabled and provider billing rules still apply.
@@ -158,13 +164,19 @@ npm run dev
 an explicit file allowlist. They also package the agent CLI as `public/repo-salvage-cli.tgz`
 from five allowlisted files. Generated archives are ignored by Git and retain their licenses.
 Project sharing shows an unavailable state if OAuth credentials have not been configured.
-If the analysis provider is unconfigured, signed-in owners retain removal controls; analysis
+If the analysis provider or background worker is unconfigured, signed-in owners retain removal controls; analysis
 is disabled and rejected before source requests or quota consumption.
 
-Analysis is serialized per repository with a ten-minute expiring reservation. Failed attempts
-release the reservation, and owner removal cancels in-flight publication. Requests based on a
-listing removed or replaced during the initial GitHub lookup must be refreshed. Re-analysis
-cannot resurrect a removed listing or overwrite a newer completed analysis.
+Analysis approvals persist in SQLite with a pinned commit, model and owner context. Submission
+returns a private job link; repeated submissions reuse the same job and allowance. A single
+worker lease serializes active jobs, with a one-day queue deadline and bounded restart recovery.
+Saved source and received responses resume without repeating their completed external work.
+An interrupted provider request with no saved response becomes `needs_attention`; starting
+another paid attempt requires an explicit owner action. Failed attempts release their
+reservation, and owner removal cancels publication and removes job history. Requests based on
+a listing removed or replaced during the initial GitHub lookup must be refreshed. Re-analysis
+cannot resurrect a removed listing or overwrite a newer completed analysis. See the
+[recovery rules](docs/ANALYSIS-ENGINE.md#durable-analysis-jobs) before operating the worker.
 
 ## Verification
 
@@ -194,7 +206,8 @@ node --test consumer.test.mjs
 
 Or download the archive from a running app, extract it into another directory and run the same
 command. Its README documents the original component's input-shape limitation. `/api/health`
-checks local database access; it does not verify GitHub OAuth, the AI provider or public traffic.
+checks local database access and the enabled worker event loop; it does not verify GitHub OAuth,
+the AI provider or public traffic.
 
 See [the review and verification record](docs/REVIEW.md) for the hardened cases, evidence
 collected and remaining live gates.
