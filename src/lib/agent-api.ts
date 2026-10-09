@@ -27,6 +27,9 @@ export function agentJson(value: unknown, status = 200) {
     headers: {
       "Cache-Control": "private, no-store",
       "X-Content-Type-Options": "nosniff",
+      ...(status === 401
+        ? { "WWW-Authenticate": 'Bearer realm="Repo Salvage drafts"' }
+        : {}),
       ...(status === 503 || status === 429 ? { "Retry-After": "60" } : {}),
     },
   });

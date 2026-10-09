@@ -86,6 +86,11 @@ export default async function Dashboard() {
           review each component brief to help other developers evaluate it.
         </p>
       </div>
+      <p>
+        <Link className="text-link" href="/dashboard/agents">
+          Manage agent credentials and contribution drafts
+        </Link>
+      </p>
       <section className="dashboard-section">
         <h2>My listings</h2>
         <p className="small muted">

@@ -1,8 +1,8 @@
 # Agent discovery and reuse interface
 
-Status: read-only discovery and retrieval implemented. `/agents` is the browser
+Status: discovery, retrieval and private contribution drafts implemented. `/agents` is the browser
 entry point, `/llms.txt` links the machine-facing resources and `/openapi.json`
-defines the versioned API. Agent contributions and the MCP adapter remain planned.
+defines the versioned API. The MCP adapter remains planned.
 The older `/api/listings/{listing}/parts/{part}` JSON export remains compatible.
 
 An agent should be able to ask for a capability, compare parts, inspect evidence
@@ -72,34 +72,61 @@ Hidden, removed, private or ownership-transferred repositories must remain
 unavailable through the catalog API and exports. Previously downloaded public
 source and direct upstream public URLs cannot be revoked by catalog removal.
 
-## Agent contributions
+## Agent contributions (implemented)
 
-Support agents acting for an authenticated repository owner as a second phase.
-An agent can identify reusable declarations, supply author-approved context and
-prepare a contribution draft. The server must resolve the repository's numeric
-identity, verify current ownership and public visibility, check its recognized
-license, pin the commit and inspect bounded source itself. Agent-supplied summaries,
-paths or test claims cannot bypass those checks or become authoritative evidence.
+Owners issue draft-only credentials at `/dashboard/agents`. Each credential has
+1–20 numeric repository IDs, a name, a 1–168-hour lifetime (default 1 hour), and
+256 random bits. Only a SHA-256 hash is stored. The plaintext is returned once
+in the authenticated issuer action and must be copied into the agent's secret
+environment as `REPO_SALVAGE_TOKEN`. No browser cookies or GitHub OAuth bearer
+are shared with the agent. Credentials do not grant private GitHub access,
+publication, owner-review changes or paid model calls. Up to 10 active credentials
+are permitted per owner, with 20 credential creations per fixed 24-hour window. Issuer GitHub verification is capped at 10 requests per owner per fixed minute before upstream calls.
 
-Use explicitly issued, revocable credentials with narrow contribution scopes;
-never ask an agent to copy a browser session cookie or reuse an OAuth secret.
-Design the credential mechanism before exposing write tools. Preserve per-owner
-and installation quotas, publication reservations, cancellation, idempotency and
-moderation. Repeated requests should return the existing operation rather than
-paying for another analysis. A read-only MCP client gets no implicit write authority.
+`POST /api/v1/drafts` requires that credential, an Idempotency-Key of 8–80 safe
+characters and JSON `{repo_id, source_sha, note}` (2048-byte body maximum). The
+note must contain 1–280 characters of context. The server verifies numeric public
+ownership, non-fork status, recognized license and a Git tree at the supplied
+40-character commit SHA. It rechecks public ownership and credential validity
+after the asynchronous lookup. Agents cannot submit summaries, review status,
+arbitrary paths, commands or certification claims. Draft creation performs no
+paid analysis and does not change the public catalog.
 
-Drafts should be the default. Owners can explicitly authorize an agent to publish
-within a defined repository scope; the operation must still obey the same server
-checks. Keep agent preparation, authorization to publish and human owner review
-as separate records. The agent cannot set the owner's review status. Record which
-credential acted, the source commit and the outcome without logging secrets.
+`GET /api/v1/drafts` returns up to 50 drafts created by this credential, unfinished
+first. Both operations share 30 requests per owner per fixed minute. New drafts
+are capped at 50 per owner per fixed 24-hour window and 50 unfinished proposals.
+Identical canonical proposals and keys return the existing draft, including its
+current terminal outcome, without a second upstream lookup or paid call. Reusing
+a key for changed context or source returns 409. Canonical context is trimmed;
+keys are unique per credential. Inactive credentials cannot replay requests.
+Private responses are no-store; no credential or analysis reservation appears
+in the response. No automatic retry is implemented.
 
-Agents that extract parts can also prepare follow-up contributions describing
-adaptations and consumer test results. Accept evidence with explicit commands,
-runtime, source hashes, output and verification status; treat uploaded assertions
-as unverified until the product's verification process supports them. Never run
-arbitrary uploaded commands on the catalog server. Do not silently list unrelated
-repositories merely because an agent can find them.
+The owner reviews and may edit context in the private inbox. The owner action
+rechecks GitHub ownership and license, requires the default branch to match the
+proposed commit **before** reserving a paid analysis, then uses the existing
+sampling, provider, per-owner/global quota and publication reservation path.
+Approval replaces an existing analysis and clears its owner reviews. Owner
+review remains a separate action; approving a draft does not assert tested code.
+Successful publication atomically records the listing and terminal draft outcome.
+Reapproving a published draft is rejected before spending. Provider failure leaves
+a pending draft for deliberate retry; a failed reserved attempt still consumes
+its existing analysis allowance. A crashed reservation is recovered after expiry
+when the inbox is read, and its late worker cannot publish.
+
+Revocation cancels pending drafts and publication of active draft analyses.
+Credential expiry also blocks publication; dismissing a draft cancels its active
+reservation. Removing an existing listing cancels its unfinished drafts. Already
+incurred provider charges cannot be reversed. Hidden listings cannot be refreshed
+through draft approval. A moved default branch requires a new proposal. Previously
+published listings remain removable through ordinary owner controls; revoking a
+credential does not remove them. Old/expired history is retained; the inbox shows
+up to 50 entries with unfinished drafts and active credentials first.
+
+Automatic agent publication and uploaded consumer-test certification are future
+features. Read-only MCP tools will receive no implicit write authority. Never run
+uploaded commands on the catalog server or list unrelated repositories merely
+because an agent can discover them.
 
 ## MCP and discoverability
 

@@ -76,11 +76,15 @@ async function readBytes(response, max) {
   return Buffer.concat(chunks, size);
 }
 
-async function responseFor(url, transport) {
+async function responseFor(url, transport, options = {}) {
   const response = await transport(url, {
+    ...options,
     redirect: "error",
     signal: AbortSignal.timeout(15000),
-    headers: { Accept: "application/json, text/plain;q=0.9, */*;q=0.8" },
+    headers: {
+      Accept: "application/json, text/plain;q=0.9, */*;q=0.8",
+      ...options.headers,
+    },
   });
   if (!response.ok) {
     let code = "request_failed";
@@ -288,4 +292,66 @@ export async function fetchPart({
     await fs.rm(destination, { recursive: true, force: true });
     throw error;
   }
+}
+
+/** Private credentials are sent only to the explicitly configured application origin. */
+export async function drafts(
+  base,
+  { token, proposal, key } = {},
+  transport = fetch,
+) {
+  base = baseUrl(base);
+  if (!/^rs_draft_[A-Za-z0-9_-]{43}$/.test(token ?? ""))
+    throw new Error("Set REPO_SALVAGE_TOKEN to a scoped draft credential.");
+  if (
+    proposal &&
+    (!Number.isSafeInteger(proposal.repo_id) ||
+      proposal.repo_id < 1 ||
+      !/^[a-f0-9]{40}$/.test(proposal.source_sha) ||
+      typeof proposal.note !== "string" ||
+      !proposal.note.trim() ||
+      proposal.note.length > 280 ||
+      !/^[A-Za-z0-9_-]{8,80}$/.test(key ?? ""))
+  )
+    throw new Error(
+      "Prepare requires a repository ID, lowercase commit SHA, 1–280 characters of context and an idempotency key of 8–80 safe characters.",
+    );
+  let response;
+  try {
+    response = await responseFor(`${base}/api/v1/drafts`, transport, {
+      method: proposal ? "POST" : "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        ...(proposal
+          ? { "Content-Type": "application/json", "Idempotency-Key": key }
+          : {}),
+      },
+      ...(proposal
+        ? {
+            body: JSON.stringify({
+              repo_id: proposal.repo_id,
+              source_sha: proposal.source_sha,
+              note: proposal.note,
+            }),
+          }
+        : {}),
+    });
+  } catch (error) {
+    if (error.status && /^[a-z_]{1,80}$/.test(error.code)) throw error;
+    throw new Error(
+      "Private API request failed. Check the configured origin and connectivity.",
+    );
+  }
+  const data = JSON.parse(
+    (await readBytes(response, MAX_FILE)).toString("utf8"),
+  );
+  if (
+    proposal
+      ? data.format !== "repo-salvage/draft-v1" ||
+        data.repo_id !== proposal.repo_id ||
+        data.source_sha !== proposal.source_sha
+      : data.format !== "repo-salvage/drafts-v1" || !Array.isArray(data.drafts)
+  )
+    throw new Error("Unexpected draft API format or identity.");
+  return data;
 }

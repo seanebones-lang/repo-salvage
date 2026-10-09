@@ -90,7 +90,7 @@ Parser and circuit-breaker extractions passed checks in separate Node consumers.
 See [the first pilot](docs/PILOT.md) and [expanded matrix](docs/PILOT-MATRIX.md) for
 usage, adaptations and evidence limits. The [agent interface](docs/AGENT-INTERFACE.md)
 now supports JSON search, pinned-source inspection and a standalone consumer CLI.
-Agent contributions and the MCP adapter remain planned.
+Private agent contribution drafts are implemented; the MCP adapter remains planned.
 
 ## For agents and scripts
 
@@ -219,3 +219,14 @@ See [GitHub's public OAuth app rate limits](https://docs.github.com/en/rest/usin
   visitor from reporting. Anonymous abuse controls are deliberately not represented as identity
   or adoption verification.
 - There are no payments, messaging, automatic repository transfers or public launch claims.
+
+Owners can now delegate **private draft preparation** at `/dashboard/agents`.
+Issue an expiring credential for selected licensed public repositories and store
+it in the agent's secret environment as `REPO_SALVAGE_TOKEN`. The packaged CLI's
+`prepare` and `drafts` commands use it to submit pinned-commit context and read
+that credential's private proposals. Draft creation makes no paid calls. Owners
+review and edit context, then explicitly trigger the existing paid analysis and
+publication flow. Credentials cannot publish, mark owner reviews or access
+private repositories. Revocation cancels unfinished draft publication.
+See [the contribution contract](docs/AGENT-INTERFACE.md#agent-contributions-implemented)
+for scopes, retry behavior, limits and cancellation.
