@@ -1,10 +1,16 @@
 import { createHash } from "node:crypto";
 import path from "node:path";
 import ts from "typescript";
+import { parsePythonFiles } from "./python-parser";
 
-export const INDEX_VERSION = "repo-salvage/source-index-v1";
+export const INDEX_VERSION = "repo-salvage/source-index-v2";
 export const INDEX_LIMITS = {
   files: 64,
+  initialFiles: 48,
+  initialMetadataFiles: 12,
+  followupFiles: 16,
+  initialBytes: 1_500_000,
+  inspectionMilliseconds: 120_000,
   fileBytes: 128_000,
   totalBytes: 2_000_000,
   promptCharacters: 70_000,
@@ -47,12 +53,18 @@ export type SourceIndex = {
     path: string;
     sha256: string;
     coverage: "complete" | "prefix";
-    parser: "typescript" | "file" | "parse_error";
+    parser: "typescript" | "python" | "file" | "parse_error";
     imports: ImportEvidence[];
   }[];
   targets: SourceTarget[];
   references: SourceReference[];
   skipped: { path: string; reason: string }[];
+  inspection?: {
+    initial_paths: string[];
+    followup_paths: string[];
+    fill_paths: string[];
+    deadline_reached: boolean;
+  };
 };
 export type EvidencePacket = {
   format: typeof INDEX_VERSION;
@@ -127,6 +139,38 @@ function resolveImport(
   };
 }
 
+function resolvePythonImport(
+  file: string,
+  specifier: string,
+  known: Set<string>,
+): ImportEvidence {
+  const relative = specifier.match(/^\.+/)?.[0].length ?? 0;
+  const module = specifier.slice(relative).split(".").join("/");
+  const parents =
+    path.posix.dirname(file) === "." ? [] : path.posix.dirname(file).split("/");
+  if (relative > parents.length + 1)
+    return { specifier, kind: "unresolved", resolved_path: null };
+  const prefix = relative
+    ? parents.slice(0, parents.length - relative + 1).join("/")
+    : "";
+  const stems = relative
+    ? [path.posix.join(prefix, module)]
+    : [module, "src/" + module];
+  const choices = [
+    ...new Set(stems.flatMap((stem) => [stem + ".py", stem + "/__init__.py"])),
+  ].filter((candidate) => safeSourcePath(candidate) && known.has(candidate));
+  return {
+    specifier,
+    kind:
+      choices.length === 1
+        ? "local"
+        : relative || choices.length > 1
+          ? "unresolved"
+          : "external",
+    resolved_path: choices.length === 1 ? choices[0] : null,
+  };
+}
+
 /** Parse source only: no project configuration, package installation or execution. */
 export function indexSources(
   inputs: IndexedInput[],
@@ -141,6 +185,7 @@ export function indexSources(
     skipped: [...skipped],
   };
   const known = new Set(knownPaths);
+  const python = parsePythonFiles(inputs);
   let inputBytes = 0;
   for (const file of [...inputs].sort((a, b) => a.path.localeCompare(b.path))) {
     const size = Buffer.byteLength(file.content);
@@ -172,10 +217,16 @@ export function indexSources(
             true,
           )
         : null;
+    const py = python.get(file.path);
     const invalid =
-      source &&
-      (source as ts.SourceFile & { parseDiagnostics: readonly ts.Diagnostic[] })
-        .parseDiagnostics.length > 0;
+      py?.status === "parse_error" ||
+      py?.status === "unsupported_encoding" ||
+      (source &&
+        (
+          source as ts.SourceFile & {
+            parseDiagnostics: readonly ts.Diagnostic[];
+          }
+        ).parseDiagnostics.length > 0);
     const imports: ImportEvidence[] = [];
     if (source && !invalid) {
       const walk = (node: ts.Node) => {
@@ -221,6 +272,18 @@ export function indexSources(
       };
       walk(source);
     }
+    if (py?.status === "ok")
+      imports.push(
+        ...py.imports.map((i) =>
+          i.dynamic
+            ? {
+                specifier: i.specifier,
+                kind: "dynamic" as const,
+                resolved_path: null,
+              }
+            : resolvePythonImport(file.path, i.specifier, known),
+        ),
+      );
     const uniqueImports = [
       ...new Map(imports.map((i) => [JSON.stringify(i), i])).values(),
     ];
@@ -228,16 +291,31 @@ export function indexSources(
       path: file.path,
       sha256: hash,
       coverage: file.truncated ? "prefix" : "complete",
-      parser: invalid ? "parse_error" : source ? "typescript" : "file",
+      parser: invalid
+        ? "parse_error"
+        : source
+          ? "typescript"
+          : py?.status === "ok"
+            ? "python"
+            : "file",
       imports: uniqueImports,
     });
     if (file.truncated || invalid) {
       index.skipped.push({
         path: file.path,
-        reason: file.truncated ? "incomplete_file" : "parse_error",
+        reason: file.truncated
+          ? "incomplete_file"
+          : py?.status === "unsupported_encoding"
+            ? "unsupported_python_encoding"
+            : "parse_error",
       });
       continue;
     }
+    if (py?.status === "unavailable")
+      index.skipped.push({
+        path: file.path,
+        reason: "python_parser_unavailable",
+      });
     const add = (
       symbol: string,
       start: number,
@@ -245,8 +323,11 @@ export function indexSources(
       kind: SourceTarget["kind"],
     ) => {
       const content = file.content.slice(start, end);
-      const startLine = file.content.slice(0, start).split("\n").length;
-      const endLine = startLine + content.split("\n").length - 1;
+      const lineSeparator = /\r\n|\r|\n/;
+      const startLine = file.content
+        .slice(0, start)
+        .split(lineSeparator).length;
+      const endLine = startLine + content.split(lineSeparator).length - 1;
       const id = digest(JSON.stringify([file.path, symbol, kind])).slice(0, 16);
       const reference = {
         id: digest(JSON.stringify([file.path, hash, start, end])).slice(0, 24),
@@ -259,7 +340,7 @@ export function indexSources(
       };
       index.references.push(reference);
       if (!isCodePath(file.path) || isTestPath(file.path)) return;
-      index.targets.push({
+      const target: SourceTarget = {
         id,
         path: file.path,
         symbol,
@@ -270,11 +351,29 @@ export function indexSources(
         unresolved: [],
         test_paths: [],
         notice_paths: [],
-      });
+      };
+      index.targets.push(target);
+      return target;
     };
     // Complete file references retain context, manifests, tests and notices even
     // when declaration-level analysis is unavailable for this language.
     add("<module>", 0, file.content.length, "file");
+    if (py?.status === "ok") {
+      const body = Buffer.from(file.content);
+      for (const declaration of py.declarations) {
+        const start = body
+          .subarray(0, declaration.start_byte)
+          .toString("utf8").length;
+        const end = body
+          .subarray(0, declaration.end_byte)
+          .toString("utf8").length;
+        const target = add(declaration.symbol, start, end, "declaration");
+        if (target && declaration.context)
+          target.unresolved.push(
+            `Enclosing Python class context required: ${declaration.context}`,
+          );
+      }
+    }
     if (source) {
       for (const node of source.statements) {
         const exported =
@@ -310,13 +409,13 @@ export function indexSources(
   }
   for (const target of index.targets) {
     const seen = new Set([target.path]);
-    const unresolved = new Set<string>();
+    const unresolved = new Set<string>(target.unresolved);
     const follow = (file: string) => {
       const record = index.files.find((f) => f.path === file);
       if (
         !record ||
         record.coverage !== "complete" ||
-        record.parser !== "typescript"
+        !["typescript", "python"].includes(record.parser)
       ) {
         unresolved.add(`Imports not statically inspected: ${file}`);
         return;
@@ -373,14 +472,18 @@ export function evidencePacket(
     format: INDEX_VERSION,
     targets: [],
     references: [],
-    omitted_targets: 0,
+    omitted_targets: index.targets.length,
   };
   const selected = new Map<string, SourceReference>();
-  let used = 0;
+  // Include the envelope, commas and worst-case omission count in the wire
+  // allowance, rather than counting source blocks alone.
+  let used = JSON.stringify(packet).length;
+  if (!Number.isInteger(characterLimit) || characterLimit < used)
+    throw new Error("Evidence allowance cannot contain the packet envelope.");
   const add = (reference: SourceReference | undefined) => {
     if (!reference) return false;
     if (selected.has(reference.id)) return true;
-    const cost = JSON.stringify(reference).length;
+    const cost = JSON.stringify(reference).length + (selected.size ? 1 : 0);
     if (used + cost > characterLimit) return false;
     selected.set(reference.id, reference);
     used += cost;
@@ -398,13 +501,15 @@ export function evidencePacket(
     const reference = index.references.find(
       (r) => r.id === target.reference_id,
     );
-    const targetCost = JSON.stringify(target).length;
+    if (!reference) continue;
+    const targetCost =
+      JSON.stringify(target).length + (packet.targets.length ? 1 : 0);
     if (
       used +
         targetCost +
         (selected.has(target.reference_id)
           ? 0
-          : JSON.stringify(reference).length) >
+          : JSON.stringify(reference).length + (selected.size ? 1 : 0)) >
       characterLimit
     )
       continue;
@@ -438,6 +543,7 @@ export function indexRecord(index: SourceIndex, packet: EvidencePacket) {
     limits: INDEX_LIMITS,
     files: index.files,
     skipped: index.skipped,
+    inspection: index.inspection ?? null,
     targets_indexed: index.targets.length,
     targets_supplied: packet.targets.length,
     omitted_targets: packet.omitted_targets,

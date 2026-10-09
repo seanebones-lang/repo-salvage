@@ -327,28 +327,30 @@ export async function indexedSnapshotRepo(
         if (group.length) ordered.push(group.shift()!);
   }
   const files: RepoSnapshot["files"] = [];
+  const attempted = new Set<string>();
+  const initialPaths: string[] = [],
+    followupPaths: string[] = [],
+    fillPaths: string[] = [];
+  const deadline = Date.now() + INDEX_LIMITS.inspectionMilliseconds;
   let bytes = 0;
-  for (const file of ordered) {
+  const readFile = async (file: SourceFile, byteAllowance: number) => {
+    const remainingMilliseconds = deadline - Date.now();
     if (
-      files.length >= INDEX_LIMITS.files ||
-      bytes >= INDEX_LIMITS.totalBytes
-    ) {
-      skipped.push({
-        path: file.path,
-        reason:
-          files.length >= INDEX_LIMITS.files
-            ? "file_count_limit"
-            : "repository_byte_limit",
-      });
-      continue;
-    }
-    const limit = Math.min(
-      INDEX_LIMITS.fileBytes,
-      INDEX_LIMITS.totalBytes - bytes,
-    );
+      attempted.has(file.path) ||
+      attempted.size >= INDEX_LIMITS.files ||
+      remainingMilliseconds <= 0 ||
+      bytes >= byteAllowance ||
+      (file.size ?? 0) > byteAllowance - bytes
+    )
+      return false;
+    attempted.add(file.path);
+    const limit = Math.min(INDEX_LIMITS.fileBytes, byteAllowance - bytes);
     const response = await fetch(
       `https://raw.githubusercontent.com/${repo.full_name}/${sourceSha}/${file.path.split("/").map(encodeURIComponent).join("/")}`,
-      { cache: "no-store", signal: AbortSignal.timeout(10_000) },
+      {
+        cache: "no-store",
+        signal: AbortSignal.timeout(Math.min(10_000, remainingMilliseconds)),
+      },
     );
     if (!response.ok)
       throw new Error(`Could not read indexed file: ${file.path}`);
@@ -374,12 +376,95 @@ export async function indexedSnapshotRepo(
     } catch {
       skipped.push({ path: file.path, reason: "unsupported_encoding" });
       bytes += Math.min(body.length, limit);
-      continue;
+      return true;
     }
     bytes += Math.min(body.length, limit);
     files.push({ path: file.path, content, truncated });
+    return true;
+  };
+  // Reserve an allowance for dependency/test inspection; avoid spending the
+  // broad pass entirely on documentation in large multi-package repositories.
+  let metadataReads = 0;
+  for (const file of ordered) {
+    if (attempted.size >= INDEX_LIMITS.initialFiles) break;
+    if (
+      priority(file) === 0 &&
+      metadataReads >= INDEX_LIMITS.initialMetadataFiles
+    )
+      continue;
+    if (await readFile(file, INDEX_LIMITS.initialBytes)) {
+      initialPaths.push(file.path);
+      if (priority(file) === 0) metadataReads++;
+    }
   }
-  const index = indexSources(files, knownPaths, skipped);
+  let index = indexSources(files, knownPaths, skipped);
+  while (followupPaths.length < INDEX_LIMITS.followupFiles) {
+    const candidates = new Map<string, number>();
+    for (const target of new Map(
+      index.targets.map((t) => [t.path, t]),
+    ).values()) {
+      for (const file of target.supporting_paths)
+        if (!attempted.has(file)) candidates.set(file, 0);
+      const base = target.path.split("/").at(-1)!;
+      const dot = base.lastIndexOf(".");
+      const stem = base.slice(0, dot),
+        ext = base.slice(dot + 1);
+      const testNames = [
+        `${stem}.test.${ext}`,
+        `${stem}.spec.${ext}`,
+        `${stem}_test.${ext}`,
+        `test_${stem}.py`,
+      ];
+      for (const file of eligible)
+        if (
+          isTestPath(file.path) &&
+          testNames.includes(file.path.split("/").at(-1)!) &&
+          !attempted.has(file.path) &&
+          !candidates.has(file.path)
+        )
+          candidates.set(file.path, 1);
+      for (const file of target.notice_paths)
+        if (!attempted.has(file) && !candidates.has(file))
+          candidates.set(file, 2);
+    }
+    const next = [...candidates]
+      .sort((a, b) => a[1] - b[1] || a[0].localeCompare(b[0]))
+      .map(([file]) => eligible.find((f) => f.path === file))
+      .find(
+        (file) =>
+          file &&
+          attempted.size < INDEX_LIMITS.files &&
+          Date.now() < deadline &&
+          bytes < INDEX_LIMITS.totalBytes &&
+          (file.size ?? 0) <= INDEX_LIMITS.totalBytes - bytes,
+      );
+    if (!next || !(await readFile(next, INDEX_LIMITS.totalBytes))) break;
+    followupPaths.push(next.path);
+    index = indexSources(files, knownPaths, skipped);
+  }
+  // Unused follow-up allowance returns to broad discovery, keeping the same
+  // overall read/byte limits when no known dependency context is missing.
+  for (const file of ordered)
+    if (await readFile(file, INDEX_LIMITS.totalBytes))
+      fillPaths.push(file.path);
+  for (const file of ordered)
+    if (!attempted.has(file.path))
+      skipped.push({
+        path: file.path,
+        reason:
+          Date.now() >= deadline
+            ? "inspection_time_limit"
+            : attempted.size >= INDEX_LIMITS.files
+              ? "file_count_limit"
+              : "repository_byte_limit",
+      });
+  index = indexSources(files, knownPaths, skipped);
+  index.inspection = {
+    initial_paths: initialPaths,
+    followup_paths: followupPaths,
+    fill_paths: fillPaths,
+    deadline_reached: Date.now() >= deadline,
+  };
   return {
     sourceSha,
     knownPaths,

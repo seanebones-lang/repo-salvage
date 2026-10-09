@@ -2,8 +2,8 @@
 
 Implemented 2026-10-09. This replaces prefix sampling in the owner publication
 path. Existing listings and their identifiers are left intact until the owner
-deliberately requests re-analysis. Hosting and new paid model evaluations are
-outside this milestone.
+deliberately requests re-analysis. Hosting remains outside this milestone. Provider comparison is an explicit
+operator evaluation, separate from publication.
 
 ## Source inspection before interpretation
 
@@ -15,23 +15,37 @@ recorded as excluded. Nothing in the repository is installed or executed.
 
 Limits are explicit: 10,000 tree entries, 64 inspected files, 128,000 bytes per
 file and 2,000,000 source bytes per repository. Directory round-robin selection
-avoids exhausting the allowance in one directory. Metadata/docs/notices precede
-source and tests. Tests may consequently be omitted in a large repository; the
-record reports omissions instead of claiming a complete repository scan.
+avoids exhausting the allowance in one directory. The broad pass reads at most 48 files and 1.5 MB, with at most 12 metadata
+files. Up to 16 reserved reads follow known missing local dependencies, likely
+test filenames and notices; each new dependency can expose another missing import.
+Unused capacity returns to broad discovery. Total limits remain 64 files and
+2 MB, with a two-minute source-read deadline and ten-second request timeouts.
+Inspection history records the initial, follow-up and fill paths. Filename matching
+only chooses tests to inspect; observed imports still determine association.
+Tests and dependencies may remain omitted, and every omission is recorded.
 
 The TypeScript parser identifies exported function implementations, classes and
 initialized variables in complete JS/TS files. Parse errors and truncated files
-cannot supply a complete declaration. Non-JS/TS languages receive complete-file
-targets with explicit uninspected-import context. Python declaration parsing is
-a subsequent adapter, not implemented here. File fallback is also used when
-JS/TS exposes no recognized exported implementation.
+cannot supply a complete declaration. Python functions, async functions, classes and direct class methods use a trusted
+standard-library AST helper with Python 3.11 grammar. Decorators and complete
+bodies retain exact UTF-8 source ranges; method targets explicitly require their
+enclosing class context. The helper receives source as stdin data through
+`python3 -I -S`, a minimal environment, a five-second process timeout and output
+limits. Linux also caps CPU time and address space. Target code is never imported
+or executed. Invalid/newer grammar and incompatible encoding withhold targets.
+A missing/failed parser falls back to complete-file evidence with explicit gaps.
+Other languages receive complete-file targets with uninspected-import context.
+File fallback also applies when no recognized declaration exists.
 
 Static imports and re-exports are inspected at module level. Relative imports
 are resolved against the pinned tree and followed transitively with cycle
 detection. Computed imports and common aliases are explicit gaps; skipped,
 incomplete and unparsed supporting files produce gaps too. A bare import is an
 observed specifier, not proof a package is installed or actually required by the
-selected declaration. Custom tsconfig aliases, same-file helper closure,
+selected declaration. Python package-relative imports and unique root/`src` module paths are inspected
+conservatively. Ambiguous paths and dynamic imports remain gaps. This does not
+reconstruct Python runtime search paths, namespace packages or imported-symbol
+bindings. Custom tsconfig aliases, same-file helper closure,
 framework configuration, runtime side effects and dependency versions are not
 fully resolved. `local_imports_complete` deliberately remains false.
 
@@ -66,8 +80,14 @@ retry, fallback, shell tools, publication tool or repository execution is added.
 `AnalysisProvider.generate` accepts a bounded request and returns text plus
 provider-reported metadata. The Anthropic adapter remains the one installed live
 adapter; a deterministic fixture provider verifies that the engine does not
-depend on Anthropic response objects. No new live provider calls were made for
-this milestone, and no Codex-versus-Claude quality winner is claimed.
+depend on Anthropic response objects. The initial indexed release used only offline provider fixtures. The subsequent
+[frozen interpretation controls](../examples/analysis-evaluation/README.md) ran
+four native Codex CLI 0.160.0 sessions with explicit `gpt-6.1-sol`, low reasoning,
+no tool events, valid references and the expected selections. Source review found
+no material unsupported claims in those four answers. This is implementing-agent
+review of authored controls, not an independent real-repository holdout.
+The configured Anthropic model trial stopped on HTTP 401 after one request.
+There is no completed two-provider quality comparison or dollar-cost winner.
 
 Codex is a candidate for the next model comparison. Official integrations include
 the [Codex SDK](https://learn.chatgpt.com/docs/codex-sdk) and
@@ -103,7 +123,8 @@ repo-salvage inspect LISTING_ID PART_ID --api-version 2 --base https://YOUR_HOST
 ```
 
 `declaration=complete` requires a complete parsed declaration supplied to analysis.
-`imports=resolved` excludes recorded static-import gaps; it does not establish
+`imports=resolved` excludes recorded source-context gaps, including a Python
+method's enclosing-class requirement; it does not establish
 standalone execution or complete runtime dependencies. The updated MCP adapter
 uses version 2. The CLI defaults to version 1 unless version 2 or evidence filters
 are selected. Existing adapters need no automatic upgrade to keep using version 1.
@@ -132,7 +153,7 @@ estimate. Score supported explanations, material omissions, candidate selection
 and fresh-consumer success; do not use model self-confidence as a quality score.
 Retain failures and compare repetitions without changing fixtures to fit answers.
 
-After that comparison: add the chosen provider adapter, Python declaration
-support, bounded follow-up source inspection and resumable background jobs as
-separate validated increments. Automatic installation/execution of arbitrary
+The Python parser and bounded follow-up inspection are implemented.
+After comparison, choose a provider adapter and tackle resumable background jobs
+as separate validated increments. Automatic installation/execution of arbitrary
 repository code is not part of the public analyzer.

@@ -129,4 +129,79 @@ describe("indexed pinned snapshots", () => {
       /incomplete/,
     );
   });
+  it("uses reserved reads for omitted dependencies and import-linked tests before filling the remaining inventory allowance", async () => {
+    transport([
+      {
+        path: "aaa.ts",
+        content:
+          'import { helper } from "./zz-helper"; export const useful = helper;',
+      },
+      ...Array.from({ length: 70 }, (_, i) => ({
+        path: `filler-${String(i).padStart(2, "0")}.ts`,
+        content: "export const filler = 1;",
+      })),
+      {
+        path: "zz-helper.ts",
+        content:
+          'import { value } from "./zz-value"; export const helper = value;',
+      },
+      { path: "zz-value.ts", content: "export const value = 2;" },
+      {
+        path: "tests/aaa.test.ts",
+        content: 'import { useful } from "../aaa"; useful;',
+      },
+    ]);
+    const snap = await indexedSnapshotRepo("never-forward", repo, commit);
+    expect(snap.index?.inspection?.initial_paths).toHaveLength(48);
+    expect(snap.index?.inspection?.followup_paths).toEqual([
+      "zz-helper.ts",
+      "zz-value.ts",
+      "tests/aaa.test.ts",
+    ]);
+    expect(snap.files).toHaveLength(64);
+    const target = snap.index?.targets.find((t) => t.symbol === "useful")!;
+    expect(target.supporting_paths).toEqual(["zz-helper.ts", "zz-value.ts"]);
+    expect(target.unresolved).toEqual([]);
+    expect(target.test_paths).toEqual(["tests/aaa.test.ts"]);
+  });
+  it("verifies follow-up blobs and stops source reads at the overall inspection deadline", async () => {
+    const files = [
+      {
+        path: "aaa.ts",
+        content: 'import x from "./zz-helper"; export const value = x;',
+      },
+      ...Array.from({ length: 60 }, (_, i) => ({
+        path: `filler-${i}.ts`,
+        content: "export const filler = 1;",
+      })),
+      {
+        path: "zz-helper.ts",
+        content: "export default 1;",
+        sha: blob("different"),
+      },
+    ];
+    transport(files);
+    await expect(indexedSnapshotRepo("t", repo, commit)).rejects.toThrow(
+      /Git blob/,
+    );
+    const fetch = transport(files.map(({ sha: _sha, ...file }) => file));
+    const clock = vi.spyOn(Date, "now").mockReturnValue(0);
+    vi.stubGlobal("fetch", async (...args: Parameters<typeof fetch>) => {
+      const response = await fetch(...args);
+      if (!String(args[0]).includes("/git/trees/"))
+        clock.mockReturnValue(120_001);
+      return response;
+    });
+    try {
+      const snap = await indexedSnapshotRepo("t", repo, commit);
+      expect(fetch).toHaveBeenCalledTimes(2);
+      expect(snap.files).toHaveLength(1);
+      expect(snap.index?.inspection?.deadline_reached).toBe(true);
+      expect(
+        snap.index?.skipped.every((s) => s.reason === "inspection_time_limit"),
+      ).toBe(true);
+    } finally {
+      clock.mockRestore();
+    }
+  });
 });

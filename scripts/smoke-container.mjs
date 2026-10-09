@@ -163,6 +163,29 @@ try {
   check(
     "image excludes env/database contents, protects program files and defaults to node",
   );
+  const parsedPython = JSON.parse(
+    docker(
+      "run",
+      "--rm",
+      "--read-only",
+      "--cap-drop",
+      "ALL",
+      "--entrypoint",
+      "node",
+      image,
+      "-e",
+      `const {spawnSync}=require('node:child_process');
+       const p=spawnSync('python3',['-I','-S','-X','utf8','/app/scripts/python-index.py'],{
+         input:JSON.stringify([{path:'fixture.py',content:'raise RuntimeError("must never execute")\\ndef twice(x): return x * 2\\n'}]),encoding:'utf8',timeout:5000});
+       if(p.status!==0)process.exit(1);process.stdout.write(p.stdout);`,
+    ),
+  );
+  assert.equal(parsedPython.format, "repo-salvage/python-ast-v1");
+  assert.equal(parsedPython.files[0].status, "ok");
+  assert.equal(parsedPython.files[0].declarations[0].symbol, "twice");
+  check(
+    "packaged isolated Python parser inspects declarations without executing source",
+  );
   const missingMount = id + "-missing-mount";
   run(missingMount, null, { writableImage: true });
   await fails(missingMount);
