@@ -51,6 +51,9 @@ concurrent analyses and large catalogs still need measurement.
    `DATABASE_PATH=/app/data/salvage.db` includes the database and its WAL/SHM files
    on the same persistent filesystem. Do not mount the application root or use
    multiple SQLite writers in different replicas/regions.
+   Startup requires a separate non-memory data mount; a writable image directory
+   alone is rejected. This checks mount configuration, not a provider's durability
+   guarantee or your backup policy.
 3. Leave the image's start command as `node scripts/container-start.mjs`.
    `HOSTNAME=0.0.0.0` is supplied by the image; it listens on the platform's `PORT`.
    Set the provider's deployment health path to `/api/health`.
@@ -169,7 +172,7 @@ The explicit smoke command creates disposable local volumes/containers, forwards
 no real credentials, makes no repository analysis calls, and removes its fixtures.
 It verifies mounted storage, actual UID, application/download delivery, online
 backup, SIGKILL rollback, replacement-container persistence, fresh-volume restore,
-Docker health, invalid/read-only/corrupt storage rejection and the canonical
+Docker health, missing-mount/invalid/read-only/corrupt storage rejection and the canonical
 HTTPS OAuth redirect. CI runs it on Linux amd64; local verification uses arm64.
 
 Gzip platform tags in the two example bundles are normalized to Unix. The Linux

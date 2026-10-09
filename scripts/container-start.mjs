@@ -8,6 +8,28 @@ import { containerConfig } from "./container-config.mjs";
 try {
   const config = containerConfig(process.env);
   const directory = path.dirname(config.database);
+  // A writable image directory is still ephemeral. Require a separately mounted
+  // non-memory filesystem for the database directory (or an ancestor below /).
+  const mounted = fs
+    .readFileSync("/proc/self/mountinfo", "utf8")
+    .split("\n")
+    .some((line) => {
+      const fields = line.split(" ");
+      const mount = fields[4]?.replace(/\\([0-7]{3})/g, (_, octal) =>
+        String.fromCharCode(parseInt(octal, 8)),
+      );
+      const type = fields[fields.indexOf("-") + 1];
+      return (
+        mount &&
+        mount !== "/" &&
+        !["tmpfs", "ramfs"].includes(type) &&
+        (directory === mount || directory.startsWith(mount + path.sep))
+      );
+    });
+  if (!mounted)
+    throw new Error(
+      "The database requires a mounted persistent data directory.",
+    );
   // Some providers mount volumes owned by root. Only an explicitly root-started
   // container repairs the dedicated default mount, then drops privileges BEFORE
   // opening SQLite or loading the application. The image defaults to USER node.
@@ -67,7 +89,7 @@ try {
   // Configuration/filesystem exception messages can contain input values.
   // Fail before listening without reflecting credentials or private data.
   console.error(
-    "Container preflight failed. Check canonical origin, auth secret, paired OAuth credentials, numeric limits, moderator configuration and writable database volume; inspect the deployment guide.",
+    "Container preflight failed. Check canonical origin, auth secret, paired OAuth credentials, numeric limits, moderator configuration and mounted writable database volume; inspect the deployment guide.",
   );
   process.exit(1);
 }

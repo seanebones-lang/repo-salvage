@@ -209,12 +209,13 @@ before service startup. The image also provides a database healthcheck.
 The online backup command preserves committed WAL data, creates private new files,
 checks integrity, refuses overwrite and rejects public assets (including a
 symlinked parent). Nine offline operations checks add to the existing suite:
-**203 offline checks**, plus **13 disposable container checks**. The local arm64
+**203 offline checks**, plus **14 disposable container checks**. The local arm64
 drill runs under a 512 MiB memory limit with a read-only application filesystem.
 It verifies actual server UID, all four archives, ordinary pages and empty agent
 API, online backup as UID 1000, SIGKILL rollback/committed-quota retention,
 replacement-container persistence, fresh-volume restoration, health, invalid
-configuration/storage rejection, and a canonical HTTPS OAuth authorization
+configuration/storage rejection (including a missing mount on an otherwise
+writable image), and a canonical HTTPS OAuth authorization
 redirect with secure cookies. The redirect uses dummy credentials and is not
 followed to GitHub; this does not establish a production login.
 

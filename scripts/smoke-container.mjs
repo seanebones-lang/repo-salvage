@@ -37,7 +37,12 @@ function volume(suffix) {
 function run(
   name,
   data,
-  { root = false, readonly = false, env = environment } = {},
+  {
+    root = false,
+    readonly = false,
+    env = environment,
+    writableImage = false,
+  } = {},
 ) {
   containers.push(name);
   return docker(
@@ -51,14 +56,18 @@ function run(
     "512m",
     "--cpus",
     "0.5",
-    "--read-only",
+    ...(writableImage ? [] : ["--read-only"]),
     "--tmpfs",
     "/tmp:rw,nosuid,size=64m",
     "--publish",
     "127.0.0.1::3000",
     ...(root ? ["--user", "0"] : ["--cap-drop", "ALL"]),
-    "--mount",
-    `type=volume,source=${data},target=/app/data,volume-nocopy${readonly ? ",readonly" : ""}`,
+    ...(data
+      ? [
+          "--mount",
+          `type=volume,source=${data},target=/app/data,volume-nocopy${readonly ? ",readonly" : ""}`,
+        ]
+      : []),
     ...Object.entries(env).flatMap(([key, value]) => [
       "--env",
       key + "=" + value,
@@ -153,6 +162,12 @@ try {
   });
   check(
     "image excludes env/database contents, protects program files and defaults to node",
+  );
+  const missingMount = id + "-missing-mount";
+  run(missingMount, null, { writableImage: true });
+  await fails(missingMount);
+  check(
+    "missing data mount fails before listening instead of creating ephemeral storage",
   );
   const data = volume("data");
   const denied = id + "-root-volume-denied";

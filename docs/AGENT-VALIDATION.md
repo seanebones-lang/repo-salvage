@@ -287,7 +287,7 @@ and `artifacts/assignment-consumer-proof.json`.
 ## Deployment readiness follow-up — 2026-10-08
 
 The previously open local container gate is now checked with a successful Linux
-arm64 Docker build and thirteen disposable mounted-volume/startup/crash/restore
+arm64 Docker build and fourteen disposable mounted-volume/startup/crash/restore
 checks. CI adds the same drill on Linux amd64. Nine new operations checks bring
 the offline suite to 203. No real credential or new repository analysis is used.
 The two example gzip platform tags are normalized, yielding the current assignment
