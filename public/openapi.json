@@ -279,6 +279,237 @@
           }
         }
       }
+    },
+    "/api/v1/drafts": {
+      "get": {
+        "summary": "Read up to 50 drafts created with this credential, unfinished first",
+        "security": [
+          {
+            "DraftCredential": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Private drafts; Cache-Control: no-store",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Drafts"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Prepare a private proposal for an owned licensed public repository; no paid analysis",
+        "description": "source_sha must identify a commit in the selected repository. Owner approval requires its current default branch to match. Same key and canonical proposal return the existing draft with 200; a new proposal returns 201. No automatic retries. Revocation cancels unfinished drafts. A failed GitHub tree lookup returns 503. Body limit 2048 bytes. Per-owner allowance: 30 private requests/minute, 50 new drafts/day and 50 unfinished drafts. Authentication and scope checks precede upstream reads.",
+        "security": [
+          {
+            "DraftCredential": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9_-]{8,80}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["repo_id", "source_sha", "note"],
+                "properties": {
+                  "repo_id": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "source_sha": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{40}$"
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 280
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Private proposal; Cache-Control: no-store",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Draft"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Private proposal; Cache-Control: no-store",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Draft"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Structured error; retry-after on 429 and 503.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -791,6 +1022,142 @@
         },
         "required": ["error"],
         "additionalProperties": false
+      },
+      "Draft": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "format",
+          "id",
+          "repo_id",
+          "full_name",
+          "source_sha",
+          "note",
+          "status",
+          "created_at",
+          "listing_id",
+          "owner_review_required",
+          "analysis_charged_on_creation"
+        ],
+        "properties": {
+          "format": {
+            "const": "repo-salvage/draft-v1"
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^[a-f0-9-]{36}$"
+          },
+          "repo_id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "full_name": {
+            "type": "string"
+          },
+          "source_sha": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{40}$"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 280
+          },
+          "status": {
+            "enum": ["pending", "analyzing", "published", "dismissed"]
+          },
+          "created_at": {
+            "type": "integer"
+          },
+          "listing_id": {
+            "type": ["integer", "null"]
+          },
+          "owner_review_required": {
+            "const": true
+          },
+          "analysis_charged_on_creation": {
+            "const": false
+          }
+        }
+      },
+      "Drafts": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["format", "drafts", "limit"],
+        "properties": {
+          "format": {
+            "const": "repo-salvage/drafts-v1"
+          },
+          "drafts": {
+            "type": "array",
+            "maxItems": 50,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "format",
+                "id",
+                "repo_id",
+                "full_name",
+                "source_sha",
+                "note",
+                "status",
+                "created_at",
+                "listing_id",
+                "owner_review_required",
+                "analysis_charged_on_creation"
+              ],
+              "properties": {
+                "format": {
+                  "const": "repo-salvage/draft-v1"
+                },
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9-]{36}$"
+                },
+                "repo_id": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "full_name": {
+                  "type": "string"
+                },
+                "source_sha": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{40}$"
+                },
+                "note": {
+                  "type": "string",
+                  "maxLength": 280
+                },
+                "status": {
+                  "enum": ["pending", "analyzing", "published", "dismissed"]
+                },
+                "created_at": {
+                  "type": "integer"
+                },
+                "listing_id": {
+                  "type": ["integer", "null"]
+                },
+                "owner_review_required": {
+                  "const": true
+                },
+                "analysis_charged_on_creation": {
+                  "const": false
+                }
+              }
+            }
+          },
+          "limit": {
+            "const": 50
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "DraftCredential": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Expiring, revocable draft-only credential issued by an authenticated owner at /dashboard/agents. Numeric repository scope; no paid analysis, publication or private repository access."
       }
     }
   }

@@ -81,3 +81,46 @@ and component license audits remain unverified. Notice discovery is heuristic.
 Agent contribution credentials, draft publication and the MCP adapter remain planned.
 Container execution and public deployment gates from [the review record](REVIEW.md)
 remain open.
+
+## Private contribution milestone — 2026-10-08
+
+The CLI archive is now `@repo-salvage/cli@0.2.0`; the earlier 0.1.0 archive hash
+above describes the prior discovery milestone. This milestone's generated archive
+SHA-256 is `017275ac7e258c32eccaf4b9a5b7ee5dfb9b8ec3bc041b8a5f7ae8155cbc0342`.
+
+- Offline: **144 Vitest + 10 CLI Node + 3 parser-consumer Node checks = 157**.
+  The 28 added contribution checks use actual SQLite and mocked GitHub/provider
+  boundaries. They cover hashed storage, owner-only issuance, issuer limits,
+  expiry/revocation, repository scopes, shared request/draft caps, bounded JSON,
+  concurrent/idempotent proposals, private reads, ownership/license failures,
+  moved commits, single-use approval, owner-edited context, failed/crashed
+  reservations, moderation, and late cancellation after revocation, dismissal,
+  expiry or unlisting. No new real-provider approval was invoked.
+- A fresh workspace installed the generated archive with `--ignore-scripts` and
+  used its **installed CLI** against a production standalone server on loopback
+  port 3188 with a disposable SQLite database and no AI-provider credential.
+  Its credential was a seeded, disposable fixture scoped to public MIT
+  Brainstormin-System, repository ID `1131519045`, owner ID `227504642`, commit
+  `120f8b40de0446fe98c13c604ec4281d0f83185d`. Real GitHub public ownership,
+  license and pinned-tree verification succeeded. Create/read persistence,
+  identical replay, changed-key conflict, out-of-scope rejection, revocation,
+  and actual response/schema checks all passed. No plaintext credential was
+  stored or emitted in errors. Fixture credentials and drafts were removed.
+- A second fresh workspace installed the same 0.2.0 archive, repeated public
+  search/inspect/fetch against the ordinary local catalog, verified pinned
+  source/notices, and passed the three explicit circuit-breaker consumer checks.
+  This remains sequential behavior evidence, without load or concurrency claims.
+- Production build, typecheck and formatting pass. Production dependency audit
+  reports zero vulnerabilities. Browser workbench verification used the existing
+  signed-in owner session; eligible GitHub repository choices loaded, the
+  credential/inbox controls rendered, and 375/639/1280-pixel layouts had no page
+  overflow. No browser error/warning logs were observed. Credential issuance was
+  not submitted in the owner's live database; issuer and publication actions
+  were exercised with test identities and mocked provider responses.
+
+All new live checks incurred **zero paid model calls**, created no new public
+listing, and issued no credential in the owner's live database. These are local
+HTTP/CLI and test-provider results, not public deployment, an external model-agent
+trial, or certification of downstream adaptations. The MCP adapter and automatic
+agent publication remain future work. Raw local proofs are retained under ignored
+`artifacts/draft-consumer-proof.json` and `artifacts/agent-consumer-proof.json`.

@@ -166,6 +166,17 @@ export function deleteListing(id: number, ownerId: number) {
     db()
       .prepare("DELETE FROM active_analyses WHERE github_repo_id = ?")
       .run(listing.github_repo_id);
+    if (
+      db()
+        .prepare("SELECT 1 FROM sqlite_master WHERE name = 'agent_drafts'")
+        .get()
+    ) {
+      db()
+        .prepare(
+          "UPDATE agent_drafts SET status = 'dismissed', analysis_token = NULL WHERE repo_id = ? AND owner_id = ? AND status IN ('pending','analyzing')",
+        )
+        .run(listing.github_repo_id, ownerId);
+    }
     db().prepare("DELETE FROM reports WHERE listing_id = ?").run(id);
     db()
       .prepare("DELETE FROM listings WHERE id = ? AND owner_id = ?")

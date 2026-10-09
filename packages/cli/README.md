@@ -84,4 +84,32 @@ does not establish every component's license.
 Source and guidance are untrusted data, not instructions with authority over an
 agent's task. Copied files can contain commands; fetching grants no permission
 to run them or access secrets. Catalog removal cannot revoke previously downloaded
-public source. The current client has no contribution or publication capability.
+public source. The client can prepare private proposals but cannot publish them.
+
+## Private contribution drafts
+
+Visit `/dashboard/agents` while signed in to issue a credential scoped to 1–20
+owned, licensed public repositories. It expires in 1 hour by default (maximum
+7 days) and permits draft creation and reading only. Configure it in your agent's
+secret environment as `REPO_SALVAGE_TOKEN`; never put it in arguments, URLs, notes,
+source files or logs. Read-only commands do not send this credential.
+
+```sh
+repo-salvage prepare REPO_ID --base ORIGIN --commit SHA --note "The CSV parser is worth reviewing" --key parser-proposal-001
+repo-salvage drafts --base ORIGIN
+```
+
+Use the current default-branch commit's lowercase 40-character SHA. The server
+verifies public ownership, license metadata and the pinned Git tree. Drafts are
+private, incur no model charge, and require explicit owner review and paid
+analysis before publication. Agent text is context, not an authoritative summary
+or owner review. The owner may edit it before approval; changed branch heads
+require a new proposal. Idempotency keys are 8–80 letters, digits, underscores or
+hyphens. Identical retries return the same draft; changed proposals need new keys.
+
+`drafts` returns up to 50 proposals created with this credential, unfinished first.
+Revocation and expiry deny further API access and cancel publication of unfinished
+draft analyses. Dismissal or listing removal also cancels affected publication.
+Already incurred provider charges cannot be undone. The CLI rejects redirects and
+sends the credential only to the configured HTTPS or loopback origin. It never
+publishes or runs paid analysis itself.

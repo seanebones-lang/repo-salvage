@@ -1,6 +1,6 @@
 {
   "name": "@repo-salvage/cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Search Repo Salvage and fetch pinned source with notices and provenance",
   "type": "module",
   "bin": {

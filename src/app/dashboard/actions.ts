@@ -20,6 +20,14 @@ import {
 } from "@/lib/github";
 import { summarizeRepo } from "@/lib/summarize";
 
+import {
+  draftById,
+  claimDraft,
+  draftAnalysisActive,
+  publishDraft,
+  resetDraftAnalysis,
+} from "@/lib/contributions";
+
 export type ActionState = { error?: string; ok?: string } | null;
 
 export async function salvage(
@@ -40,6 +48,7 @@ export async function salvage(
     String(form.get("note") ?? "")
       .trim()
       .slice(0, 280) || null;
+  const draftId = String(form.get("draftId") ?? "");
   const baseline = analysisBaseline(repoId);
   let analysisToken: string | undefined;
   try {
@@ -54,15 +63,41 @@ export async function salvage(
           "Add a recognized license to the repository before listing it for reuse. GitHub must identify its SPDX license.",
       };
     }
-    analysisToken = beginAnalysis(repo.id, session.ghId, baseline);
-    const sourceSha = await resolveSourceCommit(session.accessToken, repo);
+    if (repo.owner.id !== session.ghId)
+      throw new Error("Repository ownership changed.");
+    let sourceSha: string;
+    if (draftId) {
+      const draft = draftById(draftId, session.ghId);
+      if (!draft || draft.repo_id !== repo.id || draft.status !== "pending")
+        throw new Error(
+          "This draft is no longer actionable. Refresh your agent inbox.",
+        );
+      sourceSha = await resolveSourceCommit(session.accessToken, repo);
+      if (sourceSha !== draft.source_sha)
+        throw new Error(
+          "The default branch moved since this draft. Prepare a new draft for the current commit.",
+        );
+      analysisToken = claimDraft(
+        draftId,
+        session.ghId,
+        repo.id,
+        sourceSha,
+        baseline,
+      );
+    } else {
+      analysisToken = beginAnalysis(repo.id, session.ghId, baseline);
+      sourceSha = await resolveSourceCommit(session.accessToken, repo);
+    }
     const [snap, last] = await Promise.all([
       snapshotRepo(session.accessToken, repo, sourceSha),
       lastHumanCommit(session.accessToken, repo, sourceSha),
     ]);
     if (!(await isPublicRepoFresh(repo.id, session.ghId)))
       throw new Error("Repository is no longer public or owned by you");
-    if (!analysisIsActive(analysisToken))
+    if (
+      !analysisIsActive(analysisToken) ||
+      (draftId && !draftAnalysisActive(draftId, session.ghId, analysisToken))
+    )
       return {
         error:
           "This analysis was canceled or expired. It has not been published.",
@@ -70,7 +105,7 @@ export async function salvage(
     const { summary, model } = await summarizeRepo(repo, snap, note);
     if (!(await isPublicRepoFresh(repo.id, session.ghId)))
       throw new Error("Repository is no longer public or owned by you");
-    const published = finishAnalysis(analysisToken, {
+    const result = {
       github_repo_id: repo.id,
       owner_login: repo.owner.login,
       owner_id: session.ghId,
@@ -91,7 +126,10 @@ export async function salvage(
       source_sha: sourceSha,
       analyzed_at: new Date().toISOString(),
       summary_model: model,
-    });
+    };
+    const published = draftId
+      ? publishDraft(draftId, analysisToken, result)
+      : finishAnalysis(analysisToken, result);
     if (!published)
       return {
         error:
@@ -99,11 +137,15 @@ export async function salvage(
       };
     revalidatePath("/", "layout");
     revalidatePath("/dashboard");
+    revalidatePath("/dashboard/agents");
     return { ok: `Listed ${repo.full_name}` };
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Something went wrong" };
   } finally {
-    if (analysisToken) releaseAnalysis(analysisToken);
+    if (analysisToken) {
+      releaseAnalysis(analysisToken);
+      if (draftId) resetDraftAnalysis(draftId, session.ghId, analysisToken);
+    }
   }
 }
 

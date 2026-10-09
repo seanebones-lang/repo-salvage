@@ -1398,3 +1398,31 @@ select {
     transform: none;
   }
 }
+
+.credential-form > input,
+.credential-form > select {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.credential-form fieldset {
+  min-width: 0;
+  border: 1px solid var(--line);
+  padding: 16px;
+  margin: 0 0 20px;
+}
+.credential-form legend {
+  font-size: 12px;
+  color: var(--muted);
+}
+.credential-form .credential-repo {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  overflow-wrap: anywhere;
+  margin: 0 0 12px;
+}
+.credential-repo input {
+  flex-shrink: 0;
+  margin-top: 2px;
+}

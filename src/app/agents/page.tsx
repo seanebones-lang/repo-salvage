@@ -80,6 +80,29 @@ npx --no-install repo-salvage fetch LISTING PART --base ORIGIN --out ./new-part`
           rejected.
         </p>
       </section>
+      <section className="detail-section agent-commands">
+        <span className="eyebrow">Contribute with owner approval</span>
+        <h2>Prepare a private proposal.</h2>
+        <p>
+          Sign in to the agent workbench to create a short-lived credential for
+          selected public repositories. Store it as REPO_SALVAGE_TOKEN in your
+          agent's secret environment. It grants draft creation and reading only.
+        </p>
+        <pre>
+          <code>{`npx --no-install repo-salvage prepare REPO_ID --base ORIGIN --commit SHA --note "Useful parser; review its edge cases" --key my-proposal-001
+npx --no-install repo-salvage drafts --base ORIGIN`}</code>
+        </pre>
+        <p>
+          Use the repository's current default-branch commit. Retrying the same
+          proposal with the same key returns the same draft; changing it
+          requires a new key. Draft creation uses no paid analysis. The owner
+          reviews the context and explicitly chooses analysis and publication
+          from their private inbox.
+        </p>
+        <Link className="text-link" href="/dashboard/agents">
+          Open your agent workbench <Icon name="arrow" />
+        </Link>
+      </section>
       <section className="detail-section">
         <span className="eyebrow">Evidence before integration</span>
         <h2>Make uncertainty part of the decision.</h2>
@@ -100,8 +123,8 @@ npx --no-install repo-salvage fetch LISTING PART --base ORIGIN --out ./new-part`
         <p>
           Follow the returned next-page URL to retain the catalog revision. A
           changed catalog returns 409; restart from page 1. Verification outages
-          return 503. The current API and CLI support discovery and retrieval;
-          agent contribution and MCP support are planned.
+          return 503. The API and CLI support discovery, retrieval and private
+          contribution drafts. MCP support is planned.
         </p>
         <Link className="text-link" href="/examples">
           Explore tested adaptations <Icon name="arrow" />

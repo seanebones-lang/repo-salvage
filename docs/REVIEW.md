@@ -131,3 +131,20 @@ automatic extraction; the expanded pilot exposed vendored licensing and omitted-
 Record what imports were missed, what adaptation was needed and whether owner review improves the brief.
 Downloads, copied briefs, owner review and anonymous reuse counters alone do not establish
 successful reuse.
+
+## Private agent contributions — 2026-10-08
+
+Added expiring, repository-scoped, revocable draft-only credentials; private
+idempotent proposal API; owner inbox and explicit paid approval; CLI prepare/read
+commands; and a matching OpenAPI/machine guide. Drafts cannot change public
+catalog evidence or claim owner review. Publication is pinned to the reviewed
+commit and uses existing quota/reservation controls. Revocation, expiry, dismissal
+and listing removal block late publication. Issuer verification and private
+requests are bounded per owner; responses and stored rows omit plaintext secrets.
+
+Validation: 157 offline checks, production build/typecheck/format/audit, fresh
+installed-CLI draft flow with real GitHub in a disposable database, and three
+fresh source-consumer behavior checks. No new model charge or live-owner credential
+was created. See AGENT-VALIDATION.md for the exact package/source identities and
+limits. MCP, automatic agent publication, retention cleanup and larger-scale
+validation remain outside this milestone.

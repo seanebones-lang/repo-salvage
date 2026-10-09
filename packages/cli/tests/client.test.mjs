@@ -348,3 +348,43 @@ test("real HTTP search and inspection preserve machine formats and error codes",
     return true;
   });
 });
+
+test("private draft commands keep credentials at the configured origin and out of read requests", async () => {
+  const { drafts } = await import("../lib/client.mjs");
+  const token = `rs_draft_${"x".repeat(43)}`;
+  const proposal = { repo_id: 12, source_sha: sha, note: "Useful source" };
+  let calls = 0;
+  const transport = async (url, options) => {
+    calls++;
+    assert.equal(url, "http://127.0.0.1/api/v1/drafts");
+    assert.equal(options.redirect, "error");
+    assert.equal(options.headers.Authorization, `Bearer ${token}`);
+    if (options.method === "POST") {
+      assert.equal(options.headers["Idempotency-Key"], "proposal-001");
+      assert.deepEqual(JSON.parse(options.body), proposal);
+      return Response.json({ format: "repo-salvage/draft-v1", ...proposal });
+    }
+    return Response.json({ format: "repo-salvage/drafts-v1", drafts: [] });
+  };
+  await drafts(
+    "http://127.0.0.1",
+    { token, proposal, key: "proposal-001" },
+    transport,
+  );
+  await drafts("http://127.0.0.1", { token }, transport);
+  await assert.rejects(
+    drafts("http://127.0.0.1", { token: "invalid" }, transport),
+    /REPO_SALVAGE_TOKEN/,
+  );
+  assert.equal(calls, 2);
+  await assert.rejects(
+    drafts("http://127.0.0.1", { token }, async () => {
+      throw new Error(token);
+    }),
+    (error) => !error.message.includes(token),
+  );
+  await assert.rejects(
+    drafts("http://127.0.0.1", { token, proposal, key: "bad" }, transport),
+    /requires/,
+  );
+});
