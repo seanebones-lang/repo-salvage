@@ -4,6 +4,8 @@ import { loadEngine } from "../examples/analysis-evaluation/engine.mjs";
 import { buildHoldout } from "../examples/analysis-evaluation/holdout.mjs";
 import { scoreSelection } from "../examples/analysis-evaluation/scoring.mjs";
 import { inspectCodexTrace } from "../examples/analysis-evaluation/trace.mjs";
+import fs from "node:fs/promises";
+import { sha256 } from "../examples/analysis-evaluation/holdout.mjs";
 test("sealed real source rebuilds production packets offline, with rubric outside requests", async () => {
   const engine = await loadEngine();
   try {
@@ -116,6 +118,10 @@ test("completed CLI traces reject tools, malformed records, missing completion a
     "malformed_cli_trace",
   );
   assert.equal(
+    inspectCodexTrace(clean + "\nnull", 0).failure,
+    "malformed_cli_trace",
+  );
+  assert.equal(
     inspectCodexTrace(
       trace(completed, {
         type: "item.started",
@@ -133,4 +139,41 @@ test("completed CLI traces reject tools, malformed records, missing completion a
   );
   assert.equal(inspectCodexTrace(clean, 0, true).failure, "cli_timeout");
   assert.equal(inspectCodexTrace(clean, 1).transportSuccess, false);
+});
+test("archived answers replay structural/reference and selection gates against the exact sealed requests", async () => {
+  const report = JSON.parse(
+    await fs.readFile(
+      new URL(
+        "../examples/analysis-evaluation/holdout/results.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  const engine = await loadEngine();
+  try {
+    const suite = await buildHoldout(engine);
+    for (const run of report.runs) {
+      assert.equal(run.suiteSealSha256, sha256(JSON.stringify(suite.seal)));
+      assert.equal(run.cases.length, suite.cases.length);
+      let accepted = 0;
+      for (const result of run.cases) {
+        const c = suite.cases.find((c) => c.id === result.id);
+        assert.ok(c);
+        assert.equal(result.requestSha256, c.requestSha256);
+        const text = JSON.stringify(result.answer);
+        assert.equal(sha256(text), result.answerSha256);
+        const summary = engine.verifiedIndexedSummary(text, c.index, c.packet);
+        assert.deepEqual(
+          scoreSelection(result.answer, summary, c.expectation),
+          result.selection,
+        );
+        assert.equal(result.selection.passed, true);
+        accepted++;
+      }
+      assert.equal(accepted, run.summary.structuralPasses);
+    }
+  } finally {
+    await engine.close();
+  }
 });

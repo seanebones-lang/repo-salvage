@@ -6,7 +6,15 @@ export function inspectCodexTrace(raw, code, timedOut = false) {
     .filter(Boolean)
     .flatMap((line) => {
       try {
-        return [JSON.parse(line)];
+        const event = JSON.parse(line);
+        if (
+          !event ||
+          typeof event !== "object" ||
+          Array.isArray(event) ||
+          typeof event.type !== "string"
+        )
+          throw Error("Invalid event record.");
+        return [event];
       } catch {
         malformed = true;
         return [];

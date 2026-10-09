@@ -23,6 +23,9 @@ minimal environment. Completed traces reject tool events. Credentials are never
 copied into the workspace/container. Anthropic uses a current operator credential
 with automatic retries disabled. No public listing or real catalog is written.
 Both transports time out at 120 seconds and stop the batch on a transport failure.
+The CLI receives a five-second termination grace before forced termination.
+The runner never automatically repeats a case; CLI-internal connection retries
+are not independently controlled or measured by this harness.
 
 Prompt, source and schema match across transports. Runtime conditions differ:
 Codex uses low reasoning and has no equivalent CLI output-token cap; Anthropic
@@ -45,4 +48,11 @@ The dated [results.json](results.json) records the first run: four Codex control
 passed structural/selection checks and implementing-agent source review, with
 zero tool events. The Anthropic batch stopped on HTTP 401 before a generation
 response. A successful second-provider run and real-repository holdouts remain
-necessary before making a comparative quality claim.
+necessary before making a comparative cross-provider quality claim.
+
+The separate [real-source evaluation](holdout/README.md) now records eight constrained
+cases on two pinned public MIT repositories, frozen before generation, with two
+Codex configurations and reviewed consumer checks. It exposes missing source/packet
+coverage and a semantic omission despite perfect constrained selection. It does not
+satisfy the independent-review or cross-provider gates. Its archived answers now
+serve as an offline regression set.
