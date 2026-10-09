@@ -70,9 +70,10 @@ export default function HowItWorks() {
               Complete declaration inspected
             </span>
             <p>
-              A complete JS/TS implementation was parsed and supplied with
-              source references. The explanation remains a model interpretation;
-              inspect helpers and runtime dependencies before extraction.
+              A complete JS/TS export or Python declaration was parsed and
+              supplied with source references. The explanation remains a model
+              interpretation; inspect helpers, enclosing class context and
+              runtime dependencies before extraction.
             </p>
           </div>
           <div>
