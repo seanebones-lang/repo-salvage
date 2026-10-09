@@ -1,0 +1,32 @@
+{
+  "format": "repo-salvage/rust-go-consumer-review-v1",
+  "at": "2026-10-09T19:45:44.185171+00:00",
+  "inputSealSha256": "f4e406e88051b9eb983d79ac97a26a5c29b6e4526c191185495ade061b460566",
+  "reviewer": "Implementing Codex agent, source inspection before acceptance; not blind or independent.",
+  "consumers": [
+    {
+      "language": "rust",
+      "approved": true,
+      "codeSha256": "929b0f245b0e5723cefd30bcb701945f1ff7f8bfa373e3f51c9d2ac84b9a4e27",
+      "proposalSha256": "d9dad4248dba4fb82196610f8441123c2ba1313dde0388daf5f22634557b002b",
+      "observations": [
+        "One DP row allocated on shorter Unicode-scalar string; full inner iterator restarts without byte indexing. Unit substitution/insertion/deletion recurrence, empty inputs and no normalization inspected.",
+        "No external crates, unsafe, IO, network, process execution or top-level executable effects. Original MIT authors match accompanying LICENSE.",
+        "Not grapheme distance, unbounded caller inputs can be expensive; no performance/production or upstream certification."
+      ]
+    },
+    {
+      "language": "go",
+      "approved": true,
+      "codeSha256": "8c2a7cfe52b6e07ff1bf2cfa759b1f218e31a6ccdfd20ef0e0c3842bc477621a",
+      "proposalSha256": "50c68744d9d876031f88c79fa3e6662855a0b91424715039b9e0476d8e560435",
+      "observations": [
+        "Pinned right12/left25/right27 uint64 wrapping transform retained; zero scores and earliest-current-order ties handled.",
+        "New validates all names before caller hashing and copies supplied names. Add rejects invalid names without mutation/hash; hashes once before insertion.",
+        "Remove checks presence, swaps last if needed, repairs moved index, zeros tail, shrinks both slices and deletes removed map entry.",
+        "Only standard errors dependency; no IO, subprocess, unsafe, network, initialization effects. Full MIT attribution retained.",
+        "Hasher is caller code: must be deterministic and non-reentrant; errors/panics from user hash not contained. Construct with New, single-thread/process-local, no distribution/concurrency guarantees."
+      ]
+    }
+  ]
+}

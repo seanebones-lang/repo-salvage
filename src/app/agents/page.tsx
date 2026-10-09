@@ -162,11 +162,11 @@ npx --no-install repo-salvage fetch LISTING PART --base ORIGIN --out ./new-part`
           Use a listing ID from search to inspect an exact file or a directory
           ending in /. Name a symbol to focus on one indexed declaration. The
           response includes complete source blocks when they fit, same-file
-          context and explicit inspection gaps. For large Python modules, scoped
-          supporting blocks may fit while complete module context remains
-          absent. Inspect their recorded gaps; they do not establish complete
-          dependencies. An unexported helper can be inspected in its containing
-          file without being labeled a catalog part.
+          context and explicit inspection gaps. For large Python, Rust or Go
+          files, scoped supporting blocks may fit while complete module context
+          remains absent. Inspect their recorded gaps; they do not establish
+          complete dependencies. An unexported helper can be inspected in its
+          containing file without being labeled a catalog part.
         </p>
         <pre>
           <code>{`npx --no-install repo-salvage evidence LISTING --base ORIGIN --path src/module.py --symbol Client.request --max-characters 24000
@@ -210,17 +210,20 @@ npx --no-install repo-salvage drafts --base ORIGIN`}</code>
         <h2>Make uncertainty part of the decision.</h2>
         <p>
           Complete-file and prefix coverage describe what was supplied to the
-          analysis. New JS/TS and Python briefs can also identify a complete
-          parsed declaration, its lines and explanation references. Older briefs
-          keep their earlier evidence. Static module imports still need
-          inspection before extracting a part, and root licenses can differ from
-          vendored file licenses.
+          analysis. New JS/TS, Python, Rust and Go briefs can also identify a
+          complete parsed declaration, its lines and explanation references.
+          Older briefs keep their earlier evidence. Static module imports still
+          need inspection before extracting a part, and root licenses can differ
+          from vendored file licenses.
         </p>
         <p>
           Python functions, classes and direct methods use Python 3.11 grammar.
-          Method targets retain an enclosing-class requirement. The conservative
-          resolved-import filter excludes recorded source-context gaps; inspect
-          initialization, helpers and runtime requirements before extraction.
+          Python methods retain an enclosing-class requirement. Go/Rust
+          declarations use bounded syntax parsing; package peers, build
+          conditions, macros and trait resolution remain explicit gaps. The
+          conservative resolved-import filter excludes recorded source-context
+          gaps; inspect initialization, helpers and runtime requirements before
+          extraction.
         </p>
         <p>
           Notices are discovered by filenames and ancestry. Preserve them,
@@ -246,6 +249,27 @@ npx --no-install repo-salvage drafts --base ORIGIN`}</code>
         <Link className="text-link" href="/examples">
           Explore tested adaptations <Icon name="arrow" />
         </Link>
+        <p>
+          Reviewed Rust and Go examples include complete MIT notices and frozen
+          acceptance checks. Their results apply to these adaptations; they do
+          not certify catalog parts or the upstream projects.
+        </p>
+        <ul className="plain-list">
+          <li>
+            <a className="text-link" href="/rust-edit-distance.tar.gz" download>
+              Download Rust Unicode edit distance <Icon name="arrow" />
+            </a>
+          </li>
+          <li>
+            <a
+              className="text-link"
+              href="/go-rendezvous-consumer.tar.gz"
+              download
+            >
+              Download Go rendezvous selector <Icon name="arrow" />
+            </a>
+          </li>
+        </ul>
       </section>
     </>
   );

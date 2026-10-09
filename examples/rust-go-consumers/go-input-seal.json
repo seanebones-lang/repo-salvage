@@ -1,0 +1,39 @@
+{
+  "format": "repo-salvage/rust-go-consumer-input-v1",
+  "frozenAt": "2026-10-09T19:44:57.776491+00:00",
+  "scope": "Go-only pre-proposal correction: original task/oracle wrote wrong xorshift constants. Keep right12/left25/right27 from pinned source. Original Rust epoch remains unchanged. No Go model call or execution occurred before correction.",
+  "inputs": [
+    {
+      "path": "input-seal.json",
+      "sha256": "f4e406e88051b9eb983d79ac97a26a5c29b6e4526c191185495ade061b460566"
+    },
+    {
+      "path": "go/task-corrected.txt",
+      "sha256": "69c17d77b8ba3701a3ab8f7a5a1e4cf1bfb2261cb2d3ec2d349ca96216ac5c95"
+    },
+    {
+      "path": "go/acceptance_test.go",
+      "sha256": "6b621c2aeec5de24da3be6728479585a2012100dd7631d2d22fa1ce7a5edabf5"
+    },
+    {
+      "path": "go/evidence.json",
+      "sha256": "1373e6d7bbc5af23b944aff2f8e7818e2bd2a34c4703843b868d2ec44aeabd60"
+    },
+    {
+      "path": "go/LICENSE",
+      "sha256": "11f46ac1bc076fc405c06fd087226e5dd87b9c2e6b8dfda5153c79b5b6f01362"
+    },
+    {
+      "path": "go/go.mod",
+      "sha256": "82eb0e4b386031192f3cc6eb460b1f721ef83bed4f3271b1a710bba11af32577"
+    },
+    {
+      "path": "proposal-corrected.mjs",
+      "sha256": "823d1491b9dc0c4d121b13f25fbd7d9859b15c952f232eea6632e66418104b3e"
+    },
+    {
+      "path": "check-native.mjs",
+      "sha256": "28f30ccc0bb85794e077455a6000718f43733cf3e8d7b1115e1aba955f044e22"
+    }
+  ]
+}

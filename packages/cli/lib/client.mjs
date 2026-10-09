@@ -203,7 +203,9 @@ function validateScopedEvidence(packet) {
   };
   if (
     packet.format !== "repo-salvage/source-index-v2" ||
-    packet.selection_policy !== "repo-salvage/coverage-v4" ||
+    !["repo-salvage/coverage-v4", "repo-salvage/coverage-v5"].includes(
+      packet.selection_policy,
+    ) ||
     !Array.isArray(packet.scoped_contexts) ||
     packet.scoped_contexts.length > 24
   )
@@ -270,13 +272,25 @@ function validateScopedEvidence(packet) {
     if (
       !target ||
       seen.has(c.target_id) ||
-      c.observation !== "python-ast-name-loads-v1" ||
+      ![
+        "python-ast-name-loads-v1",
+        ...(packet.selection_policy === "repo-salvage/coverage-v5"
+          ? ["go-cst-names-v1", "rust-cst-names-v1"]
+          : []),
+      ].includes(c.observation) ||
       !Array.isArray(c.references) ||
       c.references.length > 16 ||
       !Array.isArray(c.gaps) ||
       c.gaps.length > 12 ||
       !Number.isSafeInteger(c.observations_omitted) ||
       c.observations_omitted < 0
+    )
+      bad();
+    if (
+      (c.observation === "go-cst-names-v1" && !/\.go$/i.test(target.path)) ||
+      (c.observation === "rust-cst-names-v1" && !/\.rs$/i.test(target.path)) ||
+      (c.observation === "python-ast-name-loads-v1" &&
+        !/\.py$/i.test(target.path))
     )
       bad();
     seen.add(c.target_id);
@@ -288,12 +302,28 @@ function validateScopedEvidence(packet) {
         refs.get(r.reference_id)?.path !== target.path ||
         refs.get(r.reference_id)?.sha256 !==
           refs.get(target.reference_id).sha256 ||
-        ![
-          "module-name",
-          "module-configuration",
-          "enclosing-class",
-          "class-member-spelling",
-        ].includes(r.relation)
+        !(
+          c.observation === "python-ast-name-loads-v1"
+            ? [
+                "module-name",
+                "module-configuration",
+                "enclosing-class",
+                "class-member-spelling",
+              ]
+            : c.observation === "go-cst-names-v1"
+              ? [
+                  "module-name",
+                  "module-configuration",
+                  "receiver-type",
+                  "member-spelling",
+                ]
+              : [
+                  "module-name",
+                  "module-configuration",
+                  "enclosing-impl",
+                  "member-spelling",
+                ]
+        ).includes(r.relation)
       )
         bad();
     for (const g of c.gaps)
@@ -306,6 +336,9 @@ function validateScopedEvidence(packet) {
           "ambiguous-or-conditional-binding",
           "annotation-only-binding",
           "wildcard-import",
+          ...(packet.selection_policy === "repo-salvage/coverage-v5"
+            ? ["local-binding-observed", "opaque-module-or-macro"]
+            : []),
         ].includes(g.reason)
       )
         bad();

@@ -106,7 +106,7 @@ stored commit. Numeric public ownership, current repository name, local moderati
 and analysis identity are rechecked after inspection, including cache hits.
 
 This is a fresh source inspection with `interpretation: "none"`, not a model call,
-new recommendation or publication. It returns the coverage-v4 packet, complete
+new recommendation or publication. It returns the current coverage-v5 packet, complete
 blocks, same-file context and scoped Python support, file inventory with Git hashes and pinned download
 URLs, inspection/packet omissions and observed import gaps. `not_indexed` means no
 indexed declaration matched; available complete-file context can still expose a
@@ -307,3 +307,21 @@ client checks target/reference links, same-file source-hash consistency, full-fi
 context hashes and supported observation labels. Partial excerpts cannot independently
 verify their complete-file hash; retain exact pinned files and notices with fetch
 and validate adaptations separately.
+
+### Go and Rust scoped observations
+
+CLI 0.6.0 and MCP 0.4.0 accept coverage-v5 alongside archived policies. The current
+focused response can match Go receiver names such as `Rendezvous.Lookup` and Rust
+impl methods such as `Type::method` or `Type::Trait::method`. Duplicate symbols
+use an `@source-coordinate` suffix. Use exact indexed names; plain declaration
+names are not semantic symbol lookup.
+
+In a packet without full-file context, `scoped_contexts[].observation` may be
+`go-cst-names-v1` or `rust-cst-names-v1`. Both permit module-name,
+module-configuration and member-spelling relations; Go additionally permits
+receiver-type, Rust enclosing-impl. Python relations retain their previous
+meaning. New local-binding-observed and opaque-module-or-macro gaps are inspection
+limits. Native observations on older policies or the wrong language are rejected
+by the clients. Source hashes still refer to the whole pinned file; a partial
+excerpt cannot independently prove that hash. Fetch pinned source/notices and
+test an adapted contract before use.

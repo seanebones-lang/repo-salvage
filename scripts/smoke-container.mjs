@@ -188,6 +188,31 @@ try {
   check(
     "packaged isolated Python parser inspects declarations without executing source",
   );
+  const nativeSyntax = JSON.parse(
+    docker(
+      "run",
+      "--rm",
+      "--read-only",
+      "--cap-drop",
+      "ALL",
+      "--entrypoint",
+      "node",
+      image,
+      "-e",
+      `const {spawnSync}=require('node:child_process');const p=spawnSync(process.execPath,['--max-old-space-size=128','/app/scripts/syntax-index.mjs'],{input:JSON.stringify([{path:'fixture.go',content:'package p\\nfunc init(){panic("DO NOT EXECUTE")}\\nfunc Twice(x int) int{return x*2}'},{path:'fixture.rs',content:'pub fn twice(x:i32)->i32 { x*2 }'}]),encoding:'utf8',timeout:5000,env:{PATH:'/usr/bin:/bin'}});if(p.status!==0){process.stderr.write(p.stderr);process.exit(1)}process.stdout.write(p.stdout)`,
+    ),
+  );
+  assert.equal(nativeSyntax.format, "repo-salvage/syntax-cst-v1");
+  assert.ok(nativeSyntax.files.every((f) => f.status === "ok"));
+  assert.ok(
+    nativeSyntax.files[0].declarations.some((d) => d.symbol === "Twice"),
+  );
+  assert.ok(
+    nativeSyntax.files[1].declarations.some((d) => d.symbol === "twice"),
+  );
+  check(
+    "packaged Go/Rust grammar WASM parses exact declarations offline without source execution",
+  );
   const missingMount = id + "-missing-mount";
   run(missingMount, null, { writableImage: true });
   await fails(missingMount);
@@ -235,6 +260,8 @@ try {
     "integer-word-consumer.tar.gz",
     "repo-salvage-cli.tgz",
     "repo-salvage-mcp.tgz",
+    "rust-edit-distance.tar.gz",
+    "go-rendezvous-consumer.tar.gz",
   ]) {
     const response = await fetch(origin + "/" + file);
     assert.equal(response.status, 200, file);
@@ -250,7 +277,7 @@ try {
     );
   }
   check(
-    "application, agent API and all five downloads served from built image",
+    "application, agent API and all seven downloads served from built image",
   );
   assert.equal(
     execNode(

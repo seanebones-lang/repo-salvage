@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { spawnSync } from "node:child_process";
 import path from "node:path";
 import ts from "typescript";
 import { parsePythonFiles, type PythonSupportCandidate } from "./python-parser";
@@ -60,7 +61,7 @@ export type SourceIndex = {
     path: string;
     sha256: string;
     coverage: "complete" | "prefix";
-    parser: "typescript" | "python" | "file" | "parse_error";
+    parser: "typescript" | "python" | "go" | "rust" | "file" | "parse_error";
     imports: ImportEvidence[];
   }[];
   targets: SourceTarget[];
@@ -68,6 +69,7 @@ export type SourceIndex = {
   skipped: { path: string; reason: string }[];
   support_graph?: {
     reference_id: string;
+    observation?: ScopedContext["observation"];
     candidates: SupportCandidate[];
     gaps: { symbol: string; reason: string }[];
     observations_omitted: number;
@@ -82,13 +84,18 @@ export type SourceIndex = {
 type SupportCandidate = {
   symbol: string;
   reference_id: string;
-  relation: PythonSupportCandidate["relation"];
+  relation:
+    | PythonSupportCandidate["relation"]
+    | "receiver-type"
+    | "enclosing-impl"
+    | "member-spelling";
   fallback_members?: SupportCandidate[];
   fallback_members_omitted?: number;
 };
 export type ScopedContext = {
   target_id: string;
-  observation: "python-ast-name-loads-v1";
+  observation:
+    "python-ast-name-loads-v1" | "go-cst-names-v1" | "rust-cst-names-v1";
   references: {
     symbol: string;
     reference_id: string;
@@ -106,7 +113,8 @@ export type EvidencePacket = {
     | "repo-salvage/coverage-v1"
     | "repo-salvage/coverage-v2"
     | "repo-salvage/coverage-v3"
-    | "repo-salvage/coverage-v4";
+    | "repo-salvage/coverage-v4"
+    | "repo-salvage/coverage-v5";
   contexts?: { target_id: string; same_file_reference: string | null }[];
   scoped_contexts?: ScopedContext[];
 };
@@ -209,6 +217,179 @@ function resolvePythonImport(
   };
 }
 
+type SyntaxSpan = {
+  start_index: number;
+  end_index: number;
+  kind: "declaration" | "statement";
+};
+type SyntaxParse = {
+  path: string;
+  language: "go" | "rust";
+  status: "ok" | "parse_error" | "unavailable";
+  declarations: (Omit<SyntaxSpan, "kind"> & {
+    symbol: string;
+    context: string | null;
+    conditional: boolean;
+  })[];
+  imports: { specifier: string; dynamic: boolean }[];
+  support_graph: (SyntaxSpan & {
+    candidates: (SyntaxSpan & {
+      symbol: string;
+      relation: SupportCandidate["relation"];
+    })[];
+    gaps: { symbol: string; reason: string }[];
+    observations_omitted: number;
+  })[];
+  limitations: string[];
+};
+/** Bounded trusted parser child; target source is stdin data only. */
+function parseSyntaxFiles(inputs: IndexedInput[]) {
+  let bytes = 0;
+  const files = inputs
+    .filter((f) => {
+      const size = Buffer.byteLength(f.content);
+      if (
+        !/\.(go|rs)$/i.test(f.path) ||
+        f.truncated ||
+        size > INDEX_LIMITS.fileBytes ||
+        bytes + size > INDEX_LIMITS.totalBytes
+      )
+        return false;
+      bytes += size;
+      return true;
+    })
+    .slice(0, INDEX_LIMITS.files);
+  if (!files.length) return new Map<string, SyntaxParse>();
+  const unavailable = () =>
+    new Map<string, SyntaxParse>(
+      files.map((f) => [
+        f.path,
+        {
+          path: f.path,
+          language: f.path.toLowerCase().endsWith(".go") ? "go" : "rust",
+          status: "unavailable",
+          declarations: [],
+          imports: [],
+          support_graph: [],
+          limitations: [
+            "Syntax parser unavailable or exceeded its bounded process allowance.",
+          ],
+        },
+      ]),
+    );
+  const result = spawnSync(
+    process.execPath,
+    ["--max-old-space-size=128", path.resolve("scripts/syntax-index.mjs")],
+    {
+      input: JSON.stringify(
+        files.map(({ path, content }) => ({ path, content })),
+      ),
+      encoding: "utf8",
+      timeout: 5000,
+      maxBuffer: 4000000,
+      env: {
+        PATH: process.env.PATH ?? "/usr/bin:/bin",
+        LANG: "C.UTF-8",
+        NODE_ENV: process.env.NODE_ENV,
+      },
+    },
+  );
+  if (result.status !== 0 || result.error) return unavailable();
+  try {
+    const output = JSON.parse(result.stdout);
+    if (
+      output.format !== "repo-salvage/syntax-cst-v1" ||
+      !Array.isArray(output.files) ||
+      output.files.length !== files.length
+    )
+      return unavailable();
+    for (let i = 0; i < files.length; i++) {
+      const f = output.files[i] as SyntaxParse,
+        original = files[i];
+      const span = (v: SyntaxSpan) =>
+        Number.isSafeInteger(v.start_index) &&
+        Number.isSafeInteger(v.end_index) &&
+        v.start_index >= 0 &&
+        v.end_index > v.start_index &&
+        v.end_index <= original.content.length;
+      if (
+        f.path !== original.path ||
+        f.language !==
+          (original.path.toLowerCase().endsWith(".go") ? "go" : "rust") ||
+        !["ok", "parse_error", "unavailable"].includes(f.status) ||
+        !Array.isArray(f.declarations) ||
+        f.declarations.length > 256 ||
+        !Array.isArray(f.imports) ||
+        f.imports.length > 256 ||
+        !f.imports.every(
+          (v) =>
+            typeof v.specifier === "string" &&
+            v.specifier.length <= INDEX_LIMITS.fileBytes &&
+            typeof v.dynamic === "boolean",
+        ) ||
+        !Array.isArray(f.support_graph) ||
+        f.support_graph.length > 256 ||
+        !Array.isArray(f.limitations) ||
+        f.limitations.length > 12 ||
+        !f.limitations.every((v) => typeof v === "string" && v.length <= 512) ||
+        !f.declarations.every(
+          (d) =>
+            span({ ...d, kind: "declaration" }) &&
+            typeof d.symbol === "string" &&
+            d.symbol.length > 0 &&
+            d.symbol.length <= 160 &&
+            typeof d.conditional === "boolean" &&
+            (d.context === null ||
+              (typeof d.context === "string" && d.context.length <= 160)),
+        ) ||
+        !f.support_graph.every(
+          (g) =>
+            span(g) &&
+            Array.isArray(g.candidates) &&
+            g.candidates.length <= 24 &&
+            g.candidates.every(
+              (c) =>
+                span(c) &&
+                ["statement", "declaration"].includes(c.kind) &&
+                typeof c.symbol === "string" &&
+                c.symbol.length > 0 &&
+                c.symbol.length <= 160 &&
+                [
+                  "module-name",
+                  "module-configuration",
+                  "receiver-type",
+                  "enclosing-impl",
+                  "member-spelling",
+                ].includes(c.relation),
+            ) &&
+            Array.isArray(g.gaps) &&
+            g.gaps.length <= 12 &&
+            g.gaps.every(
+              (v) =>
+                typeof v.symbol === "string" &&
+                v.symbol.length > 0 &&
+                v.symbol.length <= 160 &&
+                [
+                  "local-binding-observed",
+                  "opaque-module-or-macro",
+                  "ambiguous-or-conditional-binding",
+                  "wildcard-import",
+                ].includes(v.reason),
+            ) &&
+            Number.isSafeInteger(g.observations_omitted) &&
+            g.observations_omitted >= 0,
+        )
+      )
+        return unavailable();
+    }
+    return new Map<string, SyntaxParse>(
+      output.files.map((f: SyntaxParse) => [f.path, f]),
+    );
+  } catch {
+    return unavailable();
+  }
+}
+
 /** Parse source only: no project configuration, package installation or execution. */
 export function indexSources(
   inputs: IndexedInput[],
@@ -224,6 +405,7 @@ export function indexSources(
   };
   const known = new Set(knownPaths);
   const python = parsePythonFiles(inputs);
+  const syntax = parseSyntaxFiles(inputs);
   let inputBytes = 0;
   for (const file of [...inputs].sort((a, b) => a.path.localeCompare(b.path))) {
     const size = Buffer.byteLength(file.content);
@@ -256,7 +438,9 @@ export function indexSources(
           )
         : null;
     const py = python.get(file.path);
+    const native = syntax.get(file.path);
     const invalid =
+      native?.status === "parse_error" ||
       py?.status === "parse_error" ||
       py?.status === "unsupported_encoding" ||
       (source &&
@@ -322,6 +506,18 @@ export function indexSources(
             : resolvePythonImport(file.path, i.specifier, known),
         ),
       );
+    if (native?.status === "ok")
+      imports.push(
+        ...native.imports.map((i) => ({
+          specifier: i.specifier,
+          kind: i.dynamic
+            ? ("dynamic" as const)
+            : /^\s*(?:crate|self|super)::/.test(i.specifier)
+              ? ("unresolved" as const)
+              : ("external" as const),
+          resolved_path: null,
+        })),
+      );
     const uniqueImports = [
       ...new Map(imports.map((i) => [JSON.stringify(i), i])).values(),
     ];
@@ -335,7 +531,9 @@ export function indexSources(
           ? "typescript"
           : py?.status === "ok"
             ? "python"
-            : "file",
+            : native?.status === "ok"
+              ? native.language
+              : "file",
       imports: uniqueImports,
     });
     if (file.truncated || invalid) {
@@ -349,6 +547,11 @@ export function indexSources(
       });
       continue;
     }
+    if (native?.status === "unavailable")
+      index.skipped.push({
+        path: file.path,
+        reason: "syntax_parser_unavailable",
+      });
     if (py?.status === "unavailable")
       index.skipped.push({
         path: file.path,
@@ -393,8 +596,9 @@ export function indexSources(
       start: number,
       end: number,
       kind: SourceTarget["kind"],
+      deduplicate = false,
     ) => {
-      const reference = referenceFor(start, end, kind);
+      const reference = referenceFor(start, end, kind, deduplicate);
       const id = digest(JSON.stringify([file.path, symbol, kind])).slice(0, 16);
       if (!isCodePath(file.path) || isTestPath(file.path)) return;
       const target: SourceTarget = {
@@ -405,7 +609,7 @@ export function indexSources(
         reference_id: reference.id,
         imports: uniqueImports,
         supporting_paths: [],
-        unresolved: [],
+        unresolved: native?.limitations ? [...native.limitations] : [],
         test_paths: [],
         notice_paths: [],
       };
@@ -470,6 +674,40 @@ export function indexSources(
         });
       }
     }
+    if (native?.status === "ok") {
+      for (const d of native.declarations) {
+        const target = add(
+          d.symbol,
+          d.start_index,
+          d.end_index,
+          "declaration",
+          true,
+        );
+        if (target && d.context)
+          target.unresolved.push(
+            `Enclosing ${native.language} declaration context required: ${d.context}`,
+          );
+        if (target && d.conditional)
+          target.unresolved.push(
+            "Conditional Rust declaration: compilation configuration is not resolved.",
+          );
+      }
+      for (const g of native.support_graph)
+        (index.support_graph ??= []).push({
+          reference_id: referenceFor(g.start_index, g.end_index, g.kind, true)
+            .id,
+          observation:
+            native.language === "go" ? "go-cst-names-v1" : "rust-cst-names-v1",
+          candidates: g.candidates.map((c) => ({
+            symbol: c.symbol,
+            relation: c.relation,
+            reference_id: referenceFor(c.start_index, c.end_index, c.kind, true)
+              .id,
+          })),
+          gaps: g.gaps,
+          observations_omitted: g.observations_omitted,
+        });
+    }
     if (source) {
       for (const node of source.statements) {
         const exported =
@@ -511,7 +749,7 @@ export function indexSources(
       if (
         !record ||
         record.coverage !== "complete" ||
-        !["typescript", "python"].includes(record.parser)
+        !["typescript", "python", "go", "rust"].includes(record.parser)
       ) {
         unresolved.add(`Imports not statically inspected: ${file}`);
         return;
@@ -565,7 +803,7 @@ export function evidencePacket(
   characterLimit = INDEX_LIMITS.promptCharacters,
   policy: NonNullable<
     EvidencePacket["selection_policy"]
-  > = "repo-salvage/coverage-v4",
+  > = "repo-salvage/coverage-v5",
 ): EvidencePacket {
   const packet: EvidencePacket = {
     format: INDEX_VERSION,
@@ -574,7 +812,11 @@ export function evidencePacket(
     omitted_targets: index.targets.length,
     selection_policy: policy,
     contexts: [],
-    ...(policy === "repo-salvage/coverage-v4" ? { scoped_contexts: [] } : {}),
+    ...(["repo-salvage/coverage-v4", "repo-salvage/coverage-v5"].includes(
+      policy,
+    )
+      ? { scoped_contexts: [] }
+      : {}),
   };
   if (
     !Number.isInteger(characterLimit) ||
@@ -622,6 +864,17 @@ export function evidencePacket(
   };
   const implementationRank = (target: SourceTarget) => {
     if (target.kind === "file") return 2;
+    if (
+      policy === "repo-salvage/coverage-v5" &&
+      ["go", "rust"].includes(
+        index.files.find((f) => f.path === target.path)?.parser ?? "",
+      )
+    )
+      return /^(?:pub(?:\([^)]*\))?\s+)?(?:unsafe\s+|async\s+)*(?:fn|func)\b/.test(
+        references.get(target.reference_id)?.content ?? "",
+      )
+        ? 0
+        : 1;
     const content = references.get(target.reference_id)?.content ?? "";
     if (
       /^(?:async\s+)?def\b/.test(content) &&
@@ -633,6 +886,17 @@ export function evidencePacket(
     ) || /=>/.test(content)
       ? 0
       : 1;
+  };
+  const publicNamingRank = (target: SourceTarget) => {
+    if (policy !== "repo-salvage/coverage-v5") return 0;
+    const parser = index.files.find((f) => f.path === target.path)?.parser;
+    if (parser === "go")
+      return Number(!/^[A-Z]/.test(target.symbol.split(".").at(-1)!));
+    if (parser === "rust")
+      return Number(
+        !/^pub\s/.test(references.get(target.reference_id)?.content ?? ""),
+      );
+    return 0;
   };
   for (const target of index.targets) {
     const group = groups.get(target.path) ?? [];
@@ -650,6 +914,7 @@ export function evidencePacket(
           ? Number(a.symbol.startsWith("_") || a.symbol.includes(".")) -
             Number(b.symbol.startsWith("_") || b.symbol.includes("."))
           : 0) ||
+        publicNamingRank(a) - publicNamingRank(b) ||
         implementationRank(a) - implementationRank(b) ||
         a.unresolved.length - b.unresolved.length ||
         a.supporting_paths.length - b.supporting_paths.length ||
@@ -727,7 +992,11 @@ export function evidencePacket(
     (a, b) =>
       // Defer private-only Python declaration context; other languages and file
       // targets keep their turns. File size breaks ties; no bodies are cut.
-      (["repo-salvage/coverage-v3", "repo-salvage/coverage-v4"].includes(policy)
+      ([
+        "repo-salvage/coverage-v3",
+        "repo-salvage/coverage-v4",
+        "repo-salvage/coverage-v5",
+      ].includes(policy)
         ? Number(privatePythonPaths.has(a)) - Number(privatePythonPaths.has(b))
         : 0) ||
       (files.get(a)?.content.length ?? Infinity) -
@@ -752,8 +1021,19 @@ export function evidencePacket(
       packet.references.splice(oldReferences);
     }
   }
-  if (policy === "repo-salvage/coverage-v4") {
-    const graph = new Map(index.support_graph?.map((g) => [g.reference_id, g]));
+  if (
+    ["repo-salvage/coverage-v4", "repo-salvage/coverage-v5"].includes(policy)
+  ) {
+    const graph = new Map(
+      index.support_graph
+        ?.filter(
+          (g) =>
+            policy === "repo-salvage/coverage-v5" ||
+            !g.observation ||
+            g.observation === "python-ast-name-loads-v1",
+        )
+        .map((g) => [g.reference_id, g]),
+    );
     const primaryReferences = new Set(
       packet.targets.map((t) => t.reference_id),
     );
@@ -773,7 +1053,9 @@ export function evidencePacket(
         continue;
       const context: ScopedContext = {
         target_id: target.id,
-        observation: "python-ast-name-loads-v1",
+        observation:
+          graph.get(target.reference_id)?.observation ??
+          "python-ast-name-loads-v1",
         references: [],
         gaps: [],
         observations_omitted: 0,

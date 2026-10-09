@@ -3,9 +3,9 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/package-example.mjs && node scripts/package-agent.mjs && node scripts/package-mcp.mjs",
+    "predev": "node scripts/package-example.mjs && node scripts/package-agent.mjs && node scripts/package-mcp.mjs && node scripts/package-native-consumers.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/package-example.mjs && node scripts/package-agent.mjs && node scripts/package-mcp.mjs",
+    "prebuild": "node scripts/package-example.mjs && node scripts/package-agent.mjs && node scripts/package-mcp.mjs && node scripts/package-native-consumers.mjs",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit && npm run typecheck --workspace @repo-salvage/mcp",
@@ -20,10 +20,11 @@
     "test:operations": "node --test tests/deployment.test.mjs",
     "test:container": "node scripts/smoke-container.mjs --run repo-salvage:readiness",
     "test:analysis": "vitest run tests/source-index.test.ts tests/python-index.test.ts tests/source-benchmark.test.ts tests/indexed-snapshot.test.ts tests/indexed-analysis.test.ts tests/indexed-flow.test.tsx tests/analysis-evaluation.test.ts",
-    "test:evaluation": "node --test tests/real-source-evaluation.test.mjs tests/real-source-consumer.test.mjs tests/discovery-evaluation.test.mjs tests/competing-discovery-evaluation.test.mjs tests/full-chain-evaluation.test.mjs tests/context-diversity-evaluation.test.mjs tests/scoped-context-evaluation.test.mjs tests/scoped-consumer-evaluation.test.mjs tests/cross-language-evaluation.test.mjs",
-    "test:packages": "node scripts/check-focused-packages.mjs --run && python3 -I scripts/check-integer-word-bundle.py",
+    "test:evaluation": "node --test tests/real-source-evaluation.test.mjs tests/real-source-consumer.test.mjs tests/discovery-evaluation.test.mjs tests/competing-discovery-evaluation.test.mjs tests/full-chain-evaluation.test.mjs tests/context-diversity-evaluation.test.mjs tests/scoped-context-evaluation.test.mjs tests/scoped-consumer-evaluation.test.mjs tests/cross-language-evaluation.test.mjs tests/rust-go-consumers.test.mjs",
+    "test:packages": "node scripts/check-focused-packages.mjs --run && python3 -I scripts/check-integer-word-bundle.py && python3 -I scripts/check-native-bundles.py",
     "test:cache": "python3 -I scripts/check-cache-consumer.py",
-    "test:integer": "python3 -I scripts/check-integer-word-consumer.py"
+    "test:integer": "python3 -I scripts/check-integer-word-consumer.py",
+    "test:native": "node examples/rust-go-consumers/check-native.mjs --check"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",
@@ -32,7 +33,8 @@
     "next-auth": "5.0.0-beta.32",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "web-tree-sitter": "0.27.1"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.11",

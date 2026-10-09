@@ -1,0 +1,93 @@
+{
+  "format": "repo-salvage/rust-go-consumer-input-v1",
+  "frozenAt": "2026-10-09T19:44:13.383Z",
+  "scope": "Operator-authored cases; acceptance hidden from tool-free first proposals. Reused pinned MIT sources. No blind review or upstream certification.",
+  "inputs": [
+    {
+      "path": "freeze.mjs",
+      "sha256": "5078709004f9fbc6c748fb201d1054ea14137f73d647cb00f0dfa0300f97b769"
+    },
+    {
+      "path": "proposal.mjs",
+      "sha256": "b85018a4ba19b45a5bbeae1eba63c846ec8ebdbf36698049090f1f5a379448ac"
+    },
+    {
+      "path": "check.mjs",
+      "sha256": "a3f2f351a463fb178b2e30b8d487cf05ed5bb8c8beea6702ffd28ef6d25255ea"
+    },
+    {
+      "path": "cases.json",
+      "sha256": "1cf8cd974a858c3e64de70cd98e3341c09fc9deba744835712c0d3881168a572"
+    },
+    {
+      "path": "corpus.json",
+      "sha256": "1fed72f169993bf10ca7d02299c7d584ac064ba52ee63c8298c6418886b3b338"
+    },
+    {
+      "path": "rust/task.txt",
+      "sha256": "9a92d4c0cbb27b87cc1ef9befadc19cf05d3416acfa1f67e34b889f93bf22564"
+    },
+    {
+      "path": "rust/acceptance.rs",
+      "sha256": "41fd6687b17bad972f9327ff02d2fbcb99d099978305d931bc0cfedaa47193d6"
+    },
+    {
+      "path": "rust/evidence.json",
+      "sha256": "e4cde82e92af345bf252b53abdf33893645e2cfd4f24071ba954943b94e61ced"
+    },
+    {
+      "path": "rust/LICENSE",
+      "sha256": "1e697ce8d21401fbf1bddd9b5c3fd4c4c79ae1e3bdf51f81761c85e11d5a89cd"
+    },
+    {
+      "path": "go/task.txt",
+      "sha256": "1fa753289595d5e3935dd53b012dee9c01a304181b97704fe55dd27065a965b4"
+    },
+    {
+      "path": "go/consumer_test.go",
+      "sha256": "1e18e83234db3b08d21d1597bd73169129b7b94f8107b525ad90bc1e5ce333d9"
+    },
+    {
+      "path": "go/go.mod",
+      "sha256": "82eb0e4b386031192f3cc6eb460b1f721ef83bed4f3271b1a710bba11af32577"
+    },
+    {
+      "path": "go/evidence.json",
+      "sha256": "1373e6d7bbc5af23b944aff2f8e7818e2bd2a34c4703843b868d2ec44aeabd60"
+    },
+    {
+      "path": "go/LICENSE",
+      "sha256": "11f46ac1bc076fc405c06fd087226e5dd87b9c2e6b8dfda5153c79b5b6f01362"
+    }
+  ],
+  "generator": [
+    {
+      "path": "src/lib/source-index.ts",
+      "sha256": "8515052411c8085d26c957c23bfdc9d5dc4332b11382a18a89e69a0cbfd66c22"
+    },
+    {
+      "path": "src/lib/focused-evidence.ts",
+      "sha256": "f4414b69c769f088a2f4e794d3ea900b01bebd78231d2a15253a1771ad05d644"
+    },
+    {
+      "path": "scripts/syntax-index.mjs",
+      "sha256": "ea3c5d769dbddd861950e2c57f74f9a47709b00712810721d508facf90f4650e"
+    },
+    {
+      "path": "scripts/grammars/manifest.json",
+      "sha256": "0a8b93d372600d0c92736a9021b63d0780ddfc96a9136bada89c3fb5efc2152a"
+    },
+    {
+      "path": "scripts/grammars/tree-sitter-go.wasm",
+      "sha256": "9504573f352b20be7f2f1911754d710622aedc15afff16d5ed8fb5645681aee7"
+    },
+    {
+      "path": "scripts/grammars/tree-sitter-rust.wasm",
+      "sha256": "f65f354215611fd94ad34134b3427eb3d58cbb745df7b6509ba722184db73d57"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "7b9f8196352dc78a48e54fa8e893ec6b6c6f55e302a92aa19e3581f7c153712f"
+    }
+  ]
+}

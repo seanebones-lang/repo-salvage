@@ -14,6 +14,7 @@ for (const policy of [
   "repo-salvage/coverage-v2",
   "repo-salvage/coverage-v3",
   "repo-salvage/coverage-v4",
+  "repo-salvage/coverage-v5",
 ])
   test(`focused stdio accepts ${policy} alongside archived packets`, async () => {
     const c = structuredClone(suite.cases[0]);
@@ -144,5 +145,36 @@ test("scoped constants, citations and gaps survive MCP transport; malformed link
   } finally {
     await client.close();
     await new Promise((resolve) => server.close(resolve));
+  }
+});
+
+test("coverage-v5 Rust and Go production-shaped packets survive stdio independently", async () => {
+  const { serveFixture } =
+    await import("../../../examples/rust-go-consumers/fixture.mjs");
+  const f = await serveFixture(),
+    client = new Client({ name: "native-language-consumer", version: "1.0.0" });
+  try {
+    await client.connect(
+      new StdioClientTransport({
+        command: process.execPath,
+        args: [
+          fileURLToPath(new URL("../dist/index.js", import.meta.url)),
+          "--base",
+          f.origin,
+        ],
+        stderr: "pipe",
+      }),
+    );
+    for (const c of f.cases) {
+      const result = await client.callTool({
+        name: "repo_salvage_focus_evidence",
+        arguments: c.parameters,
+      });
+      assert.ok(!result.isError, JSON.stringify(result));
+      assert.deepEqual(result.structuredContent, c.response);
+    }
+  } finally {
+    await client.close();
+    await f.close();
   }
 });

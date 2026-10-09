@@ -47,7 +47,10 @@ const run = (command, args) =>
     });
   });
 const fixture = await serveFocusFixture({ includeBoundary: true });
-let client;
+const nativeFixture = await (
+  await import("../examples/rust-go-consumers/fixture.mjs")
+).serveFixture();
+let client, nativeClient;
 try {
   await run(process.platform === "win32" ? "npm.cmd" : "npm", [
     "install",
@@ -63,12 +66,12 @@ try {
   assert.equal(
     JSON.parse(await fs.readFile(path.join(cli, "package.json"), "utf8"))
       .version,
-    "0.5.1",
+    "0.6.0",
   );
   assert.equal(
     JSON.parse(await fs.readFile(path.join(mcp, "package.json"), "utf8"))
       .version,
-    "0.3.4",
+    "0.4.0",
   );
   for (const c of fixture.suite.cases) {
     const output = await run(process.execPath, [
@@ -112,21 +115,64 @@ try {
       (r) => r.method === "GET" && r.authorization === undefined,
     ),
   );
+  nativeClient = new Client({
+    name: "independent-native-focus-host",
+    version: "1.0.0",
+  });
+  await nativeClient.connect(
+    new StdioClientTransport({
+      command: process.execPath,
+      args: [path.join(mcp, "dist/index.js"), "--base", nativeFixture.origin],
+      cwd: directory,
+      env,
+      stderr: "pipe",
+    }),
+  );
+  for (const c of nativeFixture.cases) {
+    const output = await run(process.execPath, [
+      path.join(cli, "bin/repo-salvage.mjs"),
+      "evidence",
+      String(c.parameters.listing_id),
+      "--base",
+      nativeFixture.origin,
+      "--path",
+      c.parameters.path,
+      "--symbol",
+      c.parameters.symbol,
+      "--max-characters",
+      String(c.parameters.max_characters),
+    ]);
+    assert.deepEqual(JSON.parse(output), c.response);
+    const result = await nativeClient.callTool({
+      name: "repo_salvage_focus_evidence",
+      arguments: c.parameters,
+    });
+    assert.ok(!result.isError);
+    assert.deepEqual(result.structuredContent, c.response);
+  }
+  assert.equal(nativeFixture.requests.length, 4);
+  assert.ok(
+    nativeFixture.requests.every(
+      (r) => r.method === "GET" && r.authorization === undefined,
+    ),
+  );
   console.log(
     JSON.stringify({
       status: "passed",
-      checks: 16,
-      installedCli: "0.5.1",
-      installedMcp: "0.3.4",
-      realSourceCases: 6,
+      checks: 20,
+      installedCli: "0.6.0",
+      installedMcp: "0.4.0",
+      realSourceCases: 8,
       authoredBoundaryCases: 1,
-      requests: 14,
+      requests: 18,
       providerCalls: 0,
       realCredentials: false,
       sourceExecuted: false,
     }),
   );
 } finally {
+  if (nativeClient) await nativeClient.close();
+  await nativeFixture.close();
   if (client) await client.close();
   await fixture.close();
   await fs.rm(directory, { recursive: true, force: true });

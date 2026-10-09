@@ -9,7 +9,7 @@ import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { sha256 } from "../examples/analysis-evaluation/holdout.mjs";
 test("sealed historical source rebuilds archived packets offline, with rubric outside requests", async () => {
-  const engine = await loadEngine();
+  const engine = await loadEngine({ historical: true });
   try {
     const suite = await buildHoldout(engine);
     assert.equal(suite.cases.length, 8);
@@ -152,7 +152,7 @@ test("archived answers replay structural/reference and selection gates against t
       "utf8",
     ),
   );
-  const engine = await loadEngine();
+  const engine = await loadEngine({ historical: true });
   try {
     const suite = await buildHoldout(engine);
     for (const run of report.runs) {
@@ -181,7 +181,7 @@ test("archived answers replay structural/reference and selection gates against t
 });
 
 test("coverage epoch validates pinned blobs, complete contexts and stage-specific discovery", async () => {
-  const engine = await loadEngine();
+  const engine = await loadEngine({ historical: true });
   try {
     const baseline = await buildHoldout(engine);
     const suite = await buildHoldout(engine, true, "coverage");
@@ -248,7 +248,7 @@ test("coverage answers replay exact sealed requests and completed epoch refuses 
       "utf8",
     ),
   );
-  const engine = await loadEngine();
+  const engine = await loadEngine({ historical: true });
   try {
     const suite = await buildHoldout(engine, true, "coverage");
     for (const run of report.runs) {

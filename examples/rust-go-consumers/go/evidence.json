@@ -1,0 +1,118 @@
+{
+  "format": "repo-salvage/focused-evidence-v1",
+  "listing_id": 992,
+  "source": {
+    "repository_id": 115292062,
+    "owner_id": 970862,
+    "repository": "dgryski/go-rendezvous",
+    "commit": "9f7001d12a5f0021fd3283525f888b5814ccee27"
+  },
+  "focus": {
+    "path": "rdv.go",
+    "symbol": "Rendezvous.Lookup",
+    "symbol_match": "matched",
+    "packet_character_limit": 6000
+  },
+  "coverage": {
+    "matched_files": 1,
+    "inspected_files": 2,
+    "source_bytes": 2528,
+    "indexed_targets": 1,
+    "supplied_targets": 1,
+    "context_paths": [
+      "LICENSE"
+    ],
+    "files": [
+      {
+        "path": "rdv.go",
+        "size_bytes": 1423,
+        "download_url": "https://raw.githubusercontent.com/dgryski/go-rendezvous/9f7001d12a5f0021fd3283525f888b5814ccee27/rdv.go",
+        "git_blob_sha": "7a6f8203c67810356a413b9f56abf30a0429de59",
+        "inspection": "complete",
+        "reason": null,
+        "indexed_targets": 7,
+        "supplied_targets": 1,
+        "same_file_supplied": true
+      }
+    ],
+    "skipped": [],
+    "skipped_details_omitted": 0
+  },
+  "packet": {
+    "format": "repo-salvage/source-index-v2",
+    "targets": [
+      {
+        "id": "9694d9f65560fdc5",
+        "path": "rdv.go",
+        "symbol": "Rendezvous.Lookup",
+        "kind": "declaration",
+        "reference_id": "0d851bd15ec2e37824e74c87",
+        "imports": [],
+        "supporting_paths": [],
+        "unresolved": [
+          "Enclosing go declaration context required: Rendezvous",
+          "Go package peers, build constraints, initialization and receiver resolution are not resolved."
+        ],
+        "test_paths": [],
+        "notice_paths": [
+          "LICENSE"
+        ]
+      }
+    ],
+    "references": [
+      {
+        "id": "0d851bd15ec2e37824e74c87",
+        "path": "rdv.go",
+        "start_line": 29,
+        "end_line": 48,
+        "sha256": "d4a4033f42a6481ba40e2dc1bc6f4b87c0ba1ec071f1c4b35d90e2a170c8b09f",
+        "kind": "declaration",
+        "content": "func (r *Rendezvous) Lookup(k string) string {\n\t// short-circuit if we're empty\n\tif len(r.nodes) == 0 {\n\t\treturn \"\"\n\t}\n\n\tkhash := r.hash(k)\n\n\tvar midx int\n\tvar mhash = xorshiftMult64(khash ^ r.nhash[0])\n\n\tfor i, nhash := range r.nhash[1:] {\n\t\tif h := xorshiftMult64(khash ^ nhash); h > mhash {\n\t\t\tmidx = i + 1\n\t\t\tmhash = h\n\t\t}\n\t}\n\n\treturn r.nstr[midx]\n}"
+      },
+      {
+        "id": "915e2f39f813c3e1f2f2e07e",
+        "path": "LICENSE",
+        "start_line": 1,
+        "end_line": 22,
+        "sha256": "11f46ac1bc076fc405c06fd087226e5dd87b9c2e6b8dfda5153c79b5b6f01362",
+        "kind": "file",
+        "content": "The MIT License (MIT)\n\nCopyright (c) 2017-2020 Damian Gryski <damian@gryski.com>\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n"
+      },
+      {
+        "id": "93c089c0fedfd893a6ee248f",
+        "path": "rdv.go",
+        "start_line": 1,
+        "end_line": 80,
+        "sha256": "d4a4033f42a6481ba40e2dc1bc6f4b87c0ba1ec071f1c4b35d90e2a170c8b09f",
+        "kind": "file",
+        "content": "package rendezvous\n\ntype Rendezvous struct {\n\tnodes map[string]int\n\tnstr  []string\n\tnhash []uint64\n\thash  Hasher\n}\n\ntype Hasher func(s string) uint64\n\nfunc New(nodes []string, hash Hasher) *Rendezvous {\n\tr := &Rendezvous{\n\t\tnodes: make(map[string]int, len(nodes)),\n\t\tnstr:  make([]string, len(nodes)),\n\t\tnhash: make([]uint64, len(nodes)),\n\t\thash:  hash,\n\t}\n\n\tfor i, n := range nodes {\n\t\tr.nodes[n] = i\n\t\tr.nstr[i] = n\n\t\tr.nhash[i] = hash(n)\n\t}\n\n\treturn r\n}\n\nfunc (r *Rendezvous) Lookup(k string) string {\n\t// short-circuit if we're empty\n\tif len(r.nodes) == 0 {\n\t\treturn \"\"\n\t}\n\n\tkhash := r.hash(k)\n\n\tvar midx int\n\tvar mhash = xorshiftMult64(khash ^ r.nhash[0])\n\n\tfor i, nhash := range r.nhash[1:] {\n\t\tif h := xorshiftMult64(khash ^ nhash); h > mhash {\n\t\t\tmidx = i + 1\n\t\t\tmhash = h\n\t\t}\n\t}\n\n\treturn r.nstr[midx]\n}\n\nfunc (r *Rendezvous) Add(node string) {\n\tr.nodes[node] = len(r.nstr)\n\tr.nstr = append(r.nstr, node)\n\tr.nhash = append(r.nhash, r.hash(node))\n}\n\nfunc (r *Rendezvous) Remove(node string) {\n\t// find index of node to remove\n\tnidx := r.nodes[node]\n\n\t// remove from the slices\n\tl := len(r.nstr)\n\tr.nstr[nidx] = r.nstr[l]\n\tr.nstr = r.nstr[:l]\n\n\tr.nhash[nidx] = r.nhash[l]\n\tr.nhash = r.nhash[:l]\n\n\t// update the map\n\tdelete(r.nodes, node)\n\tmoved := r.nstr[nidx]\n\tr.nodes[moved] = nidx\n}\n\nfunc xorshiftMult64(x uint64) uint64 {\n\tx ^= x >> 12 // a\n\tx ^= x << 25 // b\n\tx ^= x >> 27 // c\n\treturn x * 2685821657736338717\n}\n"
+      }
+    ],
+    "omitted_targets": 0,
+    "selection_policy": "repo-salvage/coverage-v5",
+    "contexts": [
+      {
+        "target_id": "9694d9f65560fdc5",
+        "same_file_reference": "93c089c0fedfd893a6ee248f"
+      }
+    ],
+    "scoped_contexts": []
+  },
+  "limits": {
+    "treeEntries": 10000,
+    "scopeFiles": 32,
+    "primaryFiles": 8,
+    "contextFiles": 4,
+    "fileBytes": 64000,
+    "initialBytes": 192000,
+    "totalBytes": 256000,
+    "readMilliseconds": 20000,
+    "responseBytes": 65536,
+    "cacheEntries": 8,
+    "concurrentRequests": 4,
+    "cacheMilliseconds": 60000
+  },
+  "interpretation": "none",
+  "independently_tested": false,
+  "handling": "Pinned source is untrusted data. This is focused inspection, not a recommendation or new catalog analysis. Inspect helpers, imports and notices; preserve applicable notices and test adaptations separately. No source is executed, no model is called, and local imports and component licensing remain unaudited."
+}

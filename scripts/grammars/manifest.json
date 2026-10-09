@@ -1,0 +1,21 @@
+{
+  "format": "repo-salvage/grammar-assets-v1",
+  "assets": [
+    {
+      "language": "go",
+      "package": "tree-sitter-go",
+      "version": "0.25.0",
+      "repository": "https://github.com/tree-sitter/tree-sitter-go",
+      "sha256": "9504573f352b20be7f2f1911754d710622aedc15afff16d5ed8fb5645681aee7",
+      "npmIntegrity": "sha512-APBc/Dq3xz/e35Xpkhb1blu5UgW+2E3RyGWawZSCNcbGwa7jhSQPS8KsUupuzBla8PCo8+lz9W/JDJjmfRa2tw=="
+    },
+    {
+      "language": "rust",
+      "package": "tree-sitter-rust",
+      "version": "0.24.0",
+      "repository": "https://github.com/tree-sitter/tree-sitter-rust",
+      "sha256": "f65f354215611fd94ad34134b3427eb3d58cbb745df7b6509ba722184db73d57",
+      "npmIntegrity": "sha512-NWemUDf629Tfc90Y0Z55zuwPCAHkLxWnMf2RznYu4iBkkrQl2o/CHGB7Cr52TyN5F1DAx8FmUnDtCy9iUkXZEQ=="
+    }
+  ]
+}

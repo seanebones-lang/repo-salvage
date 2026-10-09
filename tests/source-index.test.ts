@@ -166,7 +166,7 @@ describe("source index evidence", () => {
     const files = [
       { path: "bad.ts", content: "export function x( {" },
       { path: "cut.ts", content: "export function x() {}", truncated: true },
-      { path: "parser.rs", content: "fn parse(x: i32) -> i32 { x }" },
+      { path: "parser.rb", content: "def parse(x); x; end" },
     ];
     const index = indexSources(
       files,
@@ -175,7 +175,7 @@ describe("source index evidence", () => {
     expect(index.targets).toHaveLength(1);
     expect(index.targets[0].kind).toBe("file");
     expect(index.targets[0].unresolved).toContain(
-      "Imports not statically inspected: parser.rs",
+      "Imports not statically inspected: parser.rb",
     );
     expect(index.skipped.map((s) => s.reason)).toEqual([
       "parse_error",
