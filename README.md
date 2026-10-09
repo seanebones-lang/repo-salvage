@@ -272,6 +272,12 @@ docker run --rm -p 3000:3000 --env-file .env.production \
   --mount source=repo-salvage-data,target=/app/data repo-salvage
 ```
 
+The default base image comes from [Docker's official image mirror on Amazon ECR](https://aws.amazon.com/blogs/containers/docker-official-images-now-available-on-amazon-elastic-container-registry-public/)
+and remains pinned by manifest digest. The mirror serves the same pinned Node
+image as Docker Hub and avoids Hub's shared-runner pull limit. `NODE_IMAGE` is a
+build argument if a deployment needs a different registry; retain and verify the
+reviewed digest when changing the image source.
+
 Use the actual HTTPS origin for `AUTH_URL` and register its GitHub callback. Supply secrets at
 runtime, keep them out of image build arguments, and mount persistent storage at `/app/data`.
 Use a single application instance with SQLite, back up the database with SQLite's backup API,
