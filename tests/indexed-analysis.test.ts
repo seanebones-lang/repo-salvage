@@ -76,6 +76,45 @@ const listing = (summary: Listing["summary"]): Listing => ({
 });
 
 describe("indexed analysis boundary", () => {
+  it("attaches a server-observed context gap even when the generated explanation omits it", () => {
+    const inputs = [
+      {
+        path: "x.ts",
+        content:
+          "/*" +
+          "x".repeat(10000) +
+          "*/ export function take() { return helper(); } function helper() { return 1; }",
+      },
+    ];
+    const indexed = indexSources(inputs, ["x.ts"]);
+    const bounded = evidencePacket(indexed, 2000);
+    const chosen = bounded.targets[0];
+    const summary = verifiedIndexedSummary(
+      JSON.stringify({
+        overview: "One helper",
+        outcome: "candidates",
+        reusable_pieces: [
+          {
+            target_id: chosen.id,
+            name: "take",
+            description: "Calls helper",
+            category: "Data processing",
+            integration_notes: "Inspect surrounding code.",
+            limitations: [],
+            explanation_refs: [chosen.reference_id],
+          },
+        ],
+      }),
+      indexed,
+      bounded,
+    );
+    expect(summary.reusable_pieces[0].limitations?.join(" ")).toContain(
+      "Same-file context was omitted",
+    );
+    expect(summary.analysis?.index.selection_policy).toBe(
+      "repo-salvage/coverage-v1",
+    );
+  });
   it("attaches source identity, observed transitive imports and evidence independently of model claims", () => {
     const summary = verifiedIndexedSummary(
       JSON.stringify(response()),

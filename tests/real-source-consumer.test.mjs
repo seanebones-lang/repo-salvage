@@ -1,4 +1,4 @@
-/** Execute only these three explicitly reviewed, pinned code slices, never an upstream app. */
+/** Execute only these five explicitly reviewed, pinned code slices, never an upstream app. */
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
@@ -16,8 +16,17 @@ const corpus = JSON.parse(
     "utf8",
   ),
 );
-function reviewedSource(repo, file, expectedBlob) {
-  const source = corpus.repositories
+const coverageCorpus = JSON.parse(
+  await fs.readFile(
+    new URL(
+      "../examples/analysis-evaluation/coverage/corpus.json",
+      import.meta.url,
+    ),
+    "utf8",
+  ),
+);
+function reviewedSource(repo, file, expectedBlob, captured = corpus) {
+  const source = captured.repositories
     .find((r) => r.repo === repo)
     ?.files.find((f) => f.path === file);
   assert.ok(source);
@@ -167,4 +176,77 @@ test("reviewed Python hash declaration works outside the proof verifier, across 
   } finally {
     await fs.rm(directory, { recursive: true, force: true });
   }
+});
+
+const cacheKeySource = reviewedSource(
+  "seanebones-lang/AI-Voiceover",
+  "apps/web/lib/tts-cache.ts",
+  "a89bdcc1e554f58e21eb62fda8e8aaf118862574",
+  coverageCorpus,
+);
+const tagSource = reviewedSource(
+  "seanebones-lang/AI-Voiceover",
+  "apps/web/lib/tts/prosody-tags.ts",
+  "9504001500d650b0a5dc78ab52b797ec55946fb1",
+  coverageCorpus,
+);
+test("reviewed cache-key extraction transfers with hash helper and preserves ambiguous NUL serialization", async () => {
+  const isolated = await moduleFrom(
+    declaration(cacheKeySource, "buildTtsCacheKey"),
+  );
+  const params = { ...base, text: "hello", voice_id: "one", language: "en" };
+  assert.throws(() => isolated.buildTtsCacheKey(params), ReferenceError);
+  const { buildTtsCacheKey: key } = await moduleFrom(
+    "import { createHash } from 'node:crypto';\n" +
+      declaration(cacheKeySource, "hash") +
+      "\n" +
+      declaration(cacheKeySource, "buildTtsCacheKey"),
+  );
+  assert.equal(
+    key(params),
+    key({ ...params, text: "  hello  ", clone_tune: "", emotion: "neutral" }),
+  );
+  assert.notEqual(key(params), key({ ...params, voice_id: "two" }));
+  assert.notEqual(key(params), key({ ...params, emotion: "happy" }));
+  assert.equal(
+    key({ ...params, text: "x\0y", voice_id: "z" }),
+    key({ ...params, text: "x", voice_id: "y\0z" }),
+  );
+});
+test("reviewed tag parser needs same-file helpers and produces global rather than per-span adjustments", async () => {
+  const isolated = await moduleFrom(declaration(tagSource, "parseProsodyTags"));
+  assert.throws(
+    () => isolated.parseProsodyTags("[emph]hello[/emph]"),
+    ReferenceError,
+  );
+  const { parseProsodyTags: parse } = await moduleFrom(tagSource);
+  assert.deepEqual(parse(" [EMPH]hello[/EMPH]   [pause:long] world "), {
+    cleanText: "hello — world",
+    adjustments: {
+      speedDelta: -0.009999999999999998,
+      pitchDelta: 0.6,
+      reverbDelta: 0.02,
+    },
+  });
+  assert.equal(
+    parse("[unknown]hello[/unknown]").cleanText,
+    "[unknown]hello[/unknown]",
+  );
+  assert.equal(parse("[emph]hello").adjustments.pitchDelta, 0.6);
+  const empty = parse("");
+  empty.adjustments.pitchDelta = 99;
+  assert.equal(parse("").adjustments.pitchDelta, 0);
+});
+test("reviewed tag parser clamps supported global deltas at its observed bounds", async () => {
+  const { parseProsodyTags: parse } = await moduleFrom(tagSource);
+  assert.deepEqual(parse("[strong]".repeat(100)).adjustments, {
+    speedDelta: 0.22,
+    pitchDelta: 8,
+    reverbDelta: 0,
+  });
+  assert.deepEqual(parse("[pause:long]".repeat(100)).adjustments, {
+    speedDelta: -0.18,
+    pitchDelta: 0,
+    reverbDelta: 0.2,
+  });
 });

@@ -1,0 +1,651 @@
+{
+  "date": "2026-10-09",
+  "format": "repo-salvage/coverage-evaluation-results-v1",
+  "frozenBeforeGenerationCommit": "f9f6226dbe9508e69f0656ce4117923fae561890",
+  "scope": "Four known-repository constrained regressions, one run per configuration; implementing-agent review, not independent or unseen assessment, unconstrained recall or repeated-run performance.",
+  "sourceCapture": "Production inspection at the same pinned public MIT commits; offline index and packet rebuilds exactly matched captures. No target application installation/execution.",
+  "comparison": {
+    "offlineCaptureMatch": true,
+    "counts": [
+      {
+        "repo": "seanebones-lang/Humanity-Grid",
+        "commit": "3e6c736b2b73f2b2f747c13358f37c8c371f2ff1",
+        "baseline": {
+          "inspectedFiles": 54,
+          "indexedTargets": 123,
+          "suppliedTargets": 17,
+          "distinctTargetFiles": 4,
+          "packetCharacters": 69521,
+          "fullFileContexts": null
+        },
+        "current": {
+          "inspectedFiles": 54,
+          "indexedTargets": 123,
+          "suppliedTargets": 18,
+          "distinctTargetFiles": 18,
+          "packetCharacters": 69872,
+          "fullFileContexts": 8
+        }
+      },
+      {
+        "repo": "seanebones-lang/AI-Voiceover",
+        "commit": "a4c5c3721b719ccfee680556d128775837213adf",
+        "baseline": {
+          "inspectedFiles": 64,
+          "indexedTargets": 83,
+          "suppliedTargets": 24,
+          "distinctTargetFiles": 11,
+          "packetCharacters": 69672,
+          "fullFileContexts": null
+        },
+        "current": {
+          "inspectedFiles": 64,
+          "indexedTargets": 86,
+          "suppliedTargets": 24,
+          "distinctTargetFiles": 24,
+          "packetCharacters": 69805,
+          "fullFileContexts": 22
+        }
+      }
+    ],
+    "probes": [
+      {
+        "repo": "seanebones-lang/Humanity-Grid",
+        "path": "src/research-scout/src/research_scout/ingest/arxiv.py",
+        "symbol": "ArxivClient._rate_limited_request",
+        "inspected": true,
+        "indexed": true,
+        "supplied": false,
+        "sameFileContext": false
+      },
+      {
+        "repo": "seanebones-lang/Humanity-Grid",
+        "path": "src/experiment-engine/scripts/split_work_units.py",
+        "symbol": "main",
+        "inspected": true,
+        "indexed": true,
+        "supplied": true,
+        "sameFileContext": true
+      },
+      {
+        "repo": "seanebones-lang/Humanity-Grid",
+        "path": "src/volunteer-app/src-tauri/src/main.rs",
+        "symbol": "<module>",
+        "inspected": true,
+        "indexed": true,
+        "supplied": false,
+        "sameFileContext": false
+      },
+      {
+        "repo": "seanebones-lang/AI-Voiceover",
+        "path": "apps/web/lib/tts/prosody-tags.ts",
+        "symbol": "parseProsodyTags",
+        "inspected": true,
+        "indexed": true,
+        "supplied": true,
+        "sameFileContext": true
+      },
+      {
+        "repo": "seanebones-lang/AI-Voiceover",
+        "path": "apps/web/lib/tts-cache.ts",
+        "symbol": "buildTtsCacheKey",
+        "inspected": true,
+        "indexed": true,
+        "supplied": true,
+        "sameFileContext": true
+      },
+      {
+        "repo": "seanebones-lang/AI-Voiceover",
+        "path": "apps/web/lib/rate-limit.ts",
+        "symbol": "createFallbackLimiter",
+        "inspected": true,
+        "indexed": false,
+        "supplied": false,
+        "sameFileContext": true
+      }
+    ]
+  },
+  "reviewPolicy": "Review every answer against frozen source-review points. Missing material behavior can fail review without an unsupported affirmative claim; structural validity and selection are scored separately.",
+  "runs": [
+    {
+      "model": "gpt-6-luna",
+      "effort": "high",
+      "cliVersion": "codex-cli 0.160.0",
+      "suiteSealSha256": "fd395ab48f60dba341c86cf0d9a1c386217d5e385026d5cf1fb0a7e1e5524a5a",
+      "billing": "Existing Codex account allowance; no dollar comparison",
+      "transportLimits": "120s plus 5s termination grace; CLI has no equivalent 4000-output-token cap; high reasoning",
+      "attemptsPerCase": 1,
+      "repetitions": 1,
+      "summary": {
+        "cases": 4,
+        "structuralPasses": 4,
+        "selectionPasses": 4,
+        "semanticReviewPasses": 2,
+        "materialOmissionCases": 2,
+        "unsupportedClaimCases": 0,
+        "medianLatencyMs": 7248.0,
+        "usage": {
+          "input_tokens": 131584,
+          "cached_input_tokens": 0,
+          "output_tokens": 1789,
+          "reasoning_output_tokens": 889
+        },
+        "toolEvents": 0
+      },
+      "cases": [
+        {
+          "id": "cache-key",
+          "provider": "--codex",
+          "model": "gpt-6-luna",
+          "requestSha256": "84e2169a396821208ef5ab20a85b6f5c8df50fab04388632d02029e26f9e550a",
+          "latencyMs": 7584,
+          "usage": {
+            "input_tokens": 33570,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 436,
+            "reasoning_output_tokens": 185
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": ["apps/web/lib/tts-cache.ts#buildTtsCacheKey"],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "passed": false,
+            "unsupportedClaims": [],
+            "materialOmissions": [
+              "Embedded NUL characters can make distinct field tuples serialize identically before hashing; the guidance does not identify this ambiguity."
+            ],
+            "notes": [
+              "Correctly identifies hash helper and node:crypto, trimming, NUL separators and optional defaults.",
+              "No cache operation or independently runnable claim. Runtime validation and absent tests are disclosed."
+            ]
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "One reusable cache-key builder is supported by the supplied evidence. Its same-file context includes the SHA-256 helper and module-level crypto import.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "41abcc9e2a8db004",
+                "name": "TTS cache key builder",
+                "description": "Builds a SHA-256 key from trimmed text, voice, language, prosody settings, clone tuning, and emotion. Optional clone tuning defaults to an empty string and emotion to neutral.",
+                "category": "Data processing",
+                "integration_notes": "The same-file source defines a private hash helper using node:crypto createHash with SHA-256, then hashes the joined parameter values. Preserve the field order and NUL separators when reusing it. The source does not show callers or their cache storage assumptions.",
+                "limitations": [
+                  "The parameter type provides no runtime validation; handling of invalid or non-finite values is unspecified.",
+                  "No tests are included in the supplied evidence; correctness is not established by the references."
+                ],
+                "explanation_refs": [
+                  "f51d88b65992df936dfa3978",
+                  "0f7bb46ab17622980aafb7d2"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "2768ec9ce2c8c0869cfa7e4ee3ad8d328840bbf83d1bb12a97828aa595991b4c",
+          "rawAnswerSha256": "d54e485d3bfe0a41e882054c5e3df224053181f42d3320952c5a8b8a75677269",
+          "traceSha256": "96aadfe2e280c263aca4440ab6025de42290dfc6f08ca4ffa55a029d5a77dd68"
+        },
+        {
+          "id": "prosody-tags",
+          "provider": "--codex",
+          "model": "gpt-6-luna",
+          "requestSha256": "0e9c2f98ba3f060e64792ead264d3a79e87c7d02f19d5cdd612043b5d0803c11",
+          "latencyMs": 6912,
+          "usage": {
+            "input_tokens": 33572,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 437,
+            "reasoning_output_tokens": 172
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": ["apps/web/lib/tts/prosody-tags.ts#parseProsodyTags"],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "passed": false,
+            "unsupportedClaims": [],
+            "materialOmissions": [
+              "Does not explicitly distinguish global aggregate deltas from per-span behavior or disclose unknown markup and unmatched-tag handling."
+            ],
+            "notes": [
+              "Correctly identifies local types, defaults, clamp and empty-input path.",
+              "Case-insensitive matching and whole-input whitespace normalization are also left unstated. No full SSML guarantee is claimed."
+            ]
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "One eligible target matches the owner’s scope: parseProsodyTags. Its supplied file context includes the local types, defaults, and clamp helper it uses.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "ded14c1b054626d8",
+                "name": "parseProsodyTags",
+                "description": "Parses supported SSML-lite tags from text, removes tag markup, replaces pause tags with an em dash, and returns cleaned text with bounded speed, pitch, and reverb adjustments.",
+                "category": "Data processing",
+                "integration_notes": "The supplied same-file context defines ProsodyTagAdjustments, ProsodyTagParseResult, DEFAULT_ADJUSTMENTS, and clamp. The empty-text early return copies the default adjustments. Other inputs are counted and transformed with regular expressions; adjustment totals are clamped before return. No imports or side effects appear in the supplied file context. Confirm that the caller expects these tag forms and output fields.",
+                "limitations": [
+                  "No tests or test results are supplied.",
+                  "The evidence does not establish behavior beyond the shown tag patterns and implementation."
+                ],
+                "explanation_refs": [
+                  "7ec4cc3a151b03e7b0de72d4",
+                  "e53aa2359502120ef9918317"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "88153a826e2f09f9905eb59452e17930caf804179d6c285badeabc5b457c80d8",
+          "rawAnswerSha256": "5b8b9d42bb90ba2da3e054e88897b18bb0a10fc530ab160b0b973854e1c42a95",
+          "traceSha256": "ea385f19feef37d0819a73a205d3c4ee6b6a077256043838f5bf02cefc204127"
+        },
+        {
+          "id": "work-unit-cli",
+          "provider": "--codex",
+          "model": "gpt-6-luna",
+          "requestSha256": "729ad1082242c954dadbd96d1a7fe25f710c9be621882b223ad0a64e6e88adce",
+          "latencyMs": 10201,
+          "usage": {
+            "input_tokens": 30884,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 852,
+            "reasoning_output_tokens": 504
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [
+              "src/experiment-engine/scripts/split_work_units.py#main"
+            ],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "passed": true,
+            "unsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": [
+              "Names CLI parsing, filesystem writes, unused library-path and unimplemented JSON docking parameters.",
+              "Correctly states total-compound arithmetic does not express a separate remainder and JobSpec content is absent."
+            ]
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "One candidate fits the owner’s scope: a CLI that reads a JobSpec and writes per-unit JSON configs. Its context shows filesystem side effects and unresolved behavior delegated to JobSpec; no tests are supplied.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "8eaf731952bfba4c",
+                "name": "JobSpec work-unit config generator",
+                "description": "Reads a JobSpec, derives input filenames and default docking parameters, then writes one JSON config per configured work unit, including compound ranges, input/output filenames, and binding-site data when present.",
+                "category": "Data processing",
+                "integration_notes": "The same-file context shows a CLI `main`, a `sys.path` insertion, and imports of `JobSpec` and `WorkUnit`. Adaptation must account for the CLI arguments and output-directory creation and JSON file writes. `--library-path` is parsed but not used; JSON docking-parameter input is acknowledged but left unparsed. The `JobSpec` definition and `from_yaml` behavior are not supplied.",
+                "limitations": [
+                  "The target is CLI-bound and writes files; it is not shown as an independently runnable or side-effect-free unit.",
+                  "No explicit validation or early-return handling is shown; JobSpec loading and field behavior are not inspectable from supplied context.",
+                  "`total_compounds` is calculated as total units times compounds per unit, so the shown ranges do not express a separate remainder.",
+                  "No test paths or test results are supplied."
+                ],
+                "explanation_refs": [
+                  "1e1274cf1d1f5275774b25f0",
+                  "bba3fa13d8f15478a8625db3"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "c2026e015f130e7f18968188470bbfcc76b9d120ddd25346800087f11ca5cb50",
+          "rawAnswerSha256": "474cf36613d2549e357094a88ea543c4f5a10a32adcd2f33834e5ca46aa01a96",
+          "traceSha256": "c505f0b4575e17677f147db60e4e02d7d9ebeaec2e6d5b94dea876bc3d04b319"
+        },
+        {
+          "id": "owner-exclusion",
+          "provider": "--codex",
+          "model": "gpt-6-luna",
+          "requestSha256": "20bfa70cf4349f5ad2cf1ea0beacce0cbb3bab2bc56a54d2c002730839df82c4",
+          "latencyMs": 3511,
+          "usage": {
+            "input_tokens": 33558,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 64,
+            "reasoning_output_tokens": 28
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": null,
+            "requiredGroupRecall": null
+          },
+          "semanticReview": {
+            "passed": true,
+            "unsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": ["Honors the exclusion with no candidates."]
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Owner context excludes every supplied target from reuse.",
+            "outcome": "no_candidates",
+            "reusable_pieces": []
+          },
+          "answerSha256": "1f6e5b907aee410db416672bcff8d0f3730f59a1cc3c0fb957cbf0d0b43fd4db",
+          "rawAnswerSha256": "1f6e5b907aee410db416672bcff8d0f3730f59a1cc3c0fb957cbf0d0b43fd4db",
+          "traceSha256": "1a203a2da412b731392a02845223163f9bacfab84cee74cd1a6828220f5baba9"
+        }
+      ]
+    },
+    {
+      "model": "gpt-6.1-sol",
+      "effort": "low",
+      "cliVersion": "codex-cli 0.160.0",
+      "suiteSealSha256": "fd395ab48f60dba341c86cf0d9a1c386217d5e385026d5cf1fb0a7e1e5524a5a",
+      "billing": "Existing Codex account allowance; no dollar comparison",
+      "transportLimits": "120s plus 5s termination grace; CLI has no equivalent 4000-output-token cap; low reasoning",
+      "attemptsPerCase": 1,
+      "repetitions": 1,
+      "summary": {
+        "cases": 4,
+        "structuralPasses": 4,
+        "selectionPasses": 4,
+        "semanticReviewPasses": 4,
+        "materialOmissionCases": 0,
+        "unsupportedClaimCases": 0,
+        "medianLatencyMs": 18790.0,
+        "usage": {
+          "input_tokens": 134336,
+          "cached_input_tokens": 0,
+          "output_tokens": 1483,
+          "reasoning_output_tokens": 83
+        },
+        "toolEvents": 0
+      },
+      "cases": [
+        {
+          "id": "cache-key",
+          "provider": "--codex",
+          "model": "gpt-6.1-sol",
+          "requestSha256": "84e2169a396821208ef5ab20a85b6f5c8df50fab04388632d02029e26f9e550a",
+          "latencyMs": 21018,
+          "usage": {
+            "input_tokens": 34258,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 452,
+            "reasoning_output_tokens": 25
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": ["apps/web/lib/tts-cache.ts#buildTtsCacheKey"],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "passed": true,
+            "unsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": [
+              "Names hash helper and node:crypto and excludes unrelated cache state from extraction requirements.",
+              "Explicitly identifies NUL tuple ambiguity, trimming, defaults, no validation or cache mutation."
+            ]
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Selected only buildTtsCacheKey, honoring the author's exclusions. Its declaration and supplied file context support reuse as a TTS parameter key builder, subject to serialization and integration review.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "41abcc9e2a8db004",
+                "name": "buildTtsCacheKey",
+                "description": "Builds a NUL-separated payload from trimmed text, voice, language and synthesis settings, then hashes it. Optional clone tuning defaults to an empty string and emotion to neutral.",
+                "category": "Data processing",
+                "integration_notes": "The contexts entry supplies the same file. Extract the supporting hash helper and its observed createHash import from node:crypto; hash uses SHA-256 with hexadecimal output. The file also defines MAX_ENTRIES, CacheEntry, cache, keyOrder, getCached and setCached, but the key builder does not reference those cache definitions. It has no early return or runtime validation and does not mutate the cache. Preserve or deliberately revise trimming, field order, boolean encoding and optional defaults. Caller behavior and whether all audio-affecting inputs are represented remain unresolved. The supplied MIT notice requires retaining its copyright and permission notice in copies or substantial portions.",
+                "limitations": [
+                  "Embedded NUL characters in string fields can make different field tuples serialize identically before hashing; no escaping or length encoding is shown.",
+                  "Trimming merges text differing only in surrounding whitespace. Runtime types and numeric ranges are not validated.",
+                  "Same-file context is supplied, but callers and tests are absent. References establish inspected source, not correctness or successful execution."
+                ],
+                "explanation_refs": [
+                  "f51d88b65992df936dfa3978",
+                  "0f7bb46ab17622980aafb7d2",
+                  "6ac6154d34fa4e758508abe1"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "940269d1aca37ca0e1e50738072e501b59f8887ebf90b19c2e053c67dc71364a",
+          "rawAnswerSha256": "61c523b52db03723bf8cc2e5657f34f3804a1ae87becbeecf56dd6967a20ae6f",
+          "traceSha256": "05e6745885569b81d9c25b25dd53babb7c07555c2584aacf595ef70993827bc7"
+        },
+        {
+          "id": "prosody-tags",
+          "provider": "--codex",
+          "model": "gpt-6.1-sol",
+          "requestSha256": "0e9c2f98ba3f060e64792ead264d3a79e87c7d02f19d5cdd612043b5d0803c11",
+          "latencyMs": 16562,
+          "usage": {
+            "input_tokens": 34260,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 451,
+            "reasoning_output_tokens": 0
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": ["apps/web/lib/tts/prosody-tags.ts#parseProsodyTags"],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "passed": true,
+            "unsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": [
+              "Names types, defaults, clamp, copied empty-input defaults, counts and exact bounds.",
+              "Explicitly describes global deltas, case-insensitive markers, unknown/unmatched tags and whitespace normalization."
+            ]
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "One candidate fits the author's stated scope: parseProsodyTags. Its declaration and same-file context support extraction assessment; caller behavior and tests are not supplied.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "ded14c1b054626d8",
+                "name": "parseProsodyTags",
+                "description": "Converts case-insensitive emphasis, strong, question and pause markers into cleaned text and bounded speed, pitch and reverb deltas. Adjustments aggregate across the input rather than applying to tagged spans.",
+                "category": "Data processing",
+                "integration_notes": "Extract with the observed ProsodyTagAdjustments and ProsodyTagParseResult types, DEFAULT_ADJUSTMENTS constant and clamp helper. The supplied file contains no imports. Falsy input returns unchanged text and copied defaults; otherwise it counts opening markers, removes recognized opening/closing emphasis markers, replaces pauses with em dashes, collapses whitespace and trims. Bounds are speed [-0.18, 0.22], pitch [-6, 8] and reverb [0, 0.2]. No I/O or shared-state mutation is visible. Runtime string validation and tag-pair validation are absent. Caller integration must establish how deltas affect TTS parameters. The supplied LICENSE states MIT terms requiring preservation of its copyright and permission notices.",
+                "limitations": [
+                  "Malformed or unmatched tags are not validated; recognized opening tags contribute adjustments without requiring closing tags. Unknown markers remain.",
+                  "Whitespace normalization affects all nonempty input, even text without tags. Pauses become punctuation rather than timed audio instructions.",
+                  "Same-file context is supplied, but callers, TTS parameter units and tests are absent. References establish inspected source, not correctness or verified integration."
+                ],
+                "explanation_refs": [
+                  "7ec4cc3a151b03e7b0de72d4",
+                  "e53aa2359502120ef9918317",
+                  "6ac6154d34fa4e758508abe1"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "976d270672c6044a366ed8748da8ce3c8662de2447fa239dde2b70caed222a39",
+          "rawAnswerSha256": "ab3e2240fff8580b8e340c5c677e2a6d6e6b149db732161f1f3c28046d07c0fd",
+          "traceSha256": "a15e5b3540facd15af477b799516c693c77456a40189172cbe00d691f807edfa"
+        },
+        {
+          "id": "work-unit-cli",
+          "provider": "--codex",
+          "model": "gpt-6.1-sol",
+          "requestSha256": "729ad1082242c954dadbd96d1a7fe25f710c9be621882b223ad0a64e6e88adce",
+          "latencyMs": 23455,
+          "usage": {
+            "input_tokens": 31572,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 512,
+            "reasoning_output_tokens": 38
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [
+              "src/experiment-engine/scripts/split_work_units.py#main"
+            ],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": 1,
+            "requiredGroupRecall": 1
+          },
+          "semanticReview": {
+            "passed": true,
+            "unsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": [
+              "Names repository import setup, CLI parsing, file writes/overwrites and absent JobSpec definitions.",
+              "States unused argument, placeholder JSON handling and absence of short-final-unit calculation.",
+              "Zero-count observations are conditional on JobSpec allowing those values; its validation remains explicitly unknown."
+            ]
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "Selected only split_work_units.py main, honoring the author's exclusions. It provides a work-unit configuration generation pattern, but JobSpec behavior and validation remain unresolved in the supplied evidence.",
+            "outcome": "candidates",
+            "reusable_pieces": [
+              {
+                "target_id": "8eaf731952bfba4c",
+                "name": "JobSpec work-unit JSON configuration generator",
+                "description": "CLI pattern that loads a JobSpec and writes numbered JSON configs containing inclusive compound ranges, input filenames, output filenames, default docking parameters and binding-site data.",
+                "category": "Data processing",
+                "integration_notes": "The supplied full-file context shows argparse, json and Path supporting main, imports of JobSpec and WorkUnit, a module-level sys.path insertion, and a __main__ guard. No same-file helper definitions are present. JobSpec.from_yaml and the accessed model fields require dependency review: their definitions are not supplied. main has no explicit early return or count validation; YAML loading precedes directory creation. It creates the output directory, overwrites matching wu_*.json files and prints a summary; exceptions are not handled. Extraction should replace the repository-relative import setup and separate CLI parsing from generation. Resolve count semantics, input defaults and serialization expectations before integration.",
+                "limitations": [
+                  "JobSpec loading, validation and field types are absent from supplied content; the OutputSchemaField excerpt does not establish these dependencies.",
+                  "total_compounds is total times compounds_per_unit, so the calculation does not represent a shorter final unit or inspect actual library length.",
+                  "--library-path is parsed but unused. The JSON docking-parameter branch is a pass, leaving hard-coded defaults.",
+                  "No explicit positive-count checks appear. Zero units write no configs; zero compounds per unit produces ranges ending at -1 if units are positive.",
+                  "Writes can leave partial output on failure and retain stale configs from earlier runs. No tests or execution results are supplied."
+                ],
+                "explanation_refs": [
+                  "1e1274cf1d1f5275774b25f0",
+                  "bba3fa13d8f15478a8625db3"
+                ]
+              }
+            ]
+          },
+          "answerSha256": "6c44f54bbbaee60e9d2235e94cdacd90231b18238230138b12a6da90c039ecb1",
+          "rawAnswerSha256": "23c5531eeeff03d06ca1f2f5e76d3783cb251c434db3438480eb21df13fdf663",
+          "traceSha256": "3e66564c440d31c30e99bfe28ce2d632e00ba53ad9a0c857e27a4022c2e7948a"
+        },
+        {
+          "id": "owner-exclusion",
+          "provider": "--codex",
+          "model": "gpt-6.1-sol",
+          "requestSha256": "20bfa70cf4349f5ad2cf1ea0beacce0cbb3bab2bc56a54d2c002730839df82c4",
+          "latencyMs": 6295,
+          "usage": {
+            "input_tokens": 34246,
+            "cached_input_tokens": 0,
+            "cache_write_input_tokens": 0,
+            "output_tokens": 68,
+            "reasoning_output_tokens": 20
+          },
+          "requestId": null,
+          "transportSuccess": true,
+          "structurallyAccepted": true,
+          "selectionMatchesControl": true,
+          "selection": {
+            "passed": true,
+            "selected": [],
+            "unexpected": [],
+            "missingGroups": [],
+            "outcomeMatches": true,
+            "countMatches": true,
+            "precision": null,
+            "requiredGroupRecall": null
+          },
+          "semanticReview": {
+            "passed": true,
+            "unsupportedClaims": [],
+            "materialOmissions": [],
+            "notes": ["Honors the exclusion with no candidates."]
+          },
+          "failure": null,
+          "prohibitedEvents": [],
+          "answer": {
+            "overview": "The supplied owner context excludes every supplied target from reuse. Honoring that exclusion, no candidates are selected.",
+            "outcome": "no_candidates",
+            "reusable_pieces": []
+          },
+          "answerSha256": "78cea3baec90765a3d47909d2ec8a55b90539eecc9610f297a19034beabfce74",
+          "rawAnswerSha256": "78cea3baec90765a3d47909d2ec8a55b90539eecc9610f297a19034beabfce74",
+          "traceSha256": "503a853dce18df2ba2e4c8fecc3cbefa2ee67c1daa221116a8cd3ac5cf76b7b4"
+        }
+      ]
+    }
+  ]
+}

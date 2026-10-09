@@ -2,11 +2,14 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { root } from "./engine.mjs";
+import { baselinePacket, baselineSystem } from "./baseline.mjs";
 import { targetKey } from "./scoring.mjs";
 export const sha256 = (value) =>
   createHash("sha256").update(value).digest("hex");
-export async function buildHoldout(engine, verify = true) {
-  const directory = path.join(root, "examples/analysis-evaluation/holdout");
+export async function buildHoldout(engine, verify = true, epoch = "holdout") {
+  if (!["holdout", "coverage"].includes(epoch))
+    throw Error("Unknown evaluation epoch.");
+  const directory = path.join(root, "examples/analysis-evaluation", epoch);
   const corpusBytes = await fs.readFile(path.join(directory, "corpus.json"));
   const caseBytes = await fs.readFile(path.join(directory, "cases.json"));
   const corpus = JSON.parse(corpusBytes);
@@ -32,7 +35,10 @@ export async function buildHoldout(engine, verify = true) {
     repositories.set(repo.repo, {
       repo,
       index,
-      packet: engine.evidencePacket(index),
+      packet:
+        epoch === "holdout"
+          ? baselinePacket(index)
+          : engine.evidencePacket(index),
     });
   }
   const cases = definitions.cases.map((c) => {
@@ -59,6 +65,7 @@ export async function buildHoldout(engine, verify = true) {
       packet,
       c.ownerNote,
     );
+    if (epoch === "holdout") request.system = baselineSystem;
     request.model = "selected-explicitly-at-run";
     return {
       ...c,
@@ -79,6 +86,13 @@ export async function buildHoldout(engine, verify = true) {
       inspected: data.repo.files.some((f) => f.path === probe.path),
       indexed: data.index.targets.some((t) => targetKey(t) === key),
       supplied: data.packet.targets.some((t) => targetKey(t) === key),
+      ...(epoch === "coverage"
+        ? {
+            sameFileContext: data.packet.references.some(
+              (r) => r.path === probe.path && r.kind === "file",
+            ),
+          }
+        : {}),
     };
   });
   const seal = {
@@ -97,9 +111,14 @@ export async function buildHoldout(engine, verify = true) {
       );
   }
   return {
-    format: "repo-salvage/real-source-evaluation-v1",
+    format:
+      epoch === "holdout"
+        ? "repo-salvage/real-source-evaluation-v1"
+        : "repo-salvage/coverage-evaluation-v1",
     scope:
-      "Eight author-constrained cases on two public MIT repositories; implementing-agent rubric, not independent review or whole-repository recall.",
+      epoch === "holdout"
+        ? "Eight author-constrained cases on two public MIT repositories; implementing-agent rubric, not independent review or whole-repository recall."
+        : "Four known-repository regression cases under the coverage policy; implementing-agent review, not unseen discovery or independent assessment.",
     seal,
     cases,
   };

@@ -1,0 +1,81 @@
+{
+  "frozenAt": "2026-10-09T07:41:48.668Z",
+  "seal": {
+    "corpusSha256": "ab50cdbfc1805b6345f6eb46ed2c699cbcc2f351fd8c9f6212ece9a6146397f0",
+    "casesSha256": "eb822a6839596d66101620e6374fe17346de8e515c324dae4ccc8f85516c0cf1",
+    "requests": [
+      {
+        "id": "cache-key",
+        "requestSha256": "84e2169a396821208ef5ab20a85b6f5c8df50fab04388632d02029e26f9e550a"
+      },
+      {
+        "id": "prosody-tags",
+        "requestSha256": "0e9c2f98ba3f060e64792ead264d3a79e87c7d02f19d5cdd612043b5d0803c11"
+      },
+      {
+        "id": "work-unit-cli",
+        "requestSha256": "729ad1082242c954dadbd96d1a7fe25f710c9be621882b223ad0a64e6e88adce"
+      },
+      {
+        "id": "owner-exclusion",
+        "requestSha256": "20bfa70cf4349f5ad2cf1ea0beacce0cbb3bab2bc56a54d2c002730839df82c4"
+      }
+    ],
+    "coverage": [
+      {
+        "repo": "seanebones-lang/Humanity-Grid",
+        "path": "src/research-scout/src/research_scout/ingest/arxiv.py",
+        "symbol": "ArxivClient._rate_limited_request",
+        "inspected": true,
+        "indexed": true,
+        "supplied": false,
+        "sameFileContext": false
+      },
+      {
+        "repo": "seanebones-lang/Humanity-Grid",
+        "path": "src/experiment-engine/scripts/split_work_units.py",
+        "symbol": "main",
+        "inspected": true,
+        "indexed": true,
+        "supplied": true,
+        "sameFileContext": true
+      },
+      {
+        "repo": "seanebones-lang/Humanity-Grid",
+        "path": "src/volunteer-app/src-tauri/src/main.rs",
+        "symbol": "<module>",
+        "inspected": true,
+        "indexed": true,
+        "supplied": false,
+        "sameFileContext": false
+      },
+      {
+        "repo": "seanebones-lang/AI-Voiceover",
+        "path": "apps/web/lib/tts/prosody-tags.ts",
+        "symbol": "parseProsodyTags",
+        "inspected": true,
+        "indexed": true,
+        "supplied": true,
+        "sameFileContext": true
+      },
+      {
+        "repo": "seanebones-lang/AI-Voiceover",
+        "path": "apps/web/lib/tts-cache.ts",
+        "symbol": "buildTtsCacheKey",
+        "inspected": true,
+        "indexed": true,
+        "supplied": true,
+        "sameFileContext": true
+      },
+      {
+        "repo": "seanebones-lang/AI-Voiceover",
+        "path": "apps/web/lib/rate-limit.ts",
+        "symbol": "createFallbackLimiter",
+        "inspected": true,
+        "indexed": false,
+        "supplied": false,
+        "sameFileContext": true
+      }
+    ]
+  }
+}

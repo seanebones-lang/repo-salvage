@@ -44,7 +44,12 @@ The [official Codex CLI documentation](https://learn.chatgpt.com/docs/non-intera
 describes noninteractive structured output. This operator evaluation is separate
 from a hosted multi-user integration.
 
-The dated [results.json](results.json) records the first run: four Codex controls
+The current development controls were deliberately re-frozen for coverage-v1
+before its model evaluation. The dated [results.json](results.json) records the
+first run under the older policy and prompt; it is historical evidence, not a
+run against the updated development controls. The archived policy/prompt in
+`baseline.mjs` preserve the sealed real-source requests without production flags.
+The first run: four Codex controls
 passed structural/selection checks and implementing-agent source review, with
 zero tool events. The Anthropic batch stopped on HTTP 401 before a generation
 response. A successful second-provider run and real-repository holdouts remain
@@ -56,3 +61,9 @@ Codex configurations and reviewed consumer checks. It exposes missing source/pac
 coverage and a semantic omission despite perfect constrained selection. It does not
 satisfy the independent-review or cross-provider gates. Its archived answers now
 serve as an offline regression set.
+
+The [coverage regression](coverage/README.md) measures the new selection policy
+on the same pinned repositories, with a separate pre-generation seal and four
+new constrained cases. It is known-repository regression, not a fresh holdout.
+Use `node examples/analysis-evaluation/run.mjs --codex YOUR_EXPLICIT_MODEL --coverage --effort high`
+for an explicitly authorized model run. Its completed epoch cannot be re-frozen.

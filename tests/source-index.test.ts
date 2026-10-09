@@ -2,6 +2,81 @@ import { describe, expect, it } from "vitest";
 import { indexSources, evidencePacket, indexRecord } from "@/lib/source-index";
 
 describe("source index evidence", () => {
+  it("gives other files a turn before repeating a file with many declarations", () => {
+    const files = [
+      {
+        path: "a.ts",
+        content: Array.from(
+          { length: 100 },
+          (_, i) => `export function f${i}() { return ${i}; }`,
+        ).join("\n"),
+      },
+      { path: "z.py", content: "def late():\n    return 1\n" },
+    ];
+    const index = indexSources(
+      files,
+      files.map((f) => f.path),
+    );
+    const packet = evidencePacket(index);
+    expect(packet.targets.length).toBeLessThanOrEqual(24);
+    expect(packet.targets.some((t) => t.symbol === "late")).toBe(true);
+    expect(
+      packet.targets
+        .slice(0, 2)
+        .map((t) => t.path)
+        .sort(),
+    ).toEqual(["a.ts", "z.py"]);
+    expect(JSON.stringify(packet).length).toBeLessThanOrEqual(70000);
+    expect(
+      evidencePacket(indexSources([...files].reverse(), ["z.py", "a.ts"])),
+    ).toEqual(packet);
+  });
+  it("prefers fewer observed module bindings within a file without treating the hint as a dependency guarantee", () => {
+    const files = [
+      {
+        path: "lib/cache.ts",
+        content:
+          "const store = new Map(); const order: string[] = []; function normalize(x: string) { return x.trim(); } export function lookup(k: string) { order.push(k); return store.get(k); } export function buildKey(k: string) { return normalize(k); }",
+      },
+      ...Array.from({ length: 23 }, (_, i) => ({
+        path: `lib/u${i}.ts`,
+        content: `export function u${i}() { return 1; }`,
+      })),
+    ];
+    const packet = evidencePacket(
+      indexSources(
+        files,
+        files.map((f) => f.path),
+      ),
+    );
+    expect(packet.targets.find((t) => t.path === "lib/cache.ts")?.symbol).toBe(
+      "buildKey",
+    );
+    const context = packet.contexts!.find(
+      (c) =>
+        c.target_id === packet.targets.find((t) => t.symbol === "buildKey")!.id,
+    )!;
+    expect(
+      packet.references.find((r) => r.id === context.same_file_reference)
+        ?.content,
+    ).toContain("function normalize");
+  });
+  it("states omitted same-file context without sending a truncated module", () => {
+    const files = [
+      {
+        path: "x.ts",
+        content:
+          "/*" +
+          "x".repeat(10000) +
+          "*/ export function small() { return helper(); } function helper() { return 1; }",
+      },
+    ];
+    const packet = evidencePacket(indexSources(files, ["x.ts"]), 2000);
+    expect(packet.targets).toHaveLength(1);
+    expect(packet.contexts![0].same_file_reference).toBeNull();
+    expect(packet.references.every((r) => r.kind === "declaration")).toBe(true);
+    expect(JSON.stringify(packet).length).toBeLessThanOrEqual(2000);
+  });
   it("bounds the complete serialized packet including JSON escaping and envelope overhead", () => {
     const files = Array.from({ length: 40 }, (_, i) => ({
       path: `quoted-${i}.ts`,
@@ -11,7 +86,7 @@ describe("source index evidence", () => {
       files,
       files.map((f) => f.path),
     );
-    for (const limit of [100, 500, 1000, 5000, 70000]) {
+    for (const limit of [200, 500, 1000, 5000, 70000]) {
       const packet = evidencePacket(index, limit);
       expect(JSON.stringify(packet).length).toBeLessThanOrEqual(limit);
       for (const target of packet.targets)

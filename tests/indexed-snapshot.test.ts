@@ -46,6 +46,49 @@ function transport(
   return fetch;
 }
 describe("indexed pinned snapshots", () => {
+  it("does not let hundreds of route directories crowd out library implementations", async () => {
+    transport([
+      ...Array.from({ length: 180 }, (_, i) => ({
+        path: `app/api/r${i}/route.ts`,
+        content: "export function GET() { return 1; }",
+      })),
+      {
+        path: "lib/codec.ts",
+        content: "export function encode(n: number) { return n.toString(); }",
+      },
+      {
+        path: "lib/cache/key.ts",
+        content: "export function key(n: number) { return String(n); }",
+      },
+      {
+        path: "core/math.rs",
+        content: "pub fn twice(n: i32) -> i32 { n * 2 }",
+      },
+    ]);
+    const snap = await indexedSnapshotRepo("never-forward", repo, commit);
+    expect(snap.files).toHaveLength(64);
+    for (const file of ["lib/codec.ts", "lib/cache/key.ts", "core/math.rs"])
+      expect(snap.files.some((f) => f.path === file)).toBe(true);
+    expect(snap.packet?.targets.some((t) => t.path === "core/math.rs")).toBe(
+      true,
+    );
+  });
+  it("caps initial library preference and keeps an initial turn for other application areas", async () => {
+    transport([
+      ...Array.from({ length: 80 }, (_, i) => ({
+        path: `lib/util${i}.ts`,
+        content: "export const value = 1;",
+      })),
+      { path: "app/main.rs", content: "fn main() {}" },
+      { path: "domain-worker/task.py", content: "def task():\n    return 1\n" },
+    ]);
+    const snap = await indexedSnapshotRepo("", repo, commit);
+    const initial = snap.index!.inspection!.initial_paths;
+    expect(initial.filter((f) => f.startsWith("lib/"))).toHaveLength(24);
+    expect(initial).toContain("app/main.rs");
+    expect(initial).toContain("domain-worker/task.py");
+    expect(snap.files).toHaveLength(64);
+  });
   it("reads complete large and tiny files, verifies blobs and records unsupported symlinks/generated assets", async () => {
     const fetch = transport([
       {
