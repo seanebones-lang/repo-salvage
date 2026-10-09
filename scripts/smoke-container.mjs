@@ -260,6 +260,8 @@ try {
     "integer-word-consumer.tar.gz",
     "repo-salvage-cli.tgz",
     "repo-salvage-mcp.tgz",
+    "rust-edit-distance.tar.gz",
+    "go-rendezvous-consumer.tar.gz",
   ]) {
     const response = await fetch(origin + "/" + file);
     assert.equal(response.status, 200, file);
@@ -275,7 +277,7 @@ try {
     );
   }
   check(
-    "application, agent API and all five downloads served from built image",
+    "application, agent API and all seven downloads served from built image",
   );
   assert.equal(
     execNode(
