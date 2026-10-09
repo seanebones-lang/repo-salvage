@@ -33,16 +33,22 @@ export type SalvageSession = {
 
 /** Signed-in user plus their GitHub token, read server-side from the encrypted JWT cookie. */
 export async function getSession(): Promise<SalvageSession> {
-  const s = (await auth()) as ({ login?: string; ghId?: number } & object) | null;
+  const s = (await auth()) as
+    ({ login?: string; ghId?: number } & object) | null;
   if (!s?.login || !s.ghId) return null;
-  const secure = process.env.NODE_ENV === "production";
+  const incomingHeaders = await headers();
+  // Auth.js chooses the cookie prefix from the URL protocol, not NODE_ENV.
+  const secure = /(?:^|;\s*)__Secure-authjs\.session-token(?:\.\d+)?=/.test(
+    incomingHeaders.get("cookie") ?? "",
+  );
   const token = await getToken({
-    req: { headers: await headers() } as never,
+    req: { headers: incomingHeaders } as never,
     secret: process.env.AUTH_SECRET!,
     secureCookie: secure,
     salt: `${secure ? "__Secure-" : ""}authjs.session-token`,
   });
   const accessToken = token?.accessToken as string | undefined;
-  if (!accessToken) return null;
+  if (!accessToken || token?.ghId !== s.ghId || token?.login !== s.login)
+    return null;
   return { login: s.login, ghId: s.ghId, accessToken };
 }

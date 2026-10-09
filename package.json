@@ -1,13 +1,18 @@
 {
   "name": "repo-salvage",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/package-example.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/package-example.mjs",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run && npm run test:example",
+    "test:example": "node --test examples/summary-parser/consumer.test.mjs",
+    "format": "prettier --write src tests scripts examples package.json README.md .github/workflows/ci.yml",
+    "format:check": "prettier --check src tests scripts examples package.json README.md .github/workflows/ci.yml"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",
@@ -22,6 +27,7 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "prettier": "3.9.9",
     "typescript": "^5.6.0",
     "vitest": "^5.0.3"
   },

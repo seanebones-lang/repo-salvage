@@ -1,39 +1,76 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { lastHumanCommit, snapshotRepo, resolveSourceCommit, isPublicRepo, type GhRepo } from "@/lib/github";
+import {
+  lastHumanCommit,
+  snapshotRepo,
+  resolveSourceCommit,
+  isPublicRepo,
+  type GhRepo,
+} from "@/lib/github";
 
 const repo = { full_name: "me/x", default_branch: "main" } as GhRepo;
 const sha = "a".repeat(40);
-const commit = (date: string, message: string, login = "me", type = "User") => ({
+const commit = (
+  date: string,
+  message: string,
+  login = "me",
+  type = "User",
+) => ({
   commit: { author: { date }, message },
   author: { login, type },
 });
-const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status });
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), { status });
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
+});
 
 describe("lastHumanCommit", () => {
   it("skips bots and dependency noise", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () =>
-      json([
-        commit("2024-05-01T00:00:00Z", "Bump lodash", "dependabot[bot]", "Bot"),
-        commit("2024-04-01T00:00:00Z", "chore(deps): update x"),
-        commit("2023-02-03T00:00:00Z", "Fix login bug"),
-      ])));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        json([
+          commit(
+            "2024-05-01T00:00:00Z",
+            "Bump lodash",
+            "dependabot[bot]",
+            "Bot",
+          ),
+          commit("2024-04-01T00:00:00Z", "chore(deps): update x"),
+          commit("2023-02-03T00:00:00Z", "Fix login bug"),
+        ]),
+      ),
+    );
     expect(await lastHumanCommit("t", repo)).toBe("2023-02-03T00:00:00Z");
   });
 
   it("keeps an 'Initial commit' as a human commit", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => json([commit("2020-01-01T00:00:00Z", "Initial commit")])));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        json([commit("2020-01-01T00:00:00Z", "Initial commit")]),
+      ),
+    );
     expect(await lastHumanCommit("t", repo)).toBe("2020-01-01T00:00:00Z");
   });
 
   it("returns null for empty repos (409) instead of throwing", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => json({ message: "Git Repository is empty." }, 409)));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => json({ message: "Git Repository is empty." }, 409)),
+    );
     expect(await lastHumanCommit("t", repo)).toBeNull();
   });
 
   it("returns null when every commit is a bot", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => json([commit("2024-01-01T00:00:00Z", "x", "renovate[bot]", "Bot")])));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        json([commit("2024-01-01T00:00:00Z", "x", "renovate[bot]", "Bot")]),
+      ),
+    );
     expect(await lastHumanCommit("t", repo)).toBeNull();
   });
 });
@@ -49,32 +86,65 @@ describe("snapshotRepo", () => {
       { path: "package-lock.json", type: "blob", size: 5000 },
     ];
     const fetched: string[] = [];
-    vi.stubGlobal("fetch", vi.fn(async (url: string) => {
-      if (url.includes("/git/trees/")) return json({ tree });
-      fetched.push(url);
-      return new Response("content");
-    }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: string) => {
+        if (url.includes("/git/trees/")) return json({ tree });
+        fetched.push(url);
+        return new Response("content");
+      }),
+    );
     const snap = await snapshotRepo("t", repo, sha);
     expect(snap.tree).toEqual(["README.md", "package.json", "src/auth.ts"]);
-    expect(snap.files.map((f) => f.path).sort()).toEqual(["README.md", "package.json", "src/auth.ts"]);
+    expect(snap.files.map((f) => f.path).sort()).toEqual([
+      "README.md",
+      "package.json",
+      "src/auth.ts",
+    ]);
     expect(fetched.some((u) => u.includes("node_modules"))).toBe(false);
   });
 
   it("gives a clear error for unreadable (empty) repos", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => json({}, 409)));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => json({}, 409)),
+    );
     await expect(snapshotRepo("t", repo, sha)).rejects.toThrow(/empty/);
   });
 });
 
 describe("immutable snapshots and visibility", () => {
+  it("uses app public-data credentials instead of a user's bearer token and still hides private data", async () => {
+    vi.stubEnv("AUTH_GITHUB_ID", "test-app");
+    vi.stubEnv("AUTH_GITHUB_SECRET", "test-secret");
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (_url: string, init: RequestInit) => {
+        expect(init.headers).toMatchObject({
+          Authorization: `Basic ${Buffer.from("test-app:test-secret").toString("base64")}`,
+        });
+        return json({ id: 1, private: true, owner: { id: 42 } });
+      }),
+    );
+    expect(await isPublicRepo(1, 42)).toBe(false);
+  });
   it("retains all known paths and sampled paths beyond a 300-file prompt", async () => {
-    const tree = Array.from({ length: 350 }, (_, i) => ({ path: `src/f${i}.ts`, type: "blob", size: i === 349 ? 9000 : 300 }));
-    const urls: string[] = [];
-    vi.stubGlobal("fetch", vi.fn(async (url: string, init: RequestInit) => {
-      urls.push(url);
-      expect(init.headers ?? {}).not.toHaveProperty("Authorization");
-      return url.includes("/git/trees/") ? json({ tree }) : new Response("source");
+    const tree = Array.from({ length: 350 }, (_, i) => ({
+      path: `src/f${i}.ts`,
+      type: "blob",
+      size: i === 349 ? 9000 : 300,
     }));
+    const urls: string[] = [];
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: string, init: RequestInit) => {
+        urls.push(url);
+        expect(init.headers ?? {}).not.toHaveProperty("Authorization");
+        return url.includes("/git/trees/")
+          ? json({ tree })
+          : new Response("source");
+      }),
+    );
     const snap = await snapshotRepo("secret", repo, sha);
     expect(snap.knownPaths).toHaveLength(350);
     expect(snap.tree).toHaveLength(300);
@@ -84,38 +154,87 @@ describe("immutable snapshots and visibility", () => {
   });
 
   it("rejects truncated trees, missing samples and failed reads", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => json({ tree: [], truncated: true })));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => json({ tree: [], truncated: true })),
+    );
     await expect(snapshotRepo("t", repo, sha)).rejects.toThrow(/incomplete/);
-    vi.stubGlobal("fetch", vi.fn(async () => json({ tree: [] })));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => json({ tree: [] })),
+    );
     await expect(snapshotRepo("t", repo, sha)).rejects.toThrow(/No readable/);
-    vi.stubGlobal("fetch", vi.fn(async (url: string) => url.includes("/git/trees/") ? json({ tree: [{ path: "README.md", type: "blob" }] }) : json({}, 404)));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: string) =>
+        url.includes("/git/trees/")
+          ? json({ tree: [{ path: "README.md", type: "blob" }] })
+          : json({}, 404),
+      ),
+    );
     await expect(snapshotRepo("t", repo, sha)).rejects.toThrow(/sampled file/);
   });
 
   it("resolves the branch once and pins commit history", async () => {
     const urls: string[] = [];
-    vi.stubGlobal("fetch", vi.fn(async (url: string) => {
-      urls.push(url);
-      return url.endsWith("/commits/main") ? json({ sha }) : json([]);
-    }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: string) => {
+        urls.push(url);
+        return url.endsWith("/commits/main") ? json({ sha }) : json([]);
+      }),
+    );
     expect(await resolveSourceCommit("t", repo)).toBe(sha);
     await lastHumanCommit("t", repo, sha);
     expect(urls[1]).toContain(`sha=${sha}`);
   });
 
   it("hides private, deleted, transferred and unavailable repositories anonymously", async () => {
-    for (const body of [{ id: 1, private: true, owner: { id: 42 } }, { id: 1, private: false, owner: { id: 99 } }]) {
-      vi.stubGlobal("fetch", vi.fn(async () => json(body)));
+    for (const body of [
+      { id: 1, private: true, owner: { id: 42 } },
+      { id: 1, private: false, owner: { id: 99 } },
+    ]) {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn(async () => json(body)),
+      );
       expect(await isPublicRepo(1, 42)).toBe(false);
     }
-    vi.stubGlobal("fetch", vi.fn(async () => json({}, 404)));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => json({}, 404)),
+    );
     expect(await isPublicRepo(1, 42)).toBe(false);
-    vi.stubGlobal("fetch", vi.fn(async () => { throw new Error("offline"); }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        throw new Error("offline");
+      }),
+    );
     expect(await isPublicRepo(1, 42)).toBe(false);
-    vi.stubGlobal("fetch", vi.fn(async (_url: string, init: RequestInit) => {
-      expect(init.headers ?? {}).not.toHaveProperty("Authorization");
-      return json({ id: 1, private: false, owner: { id: 42 } });
-    }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (_url: string, init: RequestInit) => {
+        expect(init.headers ?? {}).not.toHaveProperty("Authorization");
+        return json({ id: 1, private: false, owner: { id: 42 } });
+      }),
+    );
     expect(await isPublicRepo(1, 42)).toBe(true);
+  });
+});
+
+describe("public API backoff", () => {
+  it("fails closed and suppresses further requests during GitHub's retry window", async () => {
+    const fetch = vi.fn(
+      async () =>
+        new Response("limited", {
+          status: 429,
+          headers: { "retry-after": "60" },
+        }),
+    );
+    vi.stubGlobal("fetch", fetch);
+    expect(await isPublicRepo(1, 42)).toBe(false);
+    expect(await isPublicRepo(2, 42)).toBe(false);
+    expect(fetch).toHaveBeenCalledTimes(1);
   });
 });

@@ -13,9 +13,11 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run format:check
       - run: npm run typecheck
       - run: npm test
       - run: npm audit --audit-level=high
       - run: npm run build
         env:
           AUTH_SECRET: ci-build-secret
+          AUTH_URL: http://localhost:3000

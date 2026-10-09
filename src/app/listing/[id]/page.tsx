@@ -1,44 +1,113 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPublicListing } from "@/lib/public-listings";
-import UsedButton from "./used-button";
+import { componentsOf, sourceUrl } from "@/lib/components";
+import { PartCard } from "@/components/part-card";
+import { Icon } from "@/components/icon";
 import ReportButton from "./report-button";
 
 export const dynamic = "force-dynamic";
-
-export default async function ListingPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ListingPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
-  const l = await getPublicListing(Number(id));
-  if (!l) notFound();
-  const blobBase = l.source_sha ? `${l.url}/blob/${l.source_sha}/` : null;
+  const listing = await getPublicListing(Number(id));
+  if (!listing) notFound();
   return (
     <>
-      <h1>{l.full_name}</h1>
-      <p>{l.summary.overview}</p>
-      <div className="chips">
-        {l.summary.languages.map((x) => <span className="chip" key={x}>{x}</span>)}
-        {l.summary.frameworks.map((x) => <span className="chip" key={x}>{x}</span>)}
+      <nav className="breadcrumbs" aria-label="Breadcrumb">
+        <Link href="/">Catalog</Link>
+        <span>/</span>
+        <span>{listing.full_name}</span>
+      </nav>
+      <div className="detail-heading repository-heading">
+        <div>
+          <span className="eyebrow">Author-nominated project</span>
+          <h1>{listing.name}</h1>
+          <p className="lede">{listing.summary.overview}</p>
+          <div className="chips">
+            {listing.summary.languages.map((lang) => (
+              <span className="chip" key={lang}>
+                {lang}
+              </span>
+            ))}
+            {listing.summary.frameworks.map((framework) => (
+              <span className="chip" key={framework}>
+                {framework}
+              </span>
+            ))}
+            <span className={`chip ${listing.license ? "" : "chip-warning"}`}>
+              {listing.license ?? "License unknown"}
+            </span>
+          </div>
+          <p className="repository-meta">
+            {listing.full_name} · {listing.summary.reusable_pieces.length}{" "}
+            candidate parts · last human commit{" "}
+            {listing.last_human_commit?.slice(0, 10) ?? "unknown"}
+          </p>
+        </div>
+        <a
+          className="button button-secondary"
+          href={listing.url}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Repository <Icon name="external" />
+        </a>
       </div>
-      {l.owner_note && <div className="card"><strong>Owner note:</strong> {l.owner_note}</div>}
-      <h2>Reusable pieces</h2>
-      <ul className="pieces">
-        {l.summary.reusable_pieces.map((p) => (
-          <li key={p.path + p.name}>
-            <strong>{p.name}</strong> — {p.description}{" "}
-            {blobBase ? <a href={blobBase + p.path.split("/").map(encodeURIComponent).join("/")} target="_blank" rel="noreferrer"><code>{p.path}</code></a> : <code>{p.path}</code>}
-          </li>
+      {listing.owner_note && (
+        <aside className="owner-note">
+          <strong>From the author</strong>
+          <p>{listing.owner_note}</p>
+        </aside>
+      )}
+      <div className="section-heading">
+        <div>
+          <span className="eyebrow">Start with a smaller piece</span>
+          <h2>Parts worth a closer look.</h2>
+        </div>
+      </div>
+      <div className="parts-grid">
+        {componentsOf([listing]).map((entry) => (
+          <PartCard key={entry.id} entry={entry} />
         ))}
-      </ul>
-      <h2>Details</h2>
-      <p className="muted">
-        License: {l.license ?? "none declared (check before reusing)"} · ★ {l.stars} · forks {l.forks} · last human commit{" "}
-        {l.last_human_commit?.slice(0, 10) ?? "unknown"}
-      </p>
-      <p className="muted">{l.source_sha ? `Analyzed ${l.analyzed_at ?? "unknown date"} · ${l.summary_model ?? "unknown model"} · commit ${l.source_sha}` : "Legacy summary: source commit unknown. Owner should re-summarize."}</p>
-      <p className="muted">AI-generated from a sample of the repo. Verify before relying on it.</p>
-      <div className="row">
-        <a href={l.url} target="_blank" rel="noreferrer"><button>Open on GitHub</button></a>
-        <UsedButton id={l.id} initial={l.used_count} />
-        <ReportButton id={l.id} />
+      </div>
+      <details className="repository-provenance">
+        <summary>Source record & direct file links</summary>
+        <p>
+          {listing.source_sha
+            ? `Analyzed ${listing.analyzed_at ?? "unknown date"} · ${listing.summary_model ?? "unknown model"} · commit ${listing.source_sha}`
+            : "Legacy summary: source commit unknown. Owner should re-summarize."}
+        </p>
+        <ul>
+          {listing.summary.reusable_pieces.map((piece) => (
+            <li key={piece.path + piece.name}>
+              {sourceUrl(listing, piece.path) ? (
+                <a
+                  href={sourceUrl(listing, piece.path)!}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <code>{piece.path}</code>
+                </a>
+              ) : (
+                <code>{piece.path}</code>
+              )}
+            </li>
+          ))}
+        </ul>
+        <p>
+          AI-generated from a source sample. Inspect source licenses and test
+          your adaptation before relying on it.
+        </p>
+      </details>
+      <div className="repository-actions">
+        <ReportButton id={listing.id} />
+        <Link className="text-link" href="/how-it-works">
+          Read the evidence guide <Icon name="arrow" size={15} />
+        </Link>
       </div>
     </>
   );

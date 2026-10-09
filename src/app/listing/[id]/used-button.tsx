@@ -1,12 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
 
-export default function UsedButton({ id, initial }: { id: number; initial: number }) {
+export default function UsedButton({
+  id,
+  initial,
+}: {
+  id: number;
+  initial: number;
+}) {
   const key = `salvage-used-${id}`;
   const [count, setCount] = useState(initial);
   const [done, setDone] = useState(false);
   useEffect(() => {
-    try { setDone(!!localStorage.getItem(key)); } catch {}
+    try {
+      setDone(!!localStorage.getItem(key));
+    } catch {}
   }, [key]);
   return (
     <button
@@ -14,7 +22,9 @@ export default function UsedButton({ id, initial }: { id: number; initial: numbe
       disabled={done}
       onClick={async () => {
         setDone(true);
-        try { localStorage.setItem(key, "1"); } catch {}
+        try {
+          localStorage.setItem(key, "1");
+        } catch {}
         const r = await fetch(`/api/listings/${id}/used`, { method: "POST" });
         if (r.ok) setCount((await r.json()).used_count);
       }}

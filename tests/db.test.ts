@@ -2,10 +2,13 @@ import { beforeAll, describe, expect, it } from "vitest";
 import os from "node:os";
 import path from "node:path";
 import fs from "node:fs";
+import { componentId } from "@/lib/components";
 
 let m: typeof import("@/lib/db");
 
-const base = (over: Partial<Parameters<typeof import("@/lib/db").upsertListing>[0]> = {}) => ({
+const base = (
+  over: Partial<Parameters<typeof import("@/lib/db").upsertListing>[0]> = {},
+) => ({
   github_repo_id: 1,
   owner_login: "me",
   owner_id: 42,
@@ -26,14 +29,20 @@ const base = (over: Partial<Parameters<typeof import("@/lib/db").upsertListing>[
     overview: "An auth lib",
     languages: ["TypeScript"],
     frameworks: ["Express"],
-    reusable_pieces: [{ name: "jwt", path: "src/jwt.ts", description: "verifies jwt" }],
+    reusable_pieces: [
+      { name: "jwt", path: "src/jwt.ts", description: "verifies jwt" },
+    ],
   },
   ...over,
 });
 
 beforeAll(async () => {
-  process.env.DATABASE_PATH = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "salvage-")), "t.db");
+  process.env.DATABASE_PATH = path.join(
+    fs.mkdtempSync(path.join(os.tmpdir(), "salvage-")),
+    "t.db",
+  );
   process.env.DAILY_SUMMARY_LIMIT = "2";
+  process.env.GLOBAL_DAILY_SUMMARY_LIMIT = "3";
   m = await import("@/lib/db");
 });
 
@@ -47,10 +56,28 @@ describe("listings", () => {
   });
 
   it("searches keyword across note and summary, filters language and license", () => {
-    m.upsertListing(base({ github_repo_id: 2, full_name: "me/py", name: "py", language: "Python", license: "GPL-3.0",
-      owner_note: null, summary: { overview: "CSV parser", languages: ["Python"], frameworks: [], reusable_pieces: [] } }));
-    expect(m.searchListings({ q: "jwt" }).map((l) => l.full_name)).toEqual(["me/x"]);
-    expect(m.searchListings({ q: "parser" }).map((l) => l.full_name)).toEqual(["me/py"]);
+    m.upsertListing(
+      base({
+        github_repo_id: 2,
+        full_name: "me/py",
+        name: "py",
+        language: "Python",
+        license: "GPL-3.0",
+        owner_note: null,
+        summary: {
+          overview: "CSV parser",
+          languages: ["Python"],
+          frameworks: [],
+          reusable_pieces: [],
+        },
+      }),
+    );
+    expect(m.searchListings({ q: "jwt" }).map((l) => l.full_name)).toEqual([
+      "me/x",
+    ]);
+    expect(m.searchListings({ q: "parser" }).map((l) => l.full_name)).toEqual([
+      "me/py",
+    ]);
     expect(m.searchListings({ language: "Python" })).toHaveLength(1);
     expect(m.searchListings({ license: "MIT" })).toHaveLength(1);
     expect(m.searchListings({ q: "nomatch" })).toHaveLength(0);
@@ -58,7 +85,9 @@ describe("listings", () => {
 
   it("treats LIKE wildcards in the query as literals", () => {
     expect(m.searchListings({ q: "%" })).toHaveLength(2); // stripped to empty-ish pattern, not an injection
-    expect(m.searchListings({ q: "'; DROP TABLE listings;--" })).toHaveLength(0);
+    expect(m.searchListings({ q: "'; DROP TABLE listings;--" })).toHaveLength(
+      0,
+    );
     expect(m.searchListings({})).toHaveLength(2);
   });
 
@@ -84,6 +113,7 @@ describe("summary rate limit", () => {
     expect(m.takeSummaryRun(7)).toBe(true);
     expect(m.takeSummaryRun(7)).toBe(false);
     expect(m.takeSummaryRun(8)).toBe(true);
+    expect(m.takeSummaryRun(9)).toBe(false); // The installation allowance is shared across users.
   });
 });
 
@@ -91,22 +121,104 @@ describe("reports", () => {
   it("stores a report for a listing", () => {
     const id = m.searchListings({})[0].id;
     m.addReport(id, "spam");
-    const n = (m.db().prepare("SELECT COUNT(*) AS n FROM reports WHERE listing_id = ?").get(id) as { n: number }).n;
+    const n = (
+      m
+        .db()
+        .prepare("SELECT COUNT(*) AS n FROM reports WHERE listing_id = ?")
+        .get(id) as { n: number }
+    ).n;
     expect(n).toBe(1);
   });
 });
 
 describe("ownership and provenance", () => {
+  it("ties an owner review to one source analysis and resets it when the summary changes", () => {
+    m.upsertListing(base({ github_repo_id: 60 }));
+    const listing = m.allListings().find((l) => l.github_repo_id === 60)!;
+    const part = componentId(listing.summary.reusable_pieces[0]);
+    expect(
+      m.reviewComponent(
+        listing.id,
+        99,
+        part,
+        listing.source_sha!,
+        listing.analyzed_at!,
+        true,
+      ),
+    ).toBe(false);
+    expect(
+      m.reviewComponent(
+        listing.id,
+        42,
+        part,
+        "b".repeat(40),
+        listing.analyzed_at!,
+        true,
+      ),
+    ).toBe(false);
+    expect(
+      m.reviewComponent(
+        listing.id,
+        42,
+        part,
+        listing.source_sha!,
+        "different-analysis",
+        true,
+      ),
+    ).toBe(false);
+    expect(
+      m.reviewComponent(
+        listing.id,
+        42,
+        part,
+        listing.source_sha!,
+        listing.analyzed_at!,
+        true,
+      ),
+    ).toBe(true);
+    expect(
+      m.getListing(listing.id)!.summary.reusable_pieces[0].owner_reviewed_at,
+    ).toBeTruthy();
+    m.upsertListing(
+      base({ github_repo_id: 60, analyzed_at: "2026-10-08T18:00:00Z" }),
+    );
+    expect(
+      m.getListing(listing.id)!.summary.reusable_pieces[0].owner_reviewed_at,
+    ).toBeUndefined();
+  });
   it("reconciles transferred ownership and preserves usage while refreshing provenance", () => {
     m.upsertListing(base({ github_repo_id: 50 }));
     const id = m.listingsByOwner(42).find((l) => l.github_repo_id === 50)!.id;
     m.incrementUsed(id);
-    m.upsertListing(base({ github_repo_id: 50, owner_id: 99, owner_login: "new", source_sha: "b".repeat(40), summary_model: "actual-model" }));
+    m.upsertListing(
+      base({
+        github_repo_id: 50,
+        owner_id: 99,
+        owner_login: "new",
+        source_sha: "b".repeat(40),
+        summary_model: "actual-model",
+      }),
+    );
     expect(m.listingsByOwner(42).some((l) => l.id === id)).toBe(false);
-    expect(m.listingsByOwner(99)[0]).toMatchObject({ id, used_count: 1, source_sha: "b".repeat(40), summary_model: "actual-model" });
+    expect(m.listingsByOwner(99)[0]).toMatchObject({
+      id,
+      used_count: 1,
+      source_sha: "b".repeat(40),
+      summary_model: "actual-model",
+    });
     m.deleteListing(id, 42);
     expect(m.getListing(id)).not.toBeNull();
     m.deleteListing(id, 99);
     expect(m.getListing(id)).toBeNull();
+  });
+});
+
+describe("durable request limits", () => {
+  it("enforces limits independently and opens a new window after expiry", () => {
+    expect(m.takeRequest("report:one", 2, 1000, 5000)).toBe(true);
+    expect(m.takeRequest("report:one", 2, 1000, 5001)).toBe(true);
+    expect(m.takeRequest("report:one", 2, 1000, 5002)).toBe(false);
+    expect(m.takeRequest("report:two", 2, 1000, 5002)).toBe(true);
+    expect(m.takeRequest("report:one", 2, 1000, 6000)).toBe(true);
   });
 });

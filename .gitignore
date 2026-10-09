@@ -7,3 +7,5 @@ data/*.db
 data/*.db-*
 *.tsbuildinfo
 .DS_Store
+public/summary-parser.tar.gz
+artifacts/
