@@ -1,0 +1,11 @@
+{
+  "format": "repo-salvage/class-consumer-execution-v1",
+  "codeSha256": "3fef38c517f959183ee1f953320dc953c5b8b67bb9c57517354331af26f017d8",
+  "testSha256": "b96be64162909eb7eba835191147ed7ed07ff7ad8204c459427c4385a0e64134",
+  "node": "v22.22.3",
+  "passed": true,
+  "status": 0,
+  "stdout": "TAP version 13\n# Subtest: nested inputs preserve traversal order, Unicode and duplicates\nok 1 - nested inputs preserve traversal order, Unicode and duplicates\n  ---\n  duration_ms: 0.417333\n  type: 'test'\n  ...\n# Subtest: falsey values and unsupported types produce no tokens\nok 2 - falsey values and unsupported types produce no tokens\n  ---\n  duration_ms: 0.112875\n  type: 'test'\n  ...\n# Subtest: object entries include only enumerable own truthy string keys\nok 3 - object entries include only enumerable own truthy string keys\n  ---\n  duration_ms: 0.071666\n  type: 'test'\n  ...\n# Subtest: raw tokens remain unescaped and undeduplicated by contract\nok 4 - raw tokens remain unescaped and undeduplicated by contract\n  ---\n  duration_ms: 0.053583\n  type: 'test'\n  ...\n# Subtest: empty nested arrays and maps avoid surplus separators\nok 5 - empty nested arrays and maps avoid surplus separators\n  ---\n  duration_ms: 0.100041\n  type: 'test'\n  ...\n# Subtest: one thousand deterministic mixed inputs match the independent oracle\nok 6 - one thousand deterministic mixed inputs match the independent oracle\n  ---\n  duration_ms: 20.047166\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 68.019667\n",
+  "stderr": "",
+  "scope": "First unedited proposal in an isolated workspace; six authored checks including 1000 deterministic comparisons. Only this adaptation was executed; captured upstream source stayed data."
+}

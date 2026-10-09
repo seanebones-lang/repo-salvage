@@ -1,0 +1,12 @@
+{
+  "format": "repo-salvage/cross-language-catalog-seal-v1",
+  "inputSealSha256": "cf54e1a4b00e028482a2b32d064047b395ffd982757cadbdd87a563f2599eb2e",
+  "archiveSha256": "57af157aaf59a8ba604a1057954697187424f6f0dab71edac9bcc6c9425797e3",
+  "catalogRevision": "5f6312e0e6797b57663115e6de355f07dcf758f7d3edb0f65b061572b471d1b0",
+  "files": {
+    "analysis-results.json": "03c8c3f60bb4af9ea6584396f04c17551f34b026167bb3310eba33155bf2c97a",
+    "listings.json": "b6bdaf411453bf49d38d7b9cdc2eb912a63081f33043f8c3ddbcf5dc52d00e30",
+    "catalog.json": "b63cbe33df80fb26d9626188c792670148e098a3e518e27e64d31af1c226cf23",
+    "history/mcp.json": "814da235c58af455ae90caefad01e9230a7b5197f6545d3aca8ca35e87e45e6c"
+  }
+}

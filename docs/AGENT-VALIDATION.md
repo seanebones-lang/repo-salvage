@@ -338,3 +338,47 @@ legacy listings show their unarchived state until review or re-analysis. Automat
 tests check unauthorized access and snapshot preservation. No real review or
 paid analysis was triggered to populate the page. Raw consumer proof stays in
 ignored `artifacts/indexed-installed-proof.json`.
+
+## Four-language source-to-consumer diagnostic (2026-10-09)
+
+A new sealed epoch extended the captured source corpus to `lukeed/clsx`
+(JavaScript), `pillarjs/path-to-regexp` (TypeScript), `rapidfuzz/strsim-rs` (Rust)
+and `dgryski/go-rendezvous` (Go). All four are public MIT repositories fresh to
+these project evaluations. Production sampling retrieved pinned source; complete
+captured files were corroborated against Git blob SHA-1 and recorded SHA-256.
+The native analyses received exact coverage-v4 requests without owner hints.
+
+Four analyses passed structural validation and produced ten parts. Their briefs
+were inserted unchanged into a separate production application's disposable
+SQLite catalog. Six fresh native sessions installed the actual MCP 0.3.4 archive
+and passed the frozen task-driven search, inspection, relevant source and notice
+gates. Four positive tasks found mixed class composition, encoded route
+generation, scalar-value Levenshtein distance and conditional static node
+selection. Two rejection tasks inspected plausible source before returning
+`NO_MATCH` for durable shared membership and an escaping/deduplicating class
+composer. No fixture listing was published to the live application.
+
+This trial exposed a concrete upstream integration defect: the pinned Go
+selector's `Remove` accesses a slice at its length and would panic for nonempty
+membership. Both the native brief and task-driven answer identify the defect.
+The positive recommendation is conditional on fixed unique initial membership;
+it does not certify working mutation. Rust and Go retain file-level fallback
+indexing and unresolved import inspection. Finding their source does not prove
+AST support or precise algorithm-level targeting.
+
+A separate tool-free proposal used the complete implementation and MIT notice
+actually read in the successful class-composition MCP task. The first unedited
+module intentionally restricts object handling to enumerable own string keys.
+Six acceptance checks passed in a fresh temporary workspace, including 1,000
+deterministic comparisons with a token-accumulating reference model. It retains
+raw strings, duplicates and output-boundary escaping obligations. Getters,
+cycles, deep recursion and arbitrary object behavior are not hardened. The other
+three languages' source was inspected, not executed.
+
+The [sealed diagnostic and runnable consumer](../examples/cross-language-evaluation/README.md)
+retain exact pre-model inputs, generated records, structured MCP tool evidence,
+separate implementing reviews and isolated consumer execution. Offline replay
+requires no model calls or GitHub access. Eleven native sessions used the existing
+Codex account allowance; there were no API-key model calls. This is an authored
+small-catalog diagnostic by one implementing reviewer, without blind review,
+training holdout, general recall, upstream certification or adoption claims.

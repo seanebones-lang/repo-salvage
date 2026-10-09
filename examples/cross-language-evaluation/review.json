@@ -1,0 +1,61 @@
+{
+  "format": "repo-salvage/cross-language-review-v1",
+  "reviewer": "implementing agent",
+  "independent": false,
+  "inputSealSha256": "47e445b6233718e743f2099dfc0c1413c7743acd6a60493b5634fd4c45637d23",
+  "analysis": [
+    {
+      "repository": "lukeed/clsx",
+      "passed": true,
+      "notes": "Both full and string-only variants selected. Brief states recursion, falsey omission and inherited enumeration; no sanitization, cycle guard, deduplication or execution claim. Complete same-file helper and notice support these claims."
+    },
+    {
+      "repository": "pillarjs/path-to-regexp",
+      "passed": true,
+      "notes": "Distinct parse, compile, match, pathToRegexp and stringify declarations selected. Compile preserves optional-group rollback, wildcard/type checks and supporting token helpers. Error/callback and malformed token assumptions disclosed; tests are not execution evidence."
+    },
+    {
+      "repository": "rapidfuzz/strsim-rs",
+      "passed": true,
+      "notes": "File-level algorithm family and benchmark harness selected. Algorithms remain one fallback part; import inspection unresolved. Unicode Dice assumptions, iterator repetition, allocation and benchmark limits are qualified. No fine-grained Rust declaration or execution claim."
+    },
+    {
+      "repository": "dgryski/go-rendezvous",
+      "passed": true,
+      "notes": "Static New/Lookup behavior distinguished from mutation. Brief records out-of-range Remove access, missing membership validation and duplicates/nil hash assumptions. No concurrency, persistence, independent execution or correct removal claim."
+    }
+  ],
+  "discovery": [
+    {
+      "id": "nested-class-values",
+      "passed": true,
+      "notes": "Full helper compared with lite; toVal, inherited enumerable keys, falsey conversion, duplicate/raw strings, cycles/getters and notice accurately described."
+    },
+    {
+      "id": "encoded-route-builder",
+      "passed": true,
+      "notes": "Complete two-window source, manifest and notice read. Encoding defaults/options, required errors, optional rollback and wildcard arrays distinguished from incoming matching; supporting helpers/runtime assumptions named."
+    },
+    {
+      "id": "unicode-edit-distance",
+      "passed": true,
+      "notes": "Ordinary edit costs, Unicode scalar iteration, one-row allocation, adjacent-transposition distinction and normalized scores supported by the read window and Cargo manifest. No grapheme, optimal memory or execution claim."
+    },
+    {
+      "id": "node-selection",
+      "passed": true,
+      "notes": "Fixed unique initial membership recommendation is conditional on deterministic non-nil hashing. Empty/strict-tie behavior accurate; Remove out-of-bounds, non-shortening slices and duplicate Add defects explicitly disclosed."
+    },
+    {
+      "id": "persistent-membership",
+      "passed": true,
+      "notes": "NO_MATCH after relevant Go source and notice inspection plus further catalog comparisons. Local map/slices do not supply durable membership or cross-process coordination."
+    },
+    {
+      "id": "escaped-class-output",
+      "passed": true,
+      "notes": "NO_MATCH after full/lite comparison, complete source and notice. Inherited object enumeration, raw concatenation and lack of deduplication do not satisfy all requested guarantees."
+    }
+  ],
+  "limits": "Authored small-catalog diagnostics; no general recall, blind review, training holdout, upstream test execution or dependency closure inference."
+}

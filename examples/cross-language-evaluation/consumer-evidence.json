@@ -1,0 +1,60 @@
+{
+  "format": "repo-salvage/class-consumer-evidence-v1",
+  "source": {
+    "repository_id": 163027171,
+    "owner_id": 5855893,
+    "repository": "lukeed/clsx",
+    "commit": "925494cf31bcd97d3337aacd34e659e80cae7fe2"
+  },
+  "file": {
+    "path": "src/index.js",
+    "roles": [
+      "primary"
+    ],
+    "analysis_coverage": "complete",
+    "git_blob_sha": "c1f53ca795dd8c91c50622476143c4e232ece247",
+    "sha256": "a577c500f65ed167cea489dd39c149c36880f959fc6ca24e4e1cc545cb7a53e1",
+    "size_bytes": 705
+  },
+  "text": "function toVal(mix) {\n\tvar k, y, str='';\n\n\tif (typeof mix === 'string' || typeof mix === 'number') {\n\t\tstr += mix;\n\t} else if (typeof mix === 'object') {\n\t\tif (Array.isArray(mix)) {\n\t\t\tvar len=mix.length;\n\t\t\tfor (k=0; k < len; k++) {\n\t\t\t\tif (mix[k]) {\n\t\t\t\t\tif (y = toVal(mix[k])) {\n\t\t\t\t\t\tstr && (str += ' ');\n\t\t\t\t\t\tstr += y;\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t} else {\n\t\t\tfor (y in mix) {\n\t\t\t\tif (mix[y]) {\n\t\t\t\t\tstr && (str += ' ');\n\t\t\t\t\tstr += y;\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\n\treturn str;\n}\n\nexport function clsx() {\n\tvar i=0, tmp, x, str='', len=arguments.length;\n\tfor (; i < len; i++) {\n\t\tif (tmp = arguments[i]) {\n\t\t\tif (x = toVal(tmp)) {\n\t\t\t\tstr && (str += ' ');\n\t\t\t\tstr += x\n\t\t\t}\n\t\t}\n\t}\n\treturn str;\n}\n\nexport default clsx;\n",
+  "notice": {
+    "source": {
+      "repository_id": 163027171,
+      "owner_id": 5855893,
+      "repository": "lukeed/clsx",
+      "commit": "925494cf31bcd97d3337aacd34e659e80cae7fe2"
+    },
+    "file": {
+      "path": "license",
+      "roles": [
+        "notice"
+      ],
+      "analysis_coverage": "complete",
+      "git_blob_sha": "fa6089faba3cf381229744c9f21ed3ae9ed5014a",
+      "sha256": "9a9edad7baae52622bddf3c15b2ef8a33d2c89f2d25408ad13e8a7481c6b0c97",
+      "size_bytes": 1104
+    },
+    "text": "MIT License\n\nCopyright (c) Luke Edwards <luke.edwards05@gmail.com> (lukeed.com)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
+  },
+  "discovery": {
+    "id": "nested-class-values",
+    "traceSha256": "524e57155c9df6ed98fa595f686a9dba6f631b488334652829c067e7389d4178",
+    "generatedSealSha256": "47e445b6233718e743f2099dfc0c1413c7743acd6a60493b5634fd4c45637d23",
+    "score": {
+      "exactAnswer": true,
+      "searched": true,
+      "boundedSearch": true,
+      "sourceEvidence": true,
+      "noticeEvidence": true,
+      "evidence": [
+        {
+          "key": "lukeed/clsx:src/index.js",
+          "inspected": true,
+          "relevantSource": true,
+          "notice": true
+        }
+      ],
+      "passed": true
+    }
+  }
+}

@@ -11,3 +11,14 @@ examples/scoped-context-evaluation/results.json
 
 # Preserve the exact first native consumer response record.
 examples/scoped-consumer-evaluation/results.json
+
+# Preserve cross-language pre-model request and exact native/generated records.
+examples/cross-language-evaluation/requests.json
+examples/cross-language-evaluation/analysis-results.json
+examples/cross-language-evaluation/discovery-results.json
+examples/cross-language-evaluation/catalog.json
+examples/cross-language-evaluation/consumer-evidence.json
+examples/cross-language-evaluation/consumer-results.json
+examples/cross-language-evaluation/consumer.mjs
+examples/cross-language-evaluation/consumer-execution.json
+examples/cross-language-evaluation/discovery-evidence.json

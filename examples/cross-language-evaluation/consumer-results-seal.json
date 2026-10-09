@@ -1,0 +1,10 @@
+{
+  "format": "repo-salvage/cross-language-result-seal-v1",
+  "inputSealSha256": "ea95a9be5db615853c06f6629af39d23958ae265a46515db751e4cee6d1515a0",
+  "files": {
+    "consumer-results.json": "68993d06fe9adaf63bf7243b93baf8b5be7746bbb61a9926cd837873d5a33a48",
+    "consumer.mjs": "3fef38c517f959183ee1f953320dc953c5b8b67bb9c57517354331af26f017d8",
+    "consumer-execution.json": "d4c0d62ed9819b3ebf8c8162059916b4c393f72e2666fcb1795e87209f6c6b32",
+    "consumer-review.json": "f2cfccfb533b50fc0f3babf5effb3cad08b60a862f37b70eb8a30e0c4dff3f8d"
+  }
+}

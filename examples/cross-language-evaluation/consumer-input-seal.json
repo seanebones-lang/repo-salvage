@@ -1,0 +1,11 @@
+{
+  "format": "repo-salvage/class-consumer-input-seal-v1",
+  "files": {
+    "consumer-task.json": "3ed2b97262d13647f7970ec4f45aeba51bdfb239c992176ff797d9094cd99a10",
+    "consumer.test.mjs": "b96be64162909eb7eba835191147ed7ed07ff7ad8204c459427c4385a0e64134",
+    "consumer-evidence.json": "4c54692273e1e2f2d70df67c62d4201327f3d7e99e0a93d9d07f108f4e90bf37",
+    "consumer-run.mjs": "1085efbc36aaf5b50a4b78befd8a59616cd07ce62edcd6b421d5ccdba3dbffa5",
+    "check-consumer.mjs": "4bc37c9867ff486e50073d3ec0b1380dda4e77ad8a43ba6b4d802e32d85b30cb"
+  },
+  "generatedSealSha256": "47e445b6233718e743f2099dfc0c1413c7743acd6a60493b5634fd4c45637d23"
+}

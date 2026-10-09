@@ -1,0 +1,22 @@
+{
+  "format": "repo-salvage/cross-language-input-seal-v1",
+  "files": {
+    "corpus.json": "4e4a9c51de4bb5181a5662022b223cc3e7f17a9e29d05f0547804040ed2258d1",
+    "controls.json": "f62f5d976cefc48ac5c631ab9164c3cd72a09f2f5f46ce1bbef0b4b7c67d0d78",
+    "cases.json": "4aa5bae58b078b416cbd7b7da896e6abb281fd22a87499cdeaed74fd5fc66162",
+    "requests.json": "2220d6a240047a22416ac906cb4a1f0e93f558c90522c3bf75c1a9ac7bc999bc",
+    "engine.mjs": "255370684c6876b5b71498e734239b85a8d069008726fde6a92a314acbdc76b0",
+    "suite.mjs": "96d6a48c7e9105143bacaf0c6d4d1f55f1450be90cecd6d9171b636909c0bc22",
+    "run.mjs": "bd014db60a1b12c66cc6f0971731f1e8a26760be4e329d24e1ba9228088ad491",
+    "freeze.mjs": "9f014f411f3c32d2f70f33606270989ca55e08776d5245152accb934ab152623",
+    "serve.mjs": "c3e9b9250d272063a39e8fdc31ec6d1713679a9255716c5c6281bbce33220a9c",
+    "history/engine.json": "3183ebb252a9f7424f492209d9838042768974227831ad07dbd8df84b8c88d08",
+    "history/seal.json": "3efb774480bc0ee44fe388e57de3c9fed412dfb11527a3babd20a567f0dbcf23",
+    "../full-chain-evaluation/run.mjs": "4b644fd05de9be5a6484a69eb77ba434f12d350871f4ff2a520b22af06b4849b",
+    "../analysis-evaluation/trace.mjs": "57ad36ba43e560902b43fbff5e6b011ccdea535e855f75bce18f5ac6dad83b1e",
+    "../competing-discovery-evaluation/host.mjs": "c14a73a2061355e4bee1078cc5493c59ec357d510a05eb9d7429314d96360f87",
+    "../competing-discovery-evaluation/score.mjs": "e0e5a6eaee932991a4b6ac9953bc2296654959811b25d4c226536f7888bcec59",
+    "../competing-discovery-evaluation/suite.mjs": "afb7588b22ca0d0f07ff70df3d06f9d6155fbb2fc173d472baf022368ed2b9e1",
+    "../discovery-evaluation/trace.mjs": "12362b4f77cb5fb10ac4658a95d4df570a1a39adc0d648937b46a9cf14edfb51"
+  }
+}
