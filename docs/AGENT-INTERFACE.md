@@ -310,7 +310,7 @@ and validate adaptations separately.
 
 ### Go and Rust scoped observations
 
-CLI 0.6.0 and MCP 0.4.0 accept coverage-v5 alongside archived policies. The current
+CLI 0.7.0 and MCP 0.5.0 accept coverage-v5 alongside archived policies. The current
 focused response can match Go receiver names such as `Rendezvous.Lookup` and Rust
 impl methods such as `Type::method` or `Type::Trait::method`. Duplicate symbols
 use an `@source-coordinate` suffix. Use exact indexed names; plain declaration
@@ -325,3 +325,36 @@ limits. Native observations on older policies or the wrong language are rejected
 by the clients. Source hashes still refer to the whole pinned file; a partial
 excerpt cannot independently prove that hash. Fetch pinned source/notices and
 test an adapted contract before use.
+
+### Direct Go package and Rust module files
+
+CLI 0.7.0 and MCP 0.5.0 additionally accept optional `packet.file_contexts` under
+coverage-v5. This is separate from same-file `scoped_contexts`: a file relationship
+never satisfies `same_file_reference`. Each origin path has an observation label,
+up to 16 candidate files and a `candidates_omitted` count. Each candidate has a
+path, reason and nullable reference ID. `supplied` means a complete file reference
+is present; `packet-budget`, `not-inspected`, `parser-unavailable`,
+`package-mismatch`, `restricted-module` and `ambiguous-module-layout` preserve gaps.
+Missing relationship metadata means it was unavailable or did not fit.
+
+Go candidates are non-test `.go` files in the same directory, excluding names
+starting with a dot or underscore. Source is supplied only after the trusted
+parser observes the same package name. Build tags, platform suffixes, cgo and
+initialization remain unevaluated, so several mutually exclusive implementations
+may appear. These files are context for review, not a compilable package selection.
+
+Rust follows top-level external `mod name;` declarations using existing `name.rs`
+or `name/mod.rs` files in the conventional module directory. Files other than
+`lib.rs`, `main.rs` and `mod.rs` use a directory named after the file stem. Any
+module attribute or a crate inner cfg/cfg_attr/path attribute conservatively prevents following;
+duplicate declarations and competing layouts are rejected. Inline modules,
+`use` bindings, macros, custom crate roots and `#[path]` are not resolved. No
+ancestor or recursive module closure is inferred.
+
+Focused retrieval retains the existing eight primary plus four context reads,
+byte/deadline limits, notice priority and Git blob verification. It follows only
+direct candidates observed in the initially inspected scope. Broad analysis can
+follow more candidates within its existing limits. Only supplied references can
+support citations. Fetch exact pinned source and test an adaptation independently.
+The authored [boundary probes](../examples/native-file-context/README.md) exercise
+both transports without model calls or target-code execution.

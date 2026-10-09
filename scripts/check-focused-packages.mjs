@@ -50,7 +50,10 @@ const fixture = await serveFocusFixture({ includeBoundary: true });
 const nativeFixture = await (
   await import("../examples/rust-go-consumers/fixture.mjs")
 ).serveFixture();
-let client, nativeClient;
+const fileFixture = await (
+  await import("../examples/native-file-context/fixture.mjs")
+).serveFixture();
+let client, nativeClient, fileClient;
 try {
   await run(process.platform === "win32" ? "npm.cmd" : "npm", [
     "install",
@@ -66,12 +69,12 @@ try {
   assert.equal(
     JSON.parse(await fs.readFile(path.join(cli, "package.json"), "utf8"))
       .version,
-    "0.6.0",
+    "0.7.0",
   );
   assert.equal(
     JSON.parse(await fs.readFile(path.join(mcp, "package.json"), "utf8"))
       .version,
-    "0.4.0",
+    "0.5.0",
   );
   for (const c of fixture.suite.cases) {
     const output = await run(process.execPath, [
@@ -156,21 +159,64 @@ try {
       (r) => r.method === "GET" && r.authorization === undefined,
     ),
   );
+  fileClient = new Client({
+    name: "independent-file-context-host",
+    version: "1.0.0",
+  });
+  await fileClient.connect(
+    new StdioClientTransport({
+      command: process.execPath,
+      args: [path.join(mcp, "dist/index.js"), "--base", fileFixture.origin],
+      cwd: directory,
+      env,
+      stderr: "pipe",
+    }),
+  );
+  for (const c of fileFixture.cases) {
+    const output = await run(process.execPath, [
+      path.join(cli, "bin/repo-salvage.mjs"),
+      "evidence",
+      String(c.parameters.listing_id),
+      "--base",
+      fileFixture.origin,
+      "--path",
+      c.parameters.path,
+      "--symbol",
+      c.parameters.symbol,
+      "--max-characters",
+      String(c.parameters.max_characters),
+    ]);
+    assert.deepEqual(JSON.parse(output), c.response);
+    const result = await fileClient.callTool({
+      name: "repo_salvage_focus_evidence",
+      arguments: c.parameters,
+    });
+    assert.ok(!result.isError);
+    assert.deepEqual(result.structuredContent, c.response);
+  }
+  assert.equal(fileFixture.requests.length, 10);
+  assert.ok(
+    fileFixture.requests.every(
+      (r) => r.method === "GET" && r.authorization === undefined,
+    ),
+  );
   console.log(
     JSON.stringify({
       status: "passed",
-      checks: 20,
-      installedCli: "0.6.0",
-      installedMcp: "0.4.0",
-      realSourceCases: 8,
-      authoredBoundaryCases: 1,
-      requests: 18,
+      checks: 30,
+      installedCli: "0.7.0",
+      installedMcp: "0.5.0",
+      realSourceCases: 11,
+      authoredBoundaryCases: 3,
+      requests: 28,
       providerCalls: 0,
       realCredentials: false,
       sourceExecuted: false,
     }),
   );
 } finally {
+  if (fileClient) await fileClient.close();
+  await fileFixture.close();
   if (nativeClient) await nativeClient.close();
   await nativeFixture.close();
   if (client) await client.close();

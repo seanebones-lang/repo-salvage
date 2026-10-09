@@ -172,7 +172,7 @@ const DISTINCT_CAPABILITIES = ` Prefer useful public entry points when their sup
 const SCOPED_SUPPORT = ` For coverage-v4, scoped_contexts can supply complete supporting statements or declarations while same_file_reference remains null. Inspect and cite those supplied references when describing supporting behavior, but still disclose missing full-module context and the recorded gaps or omitted observations. Module name loads and class-member spellings are conservative observations, not resolved scopes, receiver types or a complete dependency closure. Class-member excerpts do not include a complete class definition. Never imply the surrounding module, import effects, initialization, dynamic binding or external dependencies are covered by these excerpts.`;
 const SYNTAX_SUPPORT =
   SCOPED_SUPPORT.replace("coverage-v4", "coverage-v5") +
-  ` For coverage-v5, scoped_contexts can supply complete supporting source units while same_file_reference remains null. Inspect and cite them, and disclose recorded gaps and omitted observations. Python observations retain their existing limits. Go and Rust observations come from concrete syntax trees: global names, member spellings, receiver type spellings and enclosing impl blocks are observations, never resolved bindings, receiver types, trait dispatch or dependency closure. Rust attributes and complete impl units can be supplied, but conditional compilation and macro expansion are not performed. Go package peers, build constraints and initialization are not resolved. Imports and package or crate configuration are source context, not installation instructions or proof a declaration needs each import. Do not imply parsing validates compilation, standalone use, complete module context or execution.`;
+  ` For coverage-v5, scoped_contexts can supply complete supporting source units while same_file_reference remains null. Inspect and cite them, and disclose recorded gaps and omitted observations. Python observations retain their existing limits. Go and Rust observations come from concrete syntax trees: global names, member spellings, receiver type spellings and enclosing impl blocks are observations, never resolved bindings, receiver types, trait dispatch or dependency closure. Rust attributes and complete impl units can be supplied, but conditional compilation and macro expansion are not performed. Optional file_contexts describe bounded direct source relationships. A supplied Go peer has the same parsed package name; a supplied Rust module follows one conventional external mod declaration. Cite only supplied reference IDs. These relationships do not resolve names, receiver types, crate ownership, build tags, cfg, initialization or a dependency closure; disclose rejection reasons, unread files, packet omissions and omitted candidates. Go package peers, build constraints and initialization are not resolved. Imports and package or crate configuration are source context, not installation instructions or proof a declaration needs each import. Do not imply parsing validates compilation, standalone use, complete module context or execution.`;
 
 export function indexedAnalysisRequest(
   repo: GhRepo,
@@ -357,6 +357,11 @@ export function verifiedIndexedSummary(
                     "Scoped supporting blocks are syntactic observations, not complete module context or a resolved dependency closure; recorded gaps and omitted observations require review.",
                   ]
                 : []),
+            ]
+          : []),
+        ...(packet.file_contexts?.some((c) => c.path === target.path)
+          ? [
+              "Cross-file context observes source layout and package names, not build selection, initialization, module ownership or resolved symbols; omitted or rejected files require review.",
             ]
           : []),
         "Static imports are module-level observations; same-file helpers, runtime requirements and exact extraction dependencies still require inspection.",

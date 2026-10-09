@@ -351,10 +351,11 @@ source and explicit gaps, and do so without a model call or publication.
 Current coverage-v5 packets identify complete Go functions, receiver methods and types,
 and Rust functions, types and impl methods. When full-file context cannot fit,
 complete same-file supporting units can fit within the original allowance. Names
-and member spellings remain observations: package peers, modules, cfg/build
-conditions, macros, initialization and trait/receiver resolution remain explicit
-gaps. Existing listings retain their original evidence until owner re-analysis.
-CLI 0.6.0 and MCP 0.4.0 retain archived policies and validate new scoped links.
+and member spellings remain observations. Optional file-context records can supply
+complete Go package peers and conventional Rust module files, with explicit unread,
+rejected and budget gaps. Package names and layout do not resolve cfg/build
+conditions, macros, initialization, crate ownership or trait/receiver bindings. Existing listings retain their original evidence until owner re-analysis.
+CLI 0.7.0 and MCP 0.5.0 retain archived policies and validate new scoped links.
 
 The [Rust/Go consumer trial](examples/rust-go-consumers/README.md) retains exact
 pinned MIT evidence, pre-proposal contracts/tests, first tool-free native proposals,

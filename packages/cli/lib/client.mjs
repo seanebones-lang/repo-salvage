@@ -186,7 +186,10 @@ export async function focusEvidence(base, listing, params, transport = fetch) {
     !Array.isArray(value.packet?.targets)
   )
     throw new Error("Unexpected focused evidence identity or format.");
-  if (value.packet.scoped_contexts !== undefined) {
+  if (
+    value.packet.scoped_contexts !== undefined ||
+    value.packet.file_contexts !== undefined
+  ) {
     if (
       JSON.stringify(value.packet).length > value.focus.packet_character_limit
     )
@@ -264,6 +267,83 @@ function validateScopedEvidence(packet) {
         createHash("sha256").update(full.content).digest("hex") !== full.sha256
       )
         bad();
+    }
+  }
+  if (packet.file_contexts !== undefined) {
+    if (
+      packet.selection_policy !== "repo-salvage/coverage-v5" ||
+      !Array.isArray(packet.file_contexts) ||
+      packet.file_contexts.length > 24
+    )
+      bad();
+    const origins = new Set();
+    for (const c of packet.file_contexts) {
+      safePath(c?.path);
+      if (
+        origins.has(c.path) ||
+        !packet.targets.some((t) => t.path === c.path) ||
+        !["go-package-files-v1", "rust-module-files-v1"].includes(
+          c.observation,
+        ) ||
+        !(c.observation === "go-package-files-v1"
+          ? c.path.endsWith(".go")
+          : c.path.endsWith(".rs")) ||
+        !Array.isArray(c.files) ||
+        c.files.length > 16 ||
+        !Number.isSafeInteger(c.candidates_omitted) ||
+        c.candidates_omitted < 0
+      )
+        bad();
+      origins.add(c.path);
+      const paths = new Set();
+      for (const f of c.files) {
+        safePath(f?.path);
+        if (
+          paths.has(f.path) ||
+          f.path === c.path ||
+          !(c.observation === "go-package-files-v1"
+            ? f.path.endsWith(".go")
+            : f.path.endsWith(".rs")) ||
+          ![
+            "supplied",
+            "packet-budget",
+            "not-inspected",
+            "package-mismatch",
+            "parser-unavailable",
+            "restricted-module",
+            "ambiguous-module-layout",
+          ].includes(f.reason) ||
+          (f.reason === "supplied"
+            ? !refs.has(f.reference_id)
+            : f.reference_id !== null)
+        )
+          bad();
+        paths.add(f.path);
+        if (
+          c.observation === "go-package-files-v1" &&
+          (path.posix.dirname(f.path) !== path.posix.dirname(c.path) ||
+            /_test\.go$/.test(f.path) ||
+            /^[._]/.test(path.posix.basename(f.path)) ||
+            ["restricted-module", "ambiguous-module-layout"].includes(f.reason))
+        )
+          bad();
+        if (
+          c.observation === "rust-module-files-v1" &&
+          f.reason === "package-mismatch"
+        )
+          bad();
+        if (f.reason === "supplied") {
+          const full = refs.get(f.reference_id);
+          if (
+            full.path !== f.path ||
+            full.kind !== "file" ||
+            full.start_line !== 1 ||
+            createHash("sha256").update(full.content).digest("hex") !==
+              full.sha256
+          )
+            bad();
+        }
+      }
     }
   }
   const seen = new Set();

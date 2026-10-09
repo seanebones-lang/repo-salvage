@@ -67,6 +67,7 @@ export type SourceIndex = {
   targets: SourceTarget[];
   references: SourceReference[];
   skipped: { path: string; reason: string }[];
+  file_contexts?: FileContext[];
   support_graph?: {
     reference_id: string;
     observation?: ScopedContext["observation"];
@@ -104,6 +105,25 @@ export type ScopedContext = {
   gaps: { symbol: string; reason: string }[];
   observations_omitted: number;
 };
+/** File associations observe source layout, never compilation or name resolution. */
+export type FileContext = {
+  path: string;
+  observation: "go-package-files-v1" | "rust-module-files-v1";
+  files: {
+    path: string;
+    reason:
+      | "inspected"
+      | "supplied"
+      | "packet-budget"
+      | "not-inspected"
+      | "package-mismatch"
+      | "parser-unavailable"
+      | "restricted-module"
+      | "ambiguous-module-layout";
+    reference_id: string | null;
+  }[];
+  candidates_omitted: number;
+};
 export type EvidencePacket = {
   format: typeof INDEX_VERSION;
   targets: SourceTarget[];
@@ -117,6 +137,7 @@ export type EvidencePacket = {
     | "repo-salvage/coverage-v5";
   contexts?: { target_id: string; same_file_reference: string | null }[];
   scoped_contexts?: ScopedContext[];
+  file_contexts?: FileContext[];
 };
 const digest = (value: string) =>
   createHash("sha256").update(value).digest("hex");
@@ -241,6 +262,8 @@ type SyntaxParse = {
     observations_omitted: number;
   })[];
   limitations: string[];
+  package_name: string | null;
+  modules: { name: string; restricted: boolean }[];
 };
 /** Bounded trusted parser child; target source is stdin data only. */
 function parseSyntaxFiles(inputs: IndexedInput[]) {
@@ -271,6 +294,8 @@ function parseSyntaxFiles(inputs: IndexedInput[]) {
           declarations: [],
           imports: [],
           support_graph: [],
+          package_name: null,
+          modules: [],
           limitations: [
             "Syntax parser unavailable or exceeded its bounded process allowance.",
           ],
@@ -329,6 +354,19 @@ function parseSyntaxFiles(inputs: IndexedInput[]) {
         ) ||
         !Array.isArray(f.support_graph) ||
         f.support_graph.length > 256 ||
+        !(
+          f.package_name === null ||
+          (typeof f.package_name === "string" && f.package_name.length <= 160)
+        ) ||
+        !Array.isArray(f.modules) ||
+        f.modules.length > 256 ||
+        !f.modules.every(
+          (m) =>
+            typeof m.name === "string" &&
+            m.name.length > 0 &&
+            m.name.length <= 160 &&
+            typeof m.restricted === "boolean",
+        ) ||
         !Array.isArray(f.limitations) ||
         f.limitations.length > 12 ||
         !f.limitations.every((v) => typeof v === "string" && v.length <= 512) ||
@@ -741,6 +779,76 @@ export function indexSources(
       }
     }
   }
+  // Direct file relationships only. Never resolve imported bindings, execute init,
+  // evaluate build tags/cfg, or accept a different Go package as supporting context.
+  for (const record of index.files) {
+    const parsed = syntax.get(record.path);
+    if (parsed?.status !== "ok" || record.coverage !== "complete") continue;
+    const directory = path.posix.dirname(record.path);
+    const candidates: FileContext["files"] = [];
+    const inspectCandidate = (candidate: string, language: "go" | "rust") => {
+      const peer = syntax.get(candidate);
+      const inspected = index.files.find((f) => f.path === candidate);
+      if (!inspected) return "not-inspected" as const;
+      if (peer?.status !== "ok" || inspected.coverage !== "complete")
+        return "parser-unavailable" as const;
+      if (language === "go" && peer.package_name !== parsed.package_name)
+        return "package-mismatch" as const;
+      return "inspected" as const;
+    };
+    if (parsed.language === "go" && parsed.package_name) {
+      for (const candidate of [...known].sort())
+        if (
+          candidate !== record.path &&
+          safeSourcePath(candidate) &&
+          path.posix.dirname(candidate) === directory &&
+          candidate.endsWith(".go") &&
+          !isTestPath(candidate) &&
+          !/^[._]/.test(path.posix.basename(candidate))
+        )
+          candidates.push({
+            path: candidate,
+            reason: inspectCandidate(candidate, "go"),
+            reference_id: null,
+          });
+    }
+    if (parsed.language === "rust") {
+      const stem = path.posix.basename(record.path, ".rs");
+      const moduleDirectory = ["lib", "main", "mod"].includes(stem)
+        ? directory
+        : path.posix.join(directory, stem);
+      for (const module of parsed.modules) {
+        if (!/^(?:r#)?[\p{L}_][\p{L}\p{N}_]*$/u.test(module.name)) continue;
+        const name = module.name.replace(/^r#/, "");
+        const choices = [
+          path.posix.join(moduleDirectory, name + ".rs"),
+          path.posix.join(moduleDirectory, name, "mod.rs"),
+        ].filter((p) => safeSourcePath(p) && known.has(p));
+        for (const candidate of choices)
+          candidates.push({
+            path: candidate,
+            reason: module.restricted
+              ? "restricted-module"
+              : parsed.modules.filter((m) => m.name === module.name).length >
+                    1 || choices.length > 1
+                ? "ambiguous-module-layout"
+                : inspectCandidate(candidate, "rust"),
+            reference_id: null,
+          });
+      }
+    }
+    const unique = [...new Map(candidates.map((c) => [c.path, c])).values()];
+    if (unique.length)
+      (index.file_contexts ??= []).push({
+        path: record.path,
+        observation:
+          parsed.language === "go"
+            ? "go-package-files-v1"
+            : "rust-module-files-v1",
+        files: unique.slice(0, 16),
+        candidates_omitted: Math.max(0, unique.length - 16),
+      });
+  }
   for (const target of index.targets) {
     const seen = new Set([target.path]);
     const unresolved = new Set<string>(target.unresolved);
@@ -764,6 +872,19 @@ export function indexSources(
       }
     };
     follow(target.path);
+    const context = index.file_contexts?.find((c) => c.path === target.path);
+    if (context) {
+      for (const candidate of context.files)
+        if (["inspected", "not-inspected"].includes(candidate.reason))
+          seen.add(candidate.path);
+      unresolved.add(
+        "Cross-file source associations are bounded observations; build selection, initialization, module ownership and symbol resolution require review.",
+      );
+      if (context.candidates_omitted)
+        unresolved.add(
+          `File-context candidates omitted: ${context.candidates_omitted}`,
+        );
+    }
     target.supporting_paths = [...seen].filter((f) => f !== target.path).sort();
     target.unresolved = [...unresolved].sort();
     // Association is observed import linkage, not a guessed filename or coverage claim.
@@ -974,6 +1095,26 @@ export function evidencePacket(
     ...new Set(packet.targets.flatMap((t) => t.notice_paths)),
   ].sort())
     add(files.get(notice));
+  if (policy === "repo-salvage/coverage-v5") {
+    for (const observed of index.file_contexts ?? []) {
+      if (!selectedPaths.includes(observed.path)) continue;
+      const context: FileContext = {
+        ...observed,
+        files: observed.files.map((f) => ({
+          ...f,
+          reason: f.reason === "inspected" ? "packet-budget" : f.reason,
+          reference_id: null,
+        })),
+      };
+      (packet.file_contexts ??= []).push(context);
+      while (!fits() && context.files.length) {
+        context.files.pop();
+        context.candidates_omitted++;
+      }
+      if (!fits()) packet.file_contexts.pop();
+    }
+    if (!packet.file_contexts?.length) delete packet.file_contexts;
+  }
   const privatePythonPaths = new Set(
     selectedPaths.filter((file) => {
       const declarations = packet.targets.filter(
@@ -1144,9 +1285,35 @@ export function evidencePacket(
     while (!fits() && packet.scoped_contexts!.length)
       packet.scoped_contexts!.pop();
   }
+  for (const context of packet.file_contexts ?? [])
+    for (const candidate of context.files) {
+      if (
+        index.file_contexts
+          ?.find((c) => c.path === context.path)
+          ?.files.find((f) => f.path === candidate.path)?.reason !== "inspected"
+      )
+        continue;
+      const reference = files.get(candidate.path);
+      const oldLength = packet.references.length;
+      candidate.reason = "supplied";
+      candidate.reference_id = reference?.id ?? null;
+      if (!reference || !add(reference) || !fits()) {
+        packet.references.splice(oldLength);
+        candidate.reference_id = null;
+        candidate.reason = "packet-budget";
+      }
+    }
   for (const file of [
     ...new Set(
-      packet.targets.flatMap((t) => [...t.supporting_paths, ...t.test_paths]),
+      packet.targets.flatMap((t) => [
+        ...t.supporting_paths.filter(
+          (file) =>
+            !index.file_contexts
+              ?.find((c) => c.path === t.path)
+              ?.files.some((f) => f.path === file),
+        ),
+        ...t.test_paths,
+      ]),
     ),
   ])
     add(files.get(file));
@@ -1170,6 +1337,7 @@ export function indexRecord(index: SourceIndex, packet: EvidencePacket) {
       ({ content: _content, ...reference }) => reference,
     ),
     selection_policy: packet.selection_policy ?? "legacy-v2",
+    ...(packet.file_contexts ? { file_contexts: packet.file_contexts } : {}),
     ...(packet.scoped_contexts
       ? { scoped_contexts: packet.scoped_contexts }
       : {}),

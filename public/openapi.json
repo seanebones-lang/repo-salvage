@@ -2886,7 +2886,72 @@
                   "additionalProperties": false
                 },
                 "maxItems": 24,
-                "description": "Complete scoped Python support blocks and conservative observations. Does not replace complete same-file context or establish dependency closure. An absent entry means scoped support was unavailable or did not fit."
+                "description": "Complete same-file Python, Go and Rust support blocks with conservative observations. Does not replace complete same-file context or establish dependency closure. An absent entry means scoped support was unavailable or did not fit."
+              },
+              "file_contexts": {
+                "type": "array",
+                "maxItems": 24,
+                "description": "Optional direct file associations under coverage-v5. Go package names are compared after reading; Rust follows unique conventional top-level external module declarations. Complete file references only. Build selection, module ownership, initialization and symbol resolution are unresolved. Missing entries or omitted candidates mean incomplete context.",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "path",
+                    "observation",
+                    "files",
+                    "candidates_omitted"
+                  ],
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "maxLength": 512
+                    },
+                    "observation": {
+                      "enum": ["go-package-files-v1", "rust-module-files-v1"]
+                    },
+                    "candidates_omitted": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "files": {
+                      "type": "array",
+                      "maxItems": 16,
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["path", "reason", "reference_id"],
+                        "properties": {
+                          "path": {
+                            "type": "string",
+                            "maxLength": 512
+                          },
+                          "reason": {
+                            "enum": [
+                              "supplied",
+                              "packet-budget",
+                              "not-inspected",
+                              "package-mismatch",
+                              "parser-unavailable",
+                              "restricted-module",
+                              "ambiguous-module-layout"
+                            ]
+                          },
+                          "reference_id": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "pattern": "^[a-f0-9]{24}$"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             },
             "required": [

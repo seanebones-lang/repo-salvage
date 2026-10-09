@@ -42,6 +42,8 @@ function inspect(file) {
     imports: [],
     support_graph: [],
     limitations: [],
+    package_name: null,
+    modules: [],
   };
   const parser = new Parser();
   parser.setLanguage(languages.get(language));
@@ -111,6 +113,21 @@ function inspect(file) {
       if (node.type.endsWith("comment")) continue;
       const attrs = attributes;
       attributes = [];
+      if (node.type === "package_clause")
+        base.package_name =
+          node.namedChildren.find((n) => n.type === "package_identifier")
+            ?.text ?? null;
+      if (node.type === "mod_item" && !field(node, "body"))
+        base.modules.push({
+          name: field(node, "name")?.text ?? "",
+          restricted:
+            attrs.length > 0 ||
+            root.namedChildren.some(
+              (n) =>
+                n.type === "inner_attribute_item" &&
+                /\b(?:cfg|cfg_attr|path)\b/.test(n.text),
+            ),
+        });
       const u = {
         ...span(node, attrs[0]?.startIndex ?? node.startIndex),
         node,
@@ -410,6 +427,7 @@ function inspect(file) {
         observations_omitted: omitted,
       });
     }
+    if (base.modules.length > MAX_UNITS) throw Error("Module limit");
     base.limitations =
       language === "go"
         ? [
