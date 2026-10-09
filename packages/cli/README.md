@@ -120,3 +120,24 @@ draft analyses. Dismissal or listing removal also cancels affected publication.
 Already incurred provider charges cannot be undone. The CLI rejects redirects and
 sends the credential only to the configured HTTPS or loopback origin. It never
 publishes or runs paid analysis itself.
+
+## Focused evidence
+
+```sh
+repo-salvage evidence LISTING --base ORIGIN --path src/ingest/arxiv.py --symbol ArxivClient._rate_limited_request --max-characters 24000
+repo-salvage evidence LISTING --base ORIGIN --path src/small-module/
+```
+
+Uses the listing's pinned source commit. Directories require a trailing `/` and
+can contain at most 32 files. Reads at most eight scope files plus four notice or
+dependency files, returning complete evidence blocks, same-file context and
+explicit omissions. A symbol applies only to an exact file; `not_indexed` can
+still provide its containing source without claiming a selectable component.
+Packet allowance defaults to 12000 characters and accepts 1000–24000; it may shrink
+to preserve the 64 KiB response bound. Large complete blocks are omitted, not cut.
+
+No credential, model call, repository execution or local write. Public visibility
+and analysis identity are rechecked on cache hits. The request times out at 60
+seconds and never retries automatically. Narrow a `focus_too_broad` scope and
+check the pinned path on `focus_not_found`. Fetch remains the command for retaining
+an existing catalog part's original bytes and notices on disk.

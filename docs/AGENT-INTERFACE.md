@@ -89,6 +89,46 @@ Hidden, removed, private or ownership-transferred repositories must remain
 unavailable through the catalog API and exports. Previously downloaded public
 source and direct upstream public URLs cannot be revoked by catalog removal.
 
+## Focused evidence (implemented)
+
+`GET /api/v2/parts/{listing}/evidence` accepts required `path`, optional `symbol`
+and `max_characters` (1000–24000, default 12000). Paths are exact files or directory
+prefixes ending in `/`; symbols apply to exact files. Unknown or repeated parameters
+are rejected. Listing identity comes from catalog search; source stays at its
+stored commit. Numeric public ownership, current repository name, local moderation
+and analysis identity are rechecked after inspection, including cache hits.
+
+This is a fresh source inspection with `interpretation: "none"`, not a model call,
+new recommendation or publication. It returns the coverage-v1 packet, complete
+blocks and same-file context, file inventory with Git hashes and pinned download
+URLs, inspection/packet omissions and observed import gaps. `not_indexed` means no
+indexed declaration matched; available complete-file context can still expose a
+helper. It does not certify the helper or manufacture a target identity.
+
+Each scope contains at most 32 files. At most eight primary and four notice or
+local-dependency files are attempted, with 64,000 bytes per file, 192,000 initial
+source bytes, 256,000 total and a 20-second source-read deadline. Dependencies are
+one bounded follow-up pass, not a transitive closure; parser time is additional.
+Responses cap at 65,536 bytes. Packet allowance can shrink by dropping complete
+blocks; no source prefix is supplied. Scope inventories and omitted counts remain
+visible even when a source block cannot fit. Generated/vendor/asset, unsafe mode,
+oversized or unsupported UTF-8 exclusions are shared with ordinary inspection.
+
+The process-local cache retains up to eight successful responses for 60 seconds,
+coalesces identical in-flight requests and caps distinct inspections at four.
+Failures are not cached. Cache hits still consume the shared agent-read allowance
+and perform public/local visibility checks. There is no cross-process cache or
+background/model retry. `focus_too_broad` requires narrowing a scope;
+`focus_not_found` requires checking the path and trailing slash. The CLI allows
+up to 60 seconds for a focus response and rejects output above 64 KiB.
+
+CLI 0.5.0 adds `evidence LISTING --path FILE_OR_DIRECTORY/ [--symbol NAME]
+[--max-characters N] --base ORIGIN`. MCP 0.3.0 adds
+`repo_salvage_focus_evidence`, with strict input/output schemas, structured content
+and read-only annotations under the [MCP tool contract](https://modelcontextprotocol.io/specification/2026-07-28/server/tools).
+Include it in a host's explicit enabled-tools list. Existing v1/v2 part APIs and
+owner-only paid/publication actions retain their contracts.
+
 ## Agent contributions (implemented)
 
 Owners issue draft-only credentials at `/dashboard/agents`. Each credential has
@@ -147,7 +187,7 @@ because an agent can discover them.
 
 ## MCP and discoverability (implemented)
 
-The installable `@repo-salvage/mcp@0.1.0` archive is linked at `/agents` and
+The installable `@repo-salvage/mcp@0.3.0` archive is linked at `/agents` and
 served at `/repo-salvage-mcp.tgz`. It uses Node.js 22+ and the pinned official SDK
 2.3.1 with Zod 4.6.5. A local MCP host launches the installed executable over
 stdio; there is no publicly hosted MCP HTTP endpoint. See
@@ -155,8 +195,10 @@ stdio; there is no publicly hosted MCP HTTP endpoint. See
 private-tool configuration. No npm registry publication or automatic client
 installation is claimed.
 
-Public tools are `repo_salvage_search_parts`, `repo_salvage_inspect_part` and
-`repo_salvage_read_part_file`. Search defaults to 10 results and preserves filters,
+Public tools are `repo_salvage_search_parts`, `repo_salvage_inspect_part`,
+`repo_salvage_read_part_file` and `repo_salvage_focus_evidence`. The focused tool
+uses the bounded pinned-source inspection described above.
+Search defaults to 10 results and preserves filters,
 page and catalog revision. Reading a file re-inspects the public part, restricts
 the URL to its pinned raw GitHub identity, verifies the entire file's Git blob
 hash and size, then returns a bounded UTF-8 text window. It writes no files,

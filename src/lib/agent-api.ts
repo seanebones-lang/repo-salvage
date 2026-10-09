@@ -11,15 +11,8 @@ import type { Listing, ReusablePiece } from "./db";
 import { takeRequest } from "./db";
 import type { SourceFile } from "./github";
 
-export class AgentError extends Error {
-  constructor(
-    public code: string,
-    message: string,
-    public status = 400,
-  ) {
-    super(message);
-  }
-}
+import { AgentError } from "./agent-error";
+export { AgentError } from "./agent-error";
 
 export function agentJson(value: unknown, status = 200) {
   return NextResponse.json(value, {
