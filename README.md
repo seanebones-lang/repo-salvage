@@ -1,8 +1,51 @@
 # Repo Salvage
 
-Good code deserves a second life. Authors nominate public projects; developers discover
-individual components and get a source-linked brief explaining what to take, observed
-dependencies, integration guidance, limitations, and the evidence behind the recommendation.
+Good code deserves a second life. Repo Salvage helps developers and their coding agents
+find reusable implementations, inspect exact pinned source, retain discovered licenses
+and notices, and understand the evidence and gaps before adapting code. Authors can
+nominate public projects and review source-linked component briefs.
+
+## Current status
+
+**Working development prototype; usefulness to independent developers and demand remain
+unproven.** The application, public agent API, standalone CLI and local MCP adapter
+are implemented. Local production builds, packaged consumers, CI and container recovery
+checks have been exercised. There is no public hosted launch or npm release.
+
+The local catalog contains seven author-owned public repositories from nine recorded
+analysis runs. These are our controlled pilot, not external adoption. Authored agent trials
+have produced standalone adaptations that passed their frozen consumer checks, and have
+also exposed discovery misses, missing context and source-verification failures. The
+records preserve those outcomes and their limits; they do not establish general extraction
+accuracy, upstream compatibility or time saved for independent developers. See the
+[local pilot matrix](docs/PILOT-MATRIX.md) and [agent validation record](docs/AGENT-VALIDATION.md).
+
+The product hypothesis is that combining useful source discovery with pinned evidence,
+provenance, retained notices and explicit integration gaps can reduce the effort of getting
+a reusable implementation working in another project. Search results and generated summaries
+alone do not establish that advantage. We have not yet demonstrated independent developers'
+repeat use, willingness to contribute listings, willingness to pay or a viable marketplace.
+
+## Next milestone: an independent usefulness pilot
+
+The next priority is to learn whether the workflow helps developers with real tasks.
+Further engineering and controlled evaluations should address concrete pilot blockers
+or failures rather than serve as evidence of demand.
+
+1. Choose a narrow initial audience and task type, starting with small, reasonably
+   self-contained utilities that developers and their agents can adapt and test.
+2. Curate useful parts with clear examples, source provenance, notices and integration
+   limits. Prefer relevant, understandable inventory over a large catalog.
+3. Recruit three to five independent developers with tasks they already need to complete.
+   Compare Repo Salvage with their normal GitHub-and-agent workflow. This pilot is planned;
+   recruitment and external task outcomes have not been established.
+4. Measure useful-match rate, time to working integration, required repair/manual effort,
+   notice retention and voluntary return use. Use those results to decide whether to
+   expand, improve the corpus or narrow/change the product direction.
+
+An agent reuse tool is the immediate hypothesis to test. An author-submitted marketplace
+adds a separate supply-and-demand hypothesis; successful controlled adaptations do not
+validate it.
 
 ## Product flow
 
@@ -106,8 +149,10 @@ For project sharing, configure:
 - Optional `MODERATOR_GITHUB_IDS`: comma-separated numeric GitHub user IDs. Empty means no
   moderator has access. Populate before public operation so reports have an operator.
 
-The authenticated local pilot used Haiku 5.5 for nine real analyses across seven public
-repositories, leaving 34 candidate briefs and an estimated provider cost of $0.043581.
+The authenticated local pilot used Haiku 5.5 for nine real analyses across seven author-owned
+public repositories, leaving 34 candidate briefs at that pilot snapshot. Its recorded provider
+cost estimate was $0.043581; this is a historical estimate, not verified billing or current
+pricing/unit economics.
 Parser and circuit-breaker extractions passed checks in separate Node consumers.
 See [the first pilot](docs/PILOT.md) and [expanded matrix](docs/PILOT-MATRIX.md) for
 usage, adaptations and evidence limits. The [agent interface](docs/AGENT-INTERFACE.md)
@@ -311,7 +356,8 @@ See [GitHub's public OAuth app rate limits](https://docs.github.com/en/rest/usin
   16 reads for omitted dependencies, likely tests and notices; unused reads return to
   broad discovery. Up to 24 complete candidate blocks fit within a 70,000-character evidence
   allowance; omissions are recorded. JS/TS exported declarations and Python 3.11
-  functions/classes/methods are parsed; other languages have file-level inspection.
+  functions/classes/methods are parsed, as are supported Go/Rust declarations and methods;
+  other languages have file-level inspection. See the focused-extraction boundaries below.
   Static imports, dynamic dependencies, aliases
   and same-file helpers still need consumer inspection. Existing pilot listings retain
   their original sampling evidence until deliberately analyzed again.
@@ -320,7 +366,7 @@ See [GitHub's public OAuth app rate limits](https://docs.github.com/en/rest/usin
   end-to-end validation. A green build or database health response does not establish either.
 - The catalog verifies the stored inventory through GitHub for accurate public facets. Large
   catalogs will need a measured indexing and verification strategy; this version is intended
-  for a small curated launch.
+  for a small curated pilot.
 - Reports are limited per listing, which bounds storage but can temporarily prevent another
   visitor from reporting. Anonymous abuse controls are deliberately not represented as identity
   or adoption verification.
@@ -388,7 +434,7 @@ budget, an unread Go peer and a conditional Rust module. Exact first decisions a
 reviewed standalone controls are retained; agent guidance explains how to request
 the needed pinned source while preserving the recorded uncertainty.
 
-The next [pinned helper recovery trial](examples/context-recovery/README.md) carries
+The completed [pinned helper recovery trial](examples/context-recovery/README.md) carries
 those stopping points into fresh MCP-enabled sessions. Three agents retrieve the
 missing pinned helper, retain the original gap and produce checked standalone
 adaptations. A matched corrupted-source case remains stopped after Git blob
