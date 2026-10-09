@@ -43,6 +43,19 @@ export default function ExamplesPage() {
         </Link>
       </section>
       <section className="closing-note">
+        <span className="eyebrow">A scoped-source adaptation</span>
+        <h2>Turn supporting evidence into a useful tool.</h2>
+        <p>
+          A focused Humanize response supplied a formatter and its magnitude
+          tables while keeping missing module context visible. A separate agent
+          produced an English integer adaptation with exact rounding; its
+          unchanged code passed nine tests and 1,500 Decimal comparisons.
+        </p>
+        <Link href="/examples/integer" className="text-link">
+          Try the exact integer formatter →
+        </Link>
+      </section>
+      <section className="closing-note">
         <span className="eyebrow">The useful outcome</span>
         <h2>A part that earns its place in your project.</h2>
         <p>

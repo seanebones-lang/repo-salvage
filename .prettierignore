@@ -8,3 +8,6 @@ examples/context-diversity-evaluation/results.json
 
 # Preserve the exact native scoped-support response records.
 examples/scoped-context-evaluation/results.json
+
+# Preserve the exact first native consumer response record.
+examples/scoped-consumer-evaluation/results.json

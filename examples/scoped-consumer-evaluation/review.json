@@ -1,0 +1,14 @@
+{
+  "format": "repo-salvage/scoped-consumer-review-v1",
+  "inputSealSha256": "1cdd027bbd0e19465df5c12ebaa591c27bbe9f2669101028902be88e9020238c",
+  "codeSha256": "b413d6bbf05895d6794511589fe958bbc8537754e2bdddb49b467ccb1dd0cf84",
+  "reviewer": "implementing operator; not independent",
+  "passed": true,
+  "beforeExecution": true,
+  "observations": [
+    "Only standard-library bisect import; no file, network, subprocess, dynamic evaluation or upstream imports. Module statements define constants/functions.",
+    "Integer divmod and remainder comparison implement half-even rounding without float conversion. Threshold-based carry handles the decillion-to-googol gap; recomputation at the new scale yields its rounded unit.",
+    "bool and wrong input types are rejected; precision is validated before all value branches. Negative values use their absolute magnitude and restore the sign.",
+    "Complete supplied MIT notice retained. English-only names and fixed decimal digits are explicit adaptations; no locale implementation or full-module context claimed."
+  ]
+}

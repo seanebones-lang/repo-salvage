@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "consumerTests": 9,
+  "referenceComparisons": 1500,
+  "isolatedPython": true,
+  "applicationImports": false,
+  "credentialsForwarded": false,
+  "originalModuleExecuted": false,
+  "codeSha256": "b413d6bbf05895d6794511589fe958bbc8537754e2bdddb49b467ccb1dd0cf84"
+}
