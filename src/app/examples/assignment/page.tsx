@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Agent reuse example · Repo Salvage",
+  title: "Agent reuse example",
   description:
     "A native agent discovers pinned Python source, preserves its notice and creates a tested standalone A/B assignment consumer.",
 };
