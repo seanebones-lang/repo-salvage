@@ -41,3 +41,6 @@ examples/rust-go-consumers/rust/consumer.rs
 examples/rust-go-consumers/go/consumer.go
 examples/rust-go-consumers/execution.json
 examples/rust-go-consumers/review.json
+
+# Preserve complete pinned native file-context capture bytes.
+examples/native-file-context/pinned.json
