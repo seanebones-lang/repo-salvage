@@ -283,3 +283,15 @@ a reviewed consumer. Container execution, public deployment, changing-catalog
 scale and other hosts remain unverified. Raw evidence is retained in ignored
 `artifacts/agent-host-pilot-events.jsonl`, `artifacts/codex-evaluation-results.json`
 and `artifacts/assignment-consumer-proof.json`.
+
+## Deployment readiness follow-up — 2026-10-08
+
+The previously open local container gate is now checked with a successful Linux
+arm64 Docker build and thirteen disposable mounted-volume/startup/crash/restore
+checks. CI adds the same drill on Linux amd64. Nine new operations checks bring
+the offline suite to 203. No real credential or new repository analysis is used.
+The two example gzip platform tags are normalized, yielding the current assignment
+archive hash in [HOSTING.md](HOSTING.md); earlier hashes remain dated evidence.
+MCP and CLI packages keep their existing identities. Public hosting, production
+OAuth/provider behavior and load remain separate gates; see the hosting runbook
+and latest [review milestone](REVIEW.md).

@@ -64,9 +64,10 @@ for (const { name, files } of bundles) {
     );
   }
   chunks.push(Buffer.alloc(1024));
+  const archive = gzipSync(Buffer.concat(chunks));
+  // Normalize gzip's platform tag to Unix, matching our Linux hosting runtime.
+  // The payload/CRC are unchanged; macOS otherwise emits a different archive hash.
+  archive[9] = 3;
   fs.mkdirSync(path.join(root, "public"), { recursive: true });
-  fs.writeFileSync(
-    path.join(root, "public", `${name}.tar.gz`),
-    gzipSync(Buffer.concat(chunks)),
-  );
+  fs.writeFileSync(path.join(root, "public", `${name}.tar.gz`), archive);
 }

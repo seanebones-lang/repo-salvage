@@ -189,3 +189,45 @@ review. [AGENT-VALIDATION.md](AGENT-VALIDATION.md) records the exact provenance,
 trial boundaries and remaining deployment/container/scale gates. The native host
 pilot replaces the earlier open external-agent retrieval gate for this one host;
 other hosts and live owner-authorized agent contribution remain untested.
+
+## Container and hosting readiness — 2026-10-08
+
+The earlier container gate is now exercised. The first real Docker build failed:
+root `npm ci` ran before the MCP workspace manifest was copied, silently omitting
+its dependencies. The Dockerfile now includes that manifest before installation,
+uses a pinned multi-platform Node 22 base digest, and successfully builds the
+standalone application with native SQLite.
+
+A startup preflight validates canonical origin, auth secret length, paired OAuth,
+limits/moderator configuration, writable storage and database integrity before
+listening. The image defaults to USER node, with root-owned program files that
+protect code loaded by a later bootstrap. An explicitly root-started container
+can initialize a root-owned `/app/data` mount, then drops groups/GID/UID to 1000
+before opening SQLite or importing the server. Read-only and corrupt volumes fail
+before service startup. The image also provides a database healthcheck.
+
+The online backup command preserves committed WAL data, creates private new files,
+checks integrity, refuses overwrite and rejects public assets (including a
+symlinked parent). Nine offline operations checks add to the existing suite:
+**203 offline checks**, plus **13 disposable container checks**. The local arm64
+drill runs under a 512 MiB memory limit with a read-only application filesystem.
+It verifies actual server UID, all four archives, ordinary pages and empty agent
+API, online backup as UID 1000, SIGKILL rollback/committed-quota retention,
+replacement-container persistence, fresh-volume restoration, health, invalid
+configuration/storage rejection, and a canonical HTTPS OAuth authorization
+redirect with secure cookies. The redirect uses dummy credentials and is not
+followed to GitHub; this does not establish a production login.
+
+CI now builds and smoke-tests Docker on Linux amd64. No real credentials or paid
+repository analysis calls are used by the drill. The real local database has an
+online private snapshot preserving 7 listings / 34 parts / 9 summary runs / 0
+credentials / 0 drafts; it has not been uploaded. Typecheck, formatting, audit and
+production/container builds pass. Example gzip platform tags are normalized;
+the Linux/macOS tar payloads were already identical, and MCP/CLI archives are unchanged.
+
+[HOSTING.md](HOSTING.md) records current Railway/Render costs, single-instance
+storage, volume ownership, runtime secrets, conservative limits, migration,
+off-service backups, restoration and monitoring. Public provisioning, HTTPS,
+production OAuth/provider requests, platform volume behavior and production load
+remain unverified. Successful SQLite fixture recovery is not a real paid analysis
+interruption test or an uptime guarantee.
