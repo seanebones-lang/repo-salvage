@@ -1,0 +1,37 @@
+{
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "promptSha256": "03b59e464edef141b4c0d410a18fea127d90cf8cda5a971b6ddd39cf7cf34d71",
+  "trace": {
+    "sha256": "66640eb2e038114189af7c54ba0c6aae924627bda9c011b1a35f20e49c31092c"
+  },
+  "latencyMs": 32502,
+  "billing": "Existing Codex account allowance; no API-key model call",
+  "inputSealSha256": "1cdd027bbd0e19465df5c12ebaa591c27bbe9f2669101028902be88e9020238c",
+  "usage": {
+    "input_tokens": 14454,
+    "cached_input_tokens": 0,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1120,
+    "reasoning_output_tokens": 74
+  },
+  "transportSuccess": true,
+  "failure": null,
+  "prohibitedEvents": [],
+  "response": {
+    "code": "\"\"\"English integer formatting with exact round-half-even arithmetic.\n\nCopyright (c) 2010-2020 Jason Moiron and Contributors\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\"Software\"), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\nNONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE\nLIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION\nOF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION\nWITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n\"\"\"\n\nfrom bisect import bisect_right\n\n__all__ = [\"format_integer\"]\n\n_POWERS = tuple(10 ** exponent for exponent in\n                (3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 100))\n_NAMES = (\n    \"thousand\", \"million\", \"billion\", \"trillion\", \"quadrillion\",\n    \"quintillion\", \"sextillion\", \"septillion\", \"octillion\",\n    \"nonillion\", \"decillion\", \"googol\",\n)\n\n\ndef _round_half_even(numerator: int, denominator: int) -> int:\n    quotient, remainder = divmod(numerator, denominator)\n    twice_remainder = remainder * 2\n    if twice_remainder > denominator or (\n        twice_remainder == denominator and quotient % 2 == 1\n    ):\n        quotient += 1\n    return quotient\n\n\ndef format_integer(value: int, places: int = 1) -> str:\n    \"\"\"Format an integer using English magnitudes and 0–6 decimal places.\n\n    Integers with absolute magnitude below 1000 retain their exact text.\n    Larger integers use exact half-even rounding and carry to the next\n    supplied magnitude when necessary. Googol is the largest named unit.\n    \"\"\"\n    if isinstance(value, bool) or not isinstance(value, int):\n        raise TypeError(\"value must be an int, excluding bool\")\n    if isinstance(places, bool) or not isinstance(places, int):\n        raise TypeError(\"places must be an int, excluding bool\")\n    if not 0 <= places <= 6:\n        raise ValueError(\"places must be between 0 and 6 inclusive\")\n\n    magnitude = abs(value)\n    if magnitude < 1000:\n        return str(value)\n\n    scale = 10 ** places\n    index = bisect_right(_POWERS, magnitude) - 1\n    while True:\n        power = _POWERS[index]\n        rounded = _round_half_even(magnitude * scale, power)\n        if index + 1 < len(_POWERS) and (\n            rounded * power >= _POWERS[index + 1] * scale\n        ):\n            index += 1\n            continue\n        break\n\n    whole, fraction = divmod(rounded, scale)\n    number = str(whole)\n    if places:\n        number += \".\" + str(fraction).zfill(places)\n    prefix = \"-\" if value < 0 else \"\"\n    return prefix + number + \" \" + _NAMES[index]\n",
+    "adaptations": "Replaced coercion, arbitrary format strings, floating-point rounding and locale helpers with validated integer inputs, fixed decimal places and exact integer half-even rounding. Preserved the supplied names and complete MIT notice. Carry compares actual magnitude thresholds, including the decillion-to-googol gap. Supports ±10**200 exactly; googol remains the largest unit. English only, with 0–6 decimal places. Supporting blocks were treated as focused evidence, not dependency closure. No tools or source execution were used; no tests were supplied or run.",
+    "citations": [
+      "3a216cd3510098163f683047",
+      "cc0dd3d05da4c983be176330",
+      "503d6dba3784d8c3158c6bc3",
+      "934d8e16a574130462a207e1"
+    ]
+  },
+  "codeSha256": "b413d6bbf05895d6794511589fe958bbc8537754e2bdddb49b467ccb1dd0cf84",
+  "citationsPass": true,
+  "noticePass": true,
+  "manualReview": "pending",
+  "consumerExecution": "not-run"
+}

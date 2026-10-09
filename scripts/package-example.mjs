@@ -7,6 +7,16 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const bundles = [
   {
+    name: "integer-word-consumer",
+    files: [
+      "consumer.py",
+      "test_consumer.py",
+      "README.md",
+      "SOURCE.md",
+      "LICENSE",
+    ],
+  },
+  {
     name: "summary-parser",
     files: [
       "parser.mjs",

@@ -1,0 +1,12 @@
+{
+  "format": "repo-salvage/scoped-consumer-results-seal-v1",
+  "inputSealSha256": "1cdd027bbd0e19465df5c12ebaa591c27bbe9f2669101028902be88e9020238c",
+  "files": {
+    "results.json": "ad3d10ef61d3a5345db445dc097ce8ca0ec41c0ffdf837594d65ba9469123062",
+    "review.json": "1051cc0cbd321b4f6ee7e7261f88d93655f356912f967bc9294a57c31ba51c9f",
+    "execution.json": "f1d005d26b54059d19f24c4048b3efcb75fd8dad6beec130951dbdc89dfefaf2",
+    "input-archive.json": "560405e69af796c6a3b2fa99479489976122b66bc23556e17ffd3e67f82da255",
+    "../integer-word-consumer/consumer.py": "b413d6bbf05895d6794511589fe958bbc8537754e2bdddb49b467ccb1dd0cf84",
+    "../../scripts/check-integer-word-consumer.py": "e8afbfd0debae7cd371c0c868fe031e11fe124f4bfad5649882952c6809e0c6a"
+  }
+}

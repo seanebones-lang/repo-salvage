@@ -216,6 +216,7 @@ try {
     "/",
     "/agents",
     "/examples/assignment",
+    "/examples/integer",
     "/llms.txt",
     "/openapi.json",
     "/api/v1/parts",
@@ -231,6 +232,7 @@ try {
   for (const file of [
     "summary-parser.tar.gz",
     "assignment-consumer.tar.gz",
+    "integer-word-consumer.tar.gz",
     "repo-salvage-cli.tgz",
     "repo-salvage-mcp.tgz",
   ]) {
@@ -248,7 +250,7 @@ try {
     );
   }
   check(
-    "application, agent API and all four downloads served from built image",
+    "application, agent API and all five downloads served from built image",
   );
   assert.equal(
     execNode(

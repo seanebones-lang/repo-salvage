@@ -1,0 +1,20 @@
+{
+  "format": "repo-salvage/scoped-consumer-input-seal-v1",
+  "createdAt": "2026-10-09T11:54:54.653Z",
+  "files": {
+    "task.json": "3be691247b067c0430ec0719cd3e2ff5cf21e412735181f1675f44e8af8e322a",
+    "controls.json": "98781718bbef73118ace12615ae0928fbed2d9a27a3788a8fd6dc29f3f086c38",
+    "schema.json": "7ab8903e193eeb44e81c8505c2e85c440e19482a720cf0e43d8d57f0f2f8a3c3",
+    "evidence.json": "3366ef1b0d10867abdbe8b7340169e50093adc272ae917e50ae3a913a37d519e",
+    "prompt.txt": "03b59e464edef141b4c0d410a18fea127d90cf8cda5a971b6ddd39cf7cf34d71",
+    "run.mjs": "f2e5a8be14f18a859174d1f6b6b8c4280096b7c8d95d15fa8aec5603cfb5d867",
+    "suite.mjs": "4685e0881a92f914f1ffdd54ce3d42d86af7525b4e1156a1a650227b6e394d73",
+    "../integer-word-consumer/test_consumer.py": "2dd417dc411d5a10b71188c6df957370717881df1e3d8d45ee25eefb6a8cb8d2",
+    "../integer-word-consumer/LICENSE": "8ba6c18112a431400ad3c743f70670079b302545d98884fc2f28a91c383a0380",
+    "../scoped-context-evaluation/seal.json": "83633834fb6c77451f5810387c9ba0a758627b490acfe51c9d3d64ee8c68212c",
+    "../scoped-context-evaluation/results-seal.json": "01b565daeac4658a0cd820bb2201d20d43170e7580312a92e472c249de0bfcfc",
+    "../../packages/cli/lib/client.mjs": "1b58043d51bf48a3a6b6057b91bdbefc25b8c6b111e7785c1359159c62f2a658",
+    "../full-chain-evaluation/adapt.mjs": "2b2a03845b90206e95ea7451f59e924bde19094ccd8baa303c5de4d384a3f417",
+    "../analysis-evaluation/trace.mjs": "57ad36ba43e560902b43fbff5e6b011ccdea535e855f75bce18f5ac6dad83b1e"
+  }
+}

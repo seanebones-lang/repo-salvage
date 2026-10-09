@@ -160,6 +160,13 @@ missing-module and dependency uncertainty. Current clients validate scoped links
 and distinguish excerpts from complete file context; the bounded trials do not
 certify extraction or general analysis quality.
 
+A [scoped-evidence consumer trial](examples/scoped-consumer-evaluation/README.md)
+adapted the focused formatter into an [exact English integer formatter](examples/integer-word-consumer/README.md).
+Its unchanged first generated code passed nine pre-generation tests and 1,500
+Decimal-reference comparisons in isolation. This narrower integer-only API uses
+exact rounding and preserves notices; it does not establish general transfer
+quality or change the upstream part's untested catalog status.
+
 ## For agents and scripts
 
 Open `/agents` for the guide, `/llms.txt` for the machine index and `/openapi.json`
