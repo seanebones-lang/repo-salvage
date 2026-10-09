@@ -5,6 +5,8 @@ import { buildHoldout } from "../examples/analysis-evaluation/holdout.mjs";
 import { scoreSelection } from "../examples/analysis-evaluation/scoring.mjs";
 import { inspectCodexTrace } from "../examples/analysis-evaluation/trace.mjs";
 import fs from "node:fs/promises";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { sha256 } from "../examples/analysis-evaluation/holdout.mjs";
 test("sealed historical source rebuilds archived packets offline, with rubric outside requests", async () => {
   const engine = await loadEngine();
@@ -231,6 +233,66 @@ test("coverage epoch validates pinned blobs, complete contexts and stage-specifi
         assert.ok(context.same_file_reference);
       }
     }
+  } finally {
+    await engine.close();
+  }
+});
+
+test("coverage answers replay exact sealed requests and completed epoch refuses refreeze", async () => {
+  const report = JSON.parse(
+    await fs.readFile(
+      new URL(
+        "../examples/analysis-evaluation/coverage/results.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  const engine = await loadEngine();
+  try {
+    const suite = await buildHoldout(engine, true, "coverage");
+    for (const run of report.runs) {
+      assert.equal(run.suiteSealSha256, sha256(JSON.stringify(suite.seal)));
+      assert.equal(run.cases.length, suite.cases.length);
+      for (const result of run.cases) {
+        const c = suite.cases.find((c) => c.id === result.id);
+        assert.ok(c);
+        assert.equal(result.requestSha256, c.requestSha256);
+        const text = JSON.stringify(result.answer);
+        assert.equal(sha256(text), result.answerSha256);
+        const verified = engine.verifiedIndexedSummary(text, c.index, c.packet);
+        assert.deepEqual(
+          scoreSelection(result.answer, verified, c.expectation),
+          result.selection,
+        );
+        assert.equal(result.selection.passed, true);
+      }
+      assert.equal(
+        run.cases.filter((c) => c.semanticReview.passed).length,
+        run.summary.semanticReviewPasses,
+      );
+    }
+    const sealUrl = new URL(
+      "../examples/analysis-evaluation/coverage/seal.json",
+      import.meta.url,
+    );
+    const before = await fs.readFile(sealUrl);
+    const freeze = spawnSync(
+      process.execPath,
+      [
+        fileURLToPath(
+          new URL(
+            "../examples/analysis-evaluation/freeze-coverage.mjs",
+            import.meta.url,
+          ),
+        ),
+        "--freeze",
+      ],
+      { encoding: "utf8", timeout: 5000 },
+    );
+    assert.notEqual(freeze.status, 0);
+    assert.match(freeze.stderr, /Completed evaluation epoch/);
+    assert.deepEqual(await fs.readFile(sealUrl), before);
   } finally {
     await engine.close();
   }

@@ -268,6 +268,36 @@ summary-run rows matched the private pre-job backup exactly. The sixteen explici
 Codex evaluation invocations used the operator's account allowance; no Anthropic
 calls or hosted catalog analyses were made for this milestone.
 
+## Coverage milestone validation
+
+The coverage policy is frozen before generation at `f9f6226`. Its new epoch
+contains four known-repository constrained cases. Luna/high and Sol/low passed
+4/4 structural/reference and required-selection checks each, with zero tool events.
+Implementing-agent source review found two Luna omissions; Sol disclosed those
+boundaries. This does not establish an independent quality or dollar-cost winner.
+The old eight-case epoch and all 16 answers remain byte/hash reproducible offline.
+
+On the same commits, supplied candidate evidence spans 18 versus four files in
+Humanity-Grid and 24 versus 11 in AI-Voiceover. All six probe files are inspected;
+three probes are selectable and four receive full-file context. The arXiv method
+and Rust app target remain outside the packet. The unexported fallback limiter
+is visible as context, not directly selectable. Full-file context fits for eight
+of 18 and 22 of 24 candidates respectively. These are measured stage counts on
+known probes, not whole-repository useful-component recall.
+
+The local suite now contains 298 offline checks, including three new reviewed
+consumer checks confirming cache serialization ambiguity and prosody-tag behavior.
+Type checking, formatting, production build and dependency audit pass; audit
+reports zero vulnerabilities. Seventeen arm64 container checks pass, with no
+real credentials or provider calls. CI repeats the suite/container checks on
+Linux amd64. The eight explicit model invocations use the existing Codex account
+allowance; no Anthropic API calls or real catalog re-analyses are performed.
+
+The next discovery milestone should expose bounded, recorded coverage gaps and
+support focused or partitioned evidence requests without silently multiplying
+provider calls. Broader source selection, non-exported helper exposure and
+independent natural-discovery review remain open before hosted provider choice.
+
 ## Job milestone validation
 
 The 2026-10-09 validation passed 277 offline checks: 218 application tests,
