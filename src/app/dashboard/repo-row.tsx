@@ -13,6 +13,7 @@ type Props = {
   note: string | null;
   license: string | null;
   analysisEnabled: boolean;
+  requestKey: string;
 };
 
 export default function RepoRow({
@@ -24,6 +25,7 @@ export default function RepoRow({
   note,
   license,
   analysisEnabled,
+  requestKey,
 }: Props) {
   const [state, action, pending] = useActionState<ActionState, FormData>(
     salvage,
@@ -45,6 +47,7 @@ export default function RepoRow({
       </div>
       <form action={action} className="repo-form">
         <input type="hidden" name="repoId" value={repoId} />
+        <input type="hidden" name="requestKey" value={requestKey} />
         <label htmlFor={`note-${repoId}`}>
           Your context (optional): what works, what to ignore, and what a new
           developer should know.
@@ -60,10 +63,12 @@ export default function RepoRow({
         <div className="form-row">
           <button
             className="button button-primary"
-            disabled={pending || !licensed || !analysisEnabled}
+            disabled={
+              pending || !licensed || !analysisEnabled || !!state?.jobId
+            }
           >
             {pending
-              ? "Reading source & preparing briefs…"
+              ? "Queuing analysis…"
               : listingId
                 ? "Re-analyze the parts"
                 : "Make useful parts available"}
@@ -83,6 +88,11 @@ export default function RepoRow({
             <span className="form-status" role="status">
               {state.ok}
             </span>
+          )}
+          {state?.jobId && (
+            <Link className="text-link" href={`/dashboard/jobs/${state.jobId}`}>
+              Open analysis progress
+            </Link>
           )}
         </div>
       </form>

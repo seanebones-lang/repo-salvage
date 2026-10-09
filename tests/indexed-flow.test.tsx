@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { createHash } from "node:crypto";
@@ -66,6 +67,18 @@ vi.mock("@anthropic-ai/sdk", () => ({
 }));
 let db: typeof import("@/lib/db");
 let actions: typeof import("@/app/dashboard/actions");
+async function completeAnalysis(data: FormData) {
+  data.set("requestKey", randomUUID());
+  const queued = await actions.salvage(null, data);
+  if (!queued?.jobId) return queued;
+  const { runNextJob } = await import("@/lib/analysis-worker");
+  const { jobById } = await import("@/lib/analysis-jobs");
+  await runNextJob();
+  const job = jobById(queued.jobId, 42);
+  return job?.status === "succeeded"
+    ? { ok: "Analysis completed" }
+    : { error: job?.error_message ?? "Canceled" };
+}
 const sha = "a".repeat(40);
 const source =
   "/*" +
@@ -79,6 +92,7 @@ beforeAll(async () => {
       "flow.db",
     ),
   );
+  vi.stubEnv("ANALYSIS_WORKER_ENABLED", "1");
   vi.stubEnv("ANTHROPIC_API_KEY", "fake-offline-only");
   vi.stubEnv("DAILY_SUMMARY_LIMIT", "10");
   vi.stubEnv("GLOBAL_DAILY_SUMMARY_LIMIT", "10");
@@ -134,9 +148,7 @@ const form = () => {
 };
 describe("indexed publication to consumer flow with real SQLite and mocked external transport", () => {
   it("publishes a complete tail declaration, exposes its evidence in the page and retains the prior listing on rejected output", async () => {
-    expect(await actions.salvage(null, form())).toEqual({
-      ok: "Listed author/parser",
-    });
+    expect(await completeAnalysis(form())).toHaveProperty("ok");
     const listing = db.allListings()[0];
     const piece = listing.summary.reusable_pieces[0];
     expect(piece.source_target?.symbol).toBe("parse");
@@ -157,15 +169,13 @@ describe("indexed publication to consumer flow with real SQLite and mocked exter
     );
     const reviewed = db.getListing(listing.id)!;
     state.forged = true;
-    expect((await actions.salvage(null, form()))?.error).toMatch(
-      /references unavailable/,
+    expect((await completeAnalysis(form()))?.error).toMatch(
+      /evidence validation/,
     );
     expect(db.getListing(listing.id)).toEqual(reviewed);
     state.forged = false;
     state.outcome = "no_candidates";
-    expect((await actions.salvage(null, form()))?.ok).toContain(
-      "no suitable components",
-    );
+    expect(await completeAnalysis(form())).toHaveProperty("ok");
     expect(db.getListing(listing.id)?.summary.reusable_pieces).toEqual([]);
     expect(db.analysisHistory(listing.id, 42)).toHaveLength(3);
     expect(state.requests).toBe(3);

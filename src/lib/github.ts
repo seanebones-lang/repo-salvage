@@ -205,6 +205,24 @@ export async function isPublicRepoFresh(
   }
 }
 
+/** Fresh public identity for durable workers; never persist or need user OAuth tokens. */
+export async function getPublicOwnedRepoFresh(
+  id: number,
+  ownerId: number,
+): Promise<GhRepo> {
+  const repo = await gh<GhRepo>("", `/repositories/${id}`);
+  if (
+    repo.id !== id ||
+    repo.private !== false ||
+    repo.owner.id !== ownerId ||
+    repo.fork !== false ||
+    !repo.license?.spdx_id ||
+    repo.license.spdx_id === "NOASSERTION"
+  )
+    throw new Error("Repository eligibility changed.");
+  return repo;
+}
+
 export async function resolveSourceCommit(
   token: string,
   repo: GhRepo,

@@ -4,9 +4,11 @@ import { salvage, type ActionState } from "../actions";
 export default function DraftForm({
   draft,
   analysisEnabled,
+  requestKey,
 }: {
   draft: { id: string; repo_id: number; note: string };
   analysisEnabled: boolean;
+  requestKey: string;
 }) {
   const [state, action, pending] = useActionState<ActionState, FormData>(
     salvage,
@@ -16,6 +18,7 @@ export default function DraftForm({
     <form action={action} className="repo-form">
       <input type="hidden" name="repoId" value={draft.repo_id} />
       <input type="hidden" name="draftId" value={draft.id} />
+      <input type="hidden" name="requestKey" value={requestKey} />
       <label htmlFor={`draft-${draft.id}`}>
         Review and edit the agent's context
       </label>
@@ -37,7 +40,7 @@ export default function DraftForm({
         disabled={pending || !analysisEnabled || !!state?.ok}
       >
         {pending
-          ? "Analyzing reviewed draft…"
+          ? "Queuing reviewed draft…"
           : "Analyze and publish reviewed draft"}
       </button>
       {!analysisEnabled && (
@@ -49,6 +52,11 @@ export default function DraftForm({
         </p>
       )}
       {state?.ok && <p role="status">{state.ok}</p>}
+      {state?.jobId && (
+        <a className="text-link" href={`/dashboard/jobs/${state.jobId}`}>
+          Open analysis progress
+        </a>
+      )}
     </form>
   );
 }

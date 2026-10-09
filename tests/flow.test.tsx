@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import fs from "node:fs";
@@ -27,6 +28,20 @@ vi.mock("@anthropic-ai/sdk", () => ({
   },
 }));
 vi.mock("@/lib/github", () => ({
+  getPublicOwnedRepoFresh: async () => {
+    if (!fixtures.public) throw Error("Private");
+    return {
+      id: 7,
+      name: "parser",
+      full_name: "author/parser",
+      html_url: "https://github.com/author/parser",
+      owner: { id: 42, login: "author" },
+      license: { spdx_id: "MIT" },
+      language: "TypeScript",
+      stargazers_count: 0,
+      forks_count: 0,
+    };
+  },
   getOwnedPublicRepo: async () => ({
     id: 7,
     name: "parser",
@@ -65,12 +80,25 @@ vi.mock("@/lib/github", () => ({
   isPublicRepoFresh: async () => fixtures.public,
 }));
 
+async function completeAnalysis(data: FormData) {
+  data.set("requestKey", randomUUID());
+  const queued = await actions.salvage(null, data);
+  if (!queued?.jobId) return queued;
+  const { runNextJob } = await import("@/lib/analysis-worker");
+  const { jobById } = await import("@/lib/analysis-jobs");
+  await runNextJob();
+  const job = jobById(queued.jobId, 42);
+  return job?.status === "succeeded"
+    ? { ok: "Analysis completed" }
+    : { error: job?.error_message ?? "Canceled" };
+}
 let db: typeof import("@/lib/db");
 let actions: typeof import("@/app/dashboard/actions");
 let exportRoute: typeof import("@/app/api/listings/[id]/parts/[part]/route");
 let reportRoute: typeof import("@/app/api/listings/[id]/report/route");
 let Home: typeof import("@/app/page").default;
 beforeAll(async () => {
+  vi.stubEnv("ANALYSIS_WORKER_ENABLED", "1");
   vi.stubEnv("ANTHROPIC_API_KEY", "test-only");
   vi.stubEnv("ANTHROPIC_WORKSPACE_ID", "wrkspc_test");
   process.env.DATABASE_PATH = path.join(
@@ -117,7 +145,7 @@ describe("listing to consumer brief with real SQLite persistence and mocked exte
     const form = new FormData();
     form.set("repoId", "7");
     form.set("note", "The parser is useful.");
-    expect(await actions.salvage(null, form)).toHaveProperty("ok");
+    expect(await completeAnalysis(form)).toHaveProperty("ok");
     const listing = db.allListings()[0];
     const piece = listing.summary.reusable_pieces[0];
     const part = componentId(piece);
@@ -239,7 +267,7 @@ describe("deferred requests with real persistence", () => {
   };
   it("does not resurrect a listing removed while the provider is still working", async () => {
     fixtures.public = true;
-    expect(await actions.salvage(null, publishForm())).toHaveProperty("ok");
+    expect(await completeAnalysis(publishForm())).toHaveProperty("ok");
     const listing = db.allListings()[0];
     let resume!: (response: unknown) => void;
     let notifyStarted!: () => void;
@@ -253,7 +281,7 @@ describe("deferred requests with real persistence", () => {
         resume = resolve;
       });
     });
-    const pending = actions.salvage(null, publishForm());
+    const pending = completeAnalysis(publishForm());
     await started;
     const remove = new FormData();
     remove.set("id", String(listing.id));
@@ -264,7 +292,7 @@ describe("deferred requests with real persistence", () => {
     expect(db.db().prepare("SELECT * FROM active_analyses").all()).toEqual([]);
   });
   it("does not create an orphan report when its listing is removed during body upload", async () => {
-    expect(await actions.salvage(null, publishForm())).toHaveProperty("ok");
+    expect(await completeAnalysis(publishForm())).toHaveProperty("ok");
     const listing = db.allListings()[0];
     let upload!: ReadableStreamDefaultController<Uint8Array>;
     let notifyRead!: () => void;

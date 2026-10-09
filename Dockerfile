@@ -11,7 +11,7 @@ RUN AUTH_SECRET=build-only-placeholder AUTH_URL=http://localhost:3000 npm run bu
 
 FROM ${NODE_IMAGE} AS runtime
 WORKDIR /app
-ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 HOSTNAME=0.0.0.0 PORT=3000 DATABASE_PATH=/app/data/salvage.db
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 HOSTNAME=0.0.0.0 PORT=3000 DATABASE_PATH=/app/data/salvage.db ANALYSIS_WORKER_ENABLED=1
 RUN apt-get update && apt-get install -y --no-install-recommends python3 && rm -rf /var/lib/apt/lists/* && mkdir -p /app/data && chown node:node /app/data
 # Keep program files root-owned; the application cannot replace bootstrap code.
 COPY --from=build /app/.next/standalone ./

@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import Link from "next/link";
 import type { Metadata } from "next";
 export const metadata: Metadata = { title: "Agent workbench" };
@@ -74,7 +75,11 @@ export default async function AgentWorkbench() {
             activeCredential(draft.credential_id) ? (
               <DraftForm
                 draft={draft}
-                analysisEnabled={!!process.env.ANTHROPIC_API_KEY}
+                analysisEnabled={
+                  !!process.env.ANTHROPIC_API_KEY &&
+                  process.env.ANALYSIS_WORKER_ENABLED === "1"
+                }
+                requestKey={randomUUID()}
               />
             ) : (
               <p>{draft.note}</p>

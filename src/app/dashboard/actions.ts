@@ -4,154 +4,118 @@ import { getSession } from "@/auth";
 import {
   deleteListing,
   getListing,
-  beginAnalysis,
   analysisBaseline,
-  analysisIsActive,
-  finishAnalysis,
-  releaseAnalysis,
   reviewComponent,
 } from "@/lib/db";
 import {
   getOwnedPublicRepo,
-  lastHumanCommit,
-  indexedSnapshotRepo,
   resolveSourceCommit,
   isPublicRepoFresh,
 } from "@/lib/github";
-import { summarizeRepo } from "@/lib/summarize";
-
+import { draftById } from "@/lib/contributions";
 import {
-  draftById,
-  claimDraft,
-  draftAnalysisActive,
-  publishDraft,
-  resetDraftAnalysis,
-} from "@/lib/contributions";
+  enqueueAnalysis,
+  jobForKey,
+  payloadHash,
+  cancelJob,
+} from "@/lib/analysis-jobs";
 
-export type ActionState = { error?: string; ok?: string } | null;
-
+export type ActionState = {
+  error?: string;
+  ok?: string;
+  jobId?: string;
+} | null;
 export async function salvage(
   _prev: ActionState,
   form: FormData,
 ): Promise<ActionState> {
   const session = await getSession();
   if (!session) return { error: "Sign in first." };
-  if (!process.env.ANTHROPIC_API_KEY)
-    return {
-      error:
-        "Analysis is not configured on this installation yet. Your existing listings remain removable.",
-    };
   const repoId = Number(form.get("repoId"));
+  const key = String(form.get("requestKey") ?? "");
   if (!Number.isSafeInteger(repoId) || repoId < 1)
     return { error: "Choose a valid repository." };
+  if (!/^[A-Za-z0-9_-]{16,80}$/.test(key))
+    return { error: "Refresh this page before starting an analysis." };
   const note =
     String(form.get("note") ?? "")
       .trim()
       .slice(0, 280) || null;
-  const draftId = String(form.get("draftId") ?? "");
-  const baseline = analysisBaseline(repoId);
-  let analysisToken: string | undefined;
+  const draftId = String(form.get("draftId") ?? "") || null;
+  if (draftId && draftId.length > 80) return { error: "Choose a valid draft." };
+  const hash = payloadHash(repoId, note, draftId);
   try {
+    const replay = jobForKey(session.ghId, key);
+    if (replay) {
+      if (replay.payload_hash !== hash)
+        return {
+          error:
+            "This request key belongs to different context. Refresh before submitting.",
+        };
+      return { ok: "Open the saved analysis progress.", jobId: replay.id };
+    }
+    if (
+      !process.env.ANTHROPIC_API_KEY ||
+      process.env.ANALYSIS_WORKER_ENABLED !== "1"
+    )
+      return {
+        error:
+          "Background analysis is not configured on this installation. Existing listings remain removable.",
+      };
+    const baseline = analysisBaseline(repoId);
     const repo = await getOwnedPublicRepo(
       session.accessToken,
       repoId,
       session.login,
     );
-    if (!repo.license?.spdx_id || repo.license.spdx_id === "NOASSERTION") {
+    if (repo.id !== repoId || repo.owner.id !== session.ghId)
+      throw Error("Repository ownership changed.");
+    if (!repo.license?.spdx_id || repo.license.spdx_id === "NOASSERTION")
       return {
         error:
           "Add a recognized license to the repository before listing it for reuse. GitHub must identify its SPDX license.",
       };
-    }
-    if (repo.owner.id !== session.ghId)
-      throw new Error("Repository ownership changed.");
-    let sourceSha: string;
+    const sourceSha = await resolveSourceCommit(session.accessToken, repo);
     if (draftId) {
       const draft = draftById(draftId, session.ghId);
-      if (!draft || draft.repo_id !== repo.id || draft.status !== "pending")
-        throw new Error(
+      if (!draft || draft.repo_id !== repoId || draft.status !== "pending")
+        throw Error(
           "This draft is no longer actionable. Refresh your agent inbox.",
         );
-      sourceSha = await resolveSourceCommit(session.accessToken, repo);
-      if (sourceSha !== draft.source_sha)
-        throw new Error(
+      if (draft.source_sha !== sourceSha)
+        throw Error(
           "The default branch moved since this draft. Prepare a new draft for the current commit.",
         );
-      analysisToken = claimDraft(
-        draftId,
-        session.ghId,
-        repo.id,
-        sourceSha,
-        baseline,
-      );
-    } else {
-      analysisToken = beginAnalysis(repo.id, session.ghId, baseline);
-      sourceSha = await resolveSourceCommit(session.accessToken, repo);
     }
-    const [snap, last] = await Promise.all([
-      indexedSnapshotRepo(session.accessToken, repo, sourceSha),
-      lastHumanCommit(session.accessToken, repo, sourceSha),
-    ]);
-    if (!(await isPublicRepoFresh(repo.id, session.ghId)))
-      throw new Error("Repository is no longer public or owned by you");
-    if (
-      !analysisIsActive(analysisToken) ||
-      (draftId && !draftAnalysisActive(draftId, session.ghId, analysisToken))
-    )
-      return {
-        error:
-          "This analysis was canceled or expired. It has not been published.",
-      };
-    const { summary, model } = await summarizeRepo(repo, snap, note);
-    if (!(await isPublicRepoFresh(repo.id, session.ghId)))
-      throw new Error("Repository is no longer public or owned by you");
-    const result = {
-      github_repo_id: repo.id,
-      owner_login: repo.owner.login,
-      owner_id: session.ghId,
-      name: repo.name,
-      full_name: repo.full_name,
-      url: repo.html_url,
-      description: repo.description,
-      language: repo.language,
-      stars: repo.stargazers_count,
-      forks: repo.forks_count,
-      license:
-        repo.license?.spdx_id && repo.license.spdx_id !== "NOASSERTION"
-          ? repo.license.spdx_id
-          : (repo.license?.name ?? null),
-      last_human_commit: last,
-      owner_note: note,
-      summary,
-      source_sha: sourceSha,
-      analyzed_at: new Date().toISOString(),
-      summary_model: model,
-    };
-    const published = draftId
-      ? publishDraft(draftId, analysisToken, result)
-      : finishAnalysis(analysisToken, result);
-    if (!published)
-      return {
-        error:
-          "This analysis was canceled or expired. It has not been published.",
-      };
-    revalidatePath("/", "layout");
+    const job = enqueueAnalysis({
+      ownerId: session.ghId,
+      repoId,
+      repoName: repo.full_name,
+      sourceSha,
+      note,
+      draftId,
+      key,
+      model: process.env.SUMMARY_MODEL ?? "claude-haiku-5-5",
+      baseline,
+    });
     revalidatePath("/dashboard");
     revalidatePath("/dashboard/agents");
     return {
-      ok:
-        summary.analysis?.outcome === "no_candidates"
-          ? `Analysis complete for ${repo.full_name}: no suitable components identified. You can inspect the result in your listings.`
-          : `Listed ${repo.full_name}`,
+      ok: "Analysis queued. You can close this page and return to its progress later.",
+      jobId: job.id,
     };
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Something went wrong" };
-  } finally {
-    if (analysisToken) {
-      releaseAnalysis(analysisToken);
-      if (draftId) resetDraftAnalysis(draftId, session.ghId, analysisToken);
-    }
+    return {
+      error: e instanceof Error ? e.message : "Could not queue analysis.",
+    };
   }
+}
+export async function cancelAnalysis(form: FormData) {
+  const session = await getSession();
+  if (!session) return;
+  cancelJob(String(form.get("jobId") ?? ""), session.ghId);
+  revalidatePath("/dashboard/jobs");
+  revalidatePath("/dashboard/agents");
 }
 
 export async function setComponentReview(

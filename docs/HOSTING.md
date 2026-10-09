@@ -8,8 +8,8 @@ provider pages on this date and are estimates before tax and future price change
 The 2026-10-09 [analysis engine](ANALYSIS-ENGINE.md) uses bounded complete-source
 indexing and a replaceable provider interface. Anthropic remains the installed
 live adapter; a Codex runtime or hosted OpenAI adapter has not been provisioned.
-Existing pilot listings are not silently re-analyzed. The additive history table
-is included in ordinary SQLite backups; preserve an online backup before upgrading.
+Existing pilot listings are not silently re-analyzed. The additive history and job tables
+are included in ordinary SQLite backups; preserve an online backup before upgrading.
 Provider choice and live validation of the new prompt remain pre-hosting work.
 The runtime image now includes standard-library Python 3.11 and its trusted AST
 helper. It parses repository text in an isolated, time-limited process; it does
@@ -90,6 +90,12 @@ concurrent analyses and large catalogs still need measurement.
    small allowances, for example three attempts per owner and ten globally.
    The container requires an operator when a configured provider and allowances
    enable paid analysis. Application quotas survive restarts and backups.
+8. Keep `ANALYSIS_WORKER_ENABLED=1` for this long-lived Node service; it is set in
+   the runtime image. Build processes and Edge loading do not start the worker.
+   Setting `0` disables background work and new approvals. Keep one service
+   instance; serverless execution, multiple independent databases and horizontal
+   scaling require a different queue/storage design. Before upgrading, back up
+   the database, including queued work and any saved response checkpoints.
 
 ### Mounted-volume ownership
 
@@ -156,16 +162,23 @@ Docker's image healthcheck records readiness but Docker alone does not restart a
 unhealthy running process. Configure the hosting service's restart policy and
 alerts for exits, repeated health failures, full disks and upstream 429/503s.
 
-`/api/health` checks database access. Container preflight adds writable-directory,
+`/api/health` checks database access and the enabled worker timer. A missing or
+stale enabled worker returns 503; disabling it reports `worker: "disabled"`. Container preflight adds writable-directory,
 read/write-file and SQLite quick-check validation. Neither proves live GitHub,
 OAuth, Anthropic billing or customer traffic. Verify those separately after the
 host exists. Logs deliberately omit credentials and private source/context.
 
-Deployments can interrupt in-flight paid analysis. Keep approval traffic quiet
-while upgrading; failed/crashed reservations consume quota, expire after ten
-minutes, and require deliberate owner retry. There is no automatic model retry
-or fallback that hides a possible charge. This smoke drill checks SQLite crash
-atomicity and persisted quota, not a real provider request killed mid-flight.
+Deployments can interrupt in-flight paid analysis. The durable queue uses a
+60-second worker lease, ten-second heartbeat and one-day job lifetime. Checkpoints
+resume completed source reads, validation and publication; a provider request
+without a saved response pauses for owner attention. There is no automatic model
+retry or fallback that hides a possible charge. Allowances are reserved once at
+enqueue and remain consumed after a failure. Reducing allowances to zero prevents
+new approvals but does not revoke already queued jobs; cancel jobs or disable the
+worker to stop those. See the [full recovery rules](ANALYSIS-ENGINE.md#durable-analysis-jobs).
+The smoke drill verifies synthetic checkpoint recovery after SIGKILL and keeps
+uncertain requests paused without credentials. It does not kill a real paid
+request or establish whether that request would be billed.
 
 ## Repeat the readiness checks
 
@@ -182,7 +195,8 @@ npm run test:container
 The explicit smoke command creates disposable local volumes/containers, forwards
 no real credentials, makes no repository analysis calls, and removes its fixtures.
 It verifies mounted storage, actual UID, application/download delivery, online
-backup, SIGKILL rollback, replacement-container persistence, fresh-volume restore,
+backup, SIGKILL rollback, durable job recovery, owner-only progress,
+replacement-container persistence, fresh-volume restore,
 Docker health, missing-mount/invalid/read-only/corrupt storage rejection and the canonical
 HTTPS OAuth redirect. CI runs it on Linux amd64; local verification uses arm64.
 

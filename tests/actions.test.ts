@@ -1,6 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const m = vi.hoisted(() => ({
   getSession: vi.fn(),
+  enqueueAnalysis: vi.fn(),
+  jobForKey: vi.fn(),
+  cancelJob: vi.fn(),
   getOwnedPublicRepo: vi.fn(),
   resolveSourceCommit: vi.fn(),
   indexedSnapshotRepo: vi.fn(),
@@ -20,23 +23,32 @@ vi.mock("@/auth", () => ({ getSession: m.getSession }));
 vi.mock("@/lib/github", () => m);
 vi.mock("@/lib/summarize", () => ({ summarizeRepo: m.summarizeRepo }));
 vi.mock("@/lib/db", () => m);
+vi.mock("@/lib/analysis-jobs", async (original) => ({
+  ...(await original<typeof import("@/lib/analysis-jobs")>()),
+  enqueueAnalysis: m.enqueueAnalysis,
+  jobForKey: m.jobForKey,
+  cancelJob: m.cancelJob,
+}));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
-import { salvage, unlist, setComponentReview } from "@/app/dashboard/actions";
+import {
+  salvage,
+  unlist,
+  setComponentReview,
+  cancelAnalysis,
+} from "@/app/dashboard/actions";
 const sha = "a".repeat(40);
 const repo = {
   id: 1,
+  full_name: "me/util",
   owner: { id: 42, login: "me" },
   license: { spdx_id: "MIT", name: "MIT License" },
 };
-const snap = {
-  sourceSha: sha,
-  knownPaths: ["x.ts"],
-  tree: ["x.ts"],
-  files: [{ path: "x.ts", content: "source" }],
-};
+const snap = {};
 beforeEach(() => {
   vi.resetAllMocks();
   vi.stubEnv("ANTHROPIC_API_KEY", "test-only");
+  vi.stubEnv("ANALYSIS_WORKER_ENABLED", "1");
+  m.enqueueAnalysis.mockReturnValue({ id: "job" });
   m.getSession.mockResolvedValue({
     ghId: 42,
     login: "me",
@@ -58,44 +70,42 @@ beforeEach(() => {
 const form = () => {
   const f = new FormData();
   f.set("repoId", "1");
+  f.set("requestKey", "request-key-fixture-001");
   return f;
 };
 describe("publication orchestration", () => {
-  it("uses one resolved commit for sampling, history and saved provenance", async () => {
-    expect(await salvage(null, form())).toHaveProperty("ok");
+  it("queues one pinned commit without sampling or provider work in the request", async () => {
+    expect(await salvage(null, form())).toHaveProperty("jobId", "job");
     expect(m.resolveSourceCommit).toHaveBeenCalledTimes(1);
-    expect(m.indexedSnapshotRepo).toHaveBeenCalledWith("token", repo, sha);
-    expect(m.lastHumanCommit).toHaveBeenCalledWith("token", repo, sha);
-    expect(m.summarizeRepo).toHaveBeenCalledWith(repo, snap, null);
-    expect(m.finishAnalysis).toHaveBeenCalledWith(
-      "analysis-token",
+    expect(m.enqueueAnalysis).toHaveBeenCalledWith(
       expect.objectContaining({
-        owner_id: 42,
-        source_sha: sha,
-        summary_model: "returned-model",
-        analyzed_at: expect.any(String),
+        ownerId: 42,
+        repoId: 1,
+        sourceSha: sha,
+        repoName: "me/util",
+        key: "request-key-fixture-001",
       }),
     );
-  });
-  it("does not invoke the model when the public sample fails", async () => {
-    m.indexedSnapshotRepo.mockRejectedValue(new Error("Unreadable sample"));
-    expect(await salvage(null, form())).toEqual({ error: "Unreadable sample" });
+    expect(m.indexedSnapshotRepo).not.toHaveBeenCalled();
     expect(m.summarizeRepo).not.toHaveBeenCalled();
     expect(m.finishAnalysis).not.toHaveBeenCalled();
   });
-  it.each(["before", "after"])(
-    "stops publication when visibility changes %s the model call",
-    async (when) => {
-      if (when === "before") m.isPublicRepoFresh.mockResolvedValue(false);
-      else
-        m.isPublicRepoFresh
-          .mockResolvedValueOnce(true)
-          .mockResolvedValueOnce(false);
-      expect(await salvage(null, form())).toHaveProperty("error");
-      expect(m.finishAnalysis).not.toHaveBeenCalled();
-      if (when === "before") expect(m.summarizeRepo).not.toHaveBeenCalled();
-    },
-  );
+  it("replays an existing enqueue after configuration changes without GitHub requests", async () => {
+    const { payloadHash } = await import("@/lib/analysis-jobs");
+    m.jobForKey.mockReturnValue({
+      id: "prior",
+      payload_hash: payloadHash(1, null, null),
+    });
+    vi.stubEnv("ANTHROPIC_API_KEY", "");
+    expect(await salvage(null, form())).toHaveProperty("jobId", "prior");
+    expect(m.getOwnedPublicRepo).not.toHaveBeenCalled();
+    expect(m.enqueueAnalysis).not.toHaveBeenCalled();
+  });
+  it("rejects changed context under the same nonce", async () => {
+    m.jobForKey.mockReturnValue({ id: "prior", payload_hash: "other" });
+    expect(await salvage(null, form())).toHaveProperty("error");
+    expect(m.getOwnedPublicRepo).not.toHaveBeenCalled();
+  });
   it("removes stored listings without requiring GitHub inventory", async () => {
     m.getListing.mockReturnValue({ owner_id: 42 });
     const f = new FormData();
@@ -111,6 +121,14 @@ describe("publication orchestration", () => {
       expect(await salvage(null, form())).toHaveProperty("error");
       expect(m.beginAnalysis).not.toHaveBeenCalled();
       expect(m.summarizeRepo).not.toHaveBeenCalled();
+    },
+  );
+  it.each([{ id: 2 }, { owner: { id: 99, login: "me" } }])(
+    "rejects mismatched repository identity before reserving quota: %j",
+    async (change) => {
+      m.getOwnedPublicRepo.mockResolvedValue({ ...repo, ...change });
+      expect(await salvage(null, form())).toHaveProperty("error");
+      expect(m.enqueueAnalysis).not.toHaveBeenCalled();
     },
   );
   it("rejects invalid identifiers before spending an API request", async () => {
@@ -162,45 +180,36 @@ describe("owner review authorization", () => {
   });
 });
 
-describe("analysis lifecycle", () => {
-  it("does not report success for a canceled publication", async () => {
-    m.finishAnalysis.mockReturnValue(false);
-    expect(await salvage(null, form())).toEqual({
-      error:
-        "This analysis was canceled or expired. It has not been published.",
-    });
-    expect(m.releaseAnalysis).toHaveBeenCalledWith("analysis-token");
+it("reports queue reservation failure without source reads or provider work", async () => {
+  m.enqueueAnalysis.mockImplementation(() => {
+    throw Error("Already running");
   });
-  it("releases its reservation after provider failure so a later attempt can run", async () => {
-    m.summarizeRepo.mockRejectedValue(new Error("Provider timed out"));
-    expect(await salvage(null, form())).toEqual({
-      error: "Provider timed out",
-    });
-    expect(m.releaseAnalysis).toHaveBeenCalledWith("analysis-token");
-    expect(m.finishAnalysis).not.toHaveBeenCalled();
-  });
-  it("rejects overlapping analyses before fetching source or invoking the provider", async () => {
-    m.beginAnalysis.mockImplementation(() => {
-      throw new Error("Already running");
-    });
-    expect(await salvage(null, form())).toEqual({ error: "Already running" });
-    expect(m.indexedSnapshotRepo).not.toHaveBeenCalled();
-    expect(m.summarizeRepo).not.toHaveBeenCalled();
-    expect(m.releaseAnalysis).not.toHaveBeenCalled();
-  });
-});
-
-it("stops an unconfigured analysis before GitHub calls or quota consumption", async () => {
-  vi.stubEnv("ANTHROPIC_API_KEY", "");
-  expect(await salvage(null, form())).toHaveProperty("error");
-  expect(m.getOwnedPublicRepo).not.toHaveBeenCalled();
-  expect(m.beginAnalysis).not.toHaveBeenCalled();
-});
-
-it("avoids the provider request when removal has canceled the analysis during source sampling", async () => {
-  m.analysisIsActive.mockReturnValue(false);
-  expect(await salvage(null, form())).toHaveProperty("error");
+  expect(await salvage(null, form())).toEqual({ error: "Already running" });
+  expect(m.indexedSnapshotRepo).not.toHaveBeenCalled();
   expect(m.summarizeRepo).not.toHaveBeenCalled();
-  expect(m.finishAnalysis).not.toHaveBeenCalled();
-  expect(m.releaseAnalysis).toHaveBeenCalledWith("analysis-token");
+});
+it.each(["ANTHROPIC_API_KEY", "ANALYSIS_WORKER_ENABLED"])(
+  "stops a new unconfigured analysis before GitHub calls: %s",
+  async (key) => {
+    vi.stubEnv(key, "");
+    expect(await salvage(null, form())).toHaveProperty("error");
+    expect(m.getOwnedPublicRepo).not.toHaveBeenCalled();
+    expect(m.enqueueAnalysis).not.toHaveBeenCalled();
+  },
+);
+it("scopes cancellation to the signed-in owner", async () => {
+  const data = new FormData();
+  data.set("jobId", "job");
+  await cancelAnalysis(data);
+  expect(m.cancelJob).toHaveBeenCalledWith("job", 42);
+  m.cancelJob.mockClear();
+  m.getSession.mockResolvedValue(null);
+  await cancelAnalysis(data);
+  expect(m.cancelJob).not.toHaveBeenCalled();
+});
+it("rejects a missing nonce before GitHub calls", async () => {
+  const data = form();
+  data.delete("requestKey");
+  expect(await salvage(null, data)).toHaveProperty("error");
+  expect(m.getOwnedPublicRepo).not.toHaveBeenCalled();
 });

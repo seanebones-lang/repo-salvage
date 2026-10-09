@@ -87,7 +87,9 @@ async function ready(name) {
         signal: AbortSignal.timeout(1000),
       });
       if (response.ok) {
-        assert.equal((await response.json()).database, "ready");
+        const health = await response.json();
+        assert.equal(health.database, "ready");
+        assert.equal(health.worker, "ready");
         return origin;
       }
     } catch {}
@@ -283,6 +285,20 @@ try {
   check(
     "online SQLite backup from running application is private and integrity checked",
   );
+  // These synthetic jobs have no provider credentials and no real source. The
+  // worker must recover their persisted states even when analysis is disabled.
+  execNode(
+    first,
+    `const d=new(require('better-sqlite3'))(process.env.DATABASE_PATH);
+    const now=Date.now();d.transaction(()=>{
+      for(const [n,stage] of ['inspection','unknown','response'].entries()){
+        const token='fixture-analysis-'+n;
+        d.prepare('INSERT INTO active_analyses VALUES (?,?,?,?)').run(700+n,123,token,now+86400000);
+        d.prepare(\`INSERT INTO analysis_jobs (id,owner_id,repo_id,repo_name,source_sha,request_key,payload_hash,analysis_token,model,status,created_at,updated_at,deadline,lease_token,lease_expires_at,inspection_attempts,provider_started_at,checkpoint_json,response_json)
+          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)\`).run('fixture-'+stage,123,700+n,'fixture/source','a'.repeat(40),'fixture-request-'+n,'fixture-hash',token,'fixture-model',stage==='inspection'?'inspecting':'generating',now,now,now+86400000,'fixture-lease-'+n,now+60000,1,stage==='inspection'?null:now,JSON.stringify({fixture:'saved-source'}),stage==='response'?JSON.stringify({fixture:'saved-response'}):null);
+      }
+    })();d.close();`,
+  );
   const writer = spawn(
     "docker",
     [
@@ -312,8 +328,12 @@ try {
   });
   docker("kill", "--signal", "KILL", first);
   await writerExit;
+  helper(
+    data,
+    "const d=new(require('better-sqlite3'))('/app/data/salvage.db');d.prepare('UPDATE analysis_jobs SET lease_expires_at=0').run();d.close()",
+  );
   docker("start", first);
-  await ready(first);
+  const restartedOrigin = await ready(first);
   assert.deepEqual(rows(first), [{ id: 1, value: "committed" }]);
   assert.equal(
     execNode(
@@ -325,6 +345,38 @@ try {
   check(
     "SIGKILL/restart preserves committed data and quota; open transaction rolls back",
   );
+  const recoveredJobs = JSON.parse(
+    execNode(
+      first,
+      "const d=new(require('better-sqlite3'))(process.env.DATABASE_PATH);console.log(JSON.stringify(d.prepare('SELECT id,status,checkpoint_json,response_json,provider_started_at FROM analysis_jobs ORDER BY id').all()));d.close()",
+    ),
+  );
+  assert.deepEqual(
+    recoveredJobs.map(({ id, status }) => ({ id, status })),
+    [
+      { id: "fixture-inspection", status: "queued" },
+      { id: "fixture-response", status: "queued" },
+      { id: "fixture-unknown", status: "needs_attention" },
+    ],
+  );
+  assert.ok(recoveredJobs[0].checkpoint_json);
+  assert.ok(recoveredJobs[1].response_json);
+  assert.equal(recoveredJobs[2].checkpoint_json, null);
+  assert.equal(recoveredJobs[2].response_json, null);
+  assert.ok(recoveredJobs[2].provider_started_at);
+  check(
+    "worker resumes saved checkpoints after SIGKILL and pauses an uncertain provider request without credentials or calls",
+  );
+  const privateProgress = await fetch(
+    restartedOrigin + "/api/analysis-jobs/fixture-inspection",
+    { signal: AbortSignal.timeout(10000) },
+  );
+  assert.equal(privateProgress.status, 401);
+  assert.equal(
+    privateProgress.headers.get("cache-control"),
+    "private, no-store",
+  );
+  check("persisted analysis progress remains private to the signed-in owner");
   docker("stop", first);
   docker("rm", first);
   const next = id + "-replacement";

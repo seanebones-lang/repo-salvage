@@ -42,6 +42,7 @@ test("container rejects partial OAuth and invalid ports, paths and allowance val
     { AGENT_READ_LIMIT: "-1" },
     { GLOBAL_DAILY_SUMMARY_LIMIT: "garbage" },
     { DAILY_SUMMARY_LIMIT: "Infinity" },
+    { ANALYSIS_WORKER_ENABLED: "yes" },
   ])
     assert.throws(() => containerConfig({ ...valid, ...env }));
   assert.equal(
@@ -49,6 +50,8 @@ test("container rejects partial OAuth and invalid ports, paths and allowance val
       .port,
     "8080",
   );
+  for (const value of ["0", "1"])
+    assert.ok(containerConfig({ ...valid, ANALYSIS_WORKER_ENABLED: value }));
 });
 test("paid container operation requires a moderator; a disabled analysis pilot can start", () => {
   assert.throws(() =>
