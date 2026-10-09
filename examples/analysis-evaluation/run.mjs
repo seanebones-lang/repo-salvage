@@ -10,8 +10,13 @@ import { buildHoldout, sha256 } from "./holdout.mjs";
 import { scoreSelection } from "./scoring.mjs";
 import { inspectCodexTrace } from "./trace.mjs";
 const [provider, model, ...options] = process.argv.slice(2);
-const holdout = options[0] === "--holdout";
-const effortOptions = holdout ? options.slice(1) : options;
+const epoch =
+  options[0] === "--coverage"
+    ? "coverage"
+    : options[0] === "--holdout"
+      ? "holdout"
+      : null;
+const effortOptions = epoch ? options.slice(1) : options;
 const effort = effortOptions[0] === "--effort" ? effortOptions[1] : "low";
 if (
   !["--codex", "--anthropic"].includes(provider) ||
@@ -22,7 +27,7 @@ if (
   (provider === "--anthropic" && effortOptions.length !== 0)
 ) {
   console.log(
-    "Explicit model use: node examples/analysis-evaluation/run.mjs --codex MODEL [--holdout] [--effort low|medium|high]\nOr: node --env-file=.env.local examples/analysis-evaluation/run.mjs --anthropic MODEL [--holdout]\nNo automatic retries; results remain under ignored artifacts.",
+    "Explicit model use: node examples/analysis-evaluation/run.mjs --codex MODEL [--holdout|--coverage] [--effort low|medium|high]\nOr: node --env-file=.env.local examples/analysis-evaluation/run.mjs --anthropic MODEL [--holdout|--coverage]\nNo automatic retries; results remain under ignored artifacts.",
   );
   process.exit(process.argv.length > 2 ? 1 : 0);
 }
@@ -30,7 +35,7 @@ if (provider === "--anthropic" && !process.env.ANTHROPIC_API_KEY)
   throw Error("Anthropic credential is not configured.");
 process.chdir(root);
 let frozen =
-  !holdout &&
+  !epoch &&
   JSON.parse(
     await fs.readFile(
       path.join(root, "examples/analysis-evaluation/packets.json"),
@@ -39,7 +44,7 @@ let frozen =
   );
 const engine = await loadEngine();
 try {
-  if (holdout) frozen = await buildHoldout(engine);
+  if (epoch) frozen = await buildHoldout(engine, true, epoch);
   if (!frozen.cases.length || frozen.cases.length > 8)
     throw Error("Evaluation batch must have between one and eight cases.");
   for (const c of frozen.cases)

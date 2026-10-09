@@ -2,12 +2,19 @@ import { createHash } from "node:crypto";
 import path from "node:path";
 import ts from "typescript";
 import { parsePythonFiles } from "./python-parser";
+import {
+  fairPathOrder,
+  sourceRole,
+  selectionPath,
+  bindingObserver,
+} from "./source-selection";
 
 export const INDEX_VERSION = "repo-salvage/source-index-v2";
 export const INDEX_LIMITS = {
   files: 64,
   initialFiles: 48,
   initialMetadataFiles: 12,
+  initialLibraryFiles: 24,
   followupFiles: 16,
   initialBytes: 1_500_000,
   inspectionMilliseconds: 120_000,
@@ -71,6 +78,8 @@ export type EvidencePacket = {
   targets: SourceTarget[];
   references: SourceReference[];
   omitted_targets: number;
+  selection_policy?: "repo-salvage/coverage-v1";
+  contexts?: { target_id: string; same_file_reference: string | null }[];
 };
 const digest = (value: string) =>
   createHash("sha256").update(value).digest("hex");
@@ -463,7 +472,7 @@ export function indexSources(
   return index;
 }
 
-/** Choose complete evidence blocks, never character prefixes of declarations. */
+/** Select diverse complete declarations first, then explicit bounded context. */
 export function evidencePacket(
   index: SourceIndex,
   characterLimit = INDEX_LIMITS.promptCharacters,
@@ -473,66 +482,166 @@ export function evidencePacket(
     targets: [],
     references: [],
     omitted_targets: index.targets.length,
+    selection_policy: "repo-salvage/coverage-v1",
+    contexts: [],
   };
-  const selected = new Map<string, SourceReference>();
-  // Include the envelope, commas and worst-case omission count in the wire
-  // allowance, rather than counting source blocks alone.
-  let used = JSON.stringify(packet).length;
-  if (!Number.isInteger(characterLimit) || characterLimit < used)
+  if (
+    !Number.isInteger(characterLimit) ||
+    JSON.stringify(packet).length > characterLimit
+  )
     throw new Error("Evidence allowance cannot contain the packet envelope.");
+  const references = new Map(index.references.map((r) => [r.id, r]));
+  const files = new Map(
+    index.references.filter((r) => r.kind === "file").map((r) => [r.path, r]),
+  );
+  const fits = (limit = characterLimit) =>
+    JSON.stringify(packet).length <= limit;
   const add = (reference: SourceReference | undefined) => {
     if (!reference) return false;
-    if (selected.has(reference.id)) return true;
-    const cost = JSON.stringify(reference).length + (selected.size ? 1 : 0);
-    if (used + cost > characterLimit) return false;
-    selected.set(reference.id, reference);
-    used += cost;
-    return true;
+    if (packet.references.some((r) => r.id === reference.id)) return true;
+    packet.references.push(reference);
+    if (fits()) return true;
+    packet.references.pop();
+    return false;
   };
-  const targets = [...index.targets].sort(
-    (a, b) =>
-      a.unresolved.length - b.unresolved.length ||
-      a.supporting_paths.length - b.supporting_paths.length ||
-      a.path.localeCompare(b.path) ||
-      a.symbol.localeCompare(b.symbol),
-  );
-  for (const target of targets) {
-    if (packet.targets.length >= INDEX_LIMITS.candidates) break;
-    const reference = index.references.find(
-      (r) => r.id === target.reference_id,
-    );
-    if (!reference) continue;
-    const targetCost =
-      JSON.stringify(target).length + (packet.targets.length ? 1 : 0);
+  // One target per file per turn. Coupling and block size sort within a file,
+  // rather than globally disqualifying entire languages or later directories.
+  const groups = new Map<string, SourceTarget[]>();
+  const observers = new Map<string, ReturnType<typeof bindingObserver>>();
+  const bindings = new Map<string, string[]>();
+  const observed = (target: SourceTarget) => {
+    if (!bindings.has(target.id)) {
+      const file = files.get(target.path);
+      if (
+        file &&
+        index.files.find((f) => f.path === target.path)?.parser === "typescript"
+      ) {
+        if (!observers.has(target.path))
+          observers.set(target.path, bindingObserver(file.content));
+        bindings.set(
+          target.id,
+          observers.get(target.path)!(
+            references.get(target.reference_id)?.content ?? "",
+            target.symbol,
+          ),
+        );
+      } else bindings.set(target.id, []);
+    }
+    return bindings.get(target.id)!;
+  };
+  const implementationRank = (target: SourceTarget) => {
+    if (target.kind === "file") return 2;
+    const content = references.get(target.reference_id)?.content ?? "";
     if (
-      used +
-        targetCost +
-        (selected.has(target.reference_id)
-          ? 0
-          : JSON.stringify(reference).length + (selected.size ? 1 : 0)) >
-      characterLimit
+      /^(?:async\s+)?def\b/.test(content) &&
+      !/\b(?:return|yield)\b/.test(content)
     )
-      continue;
-    if (!add(reference)) continue;
-    used += targetCost;
-    packet.targets.push(target);
-    for (const file of [
-      ...new Set([
-        target.path,
-        ...target.supporting_paths,
-        ...target.test_paths,
-        ...target.notice_paths,
-      ]),
-    ])
-      add(index.references.find((r) => r.path === file && r.kind === "file"));
+      return 1;
+    return /^(?:export\s+(?:default\s+)?|async\s+)*(?:function|class|def)\b/.test(
+      content,
+    ) || /=>/.test(content)
+      ? 0
+      : 1;
+  };
+  for (const target of index.targets) {
+    const group = groups.get(target.path) ?? [];
+    group.push(target);
+    groups.set(target.path, group);
   }
+  for (const group of groups.values())
+    group.sort(
+      (a, b) =>
+        implementationRank(a) - implementationRank(b) ||
+        a.unresolved.length - b.unresolved.length ||
+        a.supporting_paths.length - b.supporting_paths.length ||
+        observed(a).length - observed(b).length ||
+        (references.get(a.reference_id)?.content.length ?? 0) -
+          (references.get(b.reference_id)?.content.length ?? 0) ||
+        (a.symbol < b.symbol ? -1 : a.symbol > b.symbol ? 1 : 0),
+    );
+  const orderFiles = (paths: string[]) =>
+    fairPathOrder(
+      paths,
+      (file) => (sourceRole(file) === "library" ? selectionPath(file) : file),
+      (a, b) =>
+        (references.get(groups.get(a)![0].reference_id)?.content.length ?? 0) -
+          (references.get(groups.get(b)![0].reference_id)?.content.length ??
+            0) || (a < b ? -1 : a > b ? 1 : 0),
+    );
+  const paths = [...groups.keys()];
+  const orderedFiles = [
+    ...orderFiles(paths.filter((p) => sourceRole(p) === "library")),
+    ...orderFiles(paths.filter((p) => sourceRole(p) === "module")),
+    ...orderFiles(paths.filter((p) => sourceRole(p) === "application")),
+  ];
+  const primaryLimit = Math.floor(characterLimit * 0.7);
+  for (
+    let turn = 0;
+    turn < Math.max(0, ...[...groups.values()].map((g) => g.length));
+    turn++
+  ) {
+    for (const file of orderedFiles) {
+      if (packet.targets.length >= INDEX_LIMITS.candidates) break;
+      const target = groups.get(file)![turn];
+      if (!target) continue;
+      const reference = references.get(target.reference_id);
+      if (!reference) continue;
+      const oldReferences = packet.references.length;
+      if (!add(reference)) continue;
+      packet.targets.push(target);
+      packet.contexts!.push({
+        target_id: target.id,
+        same_file_reference: target.kind === "file" ? reference.id : null,
+      });
+      packet.omitted_targets--;
+      // Keep room for context unless a single complete block needs the larger allowance.
+      if (!fits(packet.targets.length === 1 ? characterLimit : primaryLimit)) {
+        packet.targets.pop();
+        packet.contexts!.pop();
+        packet.omitted_targets++;
+        packet.references.splice(oldReferences);
+      }
+    }
+    if (packet.targets.length >= INDEX_LIMITS.candidates) break;
+  }
+  const selectedPaths = [...new Set(packet.targets.map((t) => t.path))];
+  // Notices precede module bodies; never infer licensing from absent notices.
+  for (const notice of [
+    ...new Set(packet.targets.flatMap((t) => t.notice_paths)),
+  ].sort())
+    add(files.get(notice));
+  const contextPaths = selectedPaths.sort(
+    (a, b) =>
+      (files.get(a)?.content.length ?? Infinity) -
+        (files.get(b)?.content.length ?? Infinity) ||
+      (a < b ? -1 : a > b ? 1 : 0),
+  );
+  for (const file of contextPaths) {
+    const reference = files.get(file);
+    if (!reference) continue;
+    const oldReferences = packet.references.length;
+    if (!add(reference)) continue;
+    const contexts = packet.contexts!.filter(
+      (c) => packet.targets.find((t) => t.id === c.target_id)?.path === file,
+    );
+    contexts.forEach((c) => {
+      c.same_file_reference = reference.id;
+    });
+    if (!fits()) {
+      contexts.forEach((c) => {
+        c.same_file_reference = null;
+      });
+      packet.references.splice(oldReferences);
+    }
+  }
+  for (const file of [
+    ...new Set(
+      packet.targets.flatMap((t) => [...t.supporting_paths, ...t.test_paths]),
+    ),
+  ])
+    add(files.get(file));
   for (const file of index.files)
-    if (isManifestPath(file.path))
-      add(
-        index.references.find((r) => r.path === file.path && r.kind === "file"),
-      );
-  packet.references = [...selected.values()];
-  packet.omitted_targets = index.targets.length - packet.targets.length;
+    if (isManifestPath(file.path)) add(files.get(file.path));
   return packet;
 }
 
@@ -550,5 +659,6 @@ export function indexRecord(index: SourceIndex, packet: EvidencePacket) {
     references: packet.references.map(
       ({ content: _content, ...reference }) => reference,
     ),
+    selection_policy: packet.selection_policy ?? "legacy-v2",
   };
 }

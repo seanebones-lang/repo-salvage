@@ -14,9 +14,14 @@ path, generated/vendor directory, unsupported encoding or oversized source is
 recorded as excluded. Nothing in the repository is installed or executed.
 
 Limits are explicit: 10,000 tree entries, 64 inspected files, 128,000 bytes per
-file and 2,000,000 source bytes per repository. Directory round-robin selection
-avoids exhausting the allowance in one directory. The broad pass reads at most 48 files and 1.5 MB, with at most 12 metadata
-files. Up to 16 reserved reads follow known missing local dependencies, likely
+file and 2,000,000 source bytes per repository. Hierarchical round-robin selection
+balances sibling directory branches. Conventional `lib`, `utils`, `helpers`,
+`core`, `algorithms` and `domain` areas receive an early discovery preference;
+nested library subdirectories share their area's turn. Entrypoint/configuration
+names receive a later turn. These are scheduling hints, not judgments about
+usefulness, purity, safety or license eligibility. The broad pass reads at most
+48 files and 1.5 MB, with at most 12 metadata files and 24 library-area files,
+leaving initial capacity for other source areas. Up to 16 reserved reads follow known missing local dependencies, likely
 test filenames and notices; each new dependency can expose another missing import.
 Unused capacity returns to broad discovery. Total limits remain 64 files and
 2 MB, with a two-minute source-read deadline and ten-second request timeouts.
@@ -58,8 +63,22 @@ license audit. Inspection/download manifests retain their notice checks.
 
 The evidence packet supplies up to 24 candidate targets and complete source
 blocks, within a 70,000-character evidence allowance. A declaration that cannot
-fit is omitted, never cut into a prefix. Additional context is included when it
-fits; indexing a dependency does not imply its body was supplied to the model.
+fit is omitted, never cut into a prefix. Policy `repo-salvage/coverage-v1` gives
+files one candidate turn at a time, preferring conventional library areas. Within
+a file, implementation shape, observed module dependencies, syntactic same-file
+binding references and declaration size affect scheduling. Binding observations
+are not a complete closure or scope analysis. Seventy percent of the allowance
+is reserved for primary selections; a single larger complete block may use the
+whole allowance. Notices precede complete same-file context, then supporting/test
+files and manifests. Every JSON field and escape counts toward the allowance.
+
+Each selected target has a `contexts` entry identifying its complete same-file
+reference, or null when that body did not fit. The prompt requires checking
+helpers, types, constants, early returns and side effects in available context.
+The server adds a missing-context limitation independently of model prose when
+that context is absent. Legacy saved packets remain valid. Indexing a dependency
+does not imply its body was supplied to the model; complete-file context still
+does not prove that external dependencies or enclosing runtime context are complete.
 The final serialized request has a separate 100,000-character guard and a
 4,000-output-token allowance. Character bounds are not a monetary budget.
 
@@ -232,9 +251,11 @@ review, natural discovery recall, a repeated-run estimate or a dollar-cost compa
 
 The evaluation also identified six source probes that never reached the model:
 three indexed targets omitted from the packet and three files absent from inspection.
-Fairer bounded source and target selection, explicit extraction context and a fresh
-independently reviewed corpus should precede choosing and live-verifying the hosted
-provider adapter. Automatic installation/execution of arbitrary repository
+The [coverage regression epoch](../examples/analysis-evaluation/coverage/README.md)
+now measures fairer bounded file/target selection and explicit same-file context
+against those same commits. This known-repository regression is separate from
+the unchanged historical epoch. A fresh independently reviewed corpus should
+precede choosing and live-verifying the hosted provider adapter. Automatic installation/execution of arbitrary repository
 code is not part of the public analyzer.
 
 The real-source milestone adds ten offline evaluation/consumer checks, bringing

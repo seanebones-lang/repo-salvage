@@ -16,6 +16,7 @@ export async function loadEngine() {
   );
   for (const name of [
     "python-parser",
+    "source-selection",
     "source-index",
     "components",
     "analysis-provider",

@@ -1,6 +1,7 @@
 import { cache } from "react";
 import { createHash } from "node:crypto";
 import { sourcePrefix } from "./http";
+import { fairPathOrder, sourceRole, selectionPath } from "./source-selection";
 import {
   INDEX_LIMITS,
   indexSources,
@@ -325,24 +326,28 @@ export async function indexedSnapshotRepo(
     /(^|\/)readme/i.test(file.path)
       ? 0
       : isTestPath(file.path)
-        ? 2
-        : 1;
-  // Round-robin directories at each priority prevents one large folder from
-  // exhausting the entire inventory allowance. Tiny utilities remain eligible.
+        ? 4
+        : sourceRole(file.path) === "library"
+          ? 1
+          : sourceRole(file.path) === "module"
+            ? 2
+            : 3;
+  // Balance parent branches as well as leaves: many route subdirectories must
+  // not buy more turns than a sibling utilities directory. All reads still
+  // verify complete pinned blobs; file size does not imply usefulness.
   const ordered: SourceFile[] = [];
-  for (const rank of [0, 1, 2]) {
-    const groups = new Map<string, SourceFile[]>();
-    for (const file of eligible
-      .filter((f) => priority(f) === rank)
-      .sort((a, b) => a.path.localeCompare(b.path))) {
-      const directory = file.path.split("/").slice(0, -1).join("/");
-      const group = groups.get(directory) ?? [];
-      group.push(file);
-      groups.set(directory, group);
-    }
-    while ([...groups.values()].some((g) => g.length))
-      for (const group of groups.values())
-        if (group.length) ordered.push(group.shift()!);
+  for (const rank of [0, 1, 2, 3, 4]) {
+    ordered.push(
+      ...fairPathOrder(
+        eligible.filter((f) => priority(f) === rank),
+        (f) => (rank === 1 ? selectionPath(f.path) : f.path),
+        (a, b) =>
+          Number(!isNoticePath(a.path)) - Number(!isNoticePath(b.path)) ||
+          Number(!isManifestPath(a.path)) - Number(!isManifestPath(b.path)) ||
+          (rank === 1 ? (a.size ?? 0) - (b.size ?? 0) : 0) ||
+          (a.path < b.path ? -1 : a.path > b.path ? 1 : 0),
+      ),
+    );
   }
   const files: RepoSnapshot["files"] = [];
   const attempted = new Set<string>();
@@ -403,6 +408,7 @@ export async function indexedSnapshotRepo(
   // Reserve an allowance for dependency/test inspection; avoid spending the
   // broad pass entirely on documentation in large multi-package repositories.
   let metadataReads = 0;
+  let libraryReads = 0;
   for (const file of ordered) {
     if (attempted.size >= INDEX_LIMITS.initialFiles) break;
     if (
@@ -410,9 +416,15 @@ export async function indexedSnapshotRepo(
       metadataReads >= INDEX_LIMITS.initialMetadataFiles
     )
       continue;
+    if (
+      priority(file) === 1 &&
+      libraryReads >= INDEX_LIMITS.initialLibraryFiles
+    )
+      continue;
     if (await readFile(file, INDEX_LIMITS.initialBytes)) {
       initialPaths.push(file.path);
       if (priority(file) === 0) metadataReads++;
+      if (priority(file) === 1) libraryReads++;
     }
   }
   let index = indexSources(files, knownPaths, skipped);

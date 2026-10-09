@@ -6,7 +6,7 @@ import { scoreSelection } from "../examples/analysis-evaluation/scoring.mjs";
 import { inspectCodexTrace } from "../examples/analysis-evaluation/trace.mjs";
 import fs from "node:fs/promises";
 import { sha256 } from "../examples/analysis-evaluation/holdout.mjs";
-test("sealed real source rebuilds production packets offline, with rubric outside requests", async () => {
+test("sealed historical source rebuilds archived packets offline, with rubric outside requests", async () => {
   const engine = await loadEngine();
   try {
     const suite = await buildHoldout(engine);
@@ -172,6 +172,64 @@ test("archived answers replay structural/reference and selection gates against t
         accepted++;
       }
       assert.equal(accepted, run.summary.structuralPasses);
+    }
+  } finally {
+    await engine.close();
+  }
+});
+
+test("coverage epoch validates pinned blobs, complete contexts and stage-specific discovery", async () => {
+  const engine = await loadEngine();
+  try {
+    const baseline = await buildHoldout(engine);
+    const suite = await buildHoldout(engine, true, "coverage");
+    assert.equal(suite.cases.length, 4);
+    assert.equal(suite.seal.coverage.filter((p) => p.inspected).length, 6);
+    assert.equal(suite.seal.coverage.filter((p) => p.supplied).length, 3);
+    assert.equal(
+      suite.seal.coverage.filter((p) => p.sameFileContext).length,
+      4,
+    );
+    assert.equal(baseline.seal.coverage.filter((p) => p.supplied).length, 0);
+    const packets = new Map(suite.cases.map((c) => [c.repo, c.packet]));
+    for (const [repo, packet] of packets) {
+      assert.equal(packet.selection_policy, "repo-salvage/coverage-v1");
+      assert.ok(JSON.stringify(packet).length <= 70000);
+      assert.ok(packet.targets.length <= 24);
+      assert.equal(
+        new Set(packet.targets.map((t) => t.path)).size,
+        packet.targets.length,
+      );
+      const original = baseline.cases.find((c) => c.repo === repo).packet;
+      assert.ok(
+        new Set(packet.targets.map((t) => t.path)).size >
+          new Set(original.targets.map((t) => t.path)).size,
+      );
+      for (const context of packet.contexts) {
+        const target = packet.targets.find((t) => t.id === context.target_id);
+        assert.ok(target);
+        if (context.same_file_reference) {
+          const reference = packet.references.find(
+            (r) => r.id === context.same_file_reference,
+          );
+          assert.ok(reference);
+          assert.equal(reference.path, target.path);
+          assert.equal(reference.kind, "file");
+        }
+      }
+    }
+    for (const c of suite.cases) {
+      for (const point of c.reviewPoints)
+        assert.equal(c.request.input.includes(point), false);
+      for (const selected of c.expectation.allowedTargets) {
+        const target = c.packet.targets.find(
+          (t) => `${t.path}#${t.symbol}` === selected,
+        );
+        const context = c.packet.contexts.find(
+          (v) => v.target_id === target.id,
+        );
+        assert.ok(context.same_file_reference);
+      }
     }
   } finally {
     await engine.close();

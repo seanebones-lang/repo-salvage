@@ -1,0 +1,109 @@
+{
+  "cases": [
+    {
+      "id": "cache-key",
+      "repo": "seanebones-lang/AI-Voiceover",
+      "ownerNote": "Consider only buildTtsCacheKey in apps/web/lib/tts-cache.ts for reuse; exclude every other target.",
+      "expectation": {
+        "outcome": "candidates",
+        "allowedTargets": ["apps/web/lib/tts-cache.ts#buildTtsCacheKey"],
+        "requiredGroups": [["apps/web/lib/tts-cache.ts#buildTtsCacheKey"]],
+        "minCandidates": 1,
+        "maxCandidates": 1
+      },
+      "reviewPoints": [
+        "Requires same-file hash helper and node:crypto; does not require cache Map or keyOrder for isolated extraction.",
+        "Trims text; combines fields with NUL separators; supplies clone_tune and emotion defaults.",
+        "No input validation, cache operation or proof of collision-free tuple serialization."
+      ]
+    },
+    {
+      "id": "prosody-tags",
+      "repo": "seanebones-lang/AI-Voiceover",
+      "ownerNote": "Consider only parseProsodyTags in apps/web/lib/tts/prosody-tags.ts for reuse; exclude every other target.",
+      "expectation": {
+        "outcome": "candidates",
+        "allowedTargets": ["apps/web/lib/tts/prosody-tags.ts#parseProsodyTags"],
+        "requiredGroups": [
+          ["apps/web/lib/tts/prosody-tags.ts#parseProsodyTags"]
+        ],
+        "minCandidates": 1,
+        "maxCandidates": 1
+      },
+      "reviewPoints": [
+        "Requires clamp, DEFAULT_ADJUSTMENTS and result/input types from the same file.",
+        "Counts opening tags, computes global deltas and clamps them; no per-span rendering or full SSML implementation.",
+        "Unknown markup is not validated; tag matching is case-insensitive and whitespace is collapsed."
+      ]
+    },
+    {
+      "id": "work-unit-cli",
+      "repo": "seanebones-lang/Humanity-Grid",
+      "ownerNote": "Consider only main in src/experiment-engine/scripts/split_work_units.py for reuse; exclude every other target.",
+      "expectation": {
+        "outcome": "candidates",
+        "allowedTargets": [
+          "src/experiment-engine/scripts/split_work_units.py#main"
+        ],
+        "requiredGroups": [
+          ["src/experiment-engine/scripts/split_work_units.py#main"]
+        ],
+        "minCandidates": 1,
+        "maxCandidates": 1
+      },
+      "reviewPoints": [
+        "CLI uses argparse and filesystem writes, plus project-specific JobSpec.from_yaml; it is not a pure splitter.",
+        "The configured library-path argument is not used. JSON docking parameters are a placeholder.",
+        "Total compounds equals configured units times compounds per unit; no actual short-final-batch calculation based on library length.",
+        "Do not invent content or APIs of the JobSpec dependency if its source reference is absent."
+      ]
+    },
+    {
+      "id": "owner-exclusion",
+      "repo": "seanebones-lang/AI-Voiceover",
+      "ownerNote": "Exclude every supplied target from reuse. Return no candidates.",
+      "expectation": {
+        "outcome": "no_candidates",
+        "allowedTargets": [],
+        "requiredGroups": [],
+        "minCandidates": 0,
+        "maxCandidates": 0
+      },
+      "reviewPoints": [
+        "Honor exclusion despite additional useful library targets."
+      ]
+    }
+  ],
+  "coverageProbes": [
+    {
+      "repo": "seanebones-lang/Humanity-Grid",
+      "path": "src/research-scout/src/research_scout/ingest/arxiv.py",
+      "symbol": "ArxivClient._rate_limited_request"
+    },
+    {
+      "repo": "seanebones-lang/Humanity-Grid",
+      "path": "src/experiment-engine/scripts/split_work_units.py",
+      "symbol": "main"
+    },
+    {
+      "repo": "seanebones-lang/Humanity-Grid",
+      "path": "src/volunteer-app/src-tauri/src/main.rs",
+      "symbol": "<module>"
+    },
+    {
+      "repo": "seanebones-lang/AI-Voiceover",
+      "path": "apps/web/lib/tts/prosody-tags.ts",
+      "symbol": "parseProsodyTags"
+    },
+    {
+      "repo": "seanebones-lang/AI-Voiceover",
+      "path": "apps/web/lib/tts-cache.ts",
+      "symbol": "buildTtsCacheKey"
+    },
+    {
+      "repo": "seanebones-lang/AI-Voiceover",
+      "path": "apps/web/lib/rate-limit.ts",
+      "symbol": "createFallbackLimiter"
+    }
+  ]
+}
