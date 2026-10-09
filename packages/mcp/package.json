@@ -1,0 +1,30 @@
+{
+  "name": "@repo-salvage/mcp",
+  "version": "0.1.0",
+  "description": "Local MCP adapter for Repo Salvage discovery, inspection and owner-reviewed drafts",
+  "type": "module",
+  "bin": {
+    "repo-salvage-mcp": "dist/index.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "node build.mjs --check",
+    "test": "node build.mjs && node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.3.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "2.3.1"
+  }
+}

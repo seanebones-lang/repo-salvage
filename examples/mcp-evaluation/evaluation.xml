@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<evaluation>
+  <qa_pair>
+    <question>Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A reuse review is comparing the vendored optional-value utility with the JavaScript client for the local enforcement sidecar in the same repository. Which repo-relative license notice path is discovered for the utility but absent from the client's notice list? Return only the exact path; repository Apache-2.0 metadata is not a component audit.</question>
+    <answer>third-party/option-ext-0.2.0/LICENSE.txt</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. The enforcement repository's search results label both its sidecar clients with Rust, Python and JavaScript. For a Node runtime integration, compare the two clients' primary file paths and observed dependencies rather than treating repository languages as per-file languages. How many of these two clients have a .js primary file and dependencies described solely as Node.js core modules? Return only the integer.</question>
+    <answer>1</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. Compare the brainstorming application's standalone upstream-failure helper and its streamed idea-generation wrapper. A service needs failures from successive requests to affect the same breaker. Which plan agrees with both inspected records? A: copy the generation wrapper unchanged because its breaker is shared; B: reuse one standalone breaker instance per upstream service, because the wrapper creates a new breaker per call; C: rely on independent concurrency test evidence for the wrapper. Return only A, B or C.</question>
+    <answer>B</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. An archival workflow compares the river-gauge bundle checker and its preservation-event recorder. Which statement agrees with both records? A: checking listed digests establishes the manifest's own integrity; B: the checker establishes publisher identity and measurement accuracy; C: the recorder's sorted, two-space-indented JSON is a local convention, while the checker explicitly leaves publisher identity and accuracy unverified. Return only A, B or C.</question>
+    <answer>C</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A Rust reuse review compares the provenance project's batch importer with its identifier-and-signature helper. Both depend on project node/type definitions that were not supplied completely in their samples. Which shared supporting Rust file in both inspected file lists holds those definitions? Return only the exact repo-relative path.</question>
+    <answer>core/src/types.rs</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A source-evidence application offers one packet-structure validator and one case/partition-isolation validator. Compare their inspected records before calling either validated in your own project. Across these two parts, how many distinct linked files have the test role, while both records still report independently_tested=false? Return only the integer; linked tests do not establish a passing result.</question>
+    <answer>2</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A repository-brief integration is separating the model-output parser from the provider-facing prompt wrapper. Their dependency descriptions differ, but compare their primary-file provenance to identify the frozen file they actually share. What is the common primary file's git_blob_sha? Return only the 40-character SHA.</question>
+    <answer>00aed189d6500fedd3acf07828ee70a4510e63a2</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A Python vault integration compares its text-splitting routines with its large-vault advice routine. Which part has two linked test files and records a module-level numpy import that is unused by the selected routines, while the other part has an empty observed dependency list and no identified test for its selected function? Return only the exact catalog part name; do not interpret the empty list as a completed dependency audit.</question>
+    <answer>Recursive and prose text splitters</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A provenance integration compares the repository helper that resolves a default branch to an exact commit with the packet helper that checks a preserved payload's digest before storage. Which pair of listed supporting files matches the unreviewed helper dependencies documented for those two parts, in that order? A: src/lib/http.ts and packages/source-adapters/src/canonical-json.ts; B: src/lib/db.ts and packages/evidence-schema/src/types.ts; C: tests/github.test.ts and packages/packet-builder/test/packet-builder.test.mjs. Return only A, B or C.</question>
+    <answer>A</answer>
+  </qa_pair>
+  <qa_pair>
+    <question>Use only the frozen Repo Salvage pilot snapshot at catalog revision 984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48. A Python experiment service compares the stable user-bucketing routine with the purged rolling-window routine from the prediction repository. Which extraction assessment agrees with both records? A: copying either complete module requires only the standard library; B: the recorded MD5 bucketing establishes a security property; C: the rolling-window routine applies the stored embargo_days parameter; D: the selected routines can use standard-library logic, but the bucketing class constructor's tracker and the backtest execution's project helpers must be removed or replaced when extracting. Return only A, B, C or D.</question>
+    <answer>D</answer>
+  </qa_pair>
+</evaluation>

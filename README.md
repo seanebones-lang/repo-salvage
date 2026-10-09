@@ -90,7 +90,7 @@ Parser and circuit-breaker extractions passed checks in separate Node consumers.
 See [the first pilot](docs/PILOT.md) and [expanded matrix](docs/PILOT-MATRIX.md) for
 usage, adaptations and evidence limits. The [agent interface](docs/AGENT-INTERFACE.md)
 now supports JSON search, pinned-source inspection and a standalone consumer CLI.
-Private agent contribution drafts are implemented; the MCP adapter remains planned.
+Private agent contribution drafts and a local MCP adapter are implemented.
 
 ## For agents and scripts
 
@@ -230,3 +230,13 @@ publication flow. Credentials cannot publish, mark owner reviews or access
 private repositories. Revocation cancels unfinished draft publication.
 See [the contribution contract](docs/AGENT-INTERFACE.md#agent-contributions-implemented)
 for scopes, retry behavior, limits and cancellation.
+
+The downloadable [MCP adapter](packages/mcp/README.md) lets supporting agent hosts
+use native search, inspection and verified source-text tools over local stdio.
+`npm ci` installs its workspace dependencies; the application build produces
+`public/repo-salvage-mcp.tgz`. Install that archive in a consumer workspace and
+configure the host to launch its executable with `--base ORIGIN`. Public tools
+are the default. Private draft tools additionally require `--enable-drafts` and
+`REPO_SALVAGE_TOKEN` in the host's secret environment. No paid analysis or
+publication tool is exposed. The package is not published to npm and no remote
+MCP endpoint is hosted.

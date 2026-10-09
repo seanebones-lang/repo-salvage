@@ -148,3 +148,22 @@ fresh source-consumer behavior checks. No new model charge or live-owner credent
 was created. See AGENT-VALIDATION.md for the exact package/source identities and
 limits. MCP, automatic agent publication, retention cleanup and larger-scale
 validation remain outside this milestone.
+
+## MCP adapter — 2026-10-08
+
+Agents can now launch an installable local stdio adapter with three public tools:
+search, inspect and read verified source text. Explicit draft mode adds private
+prepare/list while retaining the HTTP service's owner review, scope, expiry,
+revocation and quota boundaries. It has no paid analysis, publication or credential
+issuance tool. Retrieval reuses the maintained CLI client and OpenAPI contracts;
+full-file Git verification precedes each bounded Unicode text window.
+
+Validation: 182 offline checks, production build/typecheck/format/full dependency
+audit, fresh installed MCP public and isolated private flows with real GitHub,
+three fresh CLI consumer behavior checks, Inspector discovery/search/resource read,
+and responsive guide verification. Ten reproducible evaluation questions cover
+seven repositories; all 31 evidence calls replay, without a scored model benchmark.
+Inspector reported zero errors and ten nullable-schema portability advisories.
+No new paid call, live-owner credential or public listing was created. Package
+hashes, provenance, protocol coverage and remaining host/deployment gates are
+recorded in [AGENT-VALIDATION.md](AGENT-VALIDATION.md).

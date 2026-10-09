@@ -2,7 +2,7 @@
 
 Status: discovery, retrieval and private contribution drafts implemented. `/agents` is the browser
 entry point, `/llms.txt` links the machine-facing resources and `/openapi.json`
-defines the versioned API. The MCP adapter remains planned.
+defines the versioned API. The local MCP adapter is implemented.
 The older `/api/listings/{listing}/parts/{part}` JSON export remains compatible.
 
 An agent should be able to ask for a capability, compare parts, inspect evidence
@@ -128,19 +128,57 @@ features. Read-only MCP tools will receive no implicit write authority. Never ru
 uploaded commands on the catalog server or list unrelated repositories merely
 because an agent can discover them.
 
-## MCP and discoverability
+## MCP and discoverability (implemented)
 
-Once the JSON contract and consumer example work, add a thin MCP server offering
-`search_parts` and `inspect_part`, with explicit typed inputs and bounded outputs.
-Pinned files and briefs can be resources; fetching selected files can be a separate
-operation. Keep the adapter on the same catalog/visibility boundary instead of
-creating another search or analysis implementation. MCP is suitable for supported
-agent clients, while HTTP and a small CLI cover ordinary scripts.
+The installable `@repo-salvage/mcp@0.1.0` archive is linked at `/agents` and
+served at `/repo-salvage-mcp.tgz`. It uses Node.js 22+ and the pinned official SDK
+2.3.1 with Zod 4.6.5. A local MCP host launches the installed executable over
+stdio; there is no publicly hosted MCP HTTP endpoint. See
+[the package guide](../packages/mcp/README.md) for command/arguments and explicit
+private-tool configuration. No npm registry publication or automatic client
+installation is claimed.
+
+Public tools are `repo_salvage_search_parts`, `repo_salvage_inspect_part` and
+`repo_salvage_read_part_file`. Search defaults to 10 results and preserves filters,
+page and catalog revision. Reading a file re-inspects the public part, restricts
+the URL to its pinned raw GitHub identity, verifies the entire file's Git blob
+hash and size, then returns a bounded UTF-8 text window. It writes no files,
+executes no source and installs no dependencies. The source file limit is 1 MiB;
+text windows default to 8000 and cap at 12000 UTF-16 code units. Surrogate pairs
+are preserved. Each page verifies the complete file again. Binary source and a
+complete retained source-and-notices directory use the CLI. Reading source text
+does not copy notices to disk; agents must inspect and preserve them separately.
+
+All tools have strict input schemas, validated structured output and JSON text
+for legacy compatibility. Search/inspection/draft output schemas are generated
+from OpenAPI during package build. Successful JSON is bounded at 64 KiB before
+its two protocol representations. Errors preserve safe machine codes, status and
+retry seconds without forwarding remote prose or exception details; no automatic
+retry occurs. The authored `repo-salvage://guide` resource describes the trust
+boundary without upstream access or private data. The server advertises no model
+sampling, publication, credential issuance or owner-review tool.
+
+Private `repo_salvage_prepare_draft` and `repo_salvage_list_drafts` require explicit
+`--enable-drafts` plus `REPO_SALVAGE_TOKEN` supplied through the host's secret
+environment. A token alone does not register them. Only private HTTP calls send
+the credential, to the fixed configured origin; public API and raw source reads
+send none. Permissions, expiry, quotas, idempotency and cancellation remain the
+HTTP service's responsibility. List-drafts conservatively has readOnlyHint false
+because the inbox read can recover an expired analysis reservation. Tool
+annotations are hints; hosts enforce their own authorization policy.
+
+This adapter reuses the maintained CLI HTTP/source client by copying it into the
+package build, rather than creating separate visibility, hash or auth logic.
+The official SDK's stdio factory supports modern and legacy handshakes. Sources:
+[official SDK tools guide](https://ts.sdk.modelcontextprotocol.io/v2/servers/tools),
+[stdio guide](https://ts.sdk.modelcontextprotocol.io/v2/serving/stdio).
 
 The entry page, OpenAPI schema and machine index are served by the application.
-Documentation alone does not establish automatic discovery by external agents.
-Evaluate semantic search after deterministic queries expose an observed retrieval
-gap, and test a separate agent client before claiming cross-client adoption.
+Their presence does not establish discovery or adoption by external agents.
+Frozen read-only evaluation tasks live under `examples/mcp-evaluation`; their
+stable public pilot snapshot is separate from the changing live catalog. Semantic
+search and remote MCP hosting remain follow-ups driven by observed retrieval or
+client-integration needs.
 
 ## Completion evidence
 

@@ -10,3 +10,7 @@ data/*.db-*
 public/summary-parser.tar.gz
 public/repo-salvage-cli.tgz
 artifacts/
+public/repo-salvage-mcp.tgz
+packages/mcp/dist/
+packages/mcp/src/client.mjs
+packages/mcp/src/contracts.json

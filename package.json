@@ -3,17 +3,18 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/package-example.mjs && node scripts/package-agent.mjs",
+    "predev": "node scripts/package-example.mjs && node scripts/package-agent.mjs && node scripts/package-mcp.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/package-example.mjs && node scripts/package-agent.mjs",
+    "prebuild": "node scripts/package-example.mjs && node scripts/package-agent.mjs && node scripts/package-mcp.mjs",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest run && npm run test:example && npm run test:cli",
+    "typecheck": "tsc --noEmit && npm run typecheck --workspace @repo-salvage/mcp",
+    "test": "vitest run && npm run test:example && npm run test:cli && npm run test:mcp",
     "test:example": "node --test examples/summary-parser/consumer.test.mjs",
     "test:cli": "npm --prefix packages/cli test",
     "format": "prettier --write src tests scripts examples docs packages public/openapi.json package.json README.md .github/workflows/ci.yml",
-    "format:check": "prettier --check src tests scripts examples docs packages public/openapi.json package.json README.md .github/workflows/ci.yml"
+    "format:check": "prettier --check src tests scripts examples docs packages public/openapi.json package.json README.md .github/workflows/ci.yml",
+    "test:mcp": "npm test --workspace @repo-salvage/mcp"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.131.0",
@@ -35,5 +36,8 @@
   },
   "overrides": {
     "postcss": "^8.5.29"
-  }
+  },
+  "workspaces": [
+    "packages/mcp"
+  ]
 }
