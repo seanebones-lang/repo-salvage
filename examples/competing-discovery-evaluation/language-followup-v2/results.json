@@ -1,0 +1,507 @@
+{
+  "format": "repo-salvage/language-followup-v1",
+  "scope": "Two diagnostic rechecks after clarifying source-language filters in MCP 0.3.1. Same questions, catalog, source controls and rubric; not a new holdout or proof of causation.",
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "suiteSealSha256": "446d075f917a0413423ed313cb2fc90e03c8c177aeed069bd1dec1b4c6bd6293",
+  "archiveSha256": "6e4e78b216e68687d19701b22c541bd6ad9da886f06886ed2fc11fb68ff316d1",
+  "catalogRevision": "870a6fd6483cb89b76c5c0187d21b1d01d59aa81983b486f06724c43e66d3f76",
+  "billing": "Existing Codex account allowance; no API-key model calls",
+  "results": [
+    {
+      "id": "durable-shared-budget",
+      "promptSha256": "2613c01038e50a08246874500485b50da12f1358376ade0f13204157e8323c1f",
+      "answer": {
+        "answer": "NO_MATCH",
+        "finding": "Compared pinned source for three MIT candidates: sindresorhus/p-limit:index.js (a8a6fbec4e0e866d6d779b10889bb4f5567e70eb), sindresorhus/p-queue:source/index.ts (180ab9e25cd10b6f548767d7176076b50d25e188), and sindresorhus/p-throttle:index.js (a0d20bf8c1a5f0067b1dce529b1ff013878591d3). p-limit accepts concurrency or {concurrency, rejectOnClear}; its closure owns activeCount and a new yocto-queue containing promise callbacks. It limits simultaneous operations per instance, not calls per time interval, and has no persistence or cross-process coordination. p-queue supports {intervalCap: N, interval: milliseconds, concurrency: C, strict: true}; strict mode requires a nonzero interval and finite cap and tracks starts in a local timestamp array. Default non-strict mode uses local intervalCount and timers; carryoverIntervalCount optionally counts pending operations into the next window. Reading all subsequent source windows and priority-queue.ts confirmed queued run closures live in an array. A custom queueClass does not externalize the scheduler's private budget state or supply restart recovery. Its TypeScript source builds with tsc to ESM dist/index.js and requires Node >=20. p-throttle accepts {limit, interval, strict, weight}; it tracks local window weights or timestamp reservations and delays closures using setTimeout and a Map. It does not cap simultaneous running operations; strict mode with interval=0 cannot enforce the intended budget. None implements a shared budget across processes or durable queued work after all processes restart. Read all three license notices: MIT, copyright Sindre Sorhus, requiring preservation of copyright and permission notices; dependency licensing was not audited. Searches without language/license restrictions covered JavaScript and TypeScript; additional distributed and persistent searches returned no candidates. This conclusion is limited to the inspected catalog candidates. No upstream code was executed, installed, modified, published, or independently tested."
+      },
+      "expected": "NO_MATCH",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "sindresorhus/p-limit:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          },
+          {
+            "key": "sindresorhus/p-queue:source/index.ts",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          },
+          {
+            "key": "sindresorhus/p-throttle:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 136214,
+        "cached_input_tokens": 94080,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1010,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 52032,
+      "trace": {
+        "sha256": "7f7ec1b73c8fe7d75ab273cbaa3a62f4500cbd0e1269358cc726735d8c465e94"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "queue",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "limiter",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/index.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/index.ts",
+            "offset": 12000,
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/index.ts",
+            "offset": 24000,
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/priority-queue.ts",
+            "offset": 0,
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/queue.ts",
+            "offset": 0,
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "package.json",
+            "offset": 0,
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "distributed",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "persistent",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "force-stop-running",
+      "promptSha256": "02111e5419d93206d3a1816544fcd9500eea9cabc282b9a7be8d79911c967074",
+      "answer": {
+        "answer": "NO_MATCH",
+        "finding": "Compared three plausible candidates at pinned commits, reading implementation and each repository's MIT license notice. None forcibly stops an already running, noncooperative callback. sindresorhus/p-limit:index.js (a8a6fbec4e0e866d6d779b10889bb4f5567e70eb): pLimit({concurrency: 1, rejectOnClear: true}).clearQueue() rejects only queued entries; the default rejectOnClear:false discards them without settling their promises. run() invokes the callback and awaits its result; running callbacks are untouched, and rejection releases the slot even if side effects continue. sindresorhus/p-queue:source/index.ts (180ab9e25cd10b6f548767d7176076b50d25e188): new PQueue({concurrency: 1}).add(callback, {signal}) passes the signal to the callback, then races its operation against an abort rejection. Aborting running work rejects the outer promise and releases queue accounting through finally; it does not terminate the callback, so another task can start while its side effects continue. Waiting aborts remove work with the default PriorityQueue; custom queue removal is best-effort. pause() blocks future starts; clear() replaces waiting work without settling its promises. The relevant add()/clear() implementation was read in the subsequent source window at offset 12000. This TypeScript package exports compiled dist/index.js as ESM, requires Node >=20, and uses eventemitter3 and p-timeout. sindresorhus/p-throttle:index.js (a0d20bf8c1a5f0067b1dce529b1ff013878591d3): pThrottle({limit: 1, interval: 1000, signal})(callback) cancels timers and rejects delayed calls on abort. execute() invokes the callback, adopts its result, and removes its timer entry without awaiting completion; abort has no control over already running work. strict and weight alter scheduling, not termination, and this limiter does not cap running concurrency. All three notices require preserving copyright and permission notices and disclaim warranties; dependency/component licensing was not audited. Searches included JavaScript and TypeScript without restrictive language or license filters. These are source-based findings, not independent testing. No upstream code was executed, installed, modified, or published. Under your constraints, promise settlement and abort signaling cannot guarantee cessation of arbitrary callback side effects."
+      },
+      "expected": "NO_MATCH",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "sindresorhus/p-limit:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          },
+          {
+            "key": "sindresorhus/p-queue:source/index.ts",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          },
+          {
+            "key": "sindresorhus/p-throttle:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 132130,
+        "cached_input_tokens": 94208,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 1046,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 46194,
+      "trace": {
+        "sha256": "9db264a5a9a13e33d0a356dba846c516e216e7498584392eb18c1497d06b4c73"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "queue",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "limiter",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/index.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/index.ts",
+            "offset": 12000,
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "package.json",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "cases": 2,
+    "exactAnswers": 2,
+    "evidenceQualified": 2,
+    "mcpCalls": 31,
+    "callsByTool": {
+      "repo_salvage_search_parts": 6,
+      "repo_salvage_inspect_part": 6,
+      "repo_salvage_read_part_file": 19
+    },
+    "focusedEvidenceCalls": 0,
+    "usage": {
+      "input_tokens": 268344,
+      "cached_input_tokens": 188288,
+      "output_tokens": 2056
+    },
+    "cachedInputIsSubsetOfInput": true
+  },
+  "manualReview": {
+    "reviewer": "Implementing agent; not blinded or independent certification",
+    "caseReviews": [
+      {
+        "id": "durable-shared-budget",
+        "status": "pass",
+        "checked": "Same original pre-recorded configuration, behavior, caveat and three-competitor coverage requirements"
+      },
+      {
+        "id": "force-stop-running",
+        "status": "pass",
+        "checked": "Same original pre-recorded configuration, behavior, caveat and three-competitor coverage requirements"
+      }
+    ]
+  },
+  "interpretation": "Both existing negative requests passed under updated MCP 0.3.1 guidance. Searches omitted the restrictive source-language filter and source for the TypeScript scheduler was inspected. Two diagnostic repeats, not a holdout or causal estimate; the original 9/10 evidence-qualified result remains unchanged."
+}

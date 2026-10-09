@@ -63,6 +63,17 @@ test("modern stdio discovery exposes four public tools, complete schemas and a g
   const client = await connect(t, fixture);
   const tools = (await client.listTools()).tools;
   assert.equal(tools.length, 4);
+  const search = tools.find(
+    (tool) => tool.name === "repo_salvage_search_parts",
+  );
+  assert.match(
+    search.description,
+    /source language, not runtime compatibility/,
+  );
+  assert.match(
+    search.inputSchema.properties.language.description,
+    /JavaScript and TypeScript/,
+  );
   for (const tool of tools) {
     assert.ok(tool.description);
     assert.equal(tool.annotations.readOnlyHint, true);

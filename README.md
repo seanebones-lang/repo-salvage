@@ -127,6 +127,15 @@ consumer checks, including 1,000 deterministic round trips, in a clean Python
 workspace. These authored trials are distinct from general discovery accuracy,
 upstream certification and external adoption.
 
+A [competing-parts trial](examples/competing-discovery-evaluation/README.md)
+added six public MIT libraries to an isolated 40-part evaluation catalog. Ten
+requests produced ten expected answers, with nine meeting stronger pinned-source
+and competitor-coverage requirements. A source-language filter hid a TypeScript
+scheduler from one JavaScript request. MCP 0.3.1 clarifies that boundary; both
+negative requests passed separate rechecks with unchanged questions and scoring.
+The original failure remains recorded. This does not establish general recall or
+certify the upstream libraries.
+
 ## For agents and scripts
 
 Open `/agents` for the guide, `/llms.txt` for the machine index and `/openapi.json`

@@ -1,0 +1,249 @@
+{
+  "format": "repo-salvage/competing-controls-v1",
+  "sourceReview": "Implementing-agent source review before model use. Exact fragments prove relevant source was supplied; they do not automatically validate prose conclusions.",
+  "sources": [
+    {
+      "key": "sindresorhus/p-debounce:index.js",
+      "repository": "sindresorhus/p-debounce",
+      "commit": "792115ea04019c720ddc8753010c758c55796f77",
+      "path": "index.js",
+      "blobSha": "a54db7d9ea256467df3cb050074ddeb7a68f5f16",
+      "sha256": "7a519eb4afed87d7b3c7eec0800c5379eae5ca53cf3e2ba325669ecf1338eeab",
+      "notice": {
+        "path": "license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "blobSha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de"
+      }
+    },
+    {
+      "key": "sindresorhus/p-limit:index.js",
+      "repository": "sindresorhus/p-limit",
+      "commit": "a8a6fbec4e0e866d6d779b10889bb4f5567e70eb",
+      "path": "index.js",
+      "blobSha": "c24de5782032605aa83636bcf455f700e3b2ada7",
+      "sha256": "edde12a4a4dbdbe8d27161cdd0853db0bab435d5dc6c15f9f4dedc27ee9bca60",
+      "notice": {
+        "path": "license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "blobSha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de"
+      }
+    },
+    {
+      "key": "sindresorhus/p-memoize:index.ts",
+      "repository": "sindresorhus/p-memoize",
+      "commit": "e0912bb5364c8421e189f018501a474d502f64cb",
+      "path": "index.ts",
+      "blobSha": "c5c71d07689ef0b245316f923f20541d628cb985",
+      "sha256": "c4594e02e8e4919f5c744c47d3e0f83990c9b7689793853bdd60c9200c0018c8",
+      "notice": {
+        "path": "license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "blobSha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de"
+      }
+    },
+    {
+      "key": "sindresorhus/p-queue:source/index.ts",
+      "repository": "sindresorhus/p-queue",
+      "commit": "180ab9e25cd10b6f548767d7176076b50d25e188",
+      "path": "source/index.ts",
+      "blobSha": "bf7978ceea2929a6bca64791eb082494b89b353e",
+      "sha256": "d129e016be3752f374d5a9ab10b601d3634d2af3f17cfae2171bfadf4721e7a0",
+      "notice": {
+        "path": "license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "blobSha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de"
+      }
+    },
+    {
+      "key": "sindresorhus/p-throttle:index.js",
+      "repository": "sindresorhus/p-throttle",
+      "commit": "a0d20bf8c1a5f0067b1dce529b1ff013878591d3",
+      "path": "index.js",
+      "blobSha": "5175416b80a246fb0cec7c2547906fd4c025cf18",
+      "sha256": "5567e2731fa0393079ac096c10ebbedbec5a1cd7e687a8ba2021e96c44ef3fcf",
+      "notice": {
+        "path": "license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "blobSha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de"
+      }
+    },
+    {
+      "key": "sindresorhus/yocto-queue:index.js",
+      "repository": "sindresorhus/yocto-queue",
+      "commit": "72a8fa96a9d389765cdf2bb9c6daba8302fc375d",
+      "path": "index.js",
+      "blobSha": "627ed535f3163b37f2e3b208a23788fd0a715eba",
+      "sha256": "2eabf3096793c43934ef127fb50238dcba93074fb54f943fc62aeab616769dfc",
+      "notice": {
+        "path": "license",
+        "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+        "blobSha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de"
+      }
+    }
+  ],
+  "cases": [
+    {
+      "id": "cap-active-work",
+      "fragments": {
+        "sindresorhus/p-limit:index.js": [
+          "if (activeCount < concurrency && queue.size > 0)",
+          "try {\n\t\t\tawait result;\n\t\t} catch {}",
+          "set(newConcurrency)"
+        ]
+      },
+      "reviewRequirements": [
+        "activeCount and queue control concurrency; failures are observed before releasing capacity",
+        "mutable concurrency setter resumes waiting work; not a starts-per-interval limit"
+      ]
+    },
+    {
+      "id": "quiet-burst",
+      "fragments": {
+        "sindresorhus/p-debounce:index.js": [
+          "clearTimeout(timeout);",
+          "await functionToDebounce.apply(this, arguments_)",
+          "resolveFunction(result);"
+        ]
+      },
+      "reviewRequirements": [
+        "timer is reset; trailing call uses last arguments",
+        "promiseHandlers for the burst share fulfillment/rejection; not a FIFO task scheduler"
+      ]
+    },
+    {
+      "id": "per-key-inflight",
+      "fragments": {
+        "sindresorhus/p-memoize:index.ts": [
+          "cache = new Map<",
+          "if (promiseCache.has(key))",
+          "if (cache && await cache.has(key))",
+          "promiseCache.delete(key);"
+        ]
+      },
+      "reviewRequirements": [
+        "cache:false disables fulfilled-value caching while retaining per-key promiseCache",
+        "cacheKey default first argument; promiseCache entry removed in finally"
+      ]
+    },
+    {
+      "id": "weighted-call-budget",
+      "fragments": {
+        "sindresorhus/p-throttle:index.js": [
+          "const getDelay = strict ? strictDelay : windowedDelay;",
+          "requestWeight = weight(...arguments_);",
+          "if (!Number.isFinite(requestWeight) || requestWeight < 0)",
+          "if (requestWeight > limit)",
+          "weightedDelay(requestWeight, actualTime, executedTicks)"
+        ]
+      },
+      "reviewRequirements": [
+        "weight callback validates finite nonnegative weight and rejects weight above limit",
+        "strict scheduling reservations and execution-time weighted revalidation; no concurrency cap"
+      ]
+    },
+    {
+      "id": "priority-pause",
+      "fragments": {
+        "sindresorhus/p-queue:source/index.ts": [
+          "import PriorityQueue from",
+          "this.#queue.setPriority(id, priority);",
+          "start(): this {",
+          "pause(): void {\n\t\tthis.#isPaused = true;"
+        ]
+      },
+      "reviewRequirements": [
+        "setPriority delegates to local priority queue; pause only changes isPaused; start resumes",
+        "local queue/options/priority-queue modules and external dependencies needed; no forced running cancellation"
+      ]
+    },
+    {
+      "id": "fifo-values",
+      "fragments": {
+        "sindresorhus/yocto-queue:index.js": [
+          "this.#tail.next = node;",
+          "this.#head = this.#head.next;",
+          "* [Symbol.iterator]()",
+          "yield this.dequeue();"
+        ]
+      },
+      "reviewRequirements": [
+        "head/tail linked nodes support constant-time enqueue/dequeue",
+        "iterator nonconsuming; drain calls dequeue; no external imports"
+      ]
+    },
+    {
+      "id": "clear-and-settle",
+      "fragments": {
+        "sindresorhus/p-limit:index.js": [
+          "let rejectOnClear = false;",
+          "if (!rejectOnClear) {\n\t\t\t\t\tqueue.clear();",
+          "queue.dequeue().reject(abortError);"
+        ]
+      },
+      "reviewRequirements": [
+        "rejectOnClear:true is required; clearQueue rejects each queued item using abort reason",
+        "default clearQueue drops queued entries without settling promises; running work unaffected"
+      ]
+    },
+    {
+      "id": "trailing-inflight",
+      "fragments": {
+        "sindresorhus/p-debounce:index.js": [
+          "pDebounce.promise =",
+          "if (!options.after)",
+          "queuedCall.arguments = arguments_;",
+          "while (queuedCall)"
+        ]
+      },
+      "reviewRequirements": [
+        "promise variant with after:true retains latest queued arguments and resolves grouped callers",
+        "while queuedCall handles later bursts; default after false shares current promise"
+      ]
+    },
+    {
+      "id": "durable-shared-budget",
+      "fragments": {
+        "sindresorhus/p-limit:index.js": [
+          "const queue = new Queue();",
+          "let activeCount = 0;"
+        ],
+        "sindresorhus/p-queue:source/index.ts": [
+          "#pending = 0;",
+          "this.#queue = new options.queueClass!();"
+        ],
+        "sindresorhus/p-throttle:index.js": [
+          "const state = {",
+          "queue: new Map(),",
+          "setTimeout(execute, delay)"
+        ]
+      },
+      "reviewRequirements": [
+        "p-limit uses local Queue/counter; p-queue local priority queue/counters; p-throttle local state/timers",
+        "no demonstrated cross-process store or durable restart recovery"
+      ]
+    },
+    {
+      "id": "force-stop-running",
+      "fragments": {
+        "sindresorhus/p-limit:index.js": [
+          "clearQueue: {",
+          "queue.dequeue().reject(abortError);"
+        ],
+        "sindresorhus/p-queue:source/index.ts": [
+          "let operation = function_({signal: options.signal});",
+          "operation = Promise.race([operation, new Promise<never>",
+          "reject(signal.reason);"
+        ],
+        "sindresorhus/p-throttle:index.js": [
+          "resolve(function_.apply(this, arguments_));",
+          "clearTimeout(timeout);",
+          "functionState.queue.get(timeout)(signal.reason);"
+        ]
+      },
+      "reviewRequirements": [
+        "p-queue races promise with abort rejection and passes signal; callback may continue",
+        "p-limit clearQueue only handles waiting items; p-throttle clears queued timers, not running callbacks"
+      ]
+    }
+  ]
+}

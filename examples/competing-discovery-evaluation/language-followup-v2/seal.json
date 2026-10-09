@@ -1,0 +1,20 @@
+{
+  "format": "repo-salvage/language-followup-seal-v1",
+  "baseSealSha256": "41c5a493a817aff613f083e8130a6ebdc0793687830d9ef45515a2f5e4c1792f",
+  "files": [
+    {
+      "name": "host.mjs",
+      "sha256": "c14a73a2061355e4bee1078cc5493c59ec357d510a05eb9d7429314d96360f87"
+    },
+    {
+      "name": "language-followup-v2/run.mjs",
+      "sha256": "8b0f9812b53c106b404f0085e29911a37b418d6e965b7f91efa069bf807494fc"
+    },
+    {
+      "name": "language-followup-v2/tasks.json",
+      "sha256": "663dd069c0a77b05fa827f29e5df85194fbcd2e9be95c57c2baebe184643fe97"
+    }
+  ],
+  "archiveSha256": "6e4e78b216e68687d19701b22c541bd6ad9da886f06886ed2fc11fb68ff316d1",
+  "catalogRevision": "870a6fd6483cb89b76c5c0187d21b1d01d59aa81983b486f06724c43e66d3f76"
+}
