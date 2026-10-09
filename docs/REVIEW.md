@@ -81,10 +81,17 @@ restored the sign-in gate; repeat sign-in returned to the authenticated dashboar
 are configured only in the ignored, owner-readable local environment file. The cookie is not
 Secure on this HTTP local preview; HTTPS production must use the secure cookie.
 
-No Anthropic API key is configured in this workspace. A real authenticated contribution,
-successful paid analysis and owner review must still be exercised together before claiming
-the contribution flow is live. OAuth success does not establish provider availability or
-summary quality. No live listing or paid analysis was created during OAuth verification.
+The subsequent authenticated local pilot completed two real Anthropic analyses with
+`claude-haiku-5-5`, persisted a source-pinned listing and exercised its component page,
+clipboard brief and JSON export. The recommended parser also passed three checks in a
+separate Node-only consumer after extraction from complete pinned source. The pilot exposed
+and fixed identifier sanitization and undisclosed text truncation. All 102 app tests and
+the existing three consumer tests pass, with formatting, type checking and a production build.
+See [the pilot record](PILOT.md) for provider usage, estimated cost and extraction adaptations.
+Owner review remains pending; no owner confirmation or independent-test badge was fabricated.
+This single-repository local pilot establishes provider operation and one working adaptation,
+not general summary quality or a public deployment. No paid analysis occurred during the
+earlier OAuth-only verification.
 
 The Docker daemon is unavailable. The supplied Dockerfile has not been executed in this
 review. Validate image build, unprivileged runtime, a mounted persistent database and restart
@@ -96,8 +103,10 @@ and GitHub allowance consumption with a real pilot is required before expanding 
 
 ## Next product evidence
 
-The highest-value next step is a complete licensed contribution followed by an independent
-consumer taking a recommended component into another project. Record what imports were missed,
-what adaptation was needed and whether the owner's review improved the brief. Use those results
-to prioritize extraction assistance and better sampling. Downloads, copied briefs, owner review
-and anonymous reuse counters alone do not establish successful reuse.
+The pilot completed a licensed contribution and one independent parser adaptation. The
+highest-value next evidence is the author's review of these briefs, followed by a pilot on
+a different codebase. Improve sampling of complete functions and their local dependencies:
+the current prefix samples often exclude the actual candidate implementation. Record what
+imports were missed, what adaptation was needed and whether owner review improves the brief.
+Downloads, copied briefs, owner review and anonymous reuse counters alone do not establish
+successful reuse.

@@ -23,7 +23,7 @@ vi.mock("@anthropic-ai/sdk", () => ({
     constructor(options: unknown) {
       fixtures.clientOptions(options);
     }
-    beta = { messages: { create: fixtures.model } };
+    messages = { create: fixtures.model };
   },
 }));
 vi.mock("@/lib/github", () => ({
@@ -72,6 +72,7 @@ let reportRoute: typeof import("@/app/api/listings/[id]/report/route");
 let Home: typeof import("@/app/page").default;
 beforeAll(async () => {
   vi.stubEnv("ANTHROPIC_API_KEY", "test-only");
+  vi.stubEnv("ANTHROPIC_WORKSPACE_ID", "wrkspc_test");
   process.env.DATABASE_PATH = path.join(
     fs.mkdtempSync(path.join(os.tmpdir(), "salvage-flow-")),
     "flow.db",
@@ -79,6 +80,7 @@ beforeAll(async () => {
   fixtures.model.mockResolvedValue({
     model: "mock-provider",
     stop_reason: "end_turn",
+    usage: { input_tokens: 1000, output_tokens: 500 },
     content: [
       {
         type: "text",
@@ -129,10 +131,13 @@ describe("listing to consumer brief with real SQLite persistence and mocked exte
     expect(fixtures.clientOptions).toHaveBeenCalledWith({
       timeout: 120_000,
       maxRetries: 0,
+      defaultHeaders: { "anthropic-workspace-id": "wrkspc_test" },
     });
     expect(fixtures.model.mock.calls[0][0]).toMatchObject({
+      max_tokens: 8000,
       output_config: { format: { type: "json_schema" } },
     });
+    expect(fixtures.model.mock.calls[0][0]).not.toHaveProperty("fallbacks");
     const html = renderToStaticMarkup(
       await Home({
         searchParams: Promise.resolve({
