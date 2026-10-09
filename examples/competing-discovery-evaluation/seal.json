@@ -1,0 +1,43 @@
+{
+  "format": "repo-salvage/competing-seal-v1",
+  "files": [
+    {
+      "name": "cases.json",
+      "sha256": "ee28bfea404a1f783a31aabdff863cda6751703a449154bd3ea433ab0c0c622b"
+    },
+    {
+      "name": "corpus.json",
+      "sha256": "8355d60d026e004f084ce301cd41ac01c427b4d9ee6512b5c4201a7b38b6dac3"
+    },
+    {
+      "name": "controls.json",
+      "sha256": "dc1dfdf5b5e5ebbdde8ce5283de18efe4c2fd5b8532f88d06017e43b734bb7af"
+    },
+    {
+      "name": "listings.json",
+      "sha256": "b7e07d665a3ce6287ae2ab172f9ac28c066b83eafb996ef1c7315b85a5d67392"
+    },
+    {
+      "name": "catalog.json",
+      "sha256": "5f30e78d8fcfdfdc2783c244eae489d2bf08a4e0723f5503fcb75008d6ef503c"
+    },
+    {
+      "name": "run.mjs",
+      "sha256": "a85e27dae5a4ce99d3513ac834a64079d82aaa2e74da695a79c78183fab965a6"
+    },
+    {
+      "name": "score.mjs",
+      "sha256": "e0e5a6eaee932991a4b6ac9953bc2296654959811b25d4c226536f7888bcec59"
+    },
+    {
+      "name": "suite.mjs",
+      "sha256": "afb7588b22ca0d0f07ff70df3d06f9d6155fbb2fc173d472baf022368ed2b9e1"
+    },
+    {
+      "name": "serve.mjs",
+      "sha256": "834307ac48cd01099ee0b28f17e83d170f828725d7915773be9d9c649104a9f0"
+    }
+  ],
+  "archiveSha256": "f8eba85523cb25e221c236b3ca05cb2cb8dec1eac255ca162fae83fe4c668261",
+  "catalogRevision": "870a6fd6483cb89b76c5c0187d21b1d01d59aa81983b486f06724c43e66d3f76"
+}

@@ -36,6 +36,11 @@ export default function Agents() {
             and category. Results link to the full inspection response and
             component page.
           </p>
+          <p>
+            Language describes the source. A TypeScript part may fit a
+            JavaScript project after you check its build requirements. Broaden
+            filters before deciding there is no match.
+          </p>
           <code>GET /api/v2/parts?q=circuit%20breaker</code>
         </section>
         <section>

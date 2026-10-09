@@ -21,6 +21,13 @@ above descriptive mentions. Browsing defaults to latest. Explicit sorts are
 Page size is 1–50, default 20. Follow `pagination.next` to retain the catalog
 revision; a changed catalog returns 409 and requires restarting pagination.
 
+Language facets describe source, not runtime compatibility. A JavaScript-only
+filter excludes TypeScript source even when its package builds JavaScript.
+Broaden filters before a whole-catalog no-match conclusion, and inspect the
+manifest, build steps and dependencies before adapting a TypeScript candidate.
+MCP 0.3.1 exposes this boundary in its search description, language parameter
+and guide; the API's exact filtering behavior is unchanged.
+
 `GET /api/v1/parts/{listing}/{part}` checks current public visibility and ownership,
 then resolves the exact pinned tree. Its manifest includes regular files, blob
 hashes, byte sizes, roles, analysis coverage, observed dependencies, notice paths
@@ -240,6 +247,18 @@ search and remote MCP hosting remain follow-ups driven by observed retrieval or
 client-integration needs.
 
 ## Completion evidence
+
+The [competing-parts trial](../examples/competing-discovery-evaluation/README.md)
+used the production application with a disposable database holding the earlier
+34 parts plus six operator-authored MIT library entries. Ten native sessions
+returned the expected answers; nine passed stricter relevant-source, notice and
+competitor-coverage checks. One negative case missed a TypeScript scheduler after
+restricting its search to JavaScript source. MCP 0.3.1 clarifies source-language
+semantics in discoverable tool metadata. Two separately frozen diagnostic repeats
+of the unchanged negative questions passed with the same source rubric and
+broader searches. The original failure remains visible. This is one authored
+JS/TS cohort from one library author, not a model-training holdout or a causal
+estimate. The public catalog and provider-analysis records were unchanged.
 
 The [ordinary-request trial](../examples/discovery-evaluation/README.md) gave ten
 fresh native Codex CLI sessions developer requests without repository names,

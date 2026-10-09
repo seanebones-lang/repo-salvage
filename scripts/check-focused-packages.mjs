@@ -68,7 +68,7 @@ try {
   assert.equal(
     JSON.parse(await fs.readFile(path.join(mcp, "package.json"), "utf8"))
       .version,
-    "0.3.0",
+    "0.3.1",
   );
   for (const c of fixture.suite.cases) {
     const output = await run(process.execPath, [
@@ -117,7 +117,7 @@ try {
       status: "passed",
       checks: 16,
       installedCli: "0.5.0",
-      installedMcp: "0.3.0",
+      installedMcp: "0.3.1",
       realSourceCases: 6,
       authoredBoundaryCases: 1,
       requests: 14,

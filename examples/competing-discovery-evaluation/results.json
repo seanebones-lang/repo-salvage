@@ -1,0 +1,1520 @@
+{
+  "format": "repo-salvage/competing-discovery-v1",
+  "scope": "Ten authored tasks over six new MIT competitors plus the prior 34-part catalog. One implementing reviewer, one library author, JS/TS only; not independent review, model-training holdout, abandoned-repository discovery or unconstrained recall.",
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "suiteSealSha256": "41c5a493a817aff613f083e8130a6ebdc0793687830d9ef45515a2f5e4c1792f",
+  "archiveSha256": "f8eba85523cb25e221c236b3ca05cb2cb8dec1eac255ca162fae83fe4c668261",
+  "catalogRevision": "870a6fd6483cb89b76c5c0187d21b1d01d59aa81983b486f06724c43e66d3f76",
+  "billing": "Existing Codex account allowance; no API-key model calls",
+  "results": [
+    {
+      "id": "cap-active-work",
+      "promptSha256": "e704587dc5b5e7cd97690bfc329a0defd3aa4a5d80fd281ea662a748472cb623",
+      "answer": {
+        "answer": "sindresorhus/p-limit:index.js",
+        "finding": "Read the complete implementation, package.json and MIT notice at commit a8a6fbec4e0e866d6d779b10889bb4f5567e70eb. Use the default pLimit: const limit = pLimit(4); submit lazy operations with limit(download, url), inspect limit.activeCount and limit.pendingCount, and change limit.concurrency = 8. The cap accepts positive integers or Infinity; increases drain waiting work in a microtask, while decreases leave running operations intact and delay new starts until below the cap. On synchronous throw or promise rejection, the caller's promise rejects; the internal catch then allows next() to decrement activeCount and start the next queued task if capacity permits. Failure does not halt the queue or retry the failed task. The named limitFunction wrapper exposes only clearQueue, so it does not provide the requested counts and mutable cap. Compared source with p-queue: that alternative extends EventEmitter and implements interval scheduling, adding unnecessary scheduler machinery. p-limit is process-local, has no time-window rate limit, and depends on yocto-queue ^1.2.1; its package is ESM and declares Node >=20. clearQueue does not cancel running operations; by default removed tasks' promises remain unsettled, whereas pLimit({concurrency: 4, rejectOnClear: true}) rejects them. Preserve Sindre Sorhus's copyright and MIT permission notice in copies or substantial portions. Dependency/component licensing was not fully audited. Source inspection only; no independent testing or code execution."
+      },
+      "expected": "sindresorhus/p-limit:index.js",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "sindresorhus/p-limit:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 108881,
+        "cached_input_tokens": 81280,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 735,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 35563,
+      "trace": {
+        "sha256": "27edf132181efd676fa4e00019681e094d9e748794dd52464e2f54a6d1783c86"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "concurrency",
+            "language": "JavaScript",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "scheduler",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "package.json",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/index.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "quiet-burst",
+      "promptSha256": "d0680c664150c5bae11db6d36c68a338c7da0ffd76df791a43d937b438143cba",
+      "answer": {
+        "answer": "sindresorhus/p-debounce:index.js",
+        "finding": "Read complete source, package.json and MIT notice at commit 792115ea04019c720ddc8753010c758c55796f77. Create one persistent wrapper: pDebounce(searchAsync, 300, {before: false}). Each edit resets its timer; after 300 ms of quiet, it executes once with the last call's arguments and this. Each caller receives a distinct promise, all resolving to that execution's result or rejecting with its error. State is per wrapper. Calls arriving during execution form a new burst and may overlap the running request; there is no max-wait or stale-response protection. Do not use .promise: it starts immediately; after:true coalesces calls during execution without a typing quiet interval. Compared complete p-limit/index.js source: even concurrency 1 enqueues each call with its own arguments and eventually runs each as prior work settles, unless cleared; it does not debounce. The recommended source is 3,545 bytes with no imports or runtime dependencies declared; package is ESM and declares Node >=20. Its MIT notice requires preserving Sindre Sorhus's copyright and permission notice. Component/dependency licensing is not comprehensively audited. Source inspection only; no independent testing or code execution."
+      },
+      "expected": "sindresorhus/p-debounce:index.js",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "sindresorhus/p-debounce:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 114589,
+        "cached_input_tokens": 84864,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 812,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 37980,
+      "trace": {
+        "sha256": "2448f1b479295cf4a0949cf5407edb8b5ed7c577dc11521c937dc244ad4d6c44"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "debounce",
+            "language": "JavaScript",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1001,
+            "part_id": "58fc08015e148bbc"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "queue",
+            "language": "JavaScript",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1001,
+            "part_id": "58fc08015e148bbc",
+            "path": "package.json",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1001,
+            "part_id": "58fc08015e148bbc",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1001,
+            "part_id": "58fc08015e148bbc",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "per-key-inflight",
+      "promptSha256": "70ef5d7b2df2afa328e9ccb0527e7fa8e9c6459188c45ce165f87fbeee2b1bb4",
+      "answer": {
+        "answer": "sindresorhus/p-memoize:index.ts",
+        "finding": "Inspected complete index.ts, package.json and MIT license at commit e0912bb5364c8421e189f018501a474d502f64cb. Create one shared wrapper: const getUser = pMemoize(async (id: string) => fetchUser(id), {cache: false, cacheKey: ([id]) => id}); the explicit key matches the default first-argument key. Its internal promiseCache returns the same pending promise for equal IDs; different IDs invoke fetchUser separately. cache:false skips fulfilled-value storage. On asynchronous rejection, the outer finally deletes the in-flight key and propagates the rejection to all waiters; a later call retries. Fulfillment also deletes the entry. Limits: sharing is per wrapper instance/process, with no timeout or cancellation; a never-settling call remains tracked. Use an async adapter as shown: a synchronous throw from a directly wrapped non-async function can run deletion before insertion and leave a rejected entry retained. Package is ESM and requires Node >=20; imports mimic-function and type-fest, whose source/licenses were not audited. The MIT notice requires retaining Sindre Sorhus’s copyright and permission notice. Source inspection only; no independent testing or execution."
+      },
+      "expected": "sindresorhus/p-memoize:index.ts",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "sindresorhus/p-memoize:index.ts",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 100945,
+        "cached_input_tokens": 72704,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 546,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 32457,
+      "trace": {
+        "sha256": "a17ea499408e84417895cfa524a3a7cb1920d54451a73b01d1c42c7098960cbd"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "inflight",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "memoize",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1003,
+            "part_id": "62d770d043fc20bc"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1003,
+            "part_id": "62d770d043fc20bc",
+            "path": "index.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1003,
+            "part_id": "62d770d043fc20bc",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1003,
+            "part_id": "62d770d043fc20bc",
+            "path": "package.json",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "weighted-call-budget",
+      "promptSha256": "9959d68cf556fdf2b661e322b82524ae8db492818d958c228ed2f5e5ee28e716",
+      "answer": {
+        "answer": "sindresorhus/p-throttle:index.js",
+        "finding": "Recommended starting point at commit a0d20bf8c1a5f0067b1dce529b1ff013878591d3 (v8.1.1). Read the complete implementation, package.json and MIT license; preserve Sindre Sorhus’s copyright and permission notice. Configure, for example, pThrottle({limit: 100, interval: 1000, strict: true, weight: (...args) => computeCost(...args)})(apiCall). interval is milliseconds; limit is capacity. The synchronous weight callback receives each call’s arguments. Default scheduling accumulates weights in interval windows; strict weighted scheduling checks sliding windows and future reservations, then rechecks against executed calls at execution time to account for timer drift. Calls return promises and preserve the wrapped function’s this and arguments. A thrown weight callback rejects the call; nonnumeric, NaN, infinite, negative or above-limit weights reject with TypeError before scheduling or invoking the client. Zero and fractional weights are accepted. limit and interval must be finite and nonnegative; weighted configuration rejects interval=0. Prefer positive limit and interval: unweighted limit=0 does not prohibit execution, and unweighted strict interval=0 does not enforce capacity correctly. State is process-local and shared by wrappers created from the same factory; separate factories have separate budgets. There is no concurrency cap or bounded queue, and abort cancels queued timers rather than running operations. isEnabled=false bypasses scheduling and weight validation. Package uses ESM, requires Node >=20 and declares no runtime dependencies. This is source inspection only, with no independent testing or component/dependency license audit."
+      },
+      "expected": "sindresorhus/p-throttle:index.js",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "sindresorhus/p-throttle:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 86630,
+        "cached_input_tokens": 57216,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 600,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 33046,
+      "trace": {
+        "sha256": "bff6cee44bfc63958ebd4c228d07ce5878d7a0d5f13b005b17003b08d1c50502"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "throttle",
+            "language": "JavaScript",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc",
+            "path": "package.json",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "priority-pause",
+      "promptSha256": "33c2f369cc1e1a6c391190d12de68e2b047b7a31cf20a5ab2b0646882d78f474",
+      "answer": {
+        "answer": "sindresorhus/p-queue:source/index.ts",
+        "finding": "Inspected pinned commit 180ab9e25cd10b6f548767d7176076b50d25e188 (package version 9.3.3), implementation, local modules and MIT license. Use new PQueue({concurrency: 1, autoStart: false}) with the default PriorityQueue; queue.add(callback, {id: 'job-1', priority: 0}), then queue.setPriority('job-1', 10) while waiting, and queue.start() to begin or resume. Handle the promise returned by add(); awaiting it before starting a paused queue would wait indefinitely. queue.pause() only sets the paused flag; dequeue/start logic checks that flag. It does not stop, suspend or cancel callbacks already running. Optionally await queue.onPendingZero() after pausing to drain active tasks. start() clears the flag and processes waiting work within concurrency and interval limits. setPriority validates a finite number, then finds the ID only among live queued entries, removes it and reinserts it in descending priority order. Higher numbers run first; reinsertion places a task after existing equal-priority tasks. Missing or already-dequeued IDs throw ReferenceError. Supply unique explicit IDs: uniqueness is not enforced, and duplicate IDs update only the first queued match. Defaults are autoStart true and unlimited concurrency, so tasks may start immediately before reprioritization. Integration requires source/index.ts, source/priority-queue.ts, source/lower-bound.ts, source/queue.ts and source/options.ts; external runtime dependencies are eventemitter3 ^5.0.4 and p-timeout ^7.0.0. Package configuration is ESM and Node >=20; compatibility with other worker runtimes is unverified. This is an in-memory, process-local queue, without durable or cross-worker coordination. Preserve Sindre Sorhus's copyright and MIT permission notice in copies or substantial portions; dependency licenses were not audited. Source inspection only: no independent testing, execution, installation or modification."
+      },
+      "expected": "sindresorhus/p-queue:source/index.ts",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "sindresorhus/p-queue:source/index.ts",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 118536,
+        "cached_input_tokens": 85632,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 785,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 37029,
+      "trace": {
+        "sha256": "286cbf49c358c1320c35af5fe8e2c925d2d2512087ac905aad5af15a207b5ee7"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "priority",
+            "language": "TypeScript",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/index.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/queue.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/priority-queue.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/options.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/lower-bound.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "package.json",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/index.ts",
+            "offset": 12000,
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "fifo-values",
+      "promptSha256": "9029efce5a70243e8b70a1ff891c9fcb28795462b03d46ab3817a48dcf04343d",
+      "answer": {
+        "answer": "sindresorhus/yocto-queue:index.js",
+        "finding": "Inspected complete index.js, package.json and MIT license at commit 72a8fa96a9d389765cdf2bb9c6daba8302fc375d. Version 1.2.2 exports a default Queue as ESM, declares Node >=12.20, and has no runtime dependencies or source imports; development tools are separate. The 1,587-byte implementation stores arbitrary values in linked nodes without invoking them. enqueue(value) appends using a tail reference; dequeue() advances the head and returns the value; both perform O(1) structural work. The size getter reads a maintained counter. Symbol.iterator yields FIFO values without removing them; drain() dequeues before each yield, consuming only as iteration advances. Full traversal takes O(n), storage O(n). Empty dequeue/peek returns undefined, indistinguishable from a stored undefined unless size is checked. Iteration is live, not a snapshot. Compared p-limit's complete source: it imports yocto-queue and invokes function_(...arguments_), so it fails the data-structure requirement. The inspected MIT notice credits Sindre Sorhus and requires preserving copyright and permission notices in copies or substantial portions; it disclaims warranties. Source inspection only; no execution or independent testing, and no comprehensive component/dependency audit."
+      },
+      "expected": "sindresorhus/yocto-queue:index.js",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "sindresorhus/yocto-queue:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 83503,
+        "cached_input_tokens": 59776,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 735,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 35675,
+      "trace": {
+        "sha256": "7648b0e5c1c26c8977921217babbce095c3a377e4d44ce3e552b6ac7aa4c9437"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "queue",
+            "language": "JavaScript",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1006,
+            "part_id": "0a9b1ce92afea657"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1006,
+            "part_id": "0a9b1ce92afea657",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1006,
+            "part_id": "0a9b1ce92afea657",
+            "path": "package.json",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1006,
+            "part_id": "0a9b1ce92afea657",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "clear-and-settle",
+      "promptSha256": "6d32d6cded207401faa714fee465e0243eacd10df0408059e9c25ff1cdcf6246",
+      "answer": {
+        "answer": "sindresorhus/p-limit:index.js",
+        "finding": "At commit a8a6fbec4e0e866d6d779b10889bb4f5567e70eb, use limitFunction(fn, {concurrency: 2, rejectOnClear: true}), then call wrapped.clearQueue() on screen change. limitFunction forwards options to pLimit and exposes clearQueue. Clearing dequeues waiting entries and rejects their promises with the shared AbortSignal.abort().reason (AbortError); running calls continue. Default rejectOnClear is false: clearQueue merely drops queued entries, leaving their promises pending forever. Concurrency must be a positive integer or Infinity; rejectOnClear must be boolean. Calls already dequeued for execution escape clearing, even before their execution microtask runs; clearing also does not prevent future submissions. This is a concurrency limiter, not a time-based rate limiter. Compared source with p-throttle: it uses interval scheduling and signal-driven rejection, without this clearQueue configuration. Read the complete implementation, package metadata and MIT notice: retain Sindre Sorhus’s copyright and permission notice; warranty is disclaimed. Package is ESM, declares Node >=20 and depends on yocto-queue ^1.2.1; dependency licensing was not audited. Source inspection only; no code executed or independently tested."
+      },
+      "expected": "sindresorhus/p-limit:index.js",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "sindresorhus/p-limit:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 86240,
+        "cached_input_tokens": 59648,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 620,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 26492,
+      "trace": {
+        "sha256": "12a490a221a12d5b6abe460384e52f60ba51c9ce03e88d13f64fd38d27f203a1"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "limiter",
+            "language": "JavaScript",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "package.json",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "trailing-inflight",
+      "promptSha256": "04316fd07f6204c5f8b95c0169e8afc9385f294b43f590a6596885b30a8909e1",
+      "answer": {
+        "answer": "sindresorhus/p-debounce:index.js",
+        "finding": "At commit 792115ea04019c720ddc8753010c758c55796f77, use pDebounce.promise(refresh, {after: true}). While running, calls overwrite queued arguments and this with the latest values while collecting callers' resolvers. After completion, one extra refresh runs immediately, without a timer. Before awaiting that extra refresh, queuedCall is cleared; another burst during it therefore queues one further refresh with that burst's latest arguments. Sustained bursts can keep this serial loop running. Queued callers receive their batch's result or rejection; the initial caller waits for the queue to drain but receives the initial result or error. Queued work runs even after an initial failure. Completed values are not cached; state is per wrapper, not per argument key. The wrapper must have started the active refresh to track it. Compared source: ordinary pDebounce uses a timer; promise mode without after only shares current work; p-limit queues every call rather than coalescing. Read the complete implementation and MIT notice, which requires retaining copyright and permission notices and disclaims warranties. Component/dependency licensing remains unaudited. No code executed or independently tested."
+      },
+      "expected": "sindresorhus/p-debounce:index.js",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "sindresorhus/p-debounce:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 81206,
+        "cached_input_tokens": 58880,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 577,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 34630,
+      "trace": {
+        "sha256": "a64ed1c8546a54f70aa5285eee3288d1ae072b7da7e9b04983170e19503b7933"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "async",
+            "language": "JavaScript",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1001,
+            "part_id": "58fc08015e148bbc"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1001,
+            "part_id": "58fc08015e148bbc",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1001,
+            "part_id": "58fc08015e148bbc",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "durable-shared-budget",
+      "promptSha256": "2613c01038e50a08246874500485b50da12f1358376ade0f13204157e8323c1f",
+      "answer": {
+        "answer": "NO_MATCH",
+        "finding": "Compared complete index.js implementations and license notices for three pinned candidates. sindresorhus/p-limit (a8a6fbec4e0e866d6d779b10889bb4f5567e70eb): pLimit(concurrency) or pLimit({concurrency, rejectOnClear:false}) accepts positive integer concurrency or Infinity; each instance owns activeCount and an in-memory yocto-queue containing promise callbacks. It limits simultaneous operations, not calls per interval. sindresorhus/p-throttle (a0d20bf8c1a5f0067b1dce529b1ff013878591d3): pThrottle({limit, interval, strict, signal, onDelay, weight}) uses local currentTick/activeWeight counters, strictTicks reservations, a Map of pending timers and setTimeout. Strict scheduling and weights do not provide interprocess coordination or durability; strict with interval:0 also permits unlimited same-millisecond calls. sindresorhus/yocto-queue (72a8fa96a9d389765cdf2bb9c6daba8302fc375d): new Queue() stores values in private head/tail/size fields and linked nodes; it provides FIFO operations without scheduling or budget enforcement. None exposes shared storage or queue recovery configuration: separate workers have separate state, and restarting every process loses queued work and budget history. All three notices grant MIT permissions, require retaining copyright and permission notices, and disclaim warranties; dependency licensing was not comprehensively audited. This conclusion covers the inspected candidates, not every upstream project. No code was executed or independently tested."
+      },
+      "expected": "NO_MATCH",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": false,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "sindresorhus/p-limit:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          },
+          {
+            "key": "sindresorhus/p-queue:source/index.ts",
+            "inspected": false,
+            "relevantSource": false,
+            "notice": false
+          },
+          {
+            "key": "sindresorhus/p-throttle:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": false
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 94406,
+        "cached_input_tokens": 42112,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 713,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 37331,
+      "trace": {
+        "sha256": "6eaedd655bb44980549c90819ea8e64260492ab64a616bb4cba1b9c89ba3ac08"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "queue",
+            "language": "JavaScript",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "limiter",
+            "language": "JavaScript",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1006,
+            "part_id": "0a9b1ce92afea657"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1006,
+            "part_id": "0a9b1ce92afea657",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1006,
+            "part_id": "0a9b1ce92afea657",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    },
+    {
+      "id": "force-stop-running",
+      "promptSha256": "02111e5419d93206d3a1816544fcd9500eea9cabc282b9a7be8d79911c967074",
+      "answer": {
+        "answer": "NO_MATCH",
+        "finding": "Compared three pinned MIT candidates using implementation source and each repository's license notice. sindresorhus/p-limit:index.js (a8a6fbec4e0e866d6d779b10889bb4f5567e70eb): pLimit({concurrency: 1, rejectOnClear: true}).clearQueue() rejects only queued entries; the default rejectOnClear:false merely clears them, leaving their promises unsettled. run() invokes the callback directly and awaits its returned promise; running callbacks cannot be stopped, and side effects can continue after that promise rejects. sindresorhus/p-queue:source/index.ts (180ab9e25cd10b6f548767d7176076b50d25e188): new PQueue({concurrency: 1}).add(callback, {signal}) invokes callback({signal}), then races its result against an abort rejection. Aborting settles the outer promise and releases the queue slot without terminating the callback; continued side effects can overlap subsequent tasks. Waiting tasks are removed by the default priority queue and rejected; clear() discards waiting work without settling its promises. The relevant add()/clear() implementation was read in the subsequent window at offset 12000. sindresorhus/p-throttle:index.js (a0d20bf8c1a5f0067b1dce529b1ff013878591d3): pThrottle({limit: 1, interval: 1000, signal})(callback) cancels delayed timers and rejects waiting calls. execute() directly invokes the callback, adopts its promise, and removes the timer entry without awaiting completion; abort cannot terminate already running work. strict or weight options change scheduling, not cancellation. All three MIT notices require retaining copyright and permission notices and disclaim warranties; dependency/component licensing was not audited. None guarantees forced termination of an uncooperative callback under your constraints. This is pinned-source inspection, not independent testing; no upstream code was executed, installed, modified or published."
+      },
+      "expected": "NO_MATCH",
+      "score": {
+        "exactAnswer": true,
+        "searched": true,
+        "boundedSearch": true,
+        "sourceEvidence": true,
+        "noticeEvidence": true,
+        "evidence": [
+          {
+            "key": "sindresorhus/p-limit:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          },
+          {
+            "key": "sindresorhus/p-queue:source/index.ts",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          },
+          {
+            "key": "sindresorhus/p-throttle:index.js",
+            "inspected": true,
+            "relevantSource": true,
+            "notice": true
+          }
+        ],
+        "passed": true
+      },
+      "transportSuccess": true,
+      "failure": null,
+      "prohibited": [],
+      "usage": {
+        "input_tokens": 130674,
+        "cached_input_tokens": 76672,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 906,
+        "reasoning_output_tokens": 0
+      },
+      "latencyMs": 43773,
+      "trace": {
+        "sha256": "5b02052a5865ab9eae6cc4e80dd4d4a3af036148696ee789afa3b7efd6755997"
+      },
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "queue",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "limiter",
+            "license": "MIT",
+            "limit": 8
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc"
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1005,
+            "part_id": "e6bad63d8a0ceefc",
+            "path": "license",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1002,
+            "part_id": "472f8312907445d4",
+            "path": "index.js",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/index.ts",
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        },
+        {
+          "tool": "repo_salvage_read_part_file",
+          "arguments": {
+            "listing_id": 1004,
+            "part_id": "41cca52dc32ed71e",
+            "path": "source/index.ts",
+            "offset": 12000,
+            "max_characters": 12000
+          },
+          "status": "completed",
+          "error": null,
+          "isError": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "exactAnswers": 10,
+    "evidenceQualified": 9,
+    "cases": 10,
+    "mcpCalls": 81,
+    "callsByTool": {
+      "repo_salvage_search_parts": 15,
+      "repo_salvage_inspect_part": 19,
+      "repo_salvage_read_part_file": 47
+    },
+    "emptySearches": 1,
+    "focusedEvidenceCalls": 0,
+    "usage": {
+      "input_tokens": 1005610,
+      "cached_input_tokens": 678784,
+      "output_tokens": 7029
+    },
+    "cachedInputIsSubsetOfInput": true
+  },
+  "manualReview": {
+    "reviewer": "Implementing agent; not blinded or independent certification",
+    "configurationBehaviorAndLimits": "All ten answers checked against the pre-recorded source requirements. The negative durable-work answer accurately described its inspected JavaScript candidates but omitted the TypeScript scheduler required by the competitor-coverage control.",
+    "caseReviews": [
+      {
+        "id": "cap-active-work",
+        "narrativeReview": "pass",
+        "evidenceReview": "pass",
+        "requirements": [
+          "activeCount and queue control concurrency; failures are observed before releasing capacity",
+          "mutable concurrency setter resumes waiting work; not a starts-per-interval limit"
+        ]
+      },
+      {
+        "id": "quiet-burst",
+        "narrativeReview": "pass",
+        "evidenceReview": "pass",
+        "requirements": [
+          "timer is reset; trailing call uses last arguments",
+          "promiseHandlers for the burst share fulfillment/rejection; not a FIFO task scheduler"
+        ]
+      },
+      {
+        "id": "per-key-inflight",
+        "narrativeReview": "pass",
+        "evidenceReview": "pass",
+        "requirements": [
+          "cache:false disables fulfilled-value caching while retaining per-key promiseCache",
+          "cacheKey default first argument; promiseCache entry removed in finally"
+        ]
+      },
+      {
+        "id": "weighted-call-budget",
+        "narrativeReview": "pass",
+        "evidenceReview": "pass",
+        "requirements": [
+          "weight callback validates finite nonnegative weight and rejects weight above limit",
+          "strict scheduling reservations and execution-time weighted revalidation; no concurrency cap"
+        ]
+      },
+      {
+        "id": "priority-pause",
+        "narrativeReview": "pass",
+        "evidenceReview": "pass",
+        "requirements": [
+          "setPriority delegates to local priority queue; pause only changes isPaused; start resumes",
+          "local queue/options/priority-queue modules and external dependencies needed; no forced running cancellation"
+        ]
+      },
+      {
+        "id": "fifo-values",
+        "narrativeReview": "pass",
+        "evidenceReview": "pass",
+        "requirements": [
+          "head/tail linked nodes support constant-time enqueue/dequeue",
+          "iterator nonconsuming; drain calls dequeue; no external imports"
+        ]
+      },
+      {
+        "id": "clear-and-settle",
+        "narrativeReview": "pass",
+        "evidenceReview": "pass",
+        "requirements": [
+          "rejectOnClear:true is required; clearQueue rejects each queued item using abort reason",
+          "default clearQueue drops queued entries without settling promises; running work unaffected"
+        ]
+      },
+      {
+        "id": "trailing-inflight",
+        "narrativeReview": "pass",
+        "evidenceReview": "pass",
+        "requirements": [
+          "promise variant with after:true retains latest queued arguments and resolves grouped callers",
+          "while queuedCall handles later bursts; default after false shares current promise"
+        ]
+      },
+      {
+        "id": "durable-shared-budget",
+        "narrativeReview": "Accurate scoped findings; missing required TypeScript competitor",
+        "evidenceReview": "incomplete competitor coverage",
+        "requirements": [
+          "p-limit uses local Queue/counter; p-queue local priority queue/counters; p-throttle local state/timers",
+          "no demonstrated cross-process store or durable restart recovery"
+        ]
+      },
+      {
+        "id": "force-stop-running",
+        "narrativeReview": "pass",
+        "evidenceReview": "pass",
+        "requirements": [
+          "p-queue races promise with abort rejection and passes signal; callback may continue",
+          "p-limit clearQueue only handles waiting items; p-throttle clears queued timers, not running callbacks"
+        ]
+      }
+    ]
+  },
+  "failurePreserved": {
+    "case": "durable-shared-budget",
+    "missing": "sindresorhus/p-queue:source/index.ts",
+    "observedQueries": [
+      {
+        "q": "queue",
+        "language": "JavaScript",
+        "license": "MIT",
+        "limit": 8
+      },
+      {
+        "q": "limiter",
+        "language": "JavaScript",
+        "license": "MIT",
+        "limit": 8
+      }
+    ],
+    "interpretation": "Correct scoped NO_MATCH answer; insufficient coverage of the pre-recorded plausible competitors. Exact JavaScript source filtering hid the TypeScript scheduler. This is a discovery/qualification gap, not proof of an incorrect recommendation."
+  },
+  "limits": [
+    "Ten authored requests, six new entries from one author in the JS/TS ecosystem, plus the earlier 34-part catalog",
+    "Descriptions authored after source review; not an evaluation of automatic brief generation",
+    "Libraries absent from prior project corpora but not proven unseen by the model",
+    "One model/effort profile and one run per request; no general accuracy estimate",
+    "No upstream execution, adaptation validation or independent component testing",
+    "No focused-evidence calls; this run does not measure focused-tool adoption"
+  ]
+}

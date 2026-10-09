@@ -1,0 +1,1119 @@
+{
+  "format": "repo-salvage/competing-source-v1",
+  "repositories": [
+    {
+      "repo": "sindresorhus/p-debounce",
+      "commit": "792115ea04019c720ddc8753010c758c55796f77",
+      "license": "MIT",
+      "tree": [
+        {
+          "path": ".editorconfig",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "1c6314a31833395fd5ff016a6506bdd51860657c",
+          "size": 175,
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/blobs/1c6314a31833395fd5ff016a6506bdd51860657c"
+        },
+        {
+          "path": ".gitattributes",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "6313b56c57848efce05faa7aa7e901ccfc2886ea",
+          "size": 19,
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/blobs/6313b56c57848efce05faa7aa7e901ccfc2886ea"
+        },
+        {
+          "path": ".github",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "02ea7957456db6989bb30a4d7997ff22ee56f3f8",
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/trees/02ea7957456db6989bb30a4d7997ff22ee56f3f8"
+        },
+        {
+          "path": ".github/workflows",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "7e1fae7721f09ccc8ff41eff49af6ecde721e408",
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/trees/7e1fae7721f09ccc8ff41eff49af6ecde721e408"
+        },
+        {
+          "path": ".github/workflows/main.yml",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "9e3aaf9f056b81038232879bf2431ee8f59e9a49",
+          "size": 421,
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/blobs/9e3aaf9f056b81038232879bf2431ee8f59e9a49"
+        },
+        {
+          "path": ".gitignore",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "239ecff1372358a22aa99dcbb375fdad7abba817",
+          "size": 23,
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/blobs/239ecff1372358a22aa99dcbb375fdad7abba817"
+        },
+        {
+          "path": ".npmrc",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "43c97e719a5a824700932f72e6e7e6748ce45d01",
+          "size": 19,
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/blobs/43c97e719a5a824700932f72e6e7e6748ce45d01"
+        },
+        {
+          "path": "index.d.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "93632916eedcee1798ef153948bb431cbfb58fb9",
+          "size": 3253,
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/blobs/93632916eedcee1798ef153948bb431cbfb58fb9"
+        },
+        {
+          "path": "index.js",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "a54db7d9ea256467df3cb050074ddeb7a68f5f16",
+          "size": 3545,
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/blobs/a54db7d9ea256467df3cb050074ddeb7a68f5f16"
+        },
+        {
+          "path": "index.test-d.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "2a285bc46a00b2b5bcf199adfb1935425ef649fb",
+          "size": 636,
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/blobs/2a285bc46a00b2b5bcf199adfb1935425ef649fb"
+        },
+        {
+          "path": "license",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+          "size": 1117,
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/blobs/fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de"
+        },
+        {
+          "path": "package.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "275aded8e841d7b24c243d07a6e9e184e9111adf",
+          "size": 904,
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/blobs/275aded8e841d7b24c243d07a6e9e184e9111adf"
+        },
+        {
+          "path": "readme.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "3153bd7026dba34bdef45f75069a315fd41473d6",
+          "size": 4042,
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/blobs/3153bd7026dba34bdef45f75069a315fd41473d6"
+        },
+        {
+          "path": "test.js",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "a674be316dc1a44f8cc09fdc7dab682ce2da5762",
+          "size": 39619,
+          "url": "https://api.github.com/repos/sindresorhus/p-debounce/git/blobs/a674be316dc1a44f8cc09fdc7dab682ce2da5762"
+        }
+      ],
+      "files": [
+        {
+          "path": "index.js",
+          "blobSha": "a54db7d9ea256467df3cb050074ddeb7a68f5f16",
+          "sha256": "7a519eb4afed87d7b3c7eec0800c5379eae5ca53cf3e2ba325669ecf1338eeab",
+          "content": "const pDebounce = (functionToDebounce, wait, options = {}) => {\n\tif (!Number.isFinite(wait)) {\n\t\tthrow new TypeError('Expected `wait` to be a finite number');\n\t}\n\n\tlet leadingValue;\n\tlet timeout;\n\tlet promiseHandlers = []; // Single array of {resolve, reject}\n\n\tconst onAbort = () => {\n\t\tclearTimeout(timeout);\n\t\ttimeout = undefined;\n\n\t\ttry {\n\t\t\toptions.signal?.throwIfAborted();\n\t\t} catch (error) {\n\t\t\tfor (const {reject} of promiseHandlers) {\n\t\t\t\treject(error);\n\t\t\t}\n\n\t\t\tpromiseHandlers = [];\n\t\t}\n\t};\n\n\treturn function (...arguments_) {\n\t\treturn new Promise((resolve, reject) => {\n\t\t\t// Check if already aborted\n\t\t\ttry {\n\t\t\t\toptions.signal?.throwIfAborted();\n\t\t\t} catch (error) {\n\t\t\t\treject(error);\n\t\t\t\treturn;\n\t\t\t}\n\n\t\t\tconst shouldCallNow = options.before && !timeout;\n\n\t\t\tclearTimeout(timeout);\n\n\t\t\ttimeout = setTimeout(async () => {\n\t\t\t\ttimeout = undefined;\n\n\t\t\t\t// Capture the current handlers for this execution\n\t\t\t\tconst currentHandlers = promiseHandlers;\n\n\t\t\t\t// Clear handlers for next cycle (new calls during execution will add to new list)\n\t\t\t\tpromiseHandlers = [];\n\n\t\t\t\ttry {\n\t\t\t\t\tconst result = options.before ? leadingValue : await functionToDebounce.apply(this, arguments_);\n\n\t\t\t\t\tfor (const {resolve: resolveFunction} of currentHandlers) {\n\t\t\t\t\t\tresolveFunction(result);\n\t\t\t\t\t}\n\t\t\t\t} catch (error) {\n\t\t\t\t\tfor (const {reject: rejectFunction} of currentHandlers) {\n\t\t\t\t\t\trejectFunction(error);\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\t// Clear leading value for next cycle\n\t\t\t\tleadingValue = undefined;\n\n\t\t\t\t// Remove abort listener\n\t\t\t\toptions.signal?.removeEventListener('abort', onAbort);\n\t\t\t}, wait);\n\n\t\t\tif (shouldCallNow) {\n\t\t\t\t// Execute immediately for leading edge\n\t\t\t\t(async () => {\n\t\t\t\t\ttry {\n\t\t\t\t\t\tleadingValue = await functionToDebounce.apply(this, arguments_);\n\t\t\t\t\t\tresolve(leadingValue);\n\t\t\t\t\t} catch (error) {\n\t\t\t\t\t\treject(error);\n\t\t\t\t\t}\n\t\t\t\t})();\n\t\t\t} else {\n\t\t\t\t// Add to handlers for later resolution\n\t\t\t\tpromiseHandlers.push({resolve, reject});\n\n\t\t\t\t// Set up abort listener (only once per batch)\n\t\t\t\tif (options.signal && promiseHandlers.length === 1) {\n\t\t\t\t\toptions.signal.addEventListener('abort', onAbort, {once: true});\n\t\t\t\t}\n\t\t\t}\n\t\t});\n\t};\n};\n\npDebounce.promise = (function_, options = {}) => {\n\tlet currentPromise;\n\tlet queuedCall;\n\n\treturn async function (...arguments_) {\n\t\tif (currentPromise) {\n\t\t\tif (!options.after) {\n\t\t\t\treturn currentPromise;\n\t\t\t}\n\n\t\t\t// Queue latest call (replacing any existing queue)\n\t\t\tqueuedCall ??= {resolvers: []};\n\t\t\tqueuedCall.arguments = arguments_;\n\t\t\tqueuedCall.context = this;\n\n\t\t\treturn new Promise((resolve, reject) => {\n\t\t\t\tqueuedCall.resolvers.push({resolve, reject});\n\t\t\t});\n\t\t}\n\n\t\tcurrentPromise = (async () => {\n\t\t\tlet result;\n\t\t\tlet initialError;\n\t\t\tlet didReject = false;\n\n\t\t\ttry {\n\t\t\t\tresult = await function_.apply(this, arguments_);\n\t\t\t} catch (error) {\n\t\t\t\tinitialError = error;\n\t\t\t\tdidReject = true;\n\t\t\t}\n\n\t\t\t// Process queued calls regardless of initial result\n\t\t\twhile (queuedCall) {\n\t\t\t\tconst call = queuedCall;\n\t\t\t\tqueuedCall = undefined;\n\n\t\t\t\ttry {\n\t\t\t\t\t// eslint-disable-next-line no-await-in-loop\n\t\t\t\t\tconst queuedResult = await function_.apply(call.context, call.arguments);\n\t\t\t\t\tfor (const {resolve} of call.resolvers) {\n\t\t\t\t\t\tresolve(queuedResult);\n\t\t\t\t\t}\n\t\t\t\t} catch (error) {\n\t\t\t\t\tfor (const {reject} of call.resolvers) {\n\t\t\t\t\t\treject(error);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tif (didReject) {\n\t\t\t\tthrow initialError;\n\t\t\t}\n\n\t\t\treturn result;\n\t\t})();\n\n\t\ttry {\n\t\t\treturn await currentPromise;\n\t\t} finally {\n\t\t\tcurrentPromise = undefined;\n\t\t}\n\t};\n};\n\nexport default pDebounce;\n",
+          "truncated": false
+        },
+        {
+          "path": "license",
+          "blobSha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "content": "MIT License\n\nCopyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+          "truncated": false
+        },
+        {
+          "path": "package.json",
+          "blobSha": "275aded8e841d7b24c243d07a6e9e184e9111adf",
+          "sha256": "23ffe237ef64c823730d8a9b1316d8272a59893bf97f8122087d26558929990a",
+          "content": "{\n\t\"name\": \"p-debounce\",\n\t\"version\": \"5.1.1\",\n\t\"description\": \"Debounce promise-returning & async functions\",\n\t\"license\": \"MIT\",\n\t\"repository\": \"sindresorhus/p-debounce\",\n\t\"funding\": \"https://github.com/sponsors/sindresorhus\",\n\t\"author\": {\n\t\t\"name\": \"Sindre Sorhus\",\n\t\t\"email\": \"sindresorhus@gmail.com\",\n\t\t\"url\": \"https://sindresorhus.com\"\n\t},\n\t\"type\": \"module\",\n\t\"exports\": {\n\t\t\"types\": \"./index.d.ts\",\n\t\t\"default\": \"./index.js\"\n\t},\n\t\"sideEffects\": false,\n\t\"engines\": {\n\t\t\"node\": \">=20\"\n\t},\n\t\"scripts\": {\n\t\t\"test\": \"xo && node --test && tsd\"\n\t},\n\t\"files\": [\n\t\t\"index.js\",\n\t\t\"index.d.ts\"\n\t],\n\t\"keywords\": [\n\t\t\"promise\",\n\t\t\"debounce\",\n\t\t\"debounced\",\n\t\t\"limit\",\n\t\t\"limited\",\n\t\t\"concurrency\",\n\t\t\"throttle\",\n\t\t\"throat\",\n\t\t\"interval\",\n\t\t\"rate\",\n\t\t\"batch\",\n\t\t\"ratelimit\",\n\t\t\"task\",\n\t\t\"queue\",\n\t\t\"async\",\n\t\t\"await\",\n\t\t\"promises\",\n\t\t\"bluebird\"\n\t],\n\t\"devDependencies\": {\n\t\t\"tsd\": \"^0.33.0\",\n\t\t\"xo\": \"^1.2.2\"\n\t}\n}\n",
+          "truncated": false
+        }
+      ],
+      "repository_id": 71543534,
+      "owner_id": 170270,
+      "source_url": "https://github.com/sindresorhus/p-debounce",
+      "description": "Debounce promise-returning & async functions",
+      "language": "JavaScript",
+      "capture": "Selected complete pinned files; Git blob verified; source only, never executed."
+    },
+    {
+      "repo": "sindresorhus/p-limit",
+      "commit": "a8a6fbec4e0e866d6d779b10889bb4f5567e70eb",
+      "license": "MIT",
+      "tree": [
+        {
+          "path": ".editorconfig",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "1c6314a31833395fd5ff016a6506bdd51860657c",
+          "size": 175,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/1c6314a31833395fd5ff016a6506bdd51860657c"
+        },
+        {
+          "path": ".gitattributes",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "6313b56c57848efce05faa7aa7e901ccfc2886ea",
+          "size": 19,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/6313b56c57848efce05faa7aa7e901ccfc2886ea"
+        },
+        {
+          "path": ".github",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "4fee8be55bb9c6ae1e4cbf2c025c3a1b9084760a",
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/trees/4fee8be55bb9c6ae1e4cbf2c025c3a1b9084760a"
+        },
+        {
+          "path": ".github/security.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "17667dbb6d414b142b37c1f5b70b5dc4243270ee",
+          "size": 175,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/17667dbb6d414b142b37c1f5b70b5dc4243270ee"
+        },
+        {
+          "path": ".github/workflows",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "4b050ddacf4db9c41001850547f7910267a90d46",
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/trees/4b050ddacf4db9c41001850547f7910267a90d46"
+        },
+        {
+          "path": ".github/workflows/main.yml",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "6ab9e0a66fe006487ceb0b85a0755c8f5c0bd096",
+          "size": 436,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/6ab9e0a66fe006487ceb0b85a0755c8f5c0bd096"
+        },
+        {
+          "path": ".gitignore",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "239ecff1372358a22aa99dcbb375fdad7abba817",
+          "size": 23,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/239ecff1372358a22aa99dcbb375fdad7abba817"
+        },
+        {
+          "path": ".npmrc",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "43c97e719a5a824700932f72e6e7e6748ce45d01",
+          "size": 19,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/43c97e719a5a824700932f72e6e7e6748ce45d01"
+        },
+        {
+          "path": "benchmark.js",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "2a8be726365a3ac81fbfd45c4cebd26ee01f2aa9",
+          "size": 7741,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/2a8be726365a3ac81fbfd45c4cebd26ee01f2aa9"
+        },
+        {
+          "path": "index.d.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "ff71a8037f467ebb9820dff5a0ccf914f00d3b63",
+          "size": 4645,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/ff71a8037f467ebb9820dff5a0ccf914f00d3b63"
+        },
+        {
+          "path": "index.js",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "c24de5782032605aa83636bcf455f700e3b2ada7",
+          "size": 3868,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/c24de5782032605aa83636bcf455f700e3b2ada7"
+        },
+        {
+          "path": "index.test-d.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "457778a30d3abf77f9371a2df7e0e20a043ffed1",
+          "size": 1244,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/457778a30d3abf77f9371a2df7e0e20a043ffed1"
+        },
+        {
+          "path": "license",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+          "size": 1117,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de"
+        },
+        {
+          "path": "package.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "f792b83b85ca1e81ace7cf0c930edf195b20c2ce",
+          "size": 1055,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/f792b83b85ca1e81ace7cf0c930edf195b20c2ce"
+        },
+        {
+          "path": "readme.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "0da4a8e580f4ad7b23bc545db491a264a5b58566",
+          "size": 5418,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/0da4a8e580f4ad7b23bc545db491a264a5b58566"
+        },
+        {
+          "path": "recipes.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "efe53cdffc4eb4d418ee50c7ddf7097febdc8ca9",
+          "size": 4692,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/efe53cdffc4eb4d418ee50c7ddf7097febdc8ca9"
+        },
+        {
+          "path": "scripts",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "098047167758709cf54dfefe49989aa432eef97f",
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/trees/098047167758709cf54dfefe49989aa432eef97f"
+        },
+        {
+          "path": "scripts/benchmarker.js",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "56bfb410653b154df6df64ad9c348b742fd80a07",
+          "size": 6224,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/56bfb410653b154df6df64ad9c348b742fd80a07"
+        },
+        {
+          "path": "test.js",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "08e197ebdeb37ff2fa3bb3088f79eefc81e0e003",
+          "size": 12063,
+          "url": "https://api.github.com/repos/sindresorhus/p-limit/git/blobs/08e197ebdeb37ff2fa3bb3088f79eefc81e0e003"
+        }
+      ],
+      "files": [
+        {
+          "path": "index.js",
+          "blobSha": "c24de5782032605aa83636bcf455f700e3b2ada7",
+          "sha256": "edde12a4a4dbdbe8d27161cdd0853db0bab435d5dc6c15f9f4dedc27ee9bca60",
+          "content": "import Queue from 'yocto-queue';\n\nexport default function pLimit(concurrency) {\n\tlet rejectOnClear = false;\n\n\tif (typeof concurrency === 'object') {\n\t\t({concurrency, rejectOnClear = false} = concurrency);\n\t}\n\n\tvalidateConcurrency(concurrency);\n\n\tif (typeof rejectOnClear !== 'boolean') {\n\t\tthrow new TypeError('Expected `rejectOnClear` to be a boolean');\n\t}\n\n\tconst queue = new Queue();\n\tlet activeCount = 0;\n\n\tconst resumeNext = () => {\n\t\t// Process the next queued function if we're under the concurrency limit\n\t\tif (activeCount < concurrency && queue.size > 0) {\n\t\t\tactiveCount++;\n\t\t\tqueue.dequeue().run();\n\t\t}\n\t};\n\n\tconst next = () => {\n\t\tactiveCount--;\n\t\tresumeNext();\n\t};\n\n\tconst run = async (function_, resolve, arguments_) => {\n\t\t// Execute the function and capture the result promise\n\t\tconst result = (async () => function_(...arguments_))();\n\n\t\t// Resolve immediately with the promise (don't wait for completion)\n\t\tresolve(result);\n\n\t\t// Wait for the function to complete (success or failure)\n\t\t// We catch errors here to prevent unhandled rejections,\n\t\t// but the original promise rejection is preserved for the caller\n\t\ttry {\n\t\t\tawait result;\n\t\t} catch {}\n\n\t\t// Decrement active count and process next queued function\n\t\tnext();\n\t};\n\n\tconst enqueue = (function_, resolve, reject, arguments_) => {\n\t\tconst queueItem = {reject};\n\n\t\t// Queue the internal resolve function instead of the run function\n\t\t// to preserve the asynchronous execution context.\n\t\tnew Promise(internalResolve => { // eslint-disable-line promise/param-names\n\t\t\tqueueItem.run = internalResolve;\n\t\t\tqueue.enqueue(queueItem);\n\t\t}).then(run.bind(undefined, function_, resolve, arguments_)); // eslint-disable-line promise/prefer-await-to-then\n\n\t\t// Start processing immediately if we haven't reached the concurrency limit\n\t\tif (activeCount < concurrency) {\n\t\t\tresumeNext();\n\t\t}\n\t};\n\n\tconst generator = (function_, ...arguments_) => new Promise((resolve, reject) => {\n\t\tenqueue(function_, resolve, reject, arguments_);\n\t});\n\n\tObject.defineProperties(generator, {\n\t\tactiveCount: {\n\t\t\tget: () => activeCount,\n\t\t},\n\t\tpendingCount: {\n\t\t\tget: () => queue.size,\n\t\t},\n\t\tclearQueue: {\n\t\t\tvalue() {\n\t\t\t\tif (!rejectOnClear) {\n\t\t\t\t\tqueue.clear();\n\t\t\t\t\treturn;\n\t\t\t\t}\n\n\t\t\t\tconst abortError = AbortSignal.abort().reason;\n\n\t\t\t\twhile (queue.size > 0) {\n\t\t\t\t\tqueue.dequeue().reject(abortError);\n\t\t\t\t}\n\t\t\t},\n\t\t},\n\t\tconcurrency: {\n\t\t\tget: () => concurrency,\n\n\t\t\tset(newConcurrency) {\n\t\t\t\tvalidateConcurrency(newConcurrency);\n\t\t\t\tconcurrency = newConcurrency;\n\n\t\t\t\tqueueMicrotask(() => {\n\t\t\t\t\t// eslint-disable-next-line no-unmodified-loop-condition\n\t\t\t\t\twhile (activeCount < concurrency && queue.size > 0) {\n\t\t\t\t\t\tresumeNext();\n\t\t\t\t\t}\n\t\t\t\t});\n\t\t\t},\n\t\t},\n\t\tmap: {\n\t\t\tasync value(iterable, function_) {\n\t\t\t\tconst promises = [];\n\n\t\t\t\ttry {\n\t\t\t\t\tArray.from(iterable, (value, index) => {\n\t\t\t\t\t\tconst promise = generator(function_, value, index);\n\t\t\t\t\t\tpromises.push(promise);\n\t\t\t\t\t\treturn promise;\n\t\t\t\t\t});\n\t\t\t\t} catch (error) {\n\t\t\t\t\t// The iterable threw, so `Promise.all` never observes the already scheduled promises. Observe them here to avoid unhandled rejections.\n\t\t\t\t\tfor (const promise of promises) {\n\t\t\t\t\t\tpromise.catch(() => {}); // eslint-disable-line promise/prefer-await-to-then\n\t\t\t\t\t}\n\n\t\t\t\t\tthrow error;\n\t\t\t\t}\n\n\t\t\t\treturn Promise.all(promises);\n\t\t\t},\n\t\t},\n\t});\n\n\treturn generator;\n}\n\nexport function limitFunction(function_, options) {\n\tconst limit = pLimit(options);\n\n\tconst limitedFunction = (...arguments_) => limit(() => function_(...arguments_));\n\tObject.defineProperty(limitedFunction, 'clearQueue', {\n\t\tvalue: limit.clearQueue,\n\t});\n\n\treturn limitedFunction;\n}\n\nfunction validateConcurrency(concurrency) {\n\tif (!((Number.isInteger(concurrency) || concurrency === Number.POSITIVE_INFINITY) && concurrency > 0)) {\n\t\tthrow new TypeError('Expected `concurrency` to be a number from 1 and up');\n\t}\n}\n",
+          "truncated": false
+        },
+        {
+          "path": "license",
+          "blobSha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "content": "MIT License\n\nCopyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+          "truncated": false
+        },
+        {
+          "path": "package.json",
+          "blobSha": "f792b83b85ca1e81ace7cf0c930edf195b20c2ce",
+          "sha256": "daa6b0d168d7197eccbfef1c678e8f00b79d063129bf48f4ee2db38dc605ca7f",
+          "content": "{\n\t\"name\": \"p-limit\",\n\t\"version\": \"7.3.3\",\n\t\"description\": \"Run multiple promise-returning & async functions with limited concurrency\",\n\t\"license\": \"MIT\",\n\t\"repository\": \"sindresorhus/p-limit\",\n\t\"funding\": \"https://github.com/sponsors/sindresorhus\",\n\t\"author\": {\n\t\t\"name\": \"Sindre Sorhus\",\n\t\t\"email\": \"sindresorhus@gmail.com\",\n\t\t\"url\": \"https://sindresorhus.com\"\n\t},\n\t\"type\": \"module\",\n\t\"exports\": {\n\t\t\"types\": \"./index.d.ts\",\n\t\t\"default\": \"./index.js\"\n\t},\n\t\"sideEffects\": false,\n\t\"engines\": {\n\t\t\"node\": \">=20\"\n\t},\n\t\"scripts\": {\n\t\t\"test\": \"xo && ava && tsd\",\n\t\t\"benchmark\": \"node benchmark.js\"\n\t},\n\t\"files\": [\n\t\t\"index.js\",\n\t\t\"index.d.ts\"\n\t],\n\t\"keywords\": [\n\t\t\"promise\",\n\t\t\"limit\",\n\t\t\"limited\",\n\t\t\"concurrency\",\n\t\t\"throttle\",\n\t\t\"throat\",\n\t\t\"rate\",\n\t\t\"batch\",\n\t\t\"ratelimit\",\n\t\t\"task\",\n\t\t\"queue\",\n\t\t\"async\",\n\t\t\"await\",\n\t\t\"promises\",\n\t\t\"bluebird\"\n\t],\n\t\"dependencies\": {\n\t\t\"yocto-queue\": \"^1.2.1\"\n\t},\n\t\"devDependencies\": {\n\t\t\"ava\": \"^6.4.1\",\n\t\t\"in-range\": \"^3.0.0\",\n\t\t\"random-int\": \"^3.0.0\",\n\t\t\"time-span\": \"^5.1.0\",\n\t\t\"tsd\": \"^0.33.0\",\n\t\t\"xo\": \"^1.2.1\"\n\t}\n}\n",
+          "truncated": false
+        }
+      ],
+      "repository_id": 71542716,
+      "owner_id": 170270,
+      "source_url": "https://github.com/sindresorhus/p-limit",
+      "description": "Run multiple promise-returning & async functions with limited concurrency",
+      "language": "JavaScript",
+      "capture": "Selected complete pinned files; Git blob verified; source only, never executed."
+    },
+    {
+      "repo": "sindresorhus/p-memoize",
+      "commit": "e0912bb5364c8421e189f018501a474d502f64cb",
+      "license": "MIT",
+      "tree": [
+        {
+          "path": ".editorconfig",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "1c6314a31833395fd5ff016a6506bdd51860657c",
+          "size": 175,
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/blobs/1c6314a31833395fd5ff016a6506bdd51860657c"
+        },
+        {
+          "path": ".gitattributes",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "6313b56c57848efce05faa7aa7e901ccfc2886ea",
+          "size": 19,
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/blobs/6313b56c57848efce05faa7aa7e901ccfc2886ea"
+        },
+        {
+          "path": ".github",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "3baaa9f7fb454ea9cb74821fd6fa224ef969b8ad",
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/trees/3baaa9f7fb454ea9cb74821fd6fa224ef969b8ad"
+        },
+        {
+          "path": ".github/security.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "aaf999e7ddf258da93b161031b2b63a6df0ba1f4",
+          "size": 177,
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/blobs/aaf999e7ddf258da93b161031b2b63a6df0ba1f4"
+        },
+        {
+          "path": ".github/workflows",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "4b050ddacf4db9c41001850547f7910267a90d46",
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/trees/4b050ddacf4db9c41001850547f7910267a90d46"
+        },
+        {
+          "path": ".github/workflows/main.yml",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "6ab9e0a66fe006487ceb0b85a0755c8f5c0bd096",
+          "size": 436,
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/blobs/6ab9e0a66fe006487ceb0b85a0755c8f5c0bd096"
+        },
+        {
+          "path": ".gitignore",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "d2a80072cc2afa8ab3098ea6cc72ecd365bcca43",
+          "size": 36,
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/blobs/d2a80072cc2afa8ab3098ea6cc72ecd365bcca43"
+        },
+        {
+          "path": ".npmrc",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "43c97e719a5a824700932f72e6e7e6748ce45d01",
+          "size": 19,
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/blobs/43c97e719a5a824700932f72e6e7e6748ce45d01"
+        },
+        {
+          "path": "index.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "c5c71d07689ef0b245316f923f20541d628cb985",
+          "size": 8216,
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/blobs/c5c71d07689ef0b245316f923f20541d628cb985"
+        },
+        {
+          "path": "license",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+          "size": 1117,
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/blobs/fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de"
+        },
+        {
+          "path": "package.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "f120c014a3d91fd50b704a61a4ff4f82c020aced",
+          "size": 1583,
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/blobs/f120c014a3d91fd50b704a61a4ff4f82c020aced"
+        },
+        {
+          "path": "readme.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "531ad21e2cb9cf9db60459433d484fdd492fec5d",
+          "size": 5776,
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/blobs/531ad21e2cb9cf9db60459433d484fdd492fec5d"
+        },
+        {
+          "path": "test-d",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "7973d2c7a1bc3174af730e5ce093f72630d16828",
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/trees/7973d2c7a1bc3174af730e5ce093f72630d16828"
+        },
+        {
+          "path": "test-d/index.test-d.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "d419cb09a7fd0110211e9edefff52e915f8d1f72",
+          "size": 3926,
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/blobs/d419cb09a7fd0110211e9edefff52e915f8d1f72"
+        },
+        {
+          "path": "test.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "0f191f88e0c263e1bc690a0226bdbc83ac592fbd",
+          "size": 15738,
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/blobs/0f191f88e0c263e1bc690a0226bdbc83ac592fbd"
+        },
+        {
+          "path": "tsconfig.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "d53d99f4b113cdfcb7ac635534aba3a6f8b31544",
+          "size": 206,
+          "url": "https://api.github.com/repos/sindresorhus/p-memoize/git/blobs/d53d99f4b113cdfcb7ac635534aba3a6f8b31544"
+        }
+      ],
+      "files": [
+        {
+          "path": "index.ts",
+          "blobSha": "c5c71d07689ef0b245316f923f20541d628cb985",
+          "sha256": "c4594e02e8e4919f5c744c47d3e0f83990c9b7689793853bdd60c9200c0018c8",
+          "content": "import mimicFunction from 'mimic-function';\nimport type {AsyncReturnType} from 'type-fest';\n\n// TODO: Use the one in `type-fest` when it's added there.\nexport type AnyAsyncFunction = (...arguments_: readonly any[]) => Promise<unknown | void>;\n\nconst cacheStore = new WeakMap<AnyAsyncFunction, CacheStorage<any, any> | false>();\n\nexport type CacheStorage<KeyType, ValueType> = {\n\thas: (key: KeyType) => Promise<boolean> | boolean;\n\tget: (key: KeyType) => Promise<ValueType | undefined> | ValueType | undefined;\n\tset: (key: KeyType, value: ValueType) => Promise<unknown> | unknown;\n\tdelete: (key: KeyType) => unknown;\n\tclear?: () => unknown;\n};\n\n/**\nControls whether a fulfilled value should be written to the cache.\n*/\nexport type ShouldCache<\n\tKeyType,\n\tValueType,\n\tArgumentsList extends readonly unknown[] = readonly unknown[],\n> = (\n\tvalue: ValueType,\n\tcontext: {key: KeyType; argumentsList: ArgumentsList},\n) => boolean | Promise<boolean>;\n\nexport type Options<\n\tFunctionToMemoize extends AnyAsyncFunction,\n\tCacheKeyType,\n> = {\n\t/**\n\tDetermines the cache key for storing the result based on the function arguments. By default, __only the first argument is considered__ and it only works with [primitives](https://developer.mozilla.org/docs/Glossary/Primitive).\n\n\tA `cacheKey` function can return any type supported by `Map` (or whatever structure you use in the `cache` option).\n\n\tYou can have it cache **all** the arguments by value with `JSON.stringify`, if they are compatible:\n\n\t```\n\timport pMemoize from 'p-memoize';\n\n\tpMemoize(function_, {cacheKey: JSON.stringify});\n\t```\n\n\tOr you can use a more full-featured serializer like [serialize-javascript](https://github.com/yahoo/serialize-javascript) to add support for `RegExp`, `Date` and so on.\n\n\t```\n\timport pMemoize from 'p-memoize';\n\timport serializeJavascript from 'serialize-javascript';\n\n\tpMemoize(function_, {cacheKey: serializeJavascript});\n\t```\n\n\t@default arguments_ => arguments_[0]\n\t@example arguments_ => JSON.stringify(arguments_)\n\t*/\n\treadonly cacheKey?: (arguments_: Parameters<FunctionToMemoize>) => CacheKeyType;\n\n\t/**\n\tUse a different cache storage. Must implement the following methods: `.has(key)`, `.get(key)`, `.set(key, value)`, `.delete(key)`, and optionally `.clear()`. You could for example use a `WeakMap` instead or [`quick-lru`](https://github.com/sindresorhus/quick-lru) for a LRU cache. To disable caching so that only concurrent executions resolve with the same value, pass `false`.\n\n\t@default new Map()\n\t@example new WeakMap()\n\t*/\n\treadonly cache?: CacheStorage<CacheKeyType, AsyncReturnType<FunctionToMemoize>> | false;\n\n\t/**\n\tControls whether a fulfilled value should be written to the cache.\n\n\tIt runs after the function fulfills and before `cache.set`.\n\n\t- Omit to keep current behavior (always write).\n\t- Return `false` to skip writing to the cache (in-flight de-duplication is still cleared).\n\t- Throw or reject to propagate the error and skip caching.\n\n\t@example\n\t```\n\timport pMemoize from 'p-memoize';\n\n\t// Only cache defined values\n\tconst getMaybe = pMemoize(async key => db.get(key), {\n\t\tshouldCache: value => value !== undefined,\n\t});\n\n\t// Only cache non-empty arrays\n\tconst search = pMemoize(async query => fetchResults(query), {\n\t\tshouldCache: value => Array.isArray(value) && value.length > 0,\n\t});\n\t```\n\n\tNote: This only affects writes; reads from the cache are unchanged.\n\t*/\n\treadonly shouldCache?: ShouldCache<\n\t\tCacheKeyType,\n\t\tAsyncReturnType<FunctionToMemoize>,\n\t\tParameters<FunctionToMemoize>\n\t>;\n};\n\n/**\n[Memoize](https://en.wikipedia.org/wiki/Memoization) functions - An optimization used to speed up consecutive function calls by caching the result of calls with identical input.\n\n@param fn - Function to be memoized.\n\n@example\n```\nimport {setTimeout as delay} from 'node:timer/promises';\nimport pMemoize from 'p-memoize';\nimport got from 'got';\n\nconst memoizedGot = pMemoize(got);\n\nawait memoizedGot('https://sindresorhus.com');\n\n// This call is cached\nawait memoizedGot('https://sindresorhus.com');\n\nawait delay(2000);\n\n// This call is not cached as the cache has expired\nawait memoizedGot('https://sindresorhus.com');\n```\n*/\nexport default function pMemoize<\n\tFunctionToMemoize extends AnyAsyncFunction,\n\tCacheKeyType = Parameters<FunctionToMemoize>[0],\n\tOptionsType = Options<FunctionToMemoize, CacheKeyType>,\n>(\n\tfn: FunctionToMemoize,\n\toptions?: OptionsType & Options<FunctionToMemoize, CacheKeyType>,\n): FunctionToMemoize {\n\tconst defaultCacheKey = ([firstArgument]: Parameters<FunctionToMemoize>): CacheKeyType => firstArgument as CacheKeyType;\n\n\tconst {\n\t\tcacheKey = defaultCacheKey,\n\t\tcache = new Map<CacheKeyType, AsyncReturnType<FunctionToMemoize>>(),\n\t} = options ?? {};\n\n\t// Promise objects can't be serialized so we keep track of them internally and only provide their resolved values to `cache`\n\t// `Promise<AsyncReturnType<FunctionToMemoize>>` is used instead of `ReturnType<FunctionToMemoize>` because promise properties are not kept\n\tconst promiseCache = new Map<CacheKeyType, Promise<AsyncReturnType<FunctionToMemoize>>>();\n\n\tconst memoized = function (this: any, ...arguments_: Parameters<FunctionToMemoize>): Promise<AsyncReturnType<FunctionToMemoize>> { // eslint-disable-line @typescript-eslint/promise-function-async\n\t\tconst key = cacheKey(arguments_);\n\n\t\tif (promiseCache.has(key)) {\n\t\t\treturn promiseCache.get(key)!;\n\t\t}\n\n\t\tconst promise = (async () => {\n\t\t\ttry {\n\t\t\t\tif (cache && await cache.has(key)) {\n\t\t\t\t\treturn (await cache.get(key)) as AsyncReturnType<FunctionToMemoize>;\n\t\t\t\t}\n\n\t\t\t\tconst promise = fn.apply(this, arguments_) as Promise<AsyncReturnType<FunctionToMemoize>>;\n\n\t\t\t\tconst result = await promise;\n\n\t\t\t\ttry {\n\t\t\t\t\treturn result;\n\t\t\t\t} finally {\n\t\t\t\t\tif (cache) {\n\t\t\t\t\t\tconst allow = options?.shouldCache\n\t\t\t\t\t\t\t? await options.shouldCache(result, {key, argumentsList: arguments_})\n\t\t\t\t\t\t\t: true;\n\n\t\t\t\t\t\tif (allow) {\n\t\t\t\t\t\t\tawait cache.set(key, result);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t} finally {\n\t\t\t\tpromiseCache.delete(key);\n\t\t\t}\n\t\t})();\n\n\t\tpromiseCache.set(key, promise);\n\n\t\treturn promise;\n\t} as FunctionToMemoize;\n\n\tmimicFunction(memoized, fn, {\n\t\tignoreNonConfigurable: true,\n\t});\n\n\tcacheStore.set(memoized, cache);\n\n\treturn memoized;\n}\n\n/**\n- Only class methods are supported; regular functions are not part of the decorators proposals.\n- Uses the new ECMAScript decorators (TypeScript 5.0+). Legacy `experimentalDecorators` are not supported.\n- Babel\u2019s legacy decorators are not supported.\n- Private methods are not supported.\n\n@returns A decorator to memoize class methods or static class methods.\n\n@example\n```\nimport {pMemoizeDecorator} from 'p-memoize';\n\nclass Example {\n\tindex = 0\n\n\t@pMemoizeDecorator()\n\tasync counter() {\n\t\treturn ++this.index;\n\t}\n}\n\nclass ExampleWithOptions {\n\tindex = 0\n\n\t@pMemoizeDecorator()\n\tasync counter() {\n\t\treturn ++this.index;\n\t}\n}\n```\n*/\nexport function pMemoizeDecorator<\n\tFunctionToMemoize extends AnyAsyncFunction = AnyAsyncFunction,\n\tCacheKeyType = Parameters<FunctionToMemoize>[0],\n>(options: Options<NoInfer<FunctionToMemoize>, NoInfer<CacheKeyType>> = {}) {\n\treturn function <This, Value extends FunctionToMemoize>(\n\t\tvalue: Value,\n\t\tcontext: ClassMethodDecoratorContext<This, Value>,\n\t): void {\n\t\tif (context.kind !== 'method') {\n\t\t\tthrow new TypeError('pMemoizeDecorator can only decorate methods');\n\t\t}\n\n\t\tif (context.private) {\n\t\t\tthrow new TypeError('pMemoizeDecorator cannot decorate private methods');\n\t\t}\n\n\t\tcontext.addInitializer(function (this: This) {\n\t\t\tconst memoizedMethod = pMemoize(value, options as Options<Value, CacheKeyType>);\n\t\t\tObject.defineProperty(this, context.name, {\n\t\t\t\tconfigurable: true,\n\t\t\t\twritable: true,\n\t\t\t\tenumerable: false,\n\t\t\t\tvalue: memoizedMethod,\n\t\t\t});\n\t\t});\n\t};\n}\n\n/**\nClear all cached data of a memoized function.\n\n@param fn - Memoized function.\n*/\nexport function pMemoizeClear(fn: AnyAsyncFunction): void {\n\tif (!cacheStore.has(fn)) {\n\t\tthrow new TypeError('Can\\'t clear a function that was not memoized!');\n\t}\n\n\tconst cache = cacheStore.get(fn);\n\n\tif (!cache) {\n\t\tthrow new TypeError('Can\\'t clear a function that doesn\\'t use a cache!');\n\t}\n\n\tif (typeof cache.clear !== 'function') {\n\t\tthrow new TypeError('The cache Map can\\'t be cleared!');\n\t}\n\n\tcache.clear();\n}\n",
+          "truncated": false
+        },
+        {
+          "path": "license",
+          "blobSha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "content": "MIT License\n\nCopyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+          "truncated": false
+        },
+        {
+          "path": "package.json",
+          "blobSha": "f120c014a3d91fd50b704a61a4ff4f82c020aced",
+          "sha256": "32c77d8baa58e8b2832d0e96c39631533a1b5141b46793ba2a133e2079c5cd96",
+          "content": "{\n\t\"name\": \"p-memoize\",\n\t\"version\": \"8.0.0\",\n\t\"description\": \"Memoize promise-returning & async functions\",\n\t\"license\": \"MIT\",\n\t\"repository\": \"sindresorhus/p-memoize\",\n\t\"funding\": \"https://github.com/sindresorhus/p-memoize?sponsor=1\",\n\t\"author\": {\n\t\t\"name\": \"Sindre Sorhus\",\n\t\t\"email\": \"sindresorhus@gmail.com\",\n\t\t\"url\": \"https://sindresorhus.com\"\n\t},\n\t\"type\": \"module\",\n\t\"types\": \"./dist/index.d.ts\",\n\t\"exports\": {\n\t\t\"types\": \"./dist/index.d.ts\",\n\t\t\"default\": \"./dist/index.js\"\n\t},\n\t\"sideEffects\": false,\n\t\"engines\": {\n\t\t\"node\": \">=20\"\n\t},\n\t\"scripts\": {\n\t\t\"test\": \"xo && ava && npm run build && tsd\",\n\t\t\"build\": \"del-cli dist && tsc\",\n\t\t\"prepack\": \"npm run build\"\n\t},\n\t\"files\": [\n\t\t\"dist\"\n\t],\n\t\"keywords\": [\n\t\t\"promise\",\n\t\t\"memoize\",\n\t\t\"mem\",\n\t\t\"memoization\",\n\t\t\"function\",\n\t\t\"cache\",\n\t\t\"caching\",\n\t\t\"optimize\",\n\t\t\"performance\",\n\t\t\"ttl\",\n\t\t\"expire\",\n\t\t\"async\",\n\t\t\"await\",\n\t\t\"promises\",\n\t\t\"time\",\n\t\t\"out\",\n\t\t\"cancel\",\n\t\t\"bluebird\"\n\t],\n\t\"dependencies\": {\n\t\t\"mimic-function\": \"^5.0.1\",\n\t\t\"type-fest\": \"^4.41.0\"\n\t},\n\t\"devDependencies\": {\n\t\t\"@sindresorhus/tsconfig\": \"^8.0.1\",\n\t\t\"@types/serialize-javascript\": \"^5.0.4\",\n\t\t\"ava\": \"^6.4.1\",\n\t\t\"del-cli\": \"^6.0.0\",\n\t\t\"delay\": \"^6.0.0\",\n\t\t\"p-defer\": \"^4.0.1\",\n\t\t\"p-state\": \"^2.0.1\",\n\t\t\"serialize-javascript\": \"^6.0.2\",\n\t\t\"tsd\": \"^0.33.0\",\n\t\t\"tsimp\": \"^2.0.12\",\n\t\t\"xo\": \"^1.2.1\"\n\t},\n\t\"ava\": {\n\t\t\"environmentVariables\": {\n\t\t\t\"TSIMP_DIAG\": \"ignore\"\n\t\t},\n\t\t\"extensions\": {\n\t\t\t\"ts\": \"module\"\n\t\t},\n\t\t\"nodeArguments\": [\n\t\t\t\"--import=tsimp/import\"\n\t\t]\n\t},\n\t\"xo\": {\n\t\t\"rules\": {\n\t\t\t\"@typescript-eslint/no-redundant-type-constituents\": \"off\"\n\t\t}\n\t}\n}\n",
+          "truncated": false
+        }
+      ],
+      "repository_id": 71544860,
+      "owner_id": 170270,
+      "source_url": "https://github.com/sindresorhus/p-memoize",
+      "description": "Memoize promise-returning & async functions",
+      "language": "TypeScript",
+      "capture": "Selected complete pinned files; Git blob verified; source only, never executed."
+    },
+    {
+      "repo": "sindresorhus/p-queue",
+      "commit": "180ab9e25cd10b6f548767d7176076b50d25e188",
+      "license": "MIT",
+      "tree": [
+        {
+          "path": ".editorconfig",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "1c6314a31833395fd5ff016a6506bdd51860657c",
+          "size": 175,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/1c6314a31833395fd5ff016a6506bdd51860657c"
+        },
+        {
+          "path": ".gitattributes",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "6313b56c57848efce05faa7aa7e901ccfc2886ea",
+          "size": 19,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/6313b56c57848efce05faa7aa7e901ccfc2886ea"
+        },
+        {
+          "path": ".github",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "2b714a4fe0f68d40da558502314293c33cf4fa2e",
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/trees/2b714a4fe0f68d40da558502314293c33cf4fa2e"
+        },
+        {
+          "path": ".github/security.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "7ccf2663b86c093188c40a9a7770e9f8333e7984",
+          "size": 175,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/7ccf2663b86c093188c40a9a7770e9f8333e7984"
+        },
+        {
+          "path": ".github/workflows",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "7e1fae7721f09ccc8ff41eff49af6ecde721e408",
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/trees/7e1fae7721f09ccc8ff41eff49af6ecde721e408"
+        },
+        {
+          "path": ".github/workflows/main.yml",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "9e3aaf9f056b81038232879bf2431ee8f59e9a49",
+          "size": 421,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/9e3aaf9f056b81038232879bf2431ee8f59e9a49"
+        },
+        {
+          "path": ".gitignore",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "52089227c634c3d082b780b48a84dc8e80688378",
+          "size": 40,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/52089227c634c3d082b780b48a84dc8e80688378"
+        },
+        {
+          "path": ".npmrc",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "43c97e719a5a824700932f72e6e7e6748ce45d01",
+          "size": 19,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/43c97e719a5a824700932f72e6e7e6748ce45d01"
+        },
+        {
+          "path": "bench.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "4694971a45599260a44b198915b8d8971ededd48",
+          "size": 2405,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/4694971a45599260a44b198915b8d8971ededd48"
+        },
+        {
+          "path": "license",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+          "size": 1117,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de"
+        },
+        {
+          "path": "package.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "79efecdfb189100f43c1f1182f2f891e6cfcef4f",
+          "size": 1804,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/79efecdfb189100f43c1f1182f2f891e6cfcef4f"
+        },
+        {
+          "path": "readme.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "c011e6c8dc7cb169fe1d2fc3bd765a535c4e37d0",
+          "size": 31085,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/c011e6c8dc7cb169fe1d2fc3bd765a535c4e37d0"
+        },
+        {
+          "path": "source",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "c86db6da45e033c8796da0130772ef7f879e95ae",
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/trees/c86db6da45e033c8796da0130772ef7f879e95ae"
+        },
+        {
+          "path": "source/index.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "bf7978ceea2929a6bca64791eb082494b89b353e",
+          "size": 28859,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/bf7978ceea2929a6bca64791eb082494b89b353e"
+        },
+        {
+          "path": "source/lower-bound.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "5f0c927f88685a665d1acc1106f991827683f654",
+          "size": 536,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/5f0c927f88685a665d1acc1106f991827683f654"
+        },
+        {
+          "path": "source/options.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "e8a9d5af74b87f8aec7a8eb69dd51581efdd138b",
+          "size": 4320,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/e8a9d5af74b87f8aec7a8eb69dd51581efdd138b"
+        },
+        {
+          "path": "source/priority-queue.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "a54eab42fa2d66df67a17dc8281a653de9216a11",
+          "size": 3742,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/a54eab42fa2d66df67a17dc8281a653de9216a11"
+        },
+        {
+          "path": "source/queue.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "3492eb5a506875a16a162b6e2b947560b687b9d6",
+          "size": 411,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/3492eb5a506875a16a162b6e2b947560b687b9d6"
+        },
+        {
+          "path": "test-d",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "393951e226470e81f49b90f3a249d681a1180b74",
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/trees/393951e226470e81f49b90f3a249d681a1180b74"
+        },
+        {
+          "path": "test-d/index.test-d.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "78da8416d3df7e302b261d036252724d45397767",
+          "size": 163,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/78da8416d3df7e302b261d036252724d45397767"
+        },
+        {
+          "path": "test",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "17c0cd9f697e843008677c5d9b96969804855800",
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/trees/17c0cd9f697e843008677c5d9b96969804855800"
+        },
+        {
+          "path": "test/advanced.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "d3b8dacdb17a477e5cb5c062e0ecdeaac79ae4ae",
+          "size": 55101,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/d3b8dacdb17a477e5cb5c062e0ecdeaac79ae4ae"
+        },
+        {
+          "path": "test/basic.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "1e9024633e5b3b1ccbe35af306d5568a2b169f7d",
+          "size": 34801,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/1e9024633e5b3b1ccbe35af306d5568a2b169f7d"
+        },
+        {
+          "path": "test/debug.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "88058392deb5bc1390f38fb77a821a7be881af07",
+          "size": 9173,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/88058392deb5bc1390f38fb77a821a7be881af07"
+        },
+        {
+          "path": "test/priority-queue.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "6572999ce74b888f1c387d6f7c7152a7a6dd71b5",
+          "size": 5058,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/6572999ce74b888f1c387d6f7c7152a7a6dd71b5"
+        },
+        {
+          "path": "test/rate-limit.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "af4b6567782add52941ee8605eb305f9b5577ba7",
+          "size": 7672,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/af4b6567782add52941ee8605eb305f9b5577ba7"
+        },
+        {
+          "path": "test/strict.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "cee9ae5e632c37f588de575d6804a084b1ec4310",
+          "size": 22719,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/cee9ae5e632c37f588de575d6804a084b1ec4310"
+        },
+        {
+          "path": "test/validation.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "60d96c3db3bb9edab4856f8cf562c28c4a98d337",
+          "size": 4948,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/60d96c3db3bb9edab4856f8cf562c28c4a98d337"
+        },
+        {
+          "path": "tsconfig.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "032ec28f6647109e73550c8d49aa013977c529b3",
+          "size": 115,
+          "url": "https://api.github.com/repos/sindresorhus/p-queue/git/blobs/032ec28f6647109e73550c8d49aa013977c529b3"
+        }
+      ],
+      "files": [
+        {
+          "path": "source/index.ts",
+          "blobSha": "bf7978ceea2929a6bca64791eb082494b89b353e",
+          "sha256": "d129e016be3752f374d5a9ab10b601d3634d2af3f17cfae2171bfadf4721e7a0",
+          "content": "import {EventEmitter} from 'eventemitter3';\nimport pTimeout from 'p-timeout';\nimport {type Queue, type RunFunction} from './queue.js';\nimport PriorityQueue from './priority-queue.js';\nimport {type QueueAddOptions, type Options, type TaskOptions} from './options.js';\n\ntype Task<TaskResultType> =\n\t| ((options: TaskOptions) => PromiseLike<TaskResultType>)\n\t| ((options: TaskOptions) => TaskResultType);\n\ntype EventName = 'active' | 'idle' | 'empty' | 'add' | 'next' | 'completed' | 'error' | 'pendingZero' | 'rateLimit' | 'rateLimitCleared';\n\n/**\nPromise queue with concurrency control.\n*/\nexport default class PQueue<QueueType extends Queue<RunFunction, EnqueueOptionsType> = PriorityQueue, EnqueueOptionsType extends QueueAddOptions = QueueAddOptions> extends EventEmitter<EventName> { // eslint-disable-line @typescript-eslint/naming-convention\n\treadonly #carryoverIntervalCount: boolean;\n\n\treadonly #isIntervalIgnored: boolean;\n\n\t#intervalCount = 0;\n\n\treadonly #intervalCap: number;\n\n\t#rateLimitedInInterval = false;\n\t#rateLimitFlushScheduled = false;\n\n\treadonly #interval: number;\n\n\t/*\n\tTimestamp when the current interval window ends. Kept accurate at every window transition: `#initializeIntervalIfNeeded` sets it when a window starts and `#onInterval` advances it as the recurring timer rolls into each new window. This is the source of truth for whether a task added after the queue goes idle belongs to a fresh window, so it must not go stale.\n\t*/\n\t#intervalEnd = 0;\n\n\t// Recurring timer that drives windows while the queue is actively processing. Absent (`undefined`) once the queue goes idle.\n\t#intervalId?: NodeJS.Timeout;\n\n\t// One-shot timer used while idle to resume at the next window boundary, since `#intervalId` is cleared when idle.\n\t#timeoutId?: NodeJS.Timeout;\n\n\treadonly #strict: boolean;\n\n\t// Circular buffer implementation for better performance\n\t#strictTicks: number[] = [];\n\t#strictTicksStartIndex = 0;\n\n\t#queue: QueueType;\n\n\treadonly #queueClass: new () => QueueType;\n\n\t#pending = 0;\n\n\t// The `!` is needed because of https://github.com/microsoft/TypeScript/issues/32194\n\t#concurrency!: number;\n\n\t#isPaused: boolean;\n\n\t// Use to assign a unique identifier to a promise function, if not explicitly specified\n\t#idAssigner = 1n;\n\n\t// Track currently running tasks for debugging\n\treadonly #runningTasks = new Map<symbol, {\n\t\tid?: string;\n\t\tpriority: number;\n\t\tstartTime: number;\n\t\ttimeout?: number;\n\t}>();\n\n\treadonly #queueAbortListenerCleanupFunctions = new Set<() => void>();\n\n\t/**\n\tGet or set the default timeout for all tasks. Can be changed at runtime.\n\n\tOperations will throw a `TimeoutError` if they don't complete within the specified time.\n\n\tThe timeout begins when the operation is dequeued and starts execution, not while it's waiting in the queue.\n\n\t@example\n\t```\n\tconst queue = new PQueue({timeout: 5000});\n\n\t// Change timeout for all future tasks\n\tqueue.timeout = 10000;\n\t```\n\t*/\n\ttimeout?: number;\n\n\tconstructor(options?: Options<QueueType, EnqueueOptionsType>) {\n\t\tsuper();\n\n\t\t// eslint-disable-next-line @typescript-eslint/consistent-type-assertions\n\t\toptions = {\n\t\t\tcarryoverIntervalCount: false,\n\t\t\tintervalCap: Number.POSITIVE_INFINITY,\n\t\t\tinterval: 0,\n\t\t\tconcurrency: Number.POSITIVE_INFINITY,\n\t\t\tautoStart: true,\n\t\t\tqueueClass: PriorityQueue,\n\t\t\tstrict: false,\n\t\t\t...options,\n\t\t} as Options<QueueType, EnqueueOptionsType>;\n\n\t\tif (!(typeof options.intervalCap === 'number' && options.intervalCap >= 1)) {\n\t\t\tthrow new TypeError(`Expected \\`intervalCap\\` to be a number from 1 and up, got \\`${options.intervalCap?.toString() ?? ''}\\` (${typeof options.intervalCap})`);\n\t\t}\n\n\t\tif (options.interval === undefined || !(Number.isFinite(options.interval) && options.interval >= 0)) {\n\t\t\tthrow new TypeError(`Expected \\`interval\\` to be a finite number >= 0, got \\`${options.interval?.toString() ?? ''}\\` (${typeof options.interval})`);\n\t\t}\n\n\t\tif (options.strict && options.interval === 0) {\n\t\t\tthrow new TypeError('The `strict` option requires a non-zero `interval`');\n\t\t}\n\n\t\tif (options.strict && options.intervalCap === Number.POSITIVE_INFINITY) {\n\t\t\tthrow new TypeError('The `strict` option requires a finite `intervalCap`');\n\t\t}\n\n\t\t// TODO: Remove this fallback in the next major version\n\t\t// eslint-disable-next-line @typescript-eslint/no-deprecated\n\t\tthis.#carryoverIntervalCount = options.carryoverIntervalCount ?? options.carryoverConcurrencyCount ?? false;\n\t\tthis.#isIntervalIgnored = options.intervalCap === Number.POSITIVE_INFINITY || options.interval === 0;\n\t\tthis.#intervalCap = options.intervalCap;\n\t\tthis.#interval = options.interval;\n\t\tthis.#strict = options.strict!;\n\t\tthis.#queue = new options.queueClass!();\n\t\tthis.#queueClass = options.queueClass!;\n\t\tthis.concurrency = options.concurrency!;\n\n\t\tif (options.timeout !== undefined && !(Number.isFinite(options.timeout) && options.timeout > 0)) {\n\t\t\tthrow new TypeError(`Expected \\`timeout\\` to be a positive finite number, got \\`${options.timeout}\\` (${typeof options.timeout})`);\n\t\t}\n\n\t\tthis.timeout = options.timeout;\n\t\tthis.#isPaused = options.autoStart === false;\n\n\t\tthis.#setupRateLimitTracking();\n\t}\n\n\t#cleanupStrictTicks(now: number): void {\n\t\t// Remove ticks outside the current interval window using circular buffer approach\n\t\twhile (this.#strictTicksStartIndex < this.#strictTicks.length) {\n\t\t\tconst oldestTick = this.#strictTicks[this.#strictTicksStartIndex];\n\t\t\tif (oldestTick !== undefined && now - oldestTick >= this.#interval) {\n\t\t\t\tthis.#strictTicksStartIndex++;\n\t\t\t} else {\n\t\t\t\tbreak;\n\t\t\t}\n\t\t}\n\n\t\t// Compact the array when it becomes inefficient or fully consumed\n\t\t// Compact when: (start index is large AND more than half wasted) OR all ticks expired\n\t\tconst shouldCompact = (this.#strictTicksStartIndex > 100 && this.#strictTicksStartIndex > this.#strictTicks.length / 2)\n\t\t\t|| this.#strictTicksStartIndex === this.#strictTicks.length;\n\n\t\tif (shouldCompact) {\n\t\t\tthis.#strictTicks = this.#strictTicks.slice(this.#strictTicksStartIndex);\n\t\t\tthis.#strictTicksStartIndex = 0;\n\t\t}\n\t}\n\n\t// Helper methods for interval consumption\n\t#consumeIntervalSlot(now: number): void {\n\t\tif (this.#strict) {\n\t\t\tthis.#strictTicks.push(now);\n\t\t} else {\n\t\t\tthis.#intervalCount++;\n\t\t}\n\t}\n\n\t#rollbackIntervalSlot(): void {\n\t\tif (this.#strict) {\n\t\t\t// Pop from the end of the actual data (not from start index)\n\t\t\tif (this.#strictTicks.length > this.#strictTicksStartIndex) {\n\t\t\t\tthis.#strictTicks.pop();\n\t\t\t}\n\t\t} else if (this.#intervalCount > 0) {\n\t\t\tthis.#intervalCount--;\n\t\t}\n\t}\n\n\t#getActiveTicksCount(): number {\n\t\treturn this.#strictTicks.length - this.#strictTicksStartIndex;\n\t}\n\n\tget #doesIntervalAllowAnother(): boolean {\n\t\tif (this.#isIntervalIgnored) {\n\t\t\treturn true;\n\t\t}\n\n\t\tif (this.#strict) {\n\t\t\t// Cleanup already done by #isIntervalPausedAt before this is called\n\t\t\treturn this.#getActiveTicksCount() < this.#intervalCap;\n\t\t}\n\n\t\treturn this.#intervalCount < this.#intervalCap;\n\t}\n\n\tget #doesConcurrentAllowAnother(): boolean {\n\t\treturn this.#pending < this.#concurrency;\n\t}\n\n\t#next(): void {\n\t\tthis.#pending--;\n\n\t\tif (this.#pending === 0) {\n\t\t\tthis.emit('pendingZero');\n\t\t}\n\n\t\tthis.#tryToStartAnother();\n\t\tthis.emit('next');\n\t}\n\n\t#onResumeInterval(): void {\n\t\t// Clear timeout ID before processing to prevent race condition\n\t\t// Must clear before #onInterval to allow new timeouts to be scheduled\n\t\tthis.#timeoutId = undefined;\n\t\tthis.#onInterval();\n\t\tthis.#initializeIntervalIfNeeded();\n\t}\n\n\t#isIntervalPausedAt(now: number): boolean {\n\t\t// Strict mode: check if we need to wait for oldest tick to age out\n\t\tif (this.#strict) {\n\t\t\tthis.#cleanupStrictTicks(now);\n\n\t\t\t// If at capacity, need to wait for oldest tick to age out\n\t\t\tconst activeTicksCount = this.#getActiveTicksCount();\n\t\t\tif (activeTicksCount >= this.#intervalCap) {\n\t\t\t\tconst oldestTick = this.#strictTicks[this.#strictTicksStartIndex]!;\n\t\t\t\t// After cleanup, remaining ticks are within interval, so delay is always > 0\n\t\t\t\tconst delay = this.#interval - (now - oldestTick);\n\t\t\t\tthis.#createIntervalTimeout(delay);\n\t\t\t\treturn true;\n\t\t\t}\n\n\t\t\treturn false;\n\t\t}\n\n\t\t// Fixed window mode. While the recurring timer runs it already governs the windows, so pausing is only decided here when the queue is idle (the timer is absent) and we rely on `#intervalEnd`.\n\t\tif (this.#intervalId === undefined) {\n\t\t\tconst delay = this.#intervalEnd - now;\n\t\t\tif (delay < 0) {\n\t\t\t\t// The interval expired while idle, so reset the count for the new window.\n\t\t\t\tthis.#intervalCount = this.#carryoverIntervalCount ? this.#pending : 0;\n\t\t\t} else {\n\t\t\t\t// Still inside the previous window; wait out the remaining time before starting the next task.\n\t\t\t\tthis.#createIntervalTimeout(delay);\n\t\t\t\treturn true;\n\t\t\t}\n\t\t}\n\n\t\treturn false;\n\t}\n\n\t#createIntervalTimeout(delay: number): void {\n\t\tif (this.#timeoutId !== undefined) {\n\t\t\treturn;\n\t\t}\n\n\t\tthis.#timeoutId = setTimeout(() => {\n\t\t\tthis.#onResumeInterval();\n\t\t}, delay);\n\t}\n\n\t#clearIntervalTimer(): void {\n\t\tif (this.#intervalId) {\n\t\t\tclearInterval(this.#intervalId);\n\t\t\tthis.#intervalId = undefined;\n\t\t}\n\t}\n\n\t#clearTimeoutTimer(): void {\n\t\tif (this.#timeoutId) {\n\t\t\tclearTimeout(this.#timeoutId);\n\t\t\tthis.#timeoutId = undefined;\n\t\t}\n\t}\n\n\t#tryToStartAnother(): boolean {\n\t\tif (this.#queue.size === 0) {\n\t\t\t// We can clear the interval (\"pause\")\n\t\t\t// Because we can redo it later (\"resume\")\n\t\t\tthis.#clearIntervalTimer();\n\t\t\tthis.emit('empty');\n\n\t\t\tif (this.#pending === 0) {\n\t\t\t\t// Clear timeout as well when completely idle\n\t\t\t\tthis.#clearTimeoutTimer();\n\n\t\t\t\t// Compact strict ticks when idle to free memory\n\t\t\t\tif (this.#strict && this.#strictTicksStartIndex > 0) {\n\t\t\t\t\tconst now = Date.now();\n\t\t\t\t\tthis.#cleanupStrictTicks(now);\n\t\t\t\t}\n\n\t\t\t\tthis.emit('idle');\n\t\t\t}\n\n\t\t\treturn false;\n\t\t}\n\n\t\tlet taskStarted = false;\n\n\t\tif (!this.#isPaused) {\n\t\t\tconst now = Date.now();\n\t\t\tconst canInitializeInterval = !this.#isIntervalPausedAt(now);\n\n\t\t\tif (this.#doesIntervalAllowAnother && this.#doesConcurrentAllowAnother) {\n\t\t\t\tconst job = this.#queue.dequeue()!;\n\n\t\t\t\tif (!this.#isIntervalIgnored) {\n\t\t\t\t\tthis.#consumeIntervalSlot(now);\n\t\t\t\t\tthis.#scheduleRateLimitUpdate();\n\t\t\t\t}\n\n\t\t\t\tif (canInitializeInterval) {\n\t\t\t\t\tthis.#initializeIntervalIfNeeded();\n\t\t\t\t}\n\n\t\t\t\tthis.emit('active');\n\t\t\t\tjob();\n\n\t\t\t\ttaskStarted = true;\n\t\t\t}\n\t\t}\n\n\t\treturn taskStarted;\n\t}\n\n\t#initializeIntervalIfNeeded(): void {\n\t\tif (this.#isIntervalIgnored || this.#intervalId !== undefined) {\n\t\t\treturn;\n\t\t}\n\n\t\t// Strict mode uses timeouts instead of interval timers\n\t\tif (this.#strict) {\n\t\t\treturn;\n\t\t}\n\n\t\tthis.#intervalId = setInterval(\n\t\t\t() => {\n\t\t\t\tthis.#onInterval();\n\t\t\t},\n\t\t\tthis.#interval,\n\t\t);\n\n\t\tthis.#intervalEnd = Date.now() + this.#interval;\n\t}\n\n\t#onInterval(): void {\n\t\t// Non-strict mode uses interval timers and intervalCount\n\t\tif (!this.#strict) {\n\t\t\t// Only touch the recurring interval timer here. When resumed via a timeout instead, `#intervalId` is undefined and `#initializeIntervalIfNeeded` sets `#intervalEnd` right after.\n\t\t\tif (this.#intervalId !== undefined) {\n\t\t\t\tif (this.#intervalCount === 0 && this.#pending === 0) {\n\t\t\t\t\tthis.#clearIntervalTimer();\n\t\t\t\t} else {\n\t\t\t\t\t// The recurring timer fired, starting a new window. Keep the boundary accurate so tasks added after the queue later goes idle are scheduled against the correct window.\n\t\t\t\t\tthis.#intervalEnd = Date.now() + this.#interval;\n\t\t\t\t}\n\t\t\t}\n\n\t\t\tthis.#intervalCount = this.#carryoverIntervalCount ? this.#pending : 0;\n\t\t}\n\n\t\tthis.#processQueue();\n\t\tthis.#scheduleRateLimitUpdate();\n\t}\n\n\t/**\n\tExecutes all queued functions until it reaches the limit.\n\t*/\n\t#processQueue(): void {\n\t\t// eslint-disable-next-line no-empty\n\t\twhile (this.#tryToStartAnother()) {}\n\t}\n\n\tget concurrency(): number {\n\t\treturn this.#concurrency;\n\t}\n\n\tset concurrency(newConcurrency: number) {\n\t\tif (!(typeof newConcurrency === 'number' && newConcurrency >= 1)) {\n\t\t\tthrow new TypeError(`Expected \\`concurrency\\` to be a number from 1 and up, got \\`${newConcurrency}\\` (${typeof newConcurrency})`);\n\t\t}\n\n\t\tthis.#concurrency = newConcurrency;\n\n\t\tthis.#processQueue();\n\t}\n\n\t/**\n\tUpdates the priority of a promise function by its id, affecting its execution order. Requires a defined concurrency limit to take effect.\n\n\tFor example, this can be used to prioritize a promise function to run earlier.\n\n\t```js\n\timport PQueue from 'p-queue';\n\n\tconst queue = new PQueue({concurrency: 1});\n\n\tqueue.add(async () => '\ud83e\udd84', {priority: 1});\n\tqueue.add(async () => '\ud83e\udd80', {priority: 0, id: '\ud83e\udd80'});\n\tqueue.add(async () => '\ud83e\udd84', {priority: 1});\n\tqueue.add(async () => '\ud83e\udd84', {priority: 1});\n\n\tqueue.setPriority('\ud83e\udd80', 2);\n\t```\n\n\tIn this case, the promise function with `id: '\ud83e\udd80'` runs second.\n\n\tYou can also deprioritize a promise function to delay its execution:\n\n\t```js\n\timport PQueue from 'p-queue';\n\n\tconst queue = new PQueue({concurrency: 1});\n\n\tqueue.add(async () => '\ud83e\udd84', {priority: 1});\n\tqueue.add(async () => '\ud83e\udd80', {priority: 1, id: '\ud83e\udd80'});\n\tqueue.add(async () => '\ud83e\udd84');\n\tqueue.add(async () => '\ud83e\udd84', {priority: 0});\n\n\tqueue.setPriority('\ud83e\udd80', -1);\n\t```\n\tHere, the promise function with `id: '\ud83e\udd80'` executes last.\n\t*/\n\tsetPriority(id: string, priority: number) {\n\t\tif (typeof priority !== 'number' || !Number.isFinite(priority)) {\n\t\t\tthrow new TypeError(`Expected \\`priority\\` to be a finite number, got \\`${priority}\\` (${typeof priority})`);\n\t\t}\n\n\t\tthis.#queue.setPriority(id, priority);\n\t}\n\n\t/**\n\tAdds a sync or async task to the queue. Always returns a promise.\n\t*/\n\tasync add<TaskResultType>(function_: Task<TaskResultType>, options?: Partial<EnqueueOptionsType>): Promise<TaskResultType>;\n\tasync add<TaskResultType>(function_: Task<TaskResultType>, options: Partial<EnqueueOptionsType> = {}): Promise<TaskResultType> {\n\t\t// Create a copy to avoid mutating the original options object\n\t\toptions = {\n\t\t\ttimeout: this.timeout,\n\t\t\t...options,\n\t\t\t// Assign unique ID if not provided\n\t\t\tid: options.id ?? (this.#idAssigner++).toString(),\n\t\t};\n\n\t\tif (options.timeout !== undefined && !(Number.isFinite(options.timeout) && options.timeout > 0)) {\n\t\t\tthrow new TypeError(`Expected \\`timeout\\` to be a positive finite number, got \\`${options.timeout}\\` (${typeof options.timeout})`);\n\t\t}\n\n\t\treturn new Promise((resolve, reject) => {\n\t\t\t// Create a unique symbol for tracking this task\n\t\t\tconst taskSymbol = Symbol(`task-${options.id}`);\n\n\t\t\tlet cleanupQueueAbortHandler = () => undefined;\n\t\t\tconst run = async () => {\n\t\t\t\t// Task is now running \u2014 remove the queued-state abort listener\n\t\t\t\tcleanupQueueAbortHandler();\n\n\t\t\t\tthis.#pending++;\n\n\t\t\t\t// Track this running task\n\t\t\t\tthis.#runningTasks.set(taskSymbol, {\n\t\t\t\t\tid: options.id,\n\t\t\t\t\tpriority: options.priority ?? 0, // Match priority-queue default\n\t\t\t\t\tstartTime: Date.now(),\n\t\t\t\t\ttimeout: options.timeout,\n\t\t\t\t});\n\n\t\t\t\tlet eventListener: (() => void) | undefined;\n\n\t\t\t\ttry {\n\t\t\t\t\t// Check abort signal - if aborted, need to decrement the counter\n\t\t\t\t\t// that was incremented in tryToStartAnother\n\t\t\t\t\ttry {\n\t\t\t\t\t\toptions.signal?.throwIfAborted();\n\t\t\t\t\t} catch (error) {\n\t\t\t\t\t\tthis.#rollbackIntervalConsumption();\n\n\t\t\t\t\t\t// Clean up tracking before throwing\n\t\t\t\t\t\tthis.#runningTasks.delete(taskSymbol);\n\n\t\t\t\t\t\tthrow error;\n\t\t\t\t\t}\n\n\t\t\t\t\tlet operation = function_({signal: options.signal});\n\n\t\t\t\t\tif (options.timeout !== undefined) {\n\t\t\t\t\t\toperation = pTimeout(Promise.resolve(operation), {\n\t\t\t\t\t\t\tmilliseconds: options.timeout,\n\t\t\t\t\t\t\tmessage: `Task timed out after ${options.timeout}ms (queue has ${this.#pending} running, ${this.#queue.size} waiting)`,\n\t\t\t\t\t\t});\n\t\t\t\t\t}\n\n\t\t\t\t\tif (options.signal) {\n\t\t\t\t\t\tconst {signal} = options;\n\n\t\t\t\t\t\toperation = Promise.race([operation, new Promise<never>((_resolve, reject) => {\n\t\t\t\t\t\t\teventListener = () => {\n\t\t\t\t\t\t\t\treject(signal.reason);\n\t\t\t\t\t\t\t};\n\n\t\t\t\t\t\t\tsignal.addEventListener('abort', eventListener, {once: true});\n\t\t\t\t\t\t})]);\n\t\t\t\t\t}\n\n\t\t\t\t\tconst result = await operation;\n\t\t\t\t\tresolve(result);\n\t\t\t\t\tthis.emit('completed', result);\n\t\t\t\t} catch (error: unknown) {\n\t\t\t\t\treject(error);\n\t\t\t\t\tthis.emit('error', error);\n\t\t\t\t} finally {\n\t\t\t\t\t// Clean up abort event listener\n\t\t\t\t\tif (eventListener) {\n\t\t\t\t\t\toptions.signal?.removeEventListener('abort', eventListener);\n\t\t\t\t\t}\n\n\t\t\t\t\t// Remove from running tasks\n\t\t\t\t\tthis.#runningTasks.delete(taskSymbol);\n\n\t\t\t\t\t// Use queueMicrotask to prevent deep recursion while maintaining timing\n\t\t\t\t\tqueueMicrotask(() => {\n\t\t\t\t\t\tthis.#next();\n\t\t\t\t\t});\n\t\t\t\t}\n\t\t\t};\n\n\t\t\tthis.#queue.enqueue(run, options);\n\n\t\t\tconst removeQueuedTask = () => {\n\t\t\t\tif (this.#queue instanceof PriorityQueue) {\n\t\t\t\t\tthis.#queue.remove(run);\n\t\t\t\t\treturn;\n\t\t\t\t}\n\n\t\t\t\tthis.#queue.remove?.(options.id!); // Intentionally best-effort: queued abort removal is only supported for queue classes that implement `.remove()`.\n\t\t\t};\n\n\t\t\t// Handle abort while task is waiting in the queue\n\t\t\tif (options.signal) {\n\t\t\t\tconst {signal} = options;\n\n\t\t\t\tconst queueAbortHandler = () => {\n\t\t\t\t\tcleanupQueueAbortHandler();\n\t\t\t\t\tremoveQueuedTask();\n\t\t\t\t\treject(signal.reason);\n\t\t\t\t\tthis.#tryToStartAnother();\n\t\t\t\t\tthis.emit('next');\n\t\t\t\t};\n\n\t\t\t\tcleanupQueueAbortHandler = () => {\n\t\t\t\t\tsignal.removeEventListener('abort', queueAbortHandler);\n\t\t\t\t\tthis.#queueAbortListenerCleanupFunctions.delete(cleanupQueueAbortHandler);\n\t\t\t\t};\n\n\t\t\t\tif (signal.aborted) {\n\t\t\t\t\tqueueAbortHandler();\n\t\t\t\t\treturn;\n\t\t\t\t}\n\n\t\t\t\tsignal.addEventListener('abort', queueAbortHandler, {once: true});\n\t\t\t\tthis.#queueAbortListenerCleanupFunctions.add(cleanupQueueAbortHandler);\n\t\t\t}\n\n\t\t\tthis.emit('add');\n\n\t\t\tthis.#tryToStartAnother();\n\t\t});\n\t}\n\n\t/**\n\tSame as `.add()`, but accepts an array of sync or async functions.\n\n\t@returns A promise that resolves when all functions are resolved.\n\t*/\n\tasync addAll<TaskResultsType>(\n\t\tfunctions: ReadonlyArray<Task<TaskResultsType>>,\n\t\toptions?: Partial<EnqueueOptionsType>,\n\t): Promise<TaskResultsType[]>;\n\tasync addAll<TaskResultsType>(\n\t\tfunctions: ReadonlyArray<Task<TaskResultsType>>,\n\t\toptions?: Partial<EnqueueOptionsType>,\n\t): Promise<TaskResultsType[]> {\n\t\treturn Promise.all(functions.map(async function_ => this.add(function_, options)));\n\t}\n\n\t/**\n\tStart (or resume) executing enqueued tasks within concurrency limit. No need to call this if queue is not paused (via `options.autoStart = false` or by `.pause()` method.)\n\t*/\n\tstart(): this {\n\t\tif (!this.#isPaused) {\n\t\t\treturn this;\n\t\t}\n\n\t\tthis.#isPaused = false;\n\n\t\tthis.#processQueue();\n\t\treturn this;\n\t}\n\n\t/**\n\tPut queue execution on hold.\n\t*/\n\tpause(): void {\n\t\tthis.#isPaused = true;\n\t}\n\n\t/**\n\tClear the queue.\n\t*/\n\tclear(): void {\n\t\tfor (const cleanupQueueAbortHandler of this.#queueAbortListenerCleanupFunctions) {\n\t\t\tcleanupQueueAbortHandler();\n\t\t}\n\n\t\tthis.#queue = new this.#queueClass();\n\n\t\t// Clear interval timer since queue is now empty (consistent with #tryToStartAnother)\n\t\tthis.#clearIntervalTimer();\n\n\t\t// Note: We preserve strict mode rate-limiting state (ticks and timeout)\n\t\t// because clear() only clears queued tasks, not rate limit history.\n\t\t// This ensures that rate limits are still enforced after clearing the queue.\n\n\t\t// Note: We don't clear #runningTasks as those tasks are still running\n\t\t// They will be removed when they complete in the finally block\n\n\t\t// Force synchronous update since clear() should have immediate effect\n\t\tthis.#updateRateLimitState();\n\n\t\t// Emit events so waiters (onEmpty, onIdle, onSizeLessThan) can resolve\n\t\tthis.emit('empty');\n\n\t\tif (this.#pending === 0) {\n\t\t\tthis.#clearTimeoutTimer();\n\t\t\tthis.emit('idle');\n\t\t}\n\n\t\tthis.emit('next');\n\t}\n\n\t/**\n\tCan be called multiple times. Useful if you for example add additional items at a later time.\n\n\t@returns A promise that settles when the queue becomes empty.\n\t*/\n\tasync onEmpty(): Promise<void> {\n\t\t// Instantly resolve if the queue is empty\n\t\tif (this.#queue.size === 0) {\n\t\t\treturn;\n\t\t}\n\n\t\tawait this.#onEvent('empty');\n\t}\n\n\t/**\n\t@returns A promise that settles when the queue size is less than the given limit: `queue.size < limit`.\n\n\tIf you want to avoid having the queue grow beyond a certain size you can `await queue.onSizeLessThan()` before adding a new item.\n\n\tNote that this only limits the number of items waiting to start. There could still be up to `concurrency` jobs already running that this call does not include in its calculation.\n\t*/\n\tasync onSizeLessThan(limit: number): Promise<void> {\n\t\t// Instantly resolve if the size is already below the limit.\n\t\tif (this.#queue.size < limit) {\n\t\t\treturn;\n\t\t}\n\n\t\t// Listen on both `'next'` (task completion, queued abort, `clear()`) and `'active'` (every dequeue),\n\t\t// so waiters wake even when the queue drains without a completion (`start()`, a runtime `concurrency`\n\t\t// increase, or an interval tick).\n\t\tawait this.#onEvent(['next', 'active'], () => this.#queue.size < limit);\n\t}\n\n\t/**\n\tThe difference with `.onEmpty` is that `.onIdle` guarantees that all work from the queue has finished. `.onEmpty` merely signals that the queue is empty, but it could mean that some promises haven't completed yet.\n\n\t@returns A promise that settles when the queue becomes empty, and all promises have completed; `queue.size === 0 && queue.pending === 0`.\n\t*/\n\tasync onIdle(): Promise<void> {\n\t\t// Instantly resolve if none pending and if nothing else is queued\n\t\tif (this.#pending === 0 && this.#queue.size === 0) {\n\t\t\treturn;\n\t\t}\n\n\t\tawait this.#onEvent('idle');\n\t}\n\n\t/**\n\tThe difference with `.onIdle` is that `.onPendingZero` only waits for currently running tasks to finish, ignoring queued tasks.\n\n\t@returns A promise that settles when all currently running tasks have completed; `queue.pending === 0`.\n\t*/\n\tasync onPendingZero(): Promise<void> {\n\t\tif (this.#pending === 0) {\n\t\t\treturn;\n\t\t}\n\n\t\tawait this.#onEvent('pendingZero');\n\t}\n\n\t/**\n\t@returns A promise that settles when the queue becomes rate-limited due to intervalCap.\n\t*/\n\tasync onRateLimit(): Promise<void> {\n\t\tif (this.isRateLimited) {\n\t\t\treturn;\n\t\t}\n\n\t\tawait this.#onEvent('rateLimit');\n\t}\n\n\t/**\n\t@returns A promise that settles when the queue is no longer rate-limited.\n\t*/\n\tasync onRateLimitCleared(): Promise<void> {\n\t\tif (!this.isRateLimited) {\n\t\t\treturn;\n\t\t}\n\n\t\tawait this.#onEvent('rateLimitCleared');\n\t}\n\n\t/**\n\t@returns A promise that rejects when any task in the queue errors.\n\n\tUse with `Promise.race([queue.onError(), queue.onIdle()])` to fail fast on the first error while still resolving normally when the queue goes idle.\n\n\tImportant: The promise returned by `add()` still rejects. You must handle each `add()` promise (for example, `.catch(() => {})`) to avoid unhandled rejections.\n\n\t@example\n\t```\n\timport PQueue from 'p-queue';\n\n\tconst queue = new PQueue({concurrency: 2});\n\n\tqueue.add(() => fetchData(1)).catch(() => {});\n\tqueue.add(() => fetchData(2)).catch(() => {});\n\tqueue.add(() => fetchData(3)).catch(() => {});\n\n\t// Stop processing on first error\n\ttry {\n\t\tawait Promise.race([\n\t\t\tqueue.onError(),\n\t\t\tqueue.onIdle()\n\t\t]);\n\t} catch (error) {\n\t\tqueue.pause(); // Stop processing remaining tasks\n\t\tconsole.error('Queue failed:', error);\n\t}\n\t```\n\t*/\n\t// eslint-disable-next-line @typescript-eslint/promise-function-async\n\tonError(): Promise<never> {\n\t\treturn new Promise<never>((_resolve, reject) => {\n\t\t\tconst handleError = (error: unknown) => {\n\t\t\t\tthis.off('error', handleError);\n\t\t\t\treject(error);\n\t\t\t};\n\n\t\t\tthis.on('error', handleError);\n\t\t});\n\t}\n\n\tasync #onEvent(events: EventName | EventName[], filter?: () => boolean): Promise<void> {\n\t\tconst eventList = Array.isArray(events) ? events : [events];\n\n\t\treturn new Promise(resolve => {\n\t\t\tconst listener = () => {\n\t\t\t\tif (filter && !filter()) {\n\t\t\t\t\treturn;\n\t\t\t\t}\n\n\t\t\t\tfor (const event of eventList) {\n\t\t\t\t\tthis.off(event, listener);\n\t\t\t\t}\n\n\t\t\t\tresolve();\n\t\t\t};\n\n\t\t\tfor (const event of eventList) {\n\t\t\t\tthis.on(event, listener);\n\t\t\t}\n\t\t});\n\t}\n\n\t/**\n\tSize of the queue, the number of queued items waiting to run.\n\t*/\n\tget size(): number {\n\t\treturn this.#queue.size;\n\t}\n\n\t/**\n\tSize of the queue, filtered by the given options.\n\n\tFor example, this can be used to find the number of items remaining in the queue with a specific priority level.\n\t*/\n\tsizeBy(options: Readonly<Partial<EnqueueOptionsType>>): number {\n\t\t// eslint-disable-next-line unicorn/no-array-callback-reference\n\t\treturn this.#queue.filter(options).length;\n\t}\n\n\t/**\n\tNumber of running items (no longer in the queue).\n\t*/\n\tget pending(): number {\n\t\treturn this.#pending;\n\t}\n\n\t/**\n\tWhether the queue is currently paused.\n\t*/\n\tget isPaused(): boolean {\n\t\treturn this.#isPaused;\n\t}\n\n\t#setupRateLimitTracking(): void {\n\t\t// Only schedule updates when rate limiting is enabled\n\t\tif (this.#isIntervalIgnored) {\n\t\t\treturn;\n\t\t}\n\n\t\t// Wire up to lifecycle events that affect rate limit state\n\t\t// Only 'add' and 'next' can actually change rate limit state\n\t\tthis.on('add', () => {\n\t\t\tif (this.#queue.size > 0) {\n\t\t\t\tthis.#scheduleRateLimitUpdate();\n\t\t\t}\n\t\t});\n\n\t\tthis.on('next', () => {\n\t\t\tthis.#scheduleRateLimitUpdate();\n\t\t});\n\t}\n\n\t#scheduleRateLimitUpdate(): void {\n\t\t// Skip if rate limiting is not enabled or already scheduled\n\t\tif (this.#isIntervalIgnored || this.#rateLimitFlushScheduled) {\n\t\t\treturn;\n\t\t}\n\n\t\tthis.#rateLimitFlushScheduled = true;\n\t\tqueueMicrotask(() => {\n\t\t\tthis.#rateLimitFlushScheduled = false;\n\t\t\tthis.#updateRateLimitState();\n\t\t});\n\t}\n\n\t#rollbackIntervalConsumption(): void {\n\t\tif (this.#isIntervalIgnored) {\n\t\t\treturn;\n\t\t}\n\n\t\tthis.#rollbackIntervalSlot();\n\t\tthis.#scheduleRateLimitUpdate();\n\t}\n\n\t#updateRateLimitState(): void {\n\t\tconst previous = this.#rateLimitedInInterval;\n\n\t\t// Early exit if rate limiting is disabled or queue is empty\n\t\tif (this.#isIntervalIgnored || this.#queue.size === 0) {\n\t\t\tif (previous) {\n\t\t\t\tthis.#rateLimitedInInterval = false;\n\t\t\t\tthis.emit('rateLimitCleared');\n\t\t\t}\n\n\t\t\treturn;\n\t\t}\n\n\t\t// Get the current count based on mode\n\t\tlet count: number;\n\t\tif (this.#strict) {\n\t\t\tconst now = Date.now();\n\t\t\tthis.#cleanupStrictTicks(now);\n\t\t\tcount = this.#getActiveTicksCount();\n\t\t} else {\n\t\t\tcount = this.#intervalCount;\n\t\t}\n\n\t\tconst shouldBeRateLimited = count >= this.#intervalCap;\n\n\t\tif (shouldBeRateLimited !== previous) {\n\t\t\tthis.#rateLimitedInInterval = shouldBeRateLimited;\n\t\t\tthis.emit(shouldBeRateLimited ? 'rateLimit' : 'rateLimitCleared');\n\t\t}\n\t}\n\n\t/**\n\tWhether the queue is currently rate-limited due to intervalCap.\n\t*/\n\tget isRateLimited(): boolean {\n\t\treturn this.#rateLimitedInInterval;\n\t}\n\n\t/**\n\tWhether the queue is saturated. Returns `true` when:\n\t- All concurrency slots are occupied and tasks are waiting, OR\n\t- The queue is rate-limited and tasks are waiting\n\n\tUseful for detecting backpressure and potential hanging tasks.\n\n\t```js\n\timport PQueue from 'p-queue';\n\n\tconst queue = new PQueue({concurrency: 2});\n\n\t// Backpressure handling\n\tif (queue.isSaturated) {\n\t\tconsole.log('Queue is saturated, waiting for capacity...');\n\t\tawait queue.onSizeLessThan(queue.concurrency);\n\t}\n\n\t// Monitoring for stuck tasks\n\tsetInterval(() => {\n\t\tif (queue.isSaturated) {\n\t\t\tconsole.warn(`Queue saturated: ${queue.pending} running, ${queue.size} waiting`);\n\t\t}\n\t}, 60000);\n\t```\n\t*/\n\tget isSaturated(): boolean {\n\t\treturn (this.#pending === this.#concurrency && this.#queue.size > 0)\n\t\t\t|| (this.isRateLimited && this.#queue.size > 0);\n\t}\n\n\t/**\n\tThe tasks currently being executed. Each task includes its `id`, `priority`, `startTime`, `timeout` (if set), and `timeoutRemaining` (milliseconds until the task times out, or `undefined` if no timeout is set).\n\n\tReturns an array of task info objects.\n\n\t```js\n\timport PQueue from 'p-queue';\n\n\tconst queue = new PQueue({concurrency: 2, timeout: 10000});\n\n\t// Add tasks with IDs for better debugging\n\tqueue.add(() => fetchUser(123), {id: 'user-123'});\n\tqueue.add(() => fetchPosts(456), {id: 'posts-456', priority: 1});\n\n\t// Check what's running\n\tconsole.log(queue.runningTasks);\n\t// => [{\n\t//   id: 'user-123',\n\t//   priority: 0,\n\t//   startTime: 1759253001716,\n\t//   timeout: 10000,\n\t//   timeoutRemaining: 9700\n\t// }, {\n\t//   id: 'posts-456',\n\t//   priority: 1,\n\t//   startTime: 1759253001916,\n\t//   timeout: 10000,\n\t//   timeoutRemaining: 9900\n\t// }]\n\t```\n\t*/\n\tget runningTasks(): ReadonlyArray<{\n\t\treadonly id?: string;\n\t\treadonly priority: number;\n\t\treadonly startTime: number;\n\t\treadonly timeout?: number;\n\t\treadonly timeoutRemaining?: number;\n\t}> {\n\t\t// Return fresh array with fresh objects to prevent mutations\n\t\treturn [...this.#runningTasks.values()].map(task => ({\n\t\t\t...task,\n\t\t\ttimeoutRemaining: task.timeout ? Math.max(0, task.startTime + task.timeout - Date.now()) : undefined,\n\t\t}));\n\t}\n}\n\nexport type {Queue} from './queue.js';\nexport {default as PriorityQueue} from './priority-queue.js';\nexport {type QueueAddOptions, type Options} from './options.js';\n\n/**\nError thrown when a task times out.\n\n@example\n```\nimport PQueue, {TimeoutError} from 'p-queue';\n\nconst queue = new PQueue({timeout: 1000});\n\ntry {\n\tawait queue.add(() => someTask());\n} catch (error) {\n\tif (error instanceof TimeoutError) {\n\t\tconsole.log('Task timed out');\n\t}\n}\n```\n*/\nexport {TimeoutError} from 'p-timeout';\n",
+          "truncated": false
+        },
+        {
+          "path": "license",
+          "blobSha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "content": "MIT License\n\nCopyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+          "truncated": false
+        },
+        {
+          "path": "package.json",
+          "blobSha": "79efecdfb189100f43c1f1182f2f891e6cfcef4f",
+          "sha256": "534ddb3440fdabab52ff815db2c2eea6f69f02d286d3e6dd3f620f517913e2ad",
+          "content": "{\n\t\"name\": \"p-queue\",\n\t\"version\": \"9.3.3\",\n\t\"description\": \"Promise queue with concurrency control\",\n\t\"license\": \"MIT\",\n\t\"repository\": \"sindresorhus/p-queue\",\n\t\"funding\": \"https://github.com/sponsors/sindresorhus\",\n\t\"type\": \"module\",\n\t\"exports\": {\n\t\t\"types\": \"./dist/index.d.ts\",\n\t\t\"default\": \"./dist/index.js\"\n\t},\n\t\"sideEffects\": false,\n\t\"engines\": {\n\t\t\"node\": \">=20\"\n\t},\n\t\"scripts\": {\n\t\t\"build\": \"del-cli dist && tsc\",\n\t\t\"test\": \"xo && node --import=tsx/esm --test test/*.ts && del-cli dist && tsc && tsd\",\n\t\t\"bench\": \"node --import=tsx/esm bench.ts\",\n\t\t\"prepublishOnly\": \"del-cli dist && tsc\"\n\t},\n\t\"files\": [\n\t\t\"dist\"\n\t],\n\t\"types\": \"dist/index.d.ts\",\n\t\"keywords\": [\n\t\t\"promise\",\n\t\t\"queue\",\n\t\t\"enqueue\",\n\t\t\"limit\",\n\t\t\"limited\",\n\t\t\"concurrency\",\n\t\t\"throttle\",\n\t\t\"throat\",\n\t\t\"rate\",\n\t\t\"batch\",\n\t\t\"ratelimit\",\n\t\t\"priority\",\n\t\t\"priorityqueue\",\n\t\t\"fifo\",\n\t\t\"job\",\n\t\t\"task\",\n\t\t\"async\",\n\t\t\"await\",\n\t\t\"promises\",\n\t\t\"bluebird\"\n\t],\n\t\"dependencies\": {\n\t\t\"eventemitter3\": \"^5.0.4\",\n\t\t\"p-timeout\": \"^7.0.0\"\n\t},\n\t\"devDependencies\": {\n\t\t\"@sindresorhus/tsconfig\": \"^8.0.1\",\n\t\t\"@types/benchmark\": \"^2.1.5\",\n\t\t\"@types/node\": \"^25.6.0\",\n\t\t\"benchmark\": \"^2.1.4\",\n\t\t\"del-cli\": \"^6.0.0\",\n\t\t\"delay\": \"^6.0.0\",\n\t\t\"in-range\": \"^3.0.0\",\n\t\t\"p-defer\": \"^4.0.1\",\n\t\t\"random-int\": \"^3.1.0\",\n\t\t\"time-span\": \"^5.1.0\",\n\t\t\"tsd\": \"^0.33.0\",\n\t\t\"tsx\": \"^4.20.5\",\n\t\t\"typescript\": \"^5.9.2\",\n\t\t\"xo\": \"^1.2.2\"\n\t},\n\t\"xo\": {\n\t\t\"rules\": {\n\t\t\t\"@typescript-eslint/member-ordering\": \"off\",\n\t\t\t\"@typescript-eslint/no-floating-promises\": \"off\",\n\t\t\t\"@typescript-eslint/no-unsafe-call\": \"off\",\n\t\t\t\"@typescript-eslint/no-unsafe-assignment\": \"off\",\n\t\t\t\"@typescript-eslint/no-unsafe-return\": \"off\",\n\t\t\t\"@typescript-eslint/no-unsafe-argument\": \"off\",\n\t\t\t\"@typescript-eslint/prefer-promise-reject-errors\": \"off\",\n\t\t\t\"ava/no-import-test-files\": \"off\"\n\t\t}\n\t}\n}\n",
+          "truncated": false
+        },
+        {
+          "path": "source/priority-queue.ts",
+          "blobSha": "a54eab42fa2d66df67a17dc8281a653de9216a11",
+          "sha256": "cad66fe2d8006a0552530bd6afdc3c5551daf83041be60226ced0d9516ccc03d",
+          "content": "import {type Queue, type RunFunction} from './queue.js';\nimport lowerBound from './lower-bound.js';\nimport {type QueueAddOptions} from './options.js';\n\nconst compactionThreshold = 100;\n\nexport type PriorityQueueOptions = {\n\tpriority?: number;\n} & QueueAddOptions;\n\nexport default class PriorityQueue implements Queue<RunFunction, PriorityQueueOptions> {\n\treadonly #queue: Array<PriorityQueueOptions & {run: RunFunction}> = [];\n\n\t// The queue is stored as a sorted array, but dequeued items are left before `#head` until compaction. Only items from `#head` onward are live, which keeps repeated dequeues amortized O(1).\n\t#head = 0;\n\n\tenqueue(run: RunFunction, options?: Partial<PriorityQueueOptions>): void {\n\t\tconst {\n\t\t\tpriority = 0,\n\t\t\tid,\n\t\t} = options ?? {};\n\n\t\tconst {size} = this;\n\t\tconst element = {\n\t\t\tpriority,\n\t\t\tid,\n\t\t\trun,\n\t\t};\n\n\t\tif (size === 0) {\n\t\t\t// When the queue is logically empty, discard any consumed prefix before accepting new work.\n\t\t\tthis.#queue.length = 0;\n\t\t\tthis.#head = 0;\n\t\t\tthis.#queue.push(element);\n\t\t\treturn;\n\t\t}\n\n\t\tif (this.#queue.at(-1)!.priority! >= priority) {\n\t\t\t// Same-priority and lower-priority items belong after the current tail. Appending preserves FIFO order for equal priorities.\n\t\t\tthis.#queue.push(element);\n\t\t\treturn;\n\t\t}\n\n\t\t// Binary insertion must run on the live sorted range only.\n\t\tthis.#compact();\n\t\tconst index = lowerBound(this.#queue, element, (a: Readonly<PriorityQueueOptions>, b: Readonly<PriorityQueueOptions>) => b.priority! - a.priority!);\n\t\tthis.#queue.splice(index, 0, element);\n\t}\n\n\tsetPriority(id: string, priority: number) {\n\t\t// A dequeued item with the same id is no longer part of the queue.\n\t\tconst index = this.#queue.findIndex((element: Readonly<PriorityQueueOptions>, index) => index >= this.#head && element.id === id);\n\t\tif (index === -1) {\n\t\t\tthrow new ReferenceError(`No promise function with the id \"${id}\" exists in the queue.`);\n\t\t}\n\n\t\tconst [item] = this.#queue.splice(index, 1);\n\t\tthis.enqueue(item!.run, {priority, id});\n\t}\n\n\tremove(id: string): void;\n\tremove(run: RunFunction): void;\n\tremove(idOrRun: string | RunFunction): void {\n\t\tconst index = this.#queue.findIndex((element: Readonly<PriorityQueueOptions & {run: RunFunction}>, index) => {\n\t\t\t// The consumed prefix may still contain references that should not be removable.\n\t\t\tif (index < this.#head) {\n\t\t\t\treturn false;\n\t\t\t}\n\n\t\t\tif (typeof idOrRun === 'string') {\n\t\t\t\treturn element.id === idOrRun;\n\t\t\t}\n\n\t\t\treturn element.run === idOrRun;\n\t\t});\n\n\t\tif (index !== -1) {\n\t\t\tthis.#queue.splice(index, 1);\n\t\t}\n\t}\n\n\tdequeue(): RunFunction | undefined {\n\t\tif (this.#head === this.#queue.length) {\n\t\t\treturn undefined;\n\t\t}\n\n\t\tconst item = this.#queue[this.#head];\n\t\tthis.#head++;\n\n\t\tif (this.#head === this.#queue.length) {\n\t\t\t// Fully drained queues are reset immediately so the next enqueue starts from a clean array.\n\t\t\tthis.#queue.length = 0;\n\t\t\tthis.#head = 0;\n\t\t} else if (this.#head > compactionThreshold && this.#head > this.#queue.length / 2) {\n\t\t\t// Keep repeated dequeues cheap, but stop the consumed prefix from growing without bound.\n\t\t\tthis.#compact();\n\t\t}\n\n\t\treturn item?.run;\n\t}\n\n\tfilter(options: Readonly<Partial<PriorityQueueOptions>>): RunFunction[] {\n\t\tconst result: RunFunction[] = [];\n\n\t\tfor (let index = this.#head; index < this.#queue.length; index++) {\n\t\t\tconst element = this.#queue[index]!;\n\t\t\tif (element.priority === options.priority) {\n\t\t\t\tresult.push(element.run);\n\t\t\t}\n\t\t}\n\n\t\treturn result;\n\t}\n\n\tget size(): number {\n\t\treturn this.#queue.length - this.#head;\n\t}\n\n\t#compact(): void {\n\t\t// Compaction restores the invariant that the whole array is the live sorted range.\n\t\tif (this.#head === 0) {\n\t\t\treturn;\n\t\t}\n\n\t\tthis.#queue.splice(0, this.#head);\n\t\tthis.#head = 0;\n\t}\n}\n",
+          "truncated": false
+        },
+        {
+          "path": "source/queue.ts",
+          "blobSha": "3492eb5a506875a16a162b6e2b947560b687b9d6",
+          "sha256": "2063b763a7719b18118af8886f92274373384d51f2953ff22316f9309f9bceda",
+          "content": "export type RunFunction = () => Promise<unknown>;\n\nexport type Queue<Element, Options> = {\n\tsize: number;\n\tfilter: (options: Readonly<Partial<Options>>) => Element[];\n\tdequeue: () => Element | undefined;\n\tenqueue: (run: Element, options?: Partial<Options>) => void;\n\tsetPriority: (id: string, priority: number) => void;\n\t// TODO: Make this required in the next major version.\n\tremove?: (id: string) => void;\n};\n",
+          "truncated": false
+        },
+        {
+          "path": "source/options.ts",
+          "blobSha": "e8a9d5af74b87f8aec7a8eb69dd51581efdd138b",
+          "sha256": "12da6e1a674a603407554e3ad75186d52fdeb6683e76c32da40ac0a8873b3bb8",
+          "content": "import {type Queue, type RunFunction} from './queue.js';\n\ntype TimeoutOptions = {\n\t/**\n\tPer-operation timeout in milliseconds. Operations will throw a `TimeoutError` if they don't complete within the specified time.\n\n\tThe timeout begins when the operation is dequeued and starts execution, not while it's waiting in the queue.\n\n\t@default undefined\n\n\tCan be overridden per task using the `timeout` option in `.add()`:\n\n\t@example\n\t```\n\tconst queue = new PQueue({timeout: 5000});\n\n\t// This task uses the global 5s timeout\n\tawait queue.add(() => fetchData());\n\n\t// This task has a 10s timeout\n\tawait queue.add(() => slowTask(), {timeout: 10000});\n\t```\n\t*/\n\ttimeout?: number;\n};\n\nexport type Options<QueueType extends Queue<RunFunction, QueueOptions>, QueueOptions extends QueueAddOptions> = {\n\t/**\n\tConcurrency limit.\n\n\tMinimum: `1`.\n\n\t@default Infinity\n\t*/\n\treadonly concurrency?: number;\n\n\t/**\n\tWhether queue tasks within the concurrency limit are auto-executed as soon as they're added.\n\n\t@default true\n\t*/\n\treadonly autoStart?: boolean;\n\n\t/**\n\tClass with a `enqueue` and `dequeue` method, and a `size` getter. See the [Custom QueueClass](https://github.com/sindresorhus/p-queue#custom-queueclass) section.\n\t*/\n\treadonly queueClass?: new () => QueueType;\n\n\t/**\n\tThe max number of runs in the given interval of time.\n\n\tMinimum: `1`.\n\n\t@default Infinity\n\t*/\n\treadonly intervalCap?: number;\n\n\t/**\n\tThe length of time in milliseconds before the interval count resets. Must be finite.\n\n\tMinimum: `0`.\n\n\t@default 0\n\t*/\n\treadonly interval?: number;\n\n\t/**\n\tWhether the task must finish in the given interval or will be carried over into the next interval count.\n\n\t@default false\n\t*/\n\treadonly carryoverIntervalCount?: boolean;\n\n\t/**\n\t@deprecated Renamed to `carryoverIntervalCount`.\n\t*/\n\treadonly carryoverConcurrencyCount?: boolean;\n\n\t/**\n\tWhether to use strict mode for rate limiting (sliding window algorithm).\n\n\tWhen enabled, ensures that no more than `intervalCap` tasks execute in any rolling `interval` window, rather than resetting the count at fixed intervals. This provides more predictable and evenly distributed execution.\n\n\t@default false\n\n\tFor example, with `intervalCap: 2` and `interval: 1000`:\n\t- __Default mode (fixed window)__: Tasks can burst at window boundaries. You could execute 2 tasks at 999ms and 2 more at 1000ms, resulting in 4 tasks within 1ms.\n\t- __Strict mode (sliding window)__: Enforces that no more than 2 tasks execute in any 1000ms rolling window, preventing bursts.\n\n\tStrict mode is more resource-intensive as it tracks individual execution timestamps. Use it when you need guaranteed rate-limit compliance, such as when interacting with APIs that enforce strict rate limits.\n\n\tThe `carryoverIntervalCount` option has no effect when `strict` mode is enabled, as strict mode tracks actual execution timestamps rather than counting pending tasks.\n\t*/\n\treadonly strict?: boolean;\n} & TimeoutOptions;\n\nexport type QueueAddOptions = {\n\t/**\n\tPriority of operation. Operations with greater priority will be scheduled first.\n\n\t@default 0\n\t*/\n\treadonly priority?: number;\n\n\t/**\n\tUnique identifier for the promise function, used to update its priority before execution. If not specified, it is auto-assigned an incrementing BigInt starting from `1n`.\n\t*/\n\tid?: string;\n} & TaskOptions & TimeoutOptions;\n\nexport type TaskOptions = {\n\t/**\n\t[`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) for cancellation of the operation. When aborted, it will be removed from the queue and the `queue.add()` call will reject with an `AbortError`. If the operation is already running, the signal will need to be handled by the operation itself.\n\n\t@example\n\t```\n\timport PQueue, {AbortError} from 'p-queue';\n\timport got, {CancelError} from 'got';\n\n\tconst queue = new PQueue();\n\n\tconst controller = new AbortController();\n\n\ttry {\n\t\tawait queue.add(({signal}) => {\n\t\t\tconst request = got('https://sindresorhus.com');\n\n\t\t\tsignal.addEventListener('abort', () => {\n\t\t\t\trequest.cancel();\n\t\t\t});\n\n\t\t\ttry {\n\t\t\t\treturn await request;\n\t\t\t} catch (error) {\n\t\t\t\tif (!(error instanceof CancelError)) {\n\t\t\t\t\tthrow error;\n\t\t\t\t}\n\t\t\t}\n\t\t}, {signal: controller.signal});\n\t} catch (error) {\n\t\tif (!(error instanceof AbortError)) {\n\t\t\tthrow error;\n\t\t}\n\t}\n\t```\n\t*/\n\treadonly signal?: AbortSignal | undefined;\n};\n",
+          "truncated": false
+        },
+        {
+          "path": "source/lower-bound.ts",
+          "blobSha": "5f0c927f88685a665d1acc1106f991827683f654",
+          "sha256": "f5da31a5384648467beab7deba908b0c729c875823f7e6e578543837306a1f0b",
+          "content": "// Port of lower_bound from https://en.cppreference.com/w/cpp/algorithm/lower_bound\n// Used to compute insertion index to keep queue sorted after insertion\nexport default function lowerBound<T>(array: readonly T[], value: T, comparator: (a: T, b: T) => number): number {\n\tlet first = 0;\n\tlet count = array.length;\n\n\twhile (count > 0) {\n\t\tconst step = Math.trunc(count / 2);\n\t\tlet it = first + step;\n\n\t\tif (comparator(array[it]!, value) <= 0) {\n\t\t\tfirst = ++it;\n\t\t\tcount -= step + 1;\n\t\t} else {\n\t\t\tcount = step;\n\t\t}\n\t}\n\n\treturn first;\n}\n",
+          "truncated": false
+        }
+      ],
+      "repository_id": 72200120,
+      "owner_id": 170270,
+      "source_url": "https://github.com/sindresorhus/p-queue",
+      "description": "Promise queue with concurrency control",
+      "language": "TypeScript",
+      "capture": "Selected complete pinned files; Git blob verified; source only, never executed."
+    },
+    {
+      "repo": "sindresorhus/p-throttle",
+      "commit": "a0d20bf8c1a5f0067b1dce529b1ff013878591d3",
+      "license": "MIT",
+      "tree": [
+        {
+          "path": ".editorconfig",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "1c6314a31833395fd5ff016a6506bdd51860657c",
+          "size": 175,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/1c6314a31833395fd5ff016a6506bdd51860657c"
+        },
+        {
+          "path": ".gitattributes",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "6313b56c57848efce05faa7aa7e901ccfc2886ea",
+          "size": 19,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/6313b56c57848efce05faa7aa7e901ccfc2886ea"
+        },
+        {
+          "path": ".github",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "0740e5a013211020830e617772316e63d595043e",
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/trees/0740e5a013211020830e617772316e63d595043e"
+        },
+        {
+          "path": ".github/security.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "9244cac9f4aa0b5e39159b45e1c9ed534515fed2",
+          "size": 178,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/9244cac9f4aa0b5e39159b45e1c9ed534515fed2"
+        },
+        {
+          "path": ".github/workflows",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "4b050ddacf4db9c41001850547f7910267a90d46",
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/trees/4b050ddacf4db9c41001850547f7910267a90d46"
+        },
+        {
+          "path": ".github/workflows/main.yml",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "6ab9e0a66fe006487ceb0b85a0755c8f5c0bd096",
+          "size": 436,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/6ab9e0a66fe006487ceb0b85a0755c8f5c0bd096"
+        },
+        {
+          "path": ".gitignore",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "239ecff1372358a22aa99dcbb375fdad7abba817",
+          "size": 23,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/239ecff1372358a22aa99dcbb375fdad7abba817"
+        },
+        {
+          "path": ".npmrc",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "43c97e719a5a824700932f72e6e7e6748ce45d01",
+          "size": 19,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/43c97e719a5a824700932f72e6e7e6748ce45d01"
+        },
+        {
+          "path": "gc-test.js",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "be7d0946b1ab8dfab9d63e8dcbadd25bc6309ede",
+          "size": 1589,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/be7d0946b1ab8dfab9d63e8dcbadd25bc6309ede"
+        },
+        {
+          "path": "index.d.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "766c494cab0aa61b6841097f1dfe792f3fc8cb28",
+          "size": 4780,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/766c494cab0aa61b6841097f1dfe792f3fc8cb28"
+        },
+        {
+          "path": "index.js",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "5175416b80a246fb0cec7c2547906fd4c025cf18",
+          "size": 9716,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/5175416b80a246fb0cec7c2547906fd4c025cf18"
+        },
+        {
+          "path": "index.test-d.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "4d5bea65d2d5138722e9d7018bb3c9d9a20da2b3",
+          "size": 1341,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/4d5bea65d2d5138722e9d7018bb3c9d9a20da2b3"
+        },
+        {
+          "path": "license",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+          "size": 1117,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de"
+        },
+        {
+          "path": "package.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "840508ac0795615a29917ca8186455cc7caa188b",
+          "size": 1074,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/840508ac0795615a29917ca8186455cc7caa188b"
+        },
+        {
+          "path": "readme.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "fbb65916a0e6ac23c50a576b2a09a374249d4252",
+          "size": 5515,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/fbb65916a0e6ac23c50a576b2a09a374249d4252"
+        },
+        {
+          "path": "tests",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "062669dfd4c2232ce4666be2d6a01ae7d7a1f570",
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/trees/062669dfd4c2232ce4666be2d6a01ae7d7a1f570"
+        },
+        {
+          "path": "tests/main.js",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "9e643893872cdef8f4182d7efc06a39a40e1c231",
+          "size": 34752,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/9e643893872cdef8f4182d7efc06a39a40e1c231"
+        },
+        {
+          "path": "tests/weight-option.js",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "962fd743dcd6ce6db60a932bb4ac16c50808d9ed",
+          "size": 26770,
+          "url": "https://api.github.com/repos/sindresorhus/p-throttle/git/blobs/962fd743dcd6ce6db60a932bb4ac16c50808d9ed"
+        }
+      ],
+      "files": [
+        {
+          "path": "index.js",
+          "blobSha": "5175416b80a246fb0cec7c2547906fd4c025cf18",
+          "sha256": "5567e2731fa0393079ac096c10ebbedbec5a1cd7e687a8ba2021e96c44ef3fcf",
+          "content": "const states = new WeakMap();\nconst signalThrottleds = new WeakMap(); // AbortSignal -> {throttleds: Set<WeakRef>, listener: Function}\n\nconst finalizationRegistry = new FinalizationRegistry(({signalWeakRef, weakReference}) => {\n\tconst signal = signalWeakRef.deref();\n\tif (!signal) {\n\t\treturn; // Signal already GC'd\n\t}\n\n\tconst registration = signalThrottleds.get(signal);\n\tif (registration) {\n\t\tregistration.throttleds.delete(weakReference);\n\t\tif (registration.throttleds.size === 0) {\n\t\t\t// Remove the abort listener when no throttleds remain\n\t\t\tsignal.removeEventListener('abort', registration.listener);\n\t\t\tsignalThrottleds.delete(signal);\n\t\t}\n\t}\n});\n\nexport default function pThrottle({limit, interval, strict, signal, onDelay, weight}) {\n\tif (!Number.isFinite(limit)) {\n\t\tthrow new TypeError('Expected `limit` to be a finite number');\n\t}\n\n\tif (!Number.isFinite(interval)) {\n\t\tthrow new TypeError('Expected `interval` to be a finite number');\n\t}\n\n\tif (limit < 0) {\n\t\tthrow new TypeError('Expected `limit` to be >= 0');\n\t}\n\n\tif (interval < 0) {\n\t\tthrow new TypeError('Expected `interval` to be >= 0');\n\t}\n\n\tif (weight !== undefined && typeof weight !== 'function') {\n\t\tthrow new TypeError('Expected `weight` to be a function');\n\t}\n\n\tif (weight && interval === 0) {\n\t\tthrow new TypeError('The `weight` option cannot be used with `interval` of 0');\n\t}\n\n\t// TODO: Uncomment in next major version (breaking change)\n\t// The combination of strict mode with interval=0 doesn't enforce the limit correctly\n\t// (minSpacing becomes 0, allowing unlimited calls in the same millisecond).\n\t// For now, we allow it to avoid breaking existing code, but it should be rejected in v9.\n\t// if (strict && interval === 0) {\n\t// \tthrow new TypeError('The `strict` option cannot be used with `interval` of 0');\n\t// }\n\n\tconst state = {\n\t\tqueue: new Map(),\n\t\tstrictTicks: [],\n\t\t// Track windowed algorithm state so it can be reset on abort\n\t\tcurrentTick: 0,\n\t\tactiveWeight: 0,\n\t};\n\tconst strictCapacity = Math.max(limit, 1);\n\n\t// Helper: insert tick maintaining sorted order by time (for weighted strict mode)\n\tconst insertTickSorted = tickRecord => {\n\t\t// Optimization: append if it belongs at the end (common case - O(1))\n\t\tif (state.strictTicks.length === 0 || tickRecord.time >= state.strictTicks.at(-1).time) {\n\t\t\tstate.strictTicks.push(tickRecord);\n\t\t} else {\n\t\t\t// Insert at correct position (rare case - O(n))\n\t\t\tconst insertIndex = state.strictTicks.findIndex(tick => tick.time > tickRecord.time);\n\t\t\tstate.strictTicks.splice(insertIndex, 0, tickRecord);\n\t\t}\n\t};\n\n\tfunction windowedDelay(requestWeight) {\n\t\tconst now = Date.now();\n\n\t\tif ((now - state.currentTick) > interval) {\n\t\t\tstate.activeWeight = requestWeight;\n\t\t\tstate.currentTick = now;\n\t\t\treturn 0;\n\t\t}\n\n\t\tif (state.activeWeight + requestWeight <= limit) {\n\t\t\tstate.activeWeight += requestWeight;\n\t\t} else {\n\t\t\tstate.currentTick += interval;\n\t\t\tstate.activeWeight = requestWeight;\n\t\t}\n\n\t\treturn state.currentTick - now;\n\t}\n\n\tfunction weightedDelay(requestWeight, now, ticks) {\n\t\t// Check both the requested time and future reservations that would share a window with this call. A smaller call must not steal capacity already reserved for a later, heavier call.\n\t\tconst findBlockingTick = time => {\n\t\t\tlet windowStart = 0;\n\t\t\tlet windowWeight = 0;\n\n\t\t\tfor (const [index, tick] of ticks.entries()) {\n\t\t\t\tif (tick.time >= time + interval) {\n\t\t\t\t\tbreak;\n\t\t\t\t}\n\n\t\t\t\twindowWeight += tick.weight;\n\t\t\t\tconst windowEnd = Math.max(time, tick.time);\n\t\t\t\twhile (windowStart <= index && ticks[windowStart].time <= windowEnd - interval) {\n\t\t\t\t\twindowWeight -= ticks[windowStart].weight;\n\t\t\t\t\twindowStart++;\n\t\t\t\t}\n\n\t\t\t\tif (windowWeight + requestWeight > limit) {\n\t\t\t\t\treturn ticks[windowStart];\n\t\t\t\t}\n\t\t\t}\n\t\t};\n\n\t\tlet nextExecutionTime = now;\n\t\tlet blockingTick = findBlockingTick(nextExecutionTime);\n\t\twhile (blockingTick) {\n\t\t\tnextExecutionTime = blockingTick.time + interval;\n\t\t\tblockingTick = findBlockingTick(nextExecutionTime);\n\t\t}\n\n\t\tconst tickRecord = {\n\t\t\ttime: nextExecutionTime,\n\t\t\tweight: requestWeight,\n\t\t\tisExecuted: false,\n\t\t};\n\t\tinsertTickSorted(tickRecord);\n\t\treturn {delay: Math.max(0, nextExecutionTime - now), tickRecord};\n\t}\n\n\tfunction strictDelay(requestWeight) {\n\t\tconst now = Date.now();\n\n\t\t// Clear the queue if there's a significant delay since the last execution\n\t\tif (state.strictTicks.length > 0 && now - state.strictTicks.at(-1).time > interval) {\n\t\t\tstate.strictTicks.length = 0;\n\t\t}\n\n\t\t// For weighted throttling, use time-based sliding window\n\t\tif (weight) {\n\t\t\t// Remove ticks outside the current interval window\n\t\t\twhile (state.strictTicks.length > 0 && now - state.strictTicks[0].time >= interval) {\n\t\t\t\tstate.strictTicks.shift();\n\t\t\t}\n\n\t\t\treturn weightedDelay(requestWeight, now, state.strictTicks);\n\t\t}\n\n\t\t// For non-weighted throttling, use count-based queue (original algorithm)\n\t\t// If the queue is not full (treat limit 0 as capacity 1 for seeding), add the current time and execute immediately\n\t\tif (state.strictTicks.length < strictCapacity) {\n\t\t\tstate.strictTicks.push({time: now, weight: requestWeight});\n\t\t\treturn {delay: 0};\n\t\t}\n\n\t\t// Calculate next execution time: must be after oldest + interval,\n\t\t// AND must be after the most recent to prevent multiple calls bunching up\n\t\tconst oldestTime = state.strictTicks[0].time;\n\t\tconst mostRecentTime = state.strictTicks.at(-1).time;\n\t\tconst baseTime = oldestTime + interval;\n\t\t// Add minimum spacing to prevent bunching (except for interval=0)\n\t\tconst minSpacing = interval > 0 ? Math.ceil(interval / strictCapacity) : 0;\n\t\tconst nextExecutionTime = baseTime <= mostRecentTime ? mostRecentTime + minSpacing : baseTime;\n\n\t\t// Shift the queue and add a record for the new execution\n\t\tstate.strictTicks.shift();\n\t\tconst tickRecord = {time: nextExecutionTime, weight: requestWeight};\n\t\tstate.strictTicks.push(tickRecord);\n\n\t\t// Calculate the delay for the current execution\n\t\treturn {delay: Math.max(0, nextExecutionTime - now), tickRecord};\n\t}\n\n\tconst getDelay = strict ? strictDelay : windowedDelay;\n\n\treturn function_ => {\n\t\tconst throttled = function (...arguments_) {\n\t\t\tif (!throttled.isEnabled) {\n\t\t\t\treturn (async () => function_.apply(this, arguments_))();\n\t\t\t}\n\n\t\t\tlet timeoutId;\n\t\t\treturn new Promise((resolve, reject) => {\n\t\t\t\t// Calculate weight for this call\n\t\t\t\tlet requestWeight = 1;\n\t\t\t\tif (weight) {\n\t\t\t\t\ttry {\n\t\t\t\t\t\trequestWeight = weight(...arguments_);\n\t\t\t\t\t} catch (error) {\n\t\t\t\t\t\treject(error);\n\t\t\t\t\t\treturn;\n\t\t\t\t\t}\n\n\t\t\t\t\t// Validate weight\n\t\t\t\t\tif (!Number.isFinite(requestWeight) || requestWeight < 0) {\n\t\t\t\t\t\treject(new TypeError('Expected `weight` to be a finite non-negative number'));\n\t\t\t\t\t\treturn;\n\t\t\t\t\t}\n\n\t\t\t\t\tif (requestWeight > limit) {\n\t\t\t\t\t\treject(new TypeError(`Expected \\`weight\\` (${requestWeight}) to be <= \\`limit\\` (${limit})`));\n\t\t\t\t\t\treturn;\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\tconst delayResult = getDelay(requestWeight);\n\t\t\t\tconst delay = strict ? delayResult.delay : delayResult;\n\t\t\t\tlet tickRecord = strict ? delayResult.tickRecord : undefined;\n\n\t\t\t\tconst execute = () => {\n\t\t\t\t\t// Revalidate weighted calls at execution time to account for timer drift\n\t\t\t\t\tif (tickRecord) {\n\t\t\t\t\t\tconst actualTime = Date.now();\n\n\t\t\t\t\t\tif (weight) {\n\t\t\t\t\t\t\tconst index = state.strictTicks.indexOf(tickRecord);\n\t\t\t\t\t\t\tif (index !== -1) {\n\t\t\t\t\t\t\t\tstate.strictTicks.splice(index, 1);\n\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\tconst executedTicks = state.strictTicks.filter(tick => tick.isExecuted);\n\t\t\t\t\t\t\tconst updatedDelayResult = weightedDelay(requestWeight, actualTime, executedTicks);\n\t\t\t\t\t\t\ttickRecord = updatedDelayResult.tickRecord;\n\n\t\t\t\t\t\t\tif (updatedDelayResult.delay > 0) {\n\t\t\t\t\t\t\t\tstate.queue.delete(timeoutId);\n\t\t\t\t\t\t\t\ttimeoutId = setTimeout(execute, updatedDelayResult.delay);\n\t\t\t\t\t\t\t\tstate.queue.set(timeoutId, reject);\n\t\t\t\t\t\t\t\treturn;\n\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\ttickRecord.isExecuted = true;\n\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\ttickRecord.time = actualTime;\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\n\t\t\t\t\ttry {\n\t\t\t\t\t\tresolve(function_.apply(this, arguments_));\n\t\t\t\t\t} catch (error) {\n\t\t\t\t\t\treject(error);\n\t\t\t\t\t}\n\n\t\t\t\t\tstate.queue.delete(timeoutId);\n\t\t\t\t};\n\n\t\t\t\tif (delay > 0) {\n\t\t\t\t\ttimeoutId = setTimeout(execute, delay);\n\t\t\t\t\tstate.queue.set(timeoutId, reject);\n\t\t\t\t\ttry {\n\t\t\t\t\t\tonDelay?.(...arguments_);\n\t\t\t\t\t} catch {}\n\t\t\t\t} else {\n\t\t\t\t\texecute();\n\t\t\t\t}\n\t\t\t});\n\t\t};\n\n\t\tsignal?.throwIfAborted();\n\n\t\tif (signal) {\n\t\t\tlet registration = signalThrottleds.get(signal);\n\t\t\tif (!registration) {\n\t\t\t\tregistration = {\n\t\t\t\t\tthrottleds: new Set(),\n\t\t\t\t\tlistener: null,\n\t\t\t\t};\n\n\t\t\t\tregistration.listener = () => {\n\t\t\t\t\tfor (const weakReference of registration.throttleds) {\n\t\t\t\t\t\tconst function_ = weakReference.deref();\n\t\t\t\t\t\tif (!function_) {\n\t\t\t\t\t\t\tcontinue;\n\t\t\t\t\t\t}\n\n\t\t\t\t\t\tconst functionState = states.get(function_);\n\t\t\t\t\t\tif (!functionState) {\n\t\t\t\t\t\t\tcontinue;\n\t\t\t\t\t\t}\n\n\t\t\t\t\t\tfor (const timeout of functionState.queue.keys()) {\n\t\t\t\t\t\t\tclearTimeout(timeout);\n\t\t\t\t\t\t\tfunctionState.queue.get(timeout)(signal.reason);\n\t\t\t\t\t\t}\n\n\t\t\t\t\t\tfunctionState.queue.clear();\n\t\t\t\t\t\tfunctionState.strictTicks.length = 0;\n\t\t\t\t\t\t// Reset windowed state so subsequent calls are not artificially delayed\n\t\t\t\t\t\tfunctionState.currentTick = 0;\n\t\t\t\t\t\tfunctionState.activeWeight = 0;\n\t\t\t\t\t}\n\n\t\t\t\t\tsignalThrottleds.delete(signal);\n\t\t\t\t};\n\n\t\t\t\tsignalThrottleds.set(signal, registration);\n\t\t\t\tsignal.addEventListener('abort', registration.listener, {once: true});\n\t\t\t}\n\n\t\t\tconst weakReference = new WeakRef(throttled);\n\t\t\tregistration.throttleds.add(weakReference);\n\t\t\tfinalizationRegistry.register(throttled, {\n\t\t\t\tsignalWeakRef: new WeakRef(signal),\n\t\t\t\tweakReference,\n\t\t\t});\n\t\t}\n\n\t\tthrottled.isEnabled = true;\n\n\t\tObject.defineProperty(throttled, 'queueSize', {\n\t\t\tget() {\n\t\t\t\treturn state.queue.size;\n\t\t\t},\n\t\t});\n\n\t\tstates.set(throttled, state);\n\n\t\treturn throttled;\n\t};\n}\n",
+          "truncated": false
+        },
+        {
+          "path": "license",
+          "blobSha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "content": "MIT License\n\nCopyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+          "truncated": false
+        },
+        {
+          "path": "package.json",
+          "blobSha": "840508ac0795615a29917ca8186455cc7caa188b",
+          "sha256": "a9b0766abfe0ab13a804c4c019dec89e317274d09d280991f2fc45b66c7445d6",
+          "content": "{\n\t\"name\": \"p-throttle\",\n\t\"version\": \"8.1.1\",\n\t\"description\": \"Throttle promise-returning & async functions\",\n\t\"license\": \"MIT\",\n\t\"repository\": \"sindresorhus/p-throttle\",\n\t\"funding\": \"https://github.com/sponsors/sindresorhus\",\n\t\"author\": {\n\t\t\"name\": \"Sindre Sorhus\",\n\t\t\"email\": \"sindresorhus@gmail.com\",\n\t\t\"url\": \"https://sindresorhus.com\"\n\t},\n\t\"type\": \"module\",\n\t\"exports\": {\n\t\t\"types\": \"./index.d.ts\",\n\t\t\"default\": \"./index.js\"\n\t},\n\t\"sideEffects\": false,\n\t\"engines\": {\n\t\t\"node\": \">=20\"\n\t},\n\t\"scripts\": {\n\t\t\"test\": \"xo && ava && tsd\",\n\t\t\"test-gc\": \"node --expose-gc gc-test\"\n\t},\n\t\"files\": [\n\t\t\"index.js\",\n\t\t\"index.d.ts\"\n\t],\n\t\"keywords\": [\n\t\t\"promise\",\n\t\t\"throttle\",\n\t\t\"throat\",\n\t\t\"limit\",\n\t\t\"limited\",\n\t\t\"interval\",\n\t\t\"rate\",\n\t\t\"batch\",\n\t\t\"ratelimit\",\n\t\t\"queue\",\n\t\t\"discard\",\n\t\t\"async\",\n\t\t\"await\",\n\t\t\"promises\",\n\t\t\"time\",\n\t\t\"out\",\n\t\t\"cancel\",\n\t\t\"bluebird\"\n\t],\n\t\"devDependencies\": {\n\t\t\"ava\": \"^6.2.0\",\n\t\t\"delay\": \"^6.0.0\",\n\t\t\"in-range\": \"^3.0.0\",\n\t\t\"pretty-bytes\": \"^7.0.1\",\n\t\t\"time-span\": \"^5.1.0\",\n\t\t\"tsd\": \"^0.31.2\",\n\t\t\"xo\": \"^0.59.3\"\n\t},\n\t\"ava\": {\n\t\t\"serial\": true\n\t}\n}\n",
+          "truncated": false
+        }
+      ],
+      "repository_id": 71544230,
+      "owner_id": 170270,
+      "source_url": "https://github.com/sindresorhus/p-throttle",
+      "description": "Throttle promise-returning & async functions",
+      "language": "JavaScript",
+      "capture": "Selected complete pinned files; Git blob verified; source only, never executed."
+    },
+    {
+      "repo": "sindresorhus/yocto-queue",
+      "commit": "72a8fa96a9d389765cdf2bb9c6daba8302fc375d",
+      "license": "MIT",
+      "tree": [
+        {
+          "path": ".editorconfig",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "1c6314a31833395fd5ff016a6506bdd51860657c",
+          "size": 175,
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/blobs/1c6314a31833395fd5ff016a6506bdd51860657c"
+        },
+        {
+          "path": ".gitattributes",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "6313b56c57848efce05faa7aa7e901ccfc2886ea",
+          "size": 19,
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/blobs/6313b56c57848efce05faa7aa7e901ccfc2886ea"
+        },
+        {
+          "path": ".github",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "8396da1247b5dd9931670feb4ab37a0c367b92e6",
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/trees/8396da1247b5dd9931670feb4ab37a0c367b92e6"
+        },
+        {
+          "path": ".github/security.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "930aea2eb560a83a3995a62f940c4effddfe877d",
+          "size": 179,
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/blobs/930aea2eb560a83a3995a62f940c4effddfe877d"
+        },
+        {
+          "path": ".github/workflows",
+          "mode": "040000",
+          "type": "tree",
+          "sha": "a9c67974f2227184434b96cd1739383776d8dbc1",
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/trees/a9c67974f2227184434b96cd1739383776d8dbc1"
+        },
+        {
+          "path": ".github/workflows/main.yml",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "5f816e231deed299c6482cea041906a009a2c207",
+          "size": 406,
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/blobs/5f816e231deed299c6482cea041906a009a2c207"
+        },
+        {
+          "path": ".gitignore",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "239ecff1372358a22aa99dcbb375fdad7abba817",
+          "size": 23,
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/blobs/239ecff1372358a22aa99dcbb375fdad7abba817"
+        },
+        {
+          "path": ".npmrc",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "43c97e719a5a824700932f72e6e7e6748ce45d01",
+          "size": 19,
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/blobs/43c97e719a5a824700932f72e6e7e6748ce45d01"
+        },
+        {
+          "path": "index.d.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "0475d9853a37ea304cac34ad41b1ac3736447ff3",
+          "size": 1991,
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/blobs/0475d9853a37ea304cac34ad41b1ac3736447ff3"
+        },
+        {
+          "path": "index.js",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "627ed535f3163b37f2e3b208a23788fd0a715eba",
+          "size": 1587,
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/blobs/627ed535f3163b37f2e3b208a23788fd0a715eba"
+        },
+        {
+          "path": "index.test-d.ts",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "7f413f89fc5f1710b2715df9f57bcf65974fe28d",
+          "size": 173,
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/blobs/7f413f89fc5f1710b2715df9f57bcf65974fe28d"
+        },
+        {
+          "path": "license",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+          "size": 1117,
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/blobs/fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de"
+        },
+        {
+          "path": "package.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "e9963ac06226563b55c958f9b925c996502771a9",
+          "size": 849,
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/blobs/e9963ac06226563b55c958f9b925c996502771a9"
+        },
+        {
+          "path": "readme.md",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "f94f98ef865f793b8e09c28e9d1a862fd088ae34",
+          "size": 2573,
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/blobs/f94f98ef865f793b8e09c28e9d1a862fd088ae34"
+        },
+        {
+          "path": "test.js",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "1ed25bfc91dc47f148a57838fd814bf790f3e007",
+          "size": 1744,
+          "url": "https://api.github.com/repos/sindresorhus/yocto-queue/git/blobs/1ed25bfc91dc47f148a57838fd814bf790f3e007"
+        }
+      ],
+      "files": [
+        {
+          "path": "index.js",
+          "blobSha": "627ed535f3163b37f2e3b208a23788fd0a715eba",
+          "sha256": "2eabf3096793c43934ef127fb50238dcba93074fb54f943fc62aeab616769dfc",
+          "content": "/*\nHow it works:\n`this.#head` is an instance of `Node` which keeps track of its current value and nests another instance of `Node` that keeps the value that comes after it. When a value is provided to `.enqueue()`, the code needs to iterate through `this.#head`, going deeper and deeper to find the last value. However, iterating through every single item is slow. This problem is solved by saving a reference to the last value as `this.#tail` so that it can reference it to add a new value.\n*/\n\nclass Node {\n\tvalue;\n\tnext;\n\n\tconstructor(value) {\n\t\tthis.value = value;\n\t}\n}\n\nexport default class Queue {\n\t#head;\n\t#tail;\n\t#size;\n\n\tconstructor() {\n\t\tthis.clear();\n\t}\n\n\tenqueue(value) {\n\t\tconst node = new Node(value);\n\n\t\tif (this.#head) {\n\t\t\tthis.#tail.next = node;\n\t\t\tthis.#tail = node;\n\t\t} else {\n\t\t\tthis.#head = node;\n\t\t\tthis.#tail = node;\n\t\t}\n\n\t\tthis.#size++;\n\t}\n\n\tdequeue() {\n\t\tconst current = this.#head;\n\t\tif (!current) {\n\t\t\treturn;\n\t\t}\n\n\t\tthis.#head = this.#head.next;\n\t\tthis.#size--;\n\n\t\t// Clean up tail reference when queue becomes empty\n\t\tif (!this.#head) {\n\t\t\tthis.#tail = undefined;\n\t\t}\n\n\t\treturn current.value;\n\t}\n\n\tpeek() {\n\t\tif (!this.#head) {\n\t\t\treturn;\n\t\t}\n\n\t\treturn this.#head.value;\n\n\t\t// TODO: Node.js 18.\n\t\t// return this.#head?.value;\n\t}\n\n\tclear() {\n\t\tthis.#head = undefined;\n\t\tthis.#tail = undefined;\n\t\tthis.#size = 0;\n\t}\n\n\tget size() {\n\t\treturn this.#size;\n\t}\n\n\t* [Symbol.iterator]() {\n\t\tlet current = this.#head;\n\n\t\twhile (current) {\n\t\t\tyield current.value;\n\t\t\tcurrent = current.next;\n\t\t}\n\t}\n\n\t* drain() {\n\t\twhile (this.#head) {\n\t\t\tyield this.dequeue();\n\t\t}\n\t}\n}\n",
+          "truncated": false
+        },
+        {
+          "path": "license",
+          "blobSha": "fa7ceba3eb4a9657a9db7f3ffca4e4e97a9019de",
+          "sha256": "5c932d88256b4ab958f64a856fa48e8bd1f55bc1d96b8149c65689e0c61789d3",
+          "content": "MIT License\n\nCopyright (c) Sindre Sorhus <sindresorhus@gmail.com> (https://sindresorhus.com)\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n",
+          "truncated": false
+        },
+        {
+          "path": "package.json",
+          "blobSha": "e9963ac06226563b55c958f9b925c996502771a9",
+          "sha256": "d5de75fe154851539d0adeac9731773ac5b93281ec4019c355cb330d20b176a7",
+          "content": "{\n\t\"name\": \"yocto-queue\",\n\t\"version\": \"1.2.2\",\n\t\"description\": \"Tiny queue data structure\",\n\t\"license\": \"MIT\",\n\t\"repository\": \"sindresorhus/yocto-queue\",\n\t\"funding\": \"https://github.com/sponsors/sindresorhus\",\n\t\"author\": {\n\t\t\"name\": \"Sindre Sorhus\",\n\t\t\"email\": \"sindresorhus@gmail.com\",\n\t\t\"url\": \"https://sindresorhus.com\"\n\t},\n\t\"type\": \"module\",\n\t\"exports\": \"./index.js\",\n\t\"types\": \"./index.d.ts\",\n\t\"sideEffects\": false,\n\t\"engines\": {\n\t\t\"node\": \">=12.20\"\n\t},\n\t\"scripts\": {\n\t\t\"//test\": \"xo && ava && tsd\",\n\t\t\"test\": \"ava && tsd\"\n\t},\n\t\"files\": [\n\t\t\"index.js\",\n\t\t\"index.d.ts\"\n\t],\n\t\"keywords\": [\n\t\t\"queue\",\n\t\t\"data\",\n\t\t\"structure\",\n\t\t\"algorithm\",\n\t\t\"queues\",\n\t\t\"queuing\",\n\t\t\"list\",\n\t\t\"array\",\n\t\t\"linkedlist\",\n\t\t\"fifo\",\n\t\t\"enqueue\",\n\t\t\"dequeue\",\n\t\t\"data-structure\"\n\t],\n\t\"devDependencies\": {\n\t\t\"ava\": \"^3.15.0\",\n\t\t\"tsd\": \"^0.17.0\",\n\t\t\"xo\": \"^0.44.0\"\n\t}\n}\n",
+          "truncated": false
+        }
+      ],
+      "repository_id": 315531538,
+      "owner_id": 170270,
+      "source_url": "https://github.com/sindresorhus/yocto-queue",
+      "description": "Tiny queue data structure",
+      "language": "JavaScript",
+      "capture": "Selected complete pinned files; Git blob verified; source only, never executed."
+    }
+  ]
+}

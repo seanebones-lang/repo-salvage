@@ -1,0 +1,2 @@
+# Byte-frozen production response; its pre-model checksum is verified by tests.
+examples/competing-discovery-evaluation/catalog.json
