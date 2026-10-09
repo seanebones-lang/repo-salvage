@@ -23,6 +23,12 @@ export type Summary = {
   frameworks: string[];
   reusable_pieces: ReusablePiece[];
   overview: string;
+  // Server-observed sampling metadata. Never accepted from generated JSON.
+  source_files?: {
+    path: string;
+    coverage: "complete" | "prefix";
+    sampled_characters: number;
+  }[];
 };
 
 export type Listing = {

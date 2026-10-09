@@ -102,6 +102,15 @@ and a production build. The two additional isolated consumers passed six checks 
 See [the expanded pilot record](PILOT-MATRIX.md) for exact commits, usage, recording scope
 and source/licensing gaps. No owner reviews or catalog independent-test badges were added.
 
+The subsequent agent milestone added versioned search/inspection, a downloadable standalone
+CLI, machine documentation and explicit coverage/license/dependency uncertainty. An installed
+CLI in a fresh workspace completed discovery, pinned-source fetch and three circuit-breaker
+consumer checks without an app runtime dependency or paid provider call. All 116 app checks,
+nine CLI checks and three existing example checks passed. The real local catalog returned all
+34 parts over two schema-validated pages; mobile/desktop guide layouts had no page overflow.
+See [agent retrieval validation](AGENT-VALIDATION.md) for exact evidence and limits. This is
+script-consumer validation, not adoption or an independent model-agent benchmark.
+
 The Docker daemon is unavailable. The supplied Dockerfile has not been executed in this
 review. Validate image build, unprivileged runtime, a mounted persistent database and restart
 persistence before deployment. Local standalone success does not prove container success.
@@ -113,8 +122,9 @@ and GitHub allowance consumption with a real pilot is required before expanding 
 ## Next product evidence
 
 The pilot completed contributions across seven codebases and two independent consumer
-adaptations. The next evidence is the author's review and a machine-readable discovery-to-fetch
-exercise, following [the agent interface proposal](AGENT-INTERFACE.md). Improve sampling of
+adaptations. The discovery-to-fetch exercise is now complete, following
+[the agent interface](AGENT-INTERFACE.md). The next evidence is author review and a separate
+agent client exercising discovery and owner-authorized contribution drafts. Improve sampling of
 complete functions and their local dependencies: current prefix samples can exclude the actual
 candidate implementation. Add precise coverage and component-license context before default
 automatic extraction; the expanded pilot exposed vendored licensing and omitted-file claims.

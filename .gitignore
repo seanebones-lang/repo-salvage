@@ -8,4 +8,5 @@ data/*.db-*
 *.tsbuildinfo
 .DS_Store
 public/summary-parser.tar.gz
+public/repo-salvage-cli.tgz
 artifacts/

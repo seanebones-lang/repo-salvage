@@ -110,30 +110,63 @@ export async function getOwnedPublicRepo(
   return repo;
 }
 
-/** Request-scoped deduplication only: never retain a positive visibility check across requests. */
-export const verifiedPublicRepo = cache(
-  async (id: number, ownerId: number): Promise<GhRepo | null> => {
+export type PublicRepoStatus =
+  { status: "public"; repo: GhRepo } | { status: "unavailable" | "excluded" };
+
+/** Request-scoped only. Distinguish upstream failure from an excluded repository. */
+export const publicRepoStatus = cache(
+  async (id: number, ownerId: number): Promise<PublicRepoStatus> => {
     if (
       !Number.isSafeInteger(id) ||
       id < 1 ||
       !Number.isSafeInteger(ownerId) ||
       ownerId < 1
     )
-      return null;
+      return { status: "excluded" };
     try {
       const res = await publicFetch(`/repositories/${id}`);
-      if (!res.ok) return null;
+      if (!res.ok)
+        return { status: res.status === 404 ? "excluded" : "unavailable" };
       const repo = (await res.json()) as GhRepo;
       return repo.id === id &&
         repo.private === false &&
         repo.owner.id === ownerId
-        ? repo
-        : null;
+        ? { status: "public", repo }
+        : { status: "excluded" };
     } catch {
-      return null;
+      return { status: "unavailable" };
     }
   },
 );
+
+/** Public pages still fail closed; agent APIs can report unavailable verification. */
+export const verifiedPublicRepo = cache(async (id: number, ownerId: number) => {
+  const result = await publicRepoStatus(id, ownerId);
+  return result.status === "public" ? result.repo : null;
+});
+
+export type SourceFile = {
+  path: string;
+  type: string;
+  mode: string;
+  sha: string;
+  size?: number;
+};
+
+export async function pinnedSourceTree(fullName: string, sourceSha: string) {
+  if (
+    !/^[a-f0-9]{40}$/.test(sourceSha) ||
+    !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(fullName)
+  )
+    throw new Error("Invalid source identity");
+  const result = await gh<{ truncated?: boolean; tree: SourceFile[] }>(
+    "",
+    `/repos/${fullName}/git/trees/${sourceSha}?recursive=1`,
+  );
+  if (result.truncated || !Array.isArray(result.tree))
+    throw new Error("Pinned source tree is incomplete");
+  return result.tree;
+}
 
 export async function isPublicRepo(
   id: number,

@@ -8,6 +8,32 @@ import {
 import { exampleListing } from "@/lib/examples";
 
 describe("component catalog", () => {
+  it("matches language terms and ranks capability names above incidental mentions", () => {
+    const listing = {
+      ...exampleListing,
+      summary: {
+        ...exampleListing.summary,
+        reusable_pieces: [
+          {
+            name: "Streaming client",
+            path: "src/stream.ts",
+            description: "Uses a circuit breaker",
+          },
+          {
+            name: "CircuitBreaker",
+            path: "src/circuit.ts",
+            description: "Handles failures",
+          },
+        ],
+      },
+    };
+    expect(
+      filterComponents(componentsOf([listing]), {
+        q: "TypeScript circuit breaker",
+        sort: "relevance",
+      }).map((entry) => entry.piece.name),
+    ).toEqual(["CircuitBreaker", "Streaming client"]);
+  });
   it("matches the individual piece instead of returning every piece in a matching repository", () => {
     const entries = componentsOf([exampleListing]);
     expect(

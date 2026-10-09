@@ -126,6 +126,7 @@ describe("verified generation", () => {
   it("requires supplied source content for the primary recommendation and ignores model-supplied review claims", () => {
     const raw = JSON.stringify({
       overview: "Parser",
+      source_files: [{ path: tree[0], coverage: "complete" }],
       reusable_pieces: [
         {
           name: "Seen",
@@ -146,6 +147,7 @@ describe("verified generation", () => {
     });
     const output = verifiedSummary(raw, tree, [tree[0]]);
     expect(output.reusable_pieces).toHaveLength(1);
+    expect(output).not.toHaveProperty("source_files");
     expect(output.reusable_pieces[0]).toMatchObject({
       source_sampled: true,
       related_paths: [tree[1]],
