@@ -167,3 +167,25 @@ Inspector reported zero errors and ten nullable-schema portability advisories.
 No new paid call, live-owner credential or public listing was created. Package
 hashes, provenance, protocol coverage and remaining host/deployment gates are
 recorded in [AGENT-VALIDATION.md](AGENT-VALIDATION.md).
+
+## Native agent reuse — 2026-10-08
+
+A separate Codex CLI 0.160.0 host now completed discovery, pinned full-source and
+notice retrieval, adaptation and six initial consumer checks through four native
+MCP calls. Review added stable string inputs, absolute split endpoints and fixed
+upstream acceptance vectors. The downloadable Python standard-library consumer
+passes twelve behavior checks, including a fresh downloaded-bundle run. It
+retains the MIT notice and documents each intentional change.
+
+Ten fresh read-only sessions answered ten authored frozen catalog questions
+correctly across 44 native tool calls. This is scoped host-path evidence, not
+held-out general accuracy or adoption. Existing ChatGPT login used ordinary Codex
+account allowance; the default model ID was not independently recorded. No new
+Anthropic request, live-owner credential, draft or listing was created.
+
+Validation: 194 offline checks, production build/typecheck/format/full audit,
+verified source/notice hashes, fresh archive consumer, and responsive browser
+review. [AGENT-VALIDATION.md](AGENT-VALIDATION.md) records the exact provenance,
+trial boundaries and remaining deployment/container/scale gates. The native host
+pilot replaces the earlier open external-agent retrieval gate for this one host;
+other hosts and live owner-authorized agent contribution remain untested.

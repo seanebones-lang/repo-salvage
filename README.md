@@ -30,12 +30,14 @@ dependencies, integration guidance, limitations, and the evidence behind the rec
   a complete dependency graph, passing tests or safe extraction.
 - **Owner reviewed:** the author confirmed the brief for this specific analysis. It is not
   independent test evidence. Model output cannot set this status.
-- **Example adaptation tested:** the included standalone parser example has executable consumer
-  tests. This status applies only to that adaptation. Catalog components are not certified as
+- **Example adaptation tested:** the included standalone parser and Python assignment examples have executable
+  consumer tests. This status applies only to that adaptation. Catalog components are not certified as
   independently tested.
 - `/examples` contains three manually curated demonstrations from this repository at commit
   `cfeeae509e90b15c04ceabd2a3f7b315dd303b43`. They are not owner-submitted listings and do not
-  contribute to catalog or adoption counts. The parser adaptation includes its original MIT notice.
+  contribute to catalog or adoption counts. The parser adaptation includes its original MIT notice. A separate MCP host pilot
+  at `/examples/assignment` demonstrates a reviewed Python consumer from btcpredictor
+  with twelve checks and preserved upstream notices; it also stays outside catalog counts.
 - License metadata is not a per-file license audit. Check source licenses, notices and dependencies
   before reuse. New listings require a recognized repository license; older unlicensed listings
   retain visible unknown-license context.
@@ -45,6 +47,7 @@ dependencies, integration guidance, limitations, and the evidence behind the rec
 ## Local setup
 
 Node.js 22 is used in CI and the container. SQLite requires persistent local storage.
+Python 3.9+ runs the standalone assignment-consumer checks; no Python package is needed.
 
 ```sh
 npm ci
@@ -91,6 +94,9 @@ See [the first pilot](docs/PILOT.md) and [expanded matrix](docs/PILOT-MATRIX.md)
 usage, adaptations and evidence limits. The [agent interface](docs/AGENT-INTERFACE.md)
 now supports JSON search, pinned-source inspection and a standalone consumer CLI.
 Private agent contribution drafts and a local MCP adapter are implemented.
+A native Codex CLI pilot completed discovery-to-adaptation, and ten isolated sessions
+answered ten frozen catalog questions exactly. See [the host pilot](examples/agent-host-pilot/README.md)
+for provenance, account-usage scope and reproducible test configuration.
 
 ## For agents and scripts
 

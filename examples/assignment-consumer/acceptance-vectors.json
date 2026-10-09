@@ -1,0 +1,44 @@
+[
+  {
+    "experiment_id": "checkout-v1",
+    "user_id": "u-001",
+    "traffic_split": 0.5,
+    "variant": "A"
+  },
+  {
+    "experiment_id": "checkout-v1",
+    "user_id": "u-002",
+    "traffic_split": 0.5,
+    "variant": "A"
+  },
+  {
+    "experiment_id": "checkout-v2",
+    "user_id": "u-001",
+    "traffic_split": 0.5,
+    "variant": "B"
+  },
+  {
+    "experiment_id": "exp:colon",
+    "user_id": "user",
+    "traffic_split": 0.5,
+    "variant": "B"
+  },
+  {
+    "experiment_id": "exp",
+    "user_id": "colon:user",
+    "traffic_split": 0.5,
+    "variant": "B"
+  },
+  {
+    "experiment_id": "δ",
+    "user_id": "用户",
+    "traffic_split": 0.5,
+    "variant": "A"
+  },
+  {
+    "experiment_id": "experiment",
+    "user_id": "",
+    "traffic_split": 0.5,
+    "variant": "A"
+  }
+]

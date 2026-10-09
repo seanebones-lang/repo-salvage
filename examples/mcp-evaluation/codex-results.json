@@ -1,0 +1,638 @@
+{
+  "host": "codex-cli 0.160.0",
+  "model": "CLI default; model ID not independently recorded",
+  "snapshot_revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48",
+  "installed_archive_sha256": "860ee164e2d6aac4d961df97f098b037e71059609639d65be55b9b116bac093e",
+  "sessions": 10,
+  "exact_matches": 10,
+  "mcp_tool_calls": 44,
+  "source_bytes_read": 0,
+  "prohibited_tool_actions": 0,
+  "auth": "Existing ChatGPT login; normal Codex account usage, no Anthropic credential or calls",
+  "user_configuration_changed": false,
+  "results": [
+    {
+      "question": 1,
+      "answer": "third-party/option-ext-0.2.0/LICENSE.txt",
+      "expected": "third-party/option-ext-0.2.0/LICENSE.txt",
+      "exactMatch": true,
+      "readOnlyToolsOnly": true,
+      "prohibited": [],
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "optional",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "sidecar",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "option",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 8,
+            "part_id": "7eae5e4fa55ea1e3"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 8,
+            "part_id": "6d0917a422af8015"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "usage": {
+        "input_tokens": 90185,
+        "cached_input_tokens": 63872,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 401,
+        "reasoning_output_tokens": 0
+      },
+      "code": 0,
+      "signal": null
+    },
+    {
+      "question": 2,
+      "answer": "1",
+      "expected": "1",
+      "exactMatch": true,
+      "readOnlyToolsOnly": true,
+      "prohibited": [],
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "sidecar",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 8,
+            "part_id": "7eae5e4fa55ea1e3"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 8,
+            "part_id": "dcd37dda4bd28169"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "usage": {
+        "input_tokens": 59913,
+        "cached_input_tokens": 39552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 256,
+        "reasoning_output_tokens": 0
+      },
+      "code": 0,
+      "signal": null
+    },
+    {
+      "question": 3,
+      "answer": "B",
+      "expected": "B",
+      "exactMatch": true,
+      "readOnlyToolsOnly": true,
+      "prohibited": [],
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "circuit breaker",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 3,
+            "part_id": "01a762bc95837106"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 3,
+            "part_id": "c4bd04c559ce9bac"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "usage": {
+        "input_tokens": 59603,
+        "cached_input_tokens": 26368,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 249,
+        "reasoning_output_tokens": 0
+      },
+      "code": 0,
+      "signal": null
+    },
+    {
+      "question": 4,
+      "answer": "C",
+      "expected": "C",
+      "exactMatch": true,
+      "readOnlyToolsOnly": true,
+      "prohibited": [],
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "river",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 9,
+            "part_id": "f6e8f858028272b0"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 9,
+            "part_id": "322e4d35c029cee7"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "usage": {
+        "input_tokens": 60798,
+        "cached_input_tokens": 39680,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 251,
+        "reasoning_output_tokens": 0
+      },
+      "code": 0,
+      "signal": null
+    },
+    {
+      "question": 5,
+      "answer": "core/src/types.rs",
+      "expected": "core/src/types.rs",
+      "exactMatch": true,
+      "readOnlyToolsOnly": true,
+      "prohibited": [],
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "provenance",
+            "language": "Rust",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "batch",
+            "language": "Rust",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "signature",
+            "language": "Rust",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 9,
+            "part_id": "0cbfc41e1a97c092"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 9,
+            "part_id": "3c004d393d45be75"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "usage": {
+        "input_tokens": 78536,
+        "cached_input_tokens": 55552,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 410,
+        "reasoning_output_tokens": 0
+      },
+      "code": 0,
+      "signal": null
+    },
+    {
+      "question": 6,
+      "answer": "2",
+      "expected": "2",
+      "exactMatch": true,
+      "readOnlyToolsOnly": true,
+      "prohibited": [],
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "validator",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 6,
+            "part_id": "f3b6e4831cca1def"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 6,
+            "part_id": "6dcfd68c83d19424"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "usage": {
+        "input_tokens": 59754,
+        "cached_input_tokens": 49408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 226,
+        "reasoning_output_tokens": 0
+      },
+      "code": 0,
+      "signal": null
+    },
+    {
+      "question": 7,
+      "answer": "00aed189d6500fedd3acf07828ee70a4510e63a2",
+      "expected": "00aed189d6500fedd3acf07828ee70a4510e63a2",
+      "exactMatch": true,
+      "readOnlyToolsOnly": true,
+      "prohibited": [],
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "repository brief",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1,
+            "part_id": "e7bbc288c6315dee"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "parser",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1,
+            "part_id": "7e77a9eb7d34fe85"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "usage": {
+        "input_tokens": 77976,
+        "cached_input_tokens": 56704,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 349,
+        "reasoning_output_tokens": 0
+      },
+      "code": 0,
+      "signal": null
+    },
+    {
+      "question": 8,
+      "answer": "Recursive and prose text splitters",
+      "expected": "Recursive and prose text splitters",
+      "exactMatch": true,
+      "readOnlyToolsOnly": true,
+      "prohibited": [],
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "vault",
+            "language": "Python",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "text",
+            "language": "Python",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 5,
+            "part_id": "2090359952bf0715"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 5,
+            "part_id": "ad68a2d44d29024b"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "usage": {
+        "input_tokens": 80527,
+        "cached_input_tokens": 58240,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 329,
+        "reasoning_output_tokens": 0
+      },
+      "code": 0,
+      "signal": null
+    },
+    {
+      "question": 9,
+      "answer": "A",
+      "expected": "A",
+      "exactMatch": true,
+      "readOnlyToolsOnly": true,
+      "prohibited": [],
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "default branch",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "digest",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 1,
+            "part_id": "afa5e151a3700649"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "packet",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 6,
+            "part_id": "e2ee88f5ab047987"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "usage": {
+        "input_tokens": 85523,
+        "cached_input_tokens": 61696,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 383,
+        "reasoning_output_tokens": 0
+      },
+      "code": 0,
+      "signal": null
+    },
+    {
+      "question": 10,
+      "answer": "D",
+      "expected": "D",
+      "exactMatch": true,
+      "readOnlyToolsOnly": true,
+      "prohibited": [],
+      "calls": [
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "bucketing",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "purged",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "prediction",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "language": "Python",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 7,
+            "part_id": "87b6a59b3f501640"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "q": "rolling",
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "language": "Python",
+            "page": 2,
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_search_parts",
+          "arguments": {
+            "language": "Python",
+            "page": 3,
+            "limit": 10,
+            "revision": "984de759101f3a54f44fe135206151eb1c882c0270747f0b98d8f7c1614a6a48"
+          },
+          "status": "completed",
+          "error": null
+        },
+        {
+          "tool": "repo_salvage_inspect_part",
+          "arguments": {
+            "listing_id": 7,
+            "part_id": "83da981c8ced245f"
+          },
+          "status": "completed",
+          "error": null
+        }
+      ],
+      "usage": {
+        "input_tokens": 178666,
+        "cached_input_tokens": 161024,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 745,
+        "reasoning_output_tokens": 0
+      },
+      "code": 0,
+      "signal": null
+    }
+  ],
+  "limitations": [
+    "One run of ten authored questions; not a held-out/general accuracy estimate",
+    "Read-only frozen replay with simplified matching/ordering; not a live changing-catalog test",
+    "Only this Codex CLI version/default model execution path tested; model ID not independently recorded",
+    "No source execution, adaptation, private drafts, license audit, dependency audit or adoption is scored here"
+  ]
+}
