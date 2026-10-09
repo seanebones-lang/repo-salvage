@@ -144,6 +144,14 @@ code passed ten pre-generation consumer tests and 2,000 reference-model operatio
 Coverage-v2 improves public Python declaration ordering; the remaining brief-selection
 and bounded-context gaps are recorded, without a general discovery-quality claim.
 
+A [context and selection follow-up](examples/context-diversity-evaluation/README.md)
+preserved the previous miss and froze three additional analysis profiles. Complete
+cache-module context now fits the same packet budget; both cache profiles selected
+LRU and cited its supporting definitions. A fresh scheduling corpus selected three
+authored capability groups while retaining its missing full-module context. The
+new prompt favors distinct capabilities without filling a six-part quota. These
+bounded operator reviews do not establish a general recall or causal prompt effect.
+
 ## For agents and scripts
 
 Open `/agents` for the guide, `/llms.txt` for the machine index and `/openapi.json`

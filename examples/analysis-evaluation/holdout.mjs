@@ -64,6 +64,7 @@ export async function buildHoldout(engine, verify = true, epoch = "holdout") {
       { full_name: c.repo },
       packet,
       c.ownerNote,
+      "legacy",
     );
     if (epoch === "holdout") request.system = baselineSystem;
     request.model = "selected-explicitly-at-run";

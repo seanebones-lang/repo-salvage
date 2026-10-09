@@ -29,6 +29,7 @@ describe("frozen interpretation controls", () => {
         >[0],
         packet,
         c.ownerNote,
+        "legacy",
       );
       request.model = "selected-explicitly-at-run";
       expect(record.request).toEqual(request);

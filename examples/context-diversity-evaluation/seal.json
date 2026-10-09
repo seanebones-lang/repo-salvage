@@ -1,0 +1,18 @@
+{
+  "format": "repo-salvage/context-diversity-input-seal-v1",
+  "frozenAt": "2026-10-09T10:44:49.862Z",
+  "files": {
+    "corpus.json": "4b913247c1dcf82d08bdee4ad62f2404e0d55683b9297a6e9ddfb2437de642cc",
+    "controls.json": "ef4a59422c68db6ca9f8bd8ea79465045932fa092ab2f2c7a98ffa07b7e16475",
+    "requests.json": "b6acf5322abdcacaa1aee2d7aa40640e58ef318f8785112a24a4109ec350e486",
+    "coverage.json": "b5df7d4066e65f7d121ad60d61d79133e09e721f4d92785573b257a973f1e3ac",
+    "run.mjs": "edbd6cdc39bc8afeffaef1857fc996f88a5e03091c41c402470ec2c080ed0e3e",
+    "suite.mjs": "c930c99aa1ab74272e9dd5b460591bfaf8adbd0f414c976dd6071b8bd1c6c4f1",
+    "score.mjs": "87d249354fab4a4b3c78b935724df306b35db92e3a07781f47c2ba5633e1a65d",
+    "history/engine.json": "756378390c6090dbbbbfb907eb908b7b690b399c83ffb05637042bc88f1fa0c0",
+    "history/seal.json": "8574191484ae62e62fd9338ad8d5477691cd0a5a4298a28747d66001c5226797",
+    "../analysis-evaluation/engine.mjs": "b3cda4f01180d7e2d5a9eda9404c75c030def38d9ef009b3dc338fb61d42c1ac",
+    "../full-chain-evaluation/run.mjs": "4b644fd05de9be5a6484a69eb77ba434f12d350871f4ff2a520b22af06b4849b",
+    "../analysis-evaluation/trace.mjs": "57ad36ba43e560902b43fbff5e6b011ccdea535e855f75bce18f5ac6dad83b1e"
+  }
+}

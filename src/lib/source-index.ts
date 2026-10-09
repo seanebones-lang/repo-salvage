@@ -78,7 +78,10 @@ export type EvidencePacket = {
   targets: SourceTarget[];
   references: SourceReference[];
   omitted_targets: number;
-  selection_policy?: "repo-salvage/coverage-v1" | "repo-salvage/coverage-v2";
+  selection_policy?:
+    | "repo-salvage/coverage-v1"
+    | "repo-salvage/coverage-v2"
+    | "repo-salvage/coverage-v3";
   contexts?: { target_id: string; same_file_reference: string | null }[];
 };
 const digest = (value: string) =>
@@ -478,7 +481,7 @@ export function evidencePacket(
   characterLimit = INDEX_LIMITS.promptCharacters,
   policy: NonNullable<
     EvidencePacket["selection_policy"]
-  > = "repo-salvage/coverage-v2",
+  > = "repo-salvage/coverage-v3",
 ): EvidencePacket {
   const packet: EvidencePacket = {
     format: INDEX_VERSION,
@@ -557,7 +560,7 @@ export function evidencePacket(
         // Python exposes private helpers and enclosed methods to inspection too.
         // Give public top-level declarations a turn before those smaller blocks;
         // this naming hint neither proves an API nor removes any target.
-        (policy === "repo-salvage/coverage-v2" &&
+        (policy !== "repo-salvage/coverage-v1" &&
         index.files.find((f) => f.path === a.path)?.parser === "python"
           ? Number(a.symbol.startsWith("_") || a.symbol.includes(".")) -
             Number(b.symbol.startsWith("_") || b.symbol.includes("."))
@@ -621,8 +624,27 @@ export function evidencePacket(
     ...new Set(packet.targets.flatMap((t) => t.notice_paths)),
   ].sort())
     add(files.get(notice));
+  const privatePythonPaths = new Set(
+    selectedPaths.filter((file) => {
+      const declarations = packet.targets.filter(
+        (t) => t.path === file && t.kind === "declaration",
+      );
+      return (
+        index.files.find((f) => f.path === file)?.parser === "python" &&
+        declarations.length > 0 &&
+        declarations.every(
+          (t) => t.symbol.startsWith("_") || t.symbol.includes("."),
+        )
+      );
+    }),
+  );
   const contextPaths = selectedPaths.sort(
     (a, b) =>
+      // Defer private-only Python declaration context; other languages and file
+      // targets keep their turns. File size breaks ties; no bodies are cut.
+      (policy === "repo-salvage/coverage-v3"
+        ? Number(privatePythonPaths.has(a)) - Number(privatePythonPaths.has(b))
+        : 0) ||
       (files.get(a)?.content.length ?? Infinity) -
         (files.get(b)?.content.length ?? Infinity) ||
       (a < b ? -1 : a > b ? 1 : 0),

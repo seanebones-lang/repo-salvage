@@ -1,0 +1,552 @@
+[
+  {
+    "repository": "tkem/cachetools",
+    "indexed": 144,
+    "policies": [
+      {
+        "policy": "repo-salvage/coverage-v2",
+        "characters": 69464,
+        "targets": [
+          {
+            "symbol": "<module>",
+            "path": "docs/conf.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_none",
+            "path": "src/cachetools/_cachedmethod.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "methodkey",
+            "path": "src/cachetools/keys.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_uncached",
+            "path": "src/cachetools/_cached.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "lru_cache",
+            "path": "src/cachetools/func.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "cachedmethod",
+            "path": "src/cachetools/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "_DeprecatedDescriptorBase",
+            "path": "src/cachetools/_cachedmethod.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "typedmethodkey",
+            "path": "src/cachetools/keys.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_uncached_info",
+            "path": "src/cachetools/_cached.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "lfu_cache",
+            "path": "src/cachetools/func.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "cached",
+            "path": "src/cachetools/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "_unlocked",
+            "path": "src/cachetools/_cachedmethod.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "hashkey",
+            "path": "src/cachetools/keys.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_unlocked",
+            "path": "src/cachetools/_cached.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "fifo_cache",
+            "path": "src/cachetools/func.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "FIFOCache",
+            "path": "src/cachetools/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "_WrapperBase",
+            "path": "src/cachetools/_cachedmethod.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "typedkey",
+            "path": "src/cachetools/keys.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_unlocked_info",
+            "path": "src/cachetools/_cached.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "rr_cache",
+            "path": "src/cachetools/func.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "LRUCache",
+            "path": "src/cachetools/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "_unlocked_info",
+            "path": "src/cachetools/_cachedmethod.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_HashedTuple",
+            "path": "src/cachetools/keys.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_locked",
+            "path": "src/cachetools/_cached.py",
+            "sameFileContext": true
+          }
+        ],
+        "completeFiles": [
+          "docs/conf.py",
+          "LICENSE",
+          "src/cachetools/keys.py",
+          "src/cachetools/func.py",
+          "src/cachetools/_cached.py",
+          "src/cachetools/_cachedmethod.py",
+          "tests/test_cache.py",
+          "tests/test_fifo.py"
+        ],
+        "omitted": 120
+      },
+      {
+        "policy": "repo-salvage/coverage-v3",
+        "characters": 69660,
+        "targets": [
+          {
+            "symbol": "<module>",
+            "path": "docs/conf.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_none",
+            "path": "src/cachetools/_cachedmethod.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "methodkey",
+            "path": "src/cachetools/keys.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_uncached",
+            "path": "src/cachetools/_cached.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "lru_cache",
+            "path": "src/cachetools/func.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "cachedmethod",
+            "path": "src/cachetools/__init__.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_DeprecatedDescriptorBase",
+            "path": "src/cachetools/_cachedmethod.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "typedmethodkey",
+            "path": "src/cachetools/keys.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_uncached_info",
+            "path": "src/cachetools/_cached.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "lfu_cache",
+            "path": "src/cachetools/func.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "cached",
+            "path": "src/cachetools/__init__.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_unlocked",
+            "path": "src/cachetools/_cachedmethod.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "hashkey",
+            "path": "src/cachetools/keys.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_unlocked",
+            "path": "src/cachetools/_cached.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "fifo_cache",
+            "path": "src/cachetools/func.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "FIFOCache",
+            "path": "src/cachetools/__init__.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_WrapperBase",
+            "path": "src/cachetools/_cachedmethod.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "typedkey",
+            "path": "src/cachetools/keys.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_unlocked_info",
+            "path": "src/cachetools/_cached.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "rr_cache",
+            "path": "src/cachetools/func.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "LRUCache",
+            "path": "src/cachetools/__init__.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_unlocked_info",
+            "path": "src/cachetools/_cachedmethod.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "_HashedTuple",
+            "path": "src/cachetools/keys.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "_locked",
+            "path": "src/cachetools/_cached.py",
+            "sameFileContext": false
+          }
+        ],
+        "completeFiles": [
+          "docs/conf.py",
+          "LICENSE",
+          "src/cachetools/keys.py",
+          "src/cachetools/func.py",
+          "src/cachetools/__init__.py",
+          "tests/test_cache.py"
+        ],
+        "omitted": 120
+      }
+    ]
+  },
+  {
+    "repository": "dbader/schedule",
+    "indexed": 62,
+    "policies": [
+      {
+        "policy": "repo-salvage/coverage-v2",
+        "characters": 50754,
+        "targets": [
+          {
+            "symbol": "read_file",
+            "path": "setup.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "<module>",
+            "path": "docs/conf.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "ScheduleError",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "ScheduleValueError",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "IntervalError",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "CancelJob",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "every",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "idle_seconds",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "get_jobs",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "next_run",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "repeat",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Scheduler",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "run_pending",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "cancel_job",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "clear",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "run_all",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "_weekday_index",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "_move_to_next_weekday",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Job._is_overdue",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Job.__lt__",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Scheduler.every",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Job._decode_datetimestr",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Scheduler.get_jobs",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Job.tag",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          }
+        ],
+        "completeFiles": [
+          "docs/conf.py",
+          "LICENSE.txt",
+          "setup.py",
+          "pyproject.toml"
+        ],
+        "omitted": 38
+      },
+      {
+        "policy": "repo-salvage/coverage-v3",
+        "characters": 50754,
+        "targets": [
+          {
+            "symbol": "read_file",
+            "path": "setup.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "<module>",
+            "path": "docs/conf.py",
+            "sameFileContext": true
+          },
+          {
+            "symbol": "ScheduleError",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "ScheduleValueError",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "IntervalError",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "CancelJob",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "every",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "idle_seconds",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "get_jobs",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "next_run",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "repeat",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Scheduler",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "run_pending",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "cancel_job",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "clear",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "run_all",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "_weekday_index",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "_move_to_next_weekday",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Job._is_overdue",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Job.__lt__",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Scheduler.every",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Job._decode_datetimestr",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Scheduler.get_jobs",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          },
+          {
+            "symbol": "Job.tag",
+            "path": "schedule/__init__.py",
+            "sameFileContext": false
+          }
+        ],
+        "completeFiles": [
+          "docs/conf.py",
+          "LICENSE.txt",
+          "setup.py",
+          "pyproject.toml"
+        ],
+        "omitted": 38
+      }
+    ]
+  }
+]
