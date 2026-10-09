@@ -19,6 +19,38 @@ beforeEach(() => {
   state.unavailable = false;
 });
 describe("Python AST source evidence", () => {
+  it("gives public Python declarations an earlier bounded turn without deleting helper or method evidence", () => {
+    const content =
+      Array.from(
+        { length: 30 },
+        (_, i) => `def _helper${i}(): return ${i}`,
+      ).join("\n") +
+      "\nclass PublicCache:\n    def lookup(self, key):\n        return _helper0() if key else _helper1()\n";
+    const index = indexSources([{ path: "cache.py", content }], ["cache.py"]);
+    const prior = evidencePacket(index, undefined, "repo-salvage/coverage-v1");
+    const current = evidencePacket(index);
+    expect(prior.targets.some((t) => t.symbol === "PublicCache")).toBe(false);
+    expect(current.selection_policy).toBe("repo-salvage/coverage-v2");
+    expect(current.targets[0].symbol).toBe("PublicCache");
+    expect(current.targets).toHaveLength(24);
+    expect(index.targets.some((t) => t.symbol === "PublicCache.lookup")).toBe(
+      true,
+    );
+    expect(
+      current.references.some(
+        (r) => r.kind === "file" && r.content === content,
+      ),
+    ).toBe(true);
+  });
+  it("keeps private-only Python implementations eligible", () => {
+    const index = indexSources(
+      [{ path: "helpers.py", content: "def _useful(x): return x + 1\n" }],
+      ["helpers.py"],
+    );
+    expect(evidencePacket(index).targets.map((t) => t.symbol)).toEqual([
+      "_useful",
+    ]);
+  });
   it("retains complete decorated functions and class methods with exact Unicode/BOM line ranges", () => {
     const content =
       '\ufeff# 😀\n@(\n    decorator("é")\n)\nasync def café(x):\n    return x\n\nclass Service:\n    @staticmethod\n    def twice(x):\n        return x * 2\n';

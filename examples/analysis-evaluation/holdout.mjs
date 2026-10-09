@@ -38,7 +38,7 @@ export async function buildHoldout(engine, verify = true, epoch = "holdout") {
       packet:
         epoch === "holdout"
           ? baselinePacket(index)
-          : engine.evidencePacket(index),
+          : engine.evidencePacket(index, undefined, "repo-salvage/coverage-v1"),
     });
   }
   const cases = definitions.cases.map((c) => {

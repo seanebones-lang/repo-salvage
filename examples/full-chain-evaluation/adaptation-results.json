@@ -1,0 +1,94 @@
+{
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "cliVersion": "codex-cli 0.160.0",
+  "promptSha256": "82630bd6cd7d038180ed8acca3fb800118308717222e442de77ad1f11161d43a",
+  "trace": {
+    "sha256": "297c9974be9f5698cac0224ecb20161f4229294980e5942ac1081f647e9d21e5"
+  },
+  "latencyMs": 57351,
+  "billing": "Existing Codex account allowance; no API-key model call",
+  "usage": {
+    "input_tokens": 122141,
+    "cached_input_tokens": 87424,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1810,
+    "reasoning_output_tokens": 125
+  },
+  "transportSuccess": true,
+  "failure": null,
+  "prohibited": [],
+  "score": {
+    "exactAnswer": true,
+    "searched": true,
+    "boundedSearch": true,
+    "sourceEvidence": true,
+    "noticeEvidence": true,
+    "evidence": [
+      {
+        "key": "tkem/cachetools:src/cachetools/__init__.py",
+        "inspected": true,
+        "relevantSource": true,
+        "notice": true
+      }
+    ],
+    "passed": true
+  },
+  "answer": "tkem/cachetools:src/cachetools/__init__.py",
+  "finding": "Inspected the catalog's FIFO candidate and found the complete LRUCache implementation, its Cache base class and _DefaultSize helper in the pinned source window; also read the complete MIT license. Upstream LRUCache promotes successful reads and writes, evicts the least recently used key, and inherits non-promoting membership checks. Cache defaults to item counting but permits custom value sizing; its capacity validation does not enforce the requested integer-only contract. The relevant implementation depends on collections.OrderedDict and collections.abc.MutableMapping. Other module imports and local decorator helpers are unnecessary for this adaptation. Intentional changes: replace Cache inheritance and custom sizing with direct item counting, enforce nonnegative integer capacities excluding bool, explicitly reject zero-capacity insertion, and omit expiry, decorators and persistence. Separate value and recency dictionaries preserve upstream insertion-order key iteration without changing that order on reads. Mapping mixins provide get, pop, setdefault, update and views; successful value lookups promote recency. Keys must be hashable; this is a single-thread implementation with no synchronization. The full MIT notice is retained below. No code was executed or independently tested; operator acceptance tests remain separate.",
+  "codeSha256": "be867bbe59dc6dab76adbbd51dd822e8a3e51f27731ce2970fb75cdc31b4e185",
+  "generatedSealSha256": "1410ff0bcaf69f7d297fa6d482291106d3a506d298334e308fe3ee7918dd331b",
+  "calls": [
+    {
+      "tool": "repo_salvage_search_parts",
+      "arguments": {
+        "q": "LRU cache",
+        "language": "Python",
+        "license": "MIT",
+        "limit": 8
+      },
+      "status": "completed",
+      "error": null
+    },
+    {
+      "tool": "repo_salvage_search_parts",
+      "arguments": {
+        "q": "cache",
+        "limit": 8
+      },
+      "status": "completed",
+      "error": null
+    },
+    {
+      "tool": "repo_salvage_inspect_part",
+      "arguments": {
+        "listing_id": 1001,
+        "part_id": "643d11dc643f94e7"
+      },
+      "status": "completed",
+      "error": null
+    },
+    {
+      "tool": "repo_salvage_read_part_file",
+      "arguments": {
+        "listing_id": 1001,
+        "part_id": "643d11dc643f94e7",
+        "path": "LICENSE",
+        "max_characters": 12000
+      },
+      "status": "completed",
+      "error": null
+    },
+    {
+      "tool": "repo_salvage_read_part_file",
+      "arguments": {
+        "listing_id": 1001,
+        "part_id": "643d11dc643f94e7",
+        "path": "src/cachetools/__init__.py",
+        "max_characters": 12000
+      },
+      "status": "completed",
+      "error": null
+    }
+  ]
+}

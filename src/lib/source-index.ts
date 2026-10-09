@@ -78,7 +78,7 @@ export type EvidencePacket = {
   targets: SourceTarget[];
   references: SourceReference[];
   omitted_targets: number;
-  selection_policy?: "repo-salvage/coverage-v1";
+  selection_policy?: "repo-salvage/coverage-v1" | "repo-salvage/coverage-v2";
   contexts?: { target_id: string; same_file_reference: string | null }[];
 };
 const digest = (value: string) =>
@@ -476,13 +476,16 @@ export function indexSources(
 export function evidencePacket(
   index: SourceIndex,
   characterLimit = INDEX_LIMITS.promptCharacters,
+  policy: NonNullable<
+    EvidencePacket["selection_policy"]
+  > = "repo-salvage/coverage-v2",
 ): EvidencePacket {
   const packet: EvidencePacket = {
     format: INDEX_VERSION,
     targets: [],
     references: [],
     omitted_targets: index.targets.length,
-    selection_policy: "repo-salvage/coverage-v1",
+    selection_policy: policy,
     contexts: [],
   };
   if (
@@ -551,6 +554,14 @@ export function evidencePacket(
   for (const group of groups.values())
     group.sort(
       (a, b) =>
+        // Python exposes private helpers and enclosed methods to inspection too.
+        // Give public top-level declarations a turn before those smaller blocks;
+        // this naming hint neither proves an API nor removes any target.
+        (policy === "repo-salvage/coverage-v2" &&
+        index.files.find((f) => f.path === a.path)?.parser === "python"
+          ? Number(a.symbol.startsWith("_") || a.symbol.includes(".")) -
+            Number(b.symbol.startsWith("_") || b.symbol.includes("."))
+          : 0) ||
         implementationRank(a) - implementationRank(b) ||
         a.unresolved.length - b.unresolved.length ||
         a.supporting_paths.length - b.supporting_paths.length ||

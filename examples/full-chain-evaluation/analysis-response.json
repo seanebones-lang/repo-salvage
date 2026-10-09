@@ -1,0 +1,102 @@
+{
+  "overview": "Six targets offer reusable cache-key construction, memoization wrappers and FIFO ordering. Supplied contexts show extraction requirements; FIFO lacks its base-class context. References document inspected source, not correctness. Listed tests were not run.",
+  "outcome": "candidates",
+  "reusable_pieces": [
+    {
+      "target_id": "fdbd22fda46cbec6",
+      "name": "hashkey argument-key builder",
+      "description": "Builds a tuple-based cache key from positional arguments and sorted keyword items, using a sentinel to separate the two.",
+      "category": "Data processing",
+      "integration_notes": "The supplied file defines supporting _HashedTuple and _kwmark. Preserve both when extracting hashkey. The keyword branch sorts items; the other branch returns _HashedTuple(args). Hashing later memoizes the tuple hash. No explicit argument validation occurs. Retain the supplied copyright and permission notice for copies or substantial portions.",
+      "limitations": [
+        "Arguments and keyword values must support hashing when the resulting key is hashed; this function does not validate them.",
+        "Key tests are indexed but their contents are not supplied; no test results establish behavior."
+      ],
+      "explanation_refs": [
+        "433ccf3484a06fff99565506",
+        "b60a69108671d9450ad69153",
+        "36472030b8a86c02df5e352a"
+      ]
+    },
+    {
+      "target_id": "f88d86c2f0d64cfa",
+      "name": "typedkey type-sensitive key builder",
+      "description": "Extends argument keys with the types of keyword values and positional arguments, enabling type-sensitive memoization keys.",
+      "category": "Data processing",
+      "integration_notes": "The supplied file defines _HashedTuple, its tuple-preserving addition methods, and _kwmark. Extract these supporting definitions with typedkey. Keyword items are sorted before their types are appended; positional types are appended afterward. There is no explicit validation or recursive type inspection. Preserve the supplied license notice.",
+      "limitations": [
+        "Type tags describe immediate argument values, not nested contents.",
+        "Hashability remains a caller assumption. Indexed key tests have no supplied content or execution results."
+      ],
+      "explanation_refs": [
+        "fa394c267c4c21d8459ffc36",
+        "b60a69108671d9450ad69153",
+        "36472030b8a86c02df5e352a"
+      ]
+    },
+    {
+      "target_id": "00e1526ef6b17747",
+      "name": "methodkey receiver-excluding key adapter",
+      "description": "Delegates method arguments to hashkey while excluding the receiver from the generated cache key.",
+      "category": "Data processing",
+      "integration_notes": "The supplied same-file context defines hashkey, _HashedTuple and _kwmark; retain that dependency chain. methodkey immediately returns hashkey(*args, **kwargs), with no receiver validation. Decide whether excluding self matches the intended cache-sharing arrangement. Preserve the supplied license notice.",
+      "limitations": [
+        "Different receivers with identical remaining arguments produce equal keys; shared caches require deliberate handling of that behavior.",
+        "Indexed method/key test contents are absent. The adapter requires supporting key definitions."
+      ],
+      "explanation_refs": [
+        "05a7c4401a3b72130d06ef30",
+        "b60a69108671d9450ad69153",
+        "36472030b8a86c02df5e352a"
+      ]
+    },
+    {
+      "target_id": "a78c6a3d0fdf9376",
+      "name": "Locked function memoization helper",
+      "description": "Looks up cached results under a lock, computes misses outside it, and uses setdefault under the lock to prefer an already-stored result.",
+      "category": "Data processing",
+      "integration_notes": "Supply func, cache, key and a context-manager lock supporting the shown operations. Hits return early. Misses call func outside the lock; insertion ValueError returns the computed value. cache_clear mutates the cache under the lock. Same-file _wrapper selects this helper and applies functools.update_wrapper plus cache metadata; preserve or replace that integration explicitly. Preserve the license notice.",
+      "limitations": [
+        "Concurrent misses can execute func repeatedly; this helper has no pending-key coordination.",
+        "Only lookup KeyError and insertion ValueError are handled. Cache, key and lock compatibility is unresolved; no supplied test results validate integration."
+      ],
+      "explanation_refs": [
+        "a86ca447487ee51b266a975e",
+        "a2aba7e0112abdc916584682",
+        "36472030b8a86c02df5e352a"
+      ]
+    },
+    {
+      "target_id": "416f61b888c36a2e",
+      "name": "Unlocked memoization with counters",
+      "description": "Caches function results and exposes hit/miss reporting and cache clearing through attributes on the returned wrapper.",
+      "category": "Data processing",
+      "integration_notes": "Supply func, cache, key and an info(hits, misses) callback. Hits increment the counter and return early; lookup KeyError increments misses before calling func. Storage ValueError is ignored. cache_clear clears the mapping before resetting counters. Same-file _wrapper selects this helper and supplies functools metadata and cache attributes; extraction must account for that surrounding integration. Preserve the license notice.",
+      "limitations": [
+        "Misses include calls whose function subsequently raises. Counters and cache operations have no synchronization here.",
+        "The helper does not validate callback or mapping contracts. No test contents or results are supplied for this target."
+      ],
+      "explanation_refs": [
+        "2b7e8cddc2dd4e9f43ec4331",
+        "a2aba7e0112abdc916584682",
+        "36472030b8a86c02df5e352a"
+      ]
+    },
+    {
+      "target_id": "643d11dc643f94e7",
+      "name": "FIFOCache ordering implementation",
+      "description": "Tracks insertion order with OrderedDict and removes the earliest tracked entry. Replacing an existing key moves it to the end.",
+      "category": "Storage",
+      "integration_notes": "The declaration calls Cache initialization, mutation, clearing and inherited pop, and uses collections.OrderedDict. Base mutation precedes order updates; empty popitem raises KeyError. Supplied FIFO tests assert eviction, size-based rejection and update ordering, but were not run. No same_file_reference is provided: Cache, imports and other enclosing definitions may be absent. Obtain and inspect them before extraction. Preserve the license notice.",
+      "limitations": [
+        "Cache base-class content is absent; validation, size accounting and inherited operations cannot be assessed from these references.",
+        "The supplied tests depend on an unsupplied CacheTestMixin. Their assertions are source evidence, not passing results."
+      ],
+      "explanation_refs": [
+        "6fef0729459a9bdae1b65074",
+        "ddd7a53020551bf62f645d4e",
+        "36472030b8a86c02df5e352a"
+      ]
+    }
+  ]
+}

@@ -2768,7 +2768,7 @@
                 "minimum": 0
               },
               "selection_policy": {
-                "const": "repo-salvage/coverage-v1"
+                "enum": ["repo-salvage/coverage-v1", "repo-salvage/coverage-v2"]
               },
               "contexts": {
                 "type": "array",

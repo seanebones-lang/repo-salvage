@@ -1,0 +1,210 @@
+{
+  "format": "repo-salvage/search-v2",
+  "catalog_revision": "40254afd0314c445a6fd14456cbc079ba257f878e8e7aa5ec15fb625a4a10c25",
+  "query": {
+    "q": "",
+    "language": "",
+    "license": "",
+    "category": "",
+    "sort": "latest",
+    "declaration": "",
+    "imports": ""
+  },
+  "pagination": {
+    "page": 1,
+    "limit": 50,
+    "total": 6,
+    "next": null
+  },
+  "facets": {
+    "languages": [
+      "Python"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "categories": [
+      "Data processing",
+      "Storage"
+    ]
+  },
+  "results": [
+    {
+      "listing_id": 1001,
+      "part_id": "00e1526ef6b17747",
+      "name": "methodkey receiver-excluding key adapter",
+      "description": "Delegates method arguments to hashkey while excluding the receiver from the generated cache key.",
+      "category": "Data processing",
+      "repository": "tkem/cachetools",
+      "source_commit": "9976f1a8076631560f49c5b0dfda7e4d00ee0a4a",
+      "primary_path": "src/cachetools/keys.py",
+      "languages": [
+        "Python"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "complete",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/1001/00e1526ef6b17747",
+        "page": "/listing/1001/parts/00e1526ef6b17747"
+      }
+    },
+    {
+      "listing_id": 1001,
+      "part_id": "416f61b888c36a2e",
+      "name": "Unlocked memoization with counters",
+      "description": "Caches function results and exposes hit/miss reporting and cache clearing through attributes on the returned wrapper.",
+      "category": "Data processing",
+      "repository": "tkem/cachetools",
+      "source_commit": "9976f1a8076631560f49c5b0dfda7e4d00ee0a4a",
+      "primary_path": "src/cachetools/_cached.py",
+      "languages": [
+        "Python"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "functools",
+        "warnings"
+      ],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "complete",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/1001/416f61b888c36a2e",
+        "page": "/listing/1001/parts/416f61b888c36a2e"
+      }
+    },
+    {
+      "listing_id": 1001,
+      "part_id": "643d11dc643f94e7",
+      "name": "FIFOCache ordering implementation",
+      "description": "Tracks insertion order with OrderedDict and removes the earliest tracked entry. Replacing an existing key moves it to the end.",
+      "category": "Storage",
+      "repository": "tkem/cachetools",
+      "source_commit": "9976f1a8076631560f49c5b0dfda7e4d00ee0a4a",
+      "primary_path": "src/cachetools/__init__.py",
+      "languages": [
+        "Python"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "collections",
+        "collections.abc",
+        "functools",
+        "heapq",
+        "random",
+        "time",
+        "warnings",
+        "weakref"
+      ],
+      "evidence": {
+        "primary_file_coverage": "declaration_only",
+        "declaration_coverage": "complete",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/1001/643d11dc643f94e7",
+        "page": "/listing/1001/parts/643d11dc643f94e7"
+      }
+    },
+    {
+      "listing_id": 1001,
+      "part_id": "a78c6a3d0fdf9376",
+      "name": "Locked function memoization helper",
+      "description": "Looks up cached results under a lock, computes misses outside it, and uses setdefault under the lock to prefer an already-stored result.",
+      "category": "Data processing",
+      "repository": "tkem/cachetools",
+      "source_commit": "9976f1a8076631560f49c5b0dfda7e4d00ee0a4a",
+      "primary_path": "src/cachetools/_cached.py",
+      "languages": [
+        "Python"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [
+        "functools",
+        "warnings"
+      ],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "complete",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/1001/a78c6a3d0fdf9376",
+        "page": "/listing/1001/parts/a78c6a3d0fdf9376"
+      }
+    },
+    {
+      "listing_id": 1001,
+      "part_id": "f88d86c2f0d64cfa",
+      "name": "typedkey type-sensitive key builder",
+      "description": "Extends argument keys with the types of keyword values and positional arguments, enabling type-sensitive memoization keys.",
+      "category": "Data processing",
+      "repository": "tkem/cachetools",
+      "source_commit": "9976f1a8076631560f49c5b0dfda7e4d00ee0a4a",
+      "primary_path": "src/cachetools/keys.py",
+      "languages": [
+        "Python"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "complete",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/1001/f88d86c2f0d64cfa",
+        "page": "/listing/1001/parts/f88d86c2f0d64cfa"
+      }
+    },
+    {
+      "listing_id": 1001,
+      "part_id": "fdbd22fda46cbec6",
+      "name": "hashkey argument-key builder",
+      "description": "Builds a tuple-based cache key from positional arguments and sorted keyword items, using a sentinel to separate the two.",
+      "category": "Data processing",
+      "repository": "tkem/cachetools",
+      "source_commit": "9976f1a8076631560f49c5b0dfda7e4d00ee0a4a",
+      "primary_path": "src/cachetools/keys.py",
+      "languages": [
+        "Python"
+      ],
+      "repository_license": "MIT",
+      "observed_dependencies": [],
+      "evidence": {
+        "primary_file_coverage": "complete",
+        "declaration_coverage": "complete",
+        "component_license_status": "not_audited",
+        "dependency_graph": "static_module_imports",
+        "owner_reviewed_at": null,
+        "independently_tested": false
+      },
+      "links": {
+        "inspect": "/api/v2/parts/1001/fdbd22fda46cbec6",
+        "page": "/listing/1001/parts/fdbd22fda46cbec6"
+      }
+    }
+  ]
+}

@@ -4,11 +4,44 @@ import { Client } from "@modelcontextprotocol/client";
 import { StdioClientTransport } from "@modelcontextprotocol/client/stdio";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
+import http from "node:http";
 import {
   focusCases,
   serveFocusFixture,
 } from "../../../examples/focused-evidence/fixture-server.mjs";
 const suite = await focusCases();
+test("focused stdio accepts the new coverage policy alongside archived packets", async () => {
+  const c = structuredClone(suite.cases[0]);
+  c.response.packet.selection_policy = "repo-salvage/coverage-v2";
+  const server = http.createServer((_request, response) => {
+    response.setHeader("Content-Type", "application/json");
+    response.end(JSON.stringify(c.response));
+  });
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const client = new Client({ name: "policy-consumer", version: "1.0.0" });
+  try {
+    await client.connect(
+      new StdioClientTransport({
+        command: process.execPath,
+        args: [
+          fileURLToPath(new URL("../dist/index.js", import.meta.url)),
+          "--base",
+          `http://127.0.0.1:${server.address().port}`,
+        ],
+        stderr: "pipe",
+      }),
+    );
+    const result = await client.callTool({
+      name: "repo_salvage_focus_evidence",
+      arguments: c.parameters,
+    });
+    assert.ok(!result.isError, JSON.stringify(result));
+    assert.deepEqual(result.structuredContent, c.response);
+  } finally {
+    await client.close();
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
 for (const c of suite.cases)
   test(`focused stdio replay: ${c.probe.symbol} in ${c.probe.repo}`, async () => {
     const fixture = await serveFocusFixture();

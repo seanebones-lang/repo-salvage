@@ -1,0 +1,14 @@
+{
+  "format": "repo-salvage/full-chain-generated-seal-v1",
+  "frozenAt": "2026-10-09T10:19:35.631Z",
+  "inputSealSha256": "e688b08cfb054a9d7a45306d0ffda4b02e6eb26178cf655cc9a7e727157c8a91",
+  "files": {
+    "analysis-response.json": "5528e4520044f6ecac70e33afd3be17f3e7f779f602ac45b9045269b5b2429ba",
+    "summary.json": "7d2c2e41e60a288b17da3e0c02f873f969b02f8c05d5eabc643690ae71dc4b90",
+    "analysis-results.json": "9d2b3805cd65562a11b0aebbcc7ad6014bbc74217d4f004b20b55b403de08505",
+    "listings.json": "ab913a498185ce693c58cccb3c3b7c9096f6058ffb3d0302bd97e6c72f853274",
+    "adapt.mjs": "2b2a03845b90206e95ea7451f59e924bde19094ccd8baa303c5de4d384a3f417",
+    "catalog.json": "824fbd6a12b4be48a372083b192f0bede3c8d32f53d3901314c34a07d929af08"
+  },
+  "archiveSha256": "69b48bafe37e503b2afbdbed7756756f2a5ab718c540f3cd4938382e0d5429e4"
+}

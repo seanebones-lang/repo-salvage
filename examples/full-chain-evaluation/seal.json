@@ -1,0 +1,23 @@
+{
+  "format": "repo-salvage/full-chain-input-seal-v1",
+  "frozenAt": "2026-10-09T10:15:21.360Z",
+  "scope": "One fresh public MIT Python repository, one implementing reviewer, count-bound LRU consumer. Not model-training holdout, independent review or whole-repository recall.",
+  "files": {
+    "corpus.json": "cbe3f3c4c9f42043fd468148b34b48d2b92137df7b28dc1d3fa3f3c3efb874c3",
+    "request.json": "eafb8ded2f695ac690660cb0dbe9092a5c491d3fb44e0c7f446877f7b71b38b7",
+    "controls.json": "b53162a3259f208f5de5f9b97de7028d6d4a0787211fa69016aedb285e2cb154",
+    "coverage.json": "7c239070c40210b27e1d1131c8b596879e38716e301ddccc68e52e374b7d4708",
+    "task.json": "5538a0300105741d512be0e3f8c98b93824bb3a3f2bdf15fbac91afb8e64555b",
+    "run.mjs": "4b644fd05de9be5a6484a69eb77ba434f12d350871f4ff2a520b22af06b4849b",
+    "suite.mjs": "30df396840ad1c15b8c52857999b84de0de91240a623d411ad96fa69b7d535de",
+    "serve.mjs": "227ba5e2c12846acacfdb92c92904cd86c43e3c7f6b00edd18d633ceb2ddfd6e",
+    "../cache-consumer/test_cache.py": "f27100489f76ee003202c79a99cb2cb056f41f2636be491b3406b8482029814d",
+    "../../src/lib/source-index.ts": "bc9966135343b49f5b8e0cfbc2e9d229f27b10867d276104713a7a807d9636f0",
+    "../../src/lib/source-selection.ts": "cb06141ac6a0cd62421fa58e452438953a2da8d71a6aa04ffebb6191243b2259",
+    "../../src/lib/summarize.ts": "225039eefecaa2b82dbc196f04da42bb978ce7b1356e6569db3ab2724af0cf1a",
+    "../analysis-evaluation/trace.mjs": "57ad36ba43e560902b43fbff5e6b011ccdea535e855f75bce18f5ac6dad83b1e",
+    "../competing-discovery-evaluation/score.mjs": "e0e5a6eaee932991a4b6ac9953bc2296654959811b25d4c226536f7888bcec59",
+    "../discovery-evaluation/trace.mjs": "12362b4f77cb5fb10ac4658a95d4df570a1a39adc0d648937b46a9cf14edfb51"
+  },
+  "archiveSha256": "6e4e78b216e68687d19701b22c541bd6ad9da886f06886ed2fc11fb68ff316d1"
+}

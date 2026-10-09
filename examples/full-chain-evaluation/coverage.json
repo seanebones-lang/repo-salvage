@@ -1,0 +1,202 @@
+{
+  "indexed": 144,
+  "before": [
+    {
+      "path": "docs/conf.py",
+      "symbol": "<module>"
+    },
+    {
+      "path": "src/cachetools/_cachedmethod.py",
+      "symbol": "_none"
+    },
+    {
+      "path": "src/cachetools/keys.py",
+      "symbol": "methodkey"
+    },
+    {
+      "path": "src/cachetools/_cached.py",
+      "symbol": "_uncached"
+    },
+    {
+      "path": "src/cachetools/func.py",
+      "symbol": "_UnboundTTLCache"
+    },
+    {
+      "path": "src/cachetools/__init__.py",
+      "symbol": "_DefaultSize"
+    },
+    {
+      "path": "src/cachetools/_cachedmethod.py",
+      "symbol": "_DeprecatedDescriptorBase"
+    },
+    {
+      "path": "src/cachetools/keys.py",
+      "symbol": "typedmethodkey"
+    },
+    {
+      "path": "src/cachetools/_cached.py",
+      "symbol": "_uncached_info"
+    },
+    {
+      "path": "src/cachetools/func.py",
+      "symbol": "lru_cache"
+    },
+    {
+      "path": "src/cachetools/__init__.py",
+      "symbol": "cachedmethod"
+    },
+    {
+      "path": "src/cachetools/_cachedmethod.py",
+      "symbol": "_unlocked"
+    },
+    {
+      "path": "src/cachetools/keys.py",
+      "symbol": "hashkey"
+    },
+    {
+      "path": "src/cachetools/_cached.py",
+      "symbol": "_unlocked"
+    },
+    {
+      "path": "src/cachetools/func.py",
+      "symbol": "lfu_cache"
+    },
+    {
+      "path": "src/cachetools/__init__.py",
+      "symbol": "cached"
+    },
+    {
+      "path": "src/cachetools/_cachedmethod.py",
+      "symbol": "_WrapperBase"
+    },
+    {
+      "path": "src/cachetools/keys.py",
+      "symbol": "typedkey"
+    },
+    {
+      "path": "src/cachetools/_cached.py",
+      "symbol": "_unlocked_info"
+    },
+    {
+      "path": "src/cachetools/func.py",
+      "symbol": "fifo_cache"
+    },
+    {
+      "path": "src/cachetools/__init__.py",
+      "symbol": "FIFOCache"
+    },
+    {
+      "path": "src/cachetools/_cachedmethod.py",
+      "symbol": "_unlocked_info"
+    },
+    {
+      "path": "src/cachetools/keys.py",
+      "symbol": "_HashedTuple"
+    },
+    {
+      "path": "src/cachetools/_cached.py",
+      "symbol": "_locked"
+    }
+  ],
+  "after": [
+    {
+      "path": "docs/conf.py",
+      "symbol": "<module>"
+    },
+    {
+      "path": "src/cachetools/_cachedmethod.py",
+      "symbol": "_none"
+    },
+    {
+      "path": "src/cachetools/keys.py",
+      "symbol": "methodkey"
+    },
+    {
+      "path": "src/cachetools/_cached.py",
+      "symbol": "_uncached"
+    },
+    {
+      "path": "src/cachetools/func.py",
+      "symbol": "lru_cache"
+    },
+    {
+      "path": "src/cachetools/__init__.py",
+      "symbol": "cachedmethod"
+    },
+    {
+      "path": "src/cachetools/_cachedmethod.py",
+      "symbol": "_DeprecatedDescriptorBase"
+    },
+    {
+      "path": "src/cachetools/keys.py",
+      "symbol": "typedmethodkey"
+    },
+    {
+      "path": "src/cachetools/_cached.py",
+      "symbol": "_uncached_info"
+    },
+    {
+      "path": "src/cachetools/func.py",
+      "symbol": "lfu_cache"
+    },
+    {
+      "path": "src/cachetools/__init__.py",
+      "symbol": "cached"
+    },
+    {
+      "path": "src/cachetools/_cachedmethod.py",
+      "symbol": "_unlocked"
+    },
+    {
+      "path": "src/cachetools/keys.py",
+      "symbol": "hashkey"
+    },
+    {
+      "path": "src/cachetools/_cached.py",
+      "symbol": "_unlocked"
+    },
+    {
+      "path": "src/cachetools/func.py",
+      "symbol": "fifo_cache"
+    },
+    {
+      "path": "src/cachetools/__init__.py",
+      "symbol": "FIFOCache"
+    },
+    {
+      "path": "src/cachetools/_cachedmethod.py",
+      "symbol": "_WrapperBase"
+    },
+    {
+      "path": "src/cachetools/keys.py",
+      "symbol": "typedkey"
+    },
+    {
+      "path": "src/cachetools/_cached.py",
+      "symbol": "_unlocked_info"
+    },
+    {
+      "path": "src/cachetools/func.py",
+      "symbol": "rr_cache"
+    },
+    {
+      "path": "src/cachetools/__init__.py",
+      "symbol": "LRUCache"
+    },
+    {
+      "path": "src/cachetools/_cachedmethod.py",
+      "symbol": "_unlocked_info"
+    },
+    {
+      "path": "src/cachetools/keys.py",
+      "symbol": "_HashedTuple"
+    },
+    {
+      "path": "src/cachetools/_cached.py",
+      "symbol": "_locked"
+    }
+  ],
+  "beforeLru": false,
+  "afterLru": true,
+  "sameFileContext": false
+}
