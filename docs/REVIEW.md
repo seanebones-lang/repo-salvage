@@ -56,10 +56,35 @@ not establish that no provider work or billing occurred.
 
 ## Remaining verification gates
 
-No GitHub OAuth app credentials or Anthropic API key are configured in this workspace.
-A real callback, encrypted session, authenticated owner workflow and successful paid analysis
-must be exercised together before claiming the contribution flow is live. Configuration and
-mocked success do not establish account access, provider availability or summary quality.
+OAuth setup preparation on 2026-10-08 added explicit provider-token expiry handling. GitHub's
+`expires_at` is retained in the encrypted JWT; the session ends with a one-minute request
+margin and requires sign-in again. Invalid declared expiries fail closed, refresh tokens
+are not retained, and legacy non-expiring apps remain supported. Both the Auth.js callback
+and the server-side token reader enforce this boundary. Real encrypted-cookie tests exercise
+the Auth.js session endpoint, verifying identity-only output and expired-cookie deletion.
+All 100 app tests and three independent consumer tests pass, along with type checking,
+formatting, a production build and a dependency audit with zero reported vulnerabilities.
+
+Real GitHub OAuth was verified on the local production build at `http://127.0.0.1:3187`.
+The registered app uses one exact callback, with token expiry enabled, wildcard redirects
+disabled and device flow disabled. The initial live callback exposed Next.js normalizing
+loopback IP addresses to `localhost` during the token exchange. Disabling URL normalization
+preserves the registered origin; regression tests cover the actual NextAuth handlers with
+IP-based local, localhost and HTTPS origins, including an untrusted forwarded-host header.
+
+The successful callback authenticated `seanebones-lang` and loaded 27 owned, non-fork public
+repositories. Direct GitHub identity verification confirmed the numeric user ID and exactly
+`read:user` scope. The real session cookie decrypted correctly, was HTTP-only with SameSite
+Lax, and retained the provider's eight-hour expiry without a refresh token. The public session
+endpoint returned identity without provider tokens. Sign-out deleted the session cookie and
+restored the sign-in gate; repeat sign-in returned to the authenticated dashboard. Credentials
+are configured only in the ignored, owner-readable local environment file. The cookie is not
+Secure on this HTTP local preview; HTTPS production must use the secure cookie.
+
+No Anthropic API key is configured in this workspace. A real authenticated contribution,
+successful paid analysis and owner review must still be exercised together before claiming
+the contribution flow is live. OAuth success does not establish provider availability or
+summary quality. No live listing or paid analysis was created during OAuth verification.
 
 The Docker daemon is unavailable. The supplied Dockerfile has not been executed in this
 review. Validate image build, unprivileged runtime, a mounted persistent database and restart

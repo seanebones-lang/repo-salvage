@@ -56,7 +56,13 @@ Public browsing and worked examples do not require provider or GitHub credential
 For project sharing, configure:
 
 - `AUTH_GITHUB_ID` / `AUTH_GITHUB_SECRET`: a GitHub OAuth app with callback
-  `http://localhost:3000/api/auth/callback/github`.
+  `http://localhost:3000/api/auth/callback/github`. Keep user access token expiry enabled,
+  wildcard redirects disabled and device flow disabled. For another local port or host, set
+  `AUTH_URL` to that exact origin and register `${AUTH_URL}/api/auth/callback/github`.
+  The app requests only `read:user`. GitHub tokens stay in an encrypted, HTTP-only session
+  cookie and are read only on the server. Expiring tokens require a new sign-in shortly
+  before their eight-hour lifetime ends; automatic refresh is not implemented and refresh
+  tokens are not retained. Legacy apps without token expiry are also supported.
 - `ANTHROPIC_API_KEY`: the existing Anthropic analysis provider.
 - Optional `SUMMARY_MODEL`: defaults to the model configured by the original project,
   `claude-sonnet-5-5`. Confirm model availability for your account before a live rollout.
