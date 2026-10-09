@@ -5,6 +5,13 @@ hosting service, domain, production OAuth callback and production-provider reque
 have not been provisioned or validated. Costs below were checked against official
 provider pages on this date and are estimates before tax and future price changes.
 
+The 2026-10-09 [analysis engine](ANALYSIS-ENGINE.md) uses bounded complete-source
+indexing and a replaceable provider interface. Anthropic remains the installed
+live adapter; a Codex runtime or hosted OpenAI adapter has not been provisioned.
+Existing pilot listings are not silently re-analyzed. The additive history table
+is included in ordinary SQLite backups; preserve an online backup before upgrading.
+Provider choice and live validation of the new prompt remain pre-hosting work.
+
 ## Recommended first deployment
 
 Use one Docker service on Railway with one persistent volume at `/app/data`.

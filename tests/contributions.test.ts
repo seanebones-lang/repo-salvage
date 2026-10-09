@@ -31,7 +31,7 @@ vi.mock("@/lib/github", () => ({
   isPublicRepoFresh: mocks.fresh,
   getOwnedPublicRepo: mocks.owned,
   resolveSourceCommit: mocks.resolve,
-  snapshotRepo: mocks.snapshot,
+  indexedSnapshotRepo: mocks.snapshot,
   lastHumanCommit: mocks.last,
 }));
 vi.mock("@/lib/summarize", () => ({ summarizeRepo: mocks.summarize }));

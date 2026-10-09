@@ -99,8 +99,8 @@ export default async function ListingPage({
           ))}
         </ul>
         <p>
-          AI-generated from a source sample. Inspect source licenses and test
-          your adaptation before relying on it.
+          Model interpretation of inspected source. Inspect source licenses and
+          test your adaptation before relying on it.
         </p>
       </details>
       <div className="repository-actions">

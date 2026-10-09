@@ -41,6 +41,13 @@ The API shares an installation-wide read allowance (default 30 per minute).
 HTTP 429 means wait for the returned Retry-After interval before retrying; the
 client does not retry automatically.
 
+Public commands default to API version 1 for compatibility. Add `--api-version 2`
+to search, inspect or fetch to retain indexed declarations, static-import context
+and explanation references. Search flags `--declaration complete` and
+`--imports resolved` select version 2 automatically. A complete declaration was
+supplied to analysis; resolved imports describe static module observations, not
+proof that the part runs independently. Earlier listings keep their earlier evidence.
+
 `REPO_SALVAGE_URL` can supply the origin instead of `--base`. HTTPS is
 required except on loopback HTTP origins. Redirects and credential-bearing base
 URLs are rejected. `--help` lists every supported option.

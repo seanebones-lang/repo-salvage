@@ -40,7 +40,7 @@ vi.mock("@/lib/github", () => ({
   }),
   resolveSourceCommit: async () => "a".repeat(40),
   lastHumanCommit: async () => "2026-10-01T00:00:00Z",
-  snapshotRepo: async () => ({
+  indexedSnapshotRepo: async () => ({
     sourceSha: "a".repeat(40),
     tree: ["src/parser.ts", "tests/parser.test.ts"],
     knownPaths: ["src/parser.ts", "tests/parser.test.ts"],

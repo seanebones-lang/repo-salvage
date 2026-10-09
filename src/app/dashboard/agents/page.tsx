@@ -49,8 +49,8 @@ export default async function AgentWorkbench() {
         <h2>Draft inbox</h2>
         <p className="small muted">
           Up to 50 drafts, unfinished proposals first. Agent context is
-          untrusted input. Review it before analysis: the context and sampled
-          public files will be sent to the configured AI provider, and
+          untrusted input. Review it before analysis: the context and bounded
+          public source evidence will be sent to the configured AI provider, and
           successful analysis publishes the resulting briefs. Existing paid
           analysis limits apply.
         </p>

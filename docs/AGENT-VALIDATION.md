@@ -295,3 +295,46 @@ archive hash in [HOSTING.md](HOSTING.md); earlier hashes remain dated evidence.
 MCP and CLI packages keep their existing identities. Public hosting, production
 OAuth/provider behavior and load remain separate gates; see the hosting runbook
 and latest [review milestone](REVIEW.md).
+
+## Indexed evidence contract — 2026-10-09
+
+API v2 and MCP 0.2.0 carry source-target identity, complete JS/TS declaration
+locators, explanation reference IDs and static module-import observations.
+API v1 retains its previous strict schema, including conservative legacy
+coverage vocabulary. Indexed responses are validated against both contracts in
+the application tests. CLI defaults to v1; `--api-version 2` preserves indexed
+evidence on inspection/fetch, and declaration/import search filters select v2.
+The frozen catalog evaluation keeps its existing source fixtures and expected
+answers; its fixture transport additionally serves the v2 envelope. No new
+model-agent trial is claimed by protocol replay.
+
+The updated offline suite has **227 checks**, including owner-transfer history
+isolation, private history-page authorization, invalid-citation preservation and
+no-candidate publication through real SQLite with mocked GitHub/provider transport.
+Ten authored source-coverage cases supply seven expected complete declarations
+versus one under the former sample policy, with four authored fresh consumers.
+These numbers do not measure model quality or real-catalog extraction success.
+The source index reads and parses code without running or installing it.
+See [the engine record](ANALYSIS-ENGINE.md) for recorded limits and open semantic
+evaluation work. Existing live pilot counts and historical hashes remain dated
+records, rather than evidence for the new analyzer's live provider behavior.
+
+A fresh consumer workspace installed the served MCP 0.2.0 and CLI 0.4.0 archives
+with install scripts disabled. CLI v2 search/inspection/fetch, default v1
+inspection and automatic evidence-filter version selection passed. The installed
+MCP process passed real SDK search, inspection, verified source-window retrieval
+and evidence-filter calls against the current local production runtime and live
+GitHub. CLI retained two source/notice files. This exercises the new adapters
+against existing legacy catalog records, without claiming a new model evaluation
+or indexed live publication. Existing catalog rows and counts are preserved.
+
+Installed archive SHA-256 values:
+
+- MCP: `f12933ef90387d2bc6e4a44da49016d5c961a6824ae07f372c583a2d416e6161`
+- CLI: `1d797726f3c11a139b84878c9cd83802c7a3a22ff671b6827153887879f0e06c`
+
+The private history link also opens correctly in the authenticated local browser;
+legacy listings show their unarchived state until review or re-analysis. Automated
+tests check unauthorized access and snapshot preservation. No real review or
+paid analysis was triggered to populate the page. Raw consumer proof stays in
+ignored `artifacts/indexed-installed-proof.json`.

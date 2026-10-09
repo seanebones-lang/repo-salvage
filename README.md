@@ -12,10 +12,12 @@ dependencies, integration guidance, limitations, and the evidence behind the rec
    integration guidance, limitations and related test paths. Source links are pinned to the
    analyzed commit. Download or copy the JSON reuse brief.
 3. Authors sign in with GitHub (`read:user`), choose an owned, non-fork public repository with
-   a recognized SPDX license, and add optional context. A bounded source sample is analyzed
-   through the existing Anthropic provider integration.
+   a recognized SPDX license, and add optional context. Complete bounded source files are
+   indexed before a model interprets the evidence through a replaceable provider interface.
+   The installed live adapter currently uses Anthropic. A valid analysis can find no suitable parts.
 4. Authors review individual briefs. Reviews apply only to that source commit and analysis
-   timestamp. Re-analysis replaces briefs and clears reviews. Owners can remove stored listings
+   timestamp. Re-analysis replaces briefs and clears reviews; private history preserves earlier
+   analysis and review snapshots. Owners can remove stored listings and their history
    even if GitHub inventory fails or the repository becomes private, deleted or transferred.
 5. Reports go to `/moderation`, restricted to numeric GitHub IDs in `MODERATOR_GITHUB_IDS`.
    Operators can hide or restore a listing and resolve reports. Hidden reports remain unresolved
@@ -28,6 +30,11 @@ dependencies, integration guidance, limitations, and the evidence behind the rec
 - **Source sampled:** the primary file's content was supplied to the analysis. Supporting and
   test paths must exist in the complete source tree. This does not establish functional correctness,
   a complete dependency graph, passing tests or safe extraction.
+- **Complete declaration inspected:** a complete exported JS/TS implementation was parsed
+  and supplied as a referenced source block. Static imports, source hashes and target IDs
+  are attached by the server. Generated explanations remain model interpretations;
+  module imports do not establish exact extraction dependencies. Other languages currently
+  receive complete-file targets with explicit import-inspection gaps.
 - **Owner reviewed:** the author confirmed the brief for this specific analysis. It is not
   independent test evidence. Model output cannot set this status.
 - **Example adaptation tested:** the included standalone parser and Python assignment examples have executable
@@ -94,6 +101,9 @@ See [the first pilot](docs/PILOT.md) and [expanded matrix](docs/PILOT-MATRIX.md)
 usage, adaptations and evidence limits. The [agent interface](docs/AGENT-INTERFACE.md)
 now supports JSON search, pinned-source inspection and a standalone consumer CLI.
 Private agent contribution drafts and a local MCP adapter are implemented.
+The [analysis engine](docs/ANALYSIS-ENGINE.md) now records source evidence, explicit
+inspection limits and private revision history. Its offline coverage benchmark is
+separate from the earlier live pilot and does not establish model quality.
 A native Codex CLI pilot completed discovery-to-adaptation, and ten isolated sessions
 answered ten frozen catalog questions exactly. See [the host pilot](examples/agent-host-pilot/README.md)
 for provenance, account-usage scope and reproducible test configuration.
@@ -105,8 +115,9 @@ for the OpenAPI 3.1 contract. Public retrieval needs no credentials or paid anal
 The API returns structured evidence and error states:
 
 ```sh
-curl 'http://localhost:3000/api/v1/parts?q=circuit%20breaker&language=TypeScript'
+curl 'http://localhost:3000/api/v2/parts?q=circuit%20breaker&language=TypeScript'
 # Follow a result's links.inspect for pinned files, hashes and notice paths.
+# Optional v2 filters: declaration=complete and imports=resolved.
 ```
 
 Download `/repo-salvage-cli.tgz` from a trusted running instance and install it in
@@ -129,6 +140,9 @@ includes Retry-After. `AGENT_READ_LIMIT` defaults to 30 shared requests per minu
 [independent consumer example](examples/agent-consumer/README.md).
 See [agent validation](docs/AGENT-VALIDATION.md) for the installed-package test,
 source hashes, API checks and remaining boundaries.
+API v1 retains its prior strict response contract. Version 2 adds indexed evidence;
+pass `--api-version 2` to CLI inspection/fetch to retain those facts. The updated
+MCP adapter uses version 2. Evidence filters select version 2 for CLI search.
 
 ```sh
 npm run dev
@@ -218,11 +232,13 @@ See [GitHub's public OAuth app rate limits](https://docs.github.com/en/rest/usin
 
 ## Current limits
 
-- AI guidance is derived from at most 14 selected code files, four manifests and a README,
-  with character bounds; it can miss dependencies or make incorrect recommendations. Raw
-  downloads have ten-second timeouts and a streamed 24 KB prefix limit. Each supplied file is
-  capped at 6,000 characters within a 70,000-character total. Briefs automatically disclose
-  when their primary file was truncated.
+- New analyses inspect at most 64 files, 128 KB per file and 2 MB per repository,
+  from complete pinned trees of at most 10,000 entries. Downloads have ten-second
+  timeouts. Up to 24 complete candidate blocks fit within a 70,000-character evidence
+  allowance; omissions are recorded. JS/TS exported declarations are parsed; other
+  languages have file-level inspection. Static imports, dynamic dependencies, aliases
+  and same-file helpers still need consumer inspection. Existing pilot listings retain
+  their original sampling evidence until deliberately analyzed again.
 - The app does not execute untrusted repository code or automatically certify extraction.
 - Live GitHub OAuth and a real analysis request require operator credentials and separate
   end-to-end validation. A green build or database health response does not establish either.

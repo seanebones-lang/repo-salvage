@@ -12,7 +12,11 @@ export const CATEGORIES = [
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 
-export function componentId(piece: Pick<ReusablePiece, "path" | "name">) {
+export function componentId(
+  piece: Pick<ReusablePiece, "path" | "name" | "target_id">,
+) {
+  if (piece.target_id && /^[a-f0-9]{16}$/.test(piece.target_id))
+    return piece.target_id;
   return createHash("sha256")
     .update(JSON.stringify([piece.path, piece.name]))
     .digest("hex")
@@ -41,6 +45,8 @@ export type ComponentFilters = {
   category?: string;
   sort?: string;
   page?: string;
+  declaration?: string;
+  imports?: string;
 };
 export function filterComponents(
   entries: ComponentEntry[],
@@ -75,7 +81,10 @@ export function filterComponents(
         listing.summary.languages.includes(filters.language) ||
         listing.language === filters.language) &&
       (!filters.license || listing.license === filters.license) &&
-      (!filters.category || (piece.category ?? "Other") === filters.category)
+      (!filters.category || (piece.category ?? "Other") === filters.category) &&
+      (!filters.declaration || piece.source_target?.kind === "declaration") &&
+      (!filters.imports ||
+        (!!piece.source_target && piece.source_target.unresolved.length === 0))
     );
   });
   return selected.sort((a, b) => {
@@ -143,6 +152,14 @@ export function reuseBrief(listing: Listing, piece: ReusablePiece) {
       test_files: piece.test_paths ?? [],
       analyzed_at: listing.analyzed_at,
       model: listing.summary_model,
+      declaration_coverage:
+        piece.source_target?.kind === "declaration"
+          ? "complete"
+          : "not_verified",
+      source_target: piece.source_target ?? null,
+      explanation_refs: piece.explanation_refs ?? [],
+      source_references: listing.summary.analysis?.index.references ?? [],
+      explanation_status: "model_interpretation",
     },
   };
 }

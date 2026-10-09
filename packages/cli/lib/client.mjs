@@ -112,7 +112,10 @@ async function responseFor(url, transport, options = {}) {
 
 export async function apiJson(base, relative, transport = fetch) {
   base = baseUrl(base);
-  if (!relative.startsWith("/api/v1/parts") || relative.startsWith("//"))
+  if (
+    !/^\/api\/v[12]\/parts(?:[/?]|$)/.test(relative) ||
+    relative.startsWith("//")
+  )
     throw new Error("Invalid API path.");
   const url = new URL(relative, base);
   if (url.origin !== base) throw new Error("Cross-origin API link rejected.");
@@ -120,7 +123,7 @@ export async function apiJson(base, relative, transport = fetch) {
   return JSON.parse((await readBytes(response, MAX_FILE)).toString("utf8"));
 }
 
-export function identity(listing, part) {
+export function identity(listing, part, version = 1) {
   if (
     !/^[1-9]\d*$/.test(String(listing)) ||
     !Number.isSafeInteger(Number(listing)) ||
@@ -129,13 +132,24 @@ export function identity(listing, part) {
     throw new Error(
       "Expected a positive listing ID and a 16-character part ID.",
     );
-  return `/api/v1/parts/${listing}/${part}`;
+  if (![1, 2].includes(version)) throw new Error("API version must be 1 or 2.");
+  return `/api/v${version}/parts/${listing}/${part}`;
 }
 
-export async function inspect(base, listing, part, transport = fetch) {
-  const brief = await apiJson(base, identity(listing, part), transport);
+export async function inspect(
+  base,
+  listing,
+  part,
+  transport = fetch,
+  version = 1,
+) {
+  const brief = await apiJson(
+    base,
+    identity(listing, part, version),
+    transport,
+  );
   if (
-    brief.format !== "repo-salvage/part-v1" ||
+    brief.format !== `repo-salvage/part-v${version}` ||
     brief.listing_id !== Number(listing) ||
     brief.part_id !== part
   )
@@ -143,14 +157,20 @@ export async function inspect(base, listing, part, transport = fetch) {
   return brief;
 }
 
-export async function search(base, params = {}, transport = fetch) {
+export async function search(
+  base,
+  params = {},
+  transport = fetch,
+  version = 1,
+) {
+  if (![1, 2].includes(version)) throw new Error("API version must be 1 or 2.");
   const result = await apiJson(
     base,
-    `/api/v1/parts?${new URLSearchParams(params)}`,
+    `/api/v${version}/parts?${new URLSearchParams(params)}`,
     transport,
   );
   if (
-    result.format !== "repo-salvage/search-v1" ||
+    result.format !== `repo-salvage/search-v${version}` ||
     !Array.isArray(result.results)
   )
     throw new Error("Unexpected search API format.");
@@ -226,9 +246,10 @@ export async function fetchPart({
   includeRelated = false,
   includeTests = false,
   transport = fetch,
+  version = 1,
 }) {
   if (!out) throw new Error("--out must name a new destination directory.");
-  const brief = await inspect(base, listing, part, transport);
+  const brief = await inspect(base, listing, part, transport, version);
   const files = selection(brief, includeRelated, includeTests);
   const destination = path.resolve(out);
   await fs.mkdir(destination, { mode: 0o700 }); // Existing files/directories/symlinks fail here.
@@ -370,6 +391,7 @@ export async function readPartFile({
   offset = 0,
   maxCharacters = 8000,
   transport = fetch,
+  version = 1,
 }) {
   safePath(filePath);
   if (
@@ -381,7 +403,7 @@ export async function readPartFile({
     maxCharacters > 12000
   )
     throw new Error("Invalid text range.");
-  const brief = await inspect(base, listing, part, transport);
+  const brief = await inspect(base, listing, part, transport, version);
   const candidates = selection(brief, true, true);
   const file = candidates.find((entry) => entry.path === filePath);
   if (!file)
