@@ -84,9 +84,12 @@ For project sharing, configure:
 - Optional `MODERATOR_GITHUB_IDS`: comma-separated numeric GitHub user IDs. Empty means no
   moderator has access. Populate before public operation so reports have an operator.
 
-The first authenticated local pilot used Haiku 5.5 for two real analyses and took a recommended
-parser into a separate Node consumer. See [the pilot record](docs/PILOT.md) for token usage,
-cost estimates, extraction adaptations and the limits of this evidence.
+The authenticated local pilot used Haiku 5.5 for nine real analyses across seven public
+repositories, leaving 34 candidate briefs and an estimated provider cost of $0.043581.
+Parser and circuit-breaker extractions passed checks in separate Node consumers.
+See [the first pilot](docs/PILOT.md) and [expanded matrix](docs/PILOT-MATRIX.md) for
+usage, adaptations and evidence limits. The proposed [agent interface](docs/AGENT-INTERFACE.md)
+builds on existing JSON briefs; its search API and MCP adapter are not implemented yet.
 
 ```sh
 npm run dev
