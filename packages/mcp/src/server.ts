@@ -313,8 +313,10 @@ export function createServer({
       async (args) =>
         response(
           schemas.Draft,
-          () =>
-            drafts(
+          () => {
+            if (token && args.note.includes(token))
+              throw new Error("Credentials cannot appear in proposal context");
+            return drafts(
               origin,
               {
                 token,
@@ -326,7 +328,8 @@ export function createServer({
                 key: args.idempotency_key,
               },
               transport,
-            ),
+            );
+          },
           token,
         ),
     );

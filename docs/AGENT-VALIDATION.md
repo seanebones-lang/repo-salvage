@@ -130,7 +130,7 @@ agent publication remained future work; MCP validation follows below. Raw local 
 
 The downloadable local stdio adapter is `@repo-salvage/mcp@0.1.0`, Node.js 22+,
 with pinned official server SDK 2.3.1 and Zod 4.6.5. Its archive SHA-256 is
-`1a1c9658646e5bbeb4e42a77ebc06711aa488505fecf736b4edf820e9f8e9a36`.
+`860ee164e2d6aac4d961df97f098b037e71059609639d65be55b9b116bac093e`.
 The shared CLI client is now 0.3.0; its archive SHA-256 is
 `8d111e3a2c8702baa50f680e257d84fcf58fd8c046e9ce9eca77c3664ee8b91f`.
 Previous hashes above remain evidence of their dated milestones.
@@ -139,7 +139,8 @@ Previous hashes above remain evidence of their dated milestones.
   and 10 frozen evaluation evidence replays. Actual stdio processes negotiate both
   modern and legacy protocol with the official client. Checks cover strict inputs,
   structured output schemas, HTTP/rate/revision errors, bounded malformed/oversized
-  responses, explicit draft enablement, credential reflection, revocation, verified
+  responses, explicit draft enablement, credential reflection, prevention of credential-bearing
+  proposals before HTTP, revocation, verified
   whole-file reads, Unicode paging, hash failures, traversal and clean stdout.
 - A fresh independent workspace installed the served MCP archive with
   `--ignore-scripts` and launched its installed executable through the official

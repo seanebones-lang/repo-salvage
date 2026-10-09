@@ -69,6 +69,7 @@ Public mode is the default, even when a token exists in the environment. To enab
 `repo_salvage_prepare_draft` and `repo_salvage_list_drafts`, explicitly add
 `--enable-drafts` and supply `REPO_SALVAGE_TOKEN` through your host's secret
 environment. Never put credentials in arguments, URLs, notes or committed config.
+The adapter rejects proposal context containing its startup credential before HTTP.
 Obtain a short-lived repository-scoped credential at `/dashboard/agents`.
 
 Preparation requires a numeric repository ID, current default-branch commit SHA,

@@ -287,6 +287,13 @@ test("explicit private draft tools use only the fixed origin and preserve idempo
     note: "Review this source",
     idempotency_key: "proposal-001",
   };
+  const reflectedInput = await call(client, "prepare_draft", {
+    ...proposal,
+    note: `Do not store ${token}`,
+  });
+  assert.equal(failure(reflectedInput).code, "client_error");
+  assert.ok(!JSON.stringify(reflectedInput).includes(token));
+  assert.equal(fixture.requests.length, 0);
   const first = data(await call(client, "prepare_draft", proposal));
   assert.equal(
     data(await call(client, "prepare_draft", proposal)).id,
