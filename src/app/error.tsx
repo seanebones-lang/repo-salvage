@@ -1,12 +1,7 @@
 "use client";
 import Link from "next/link";
 
-export default function ErrorPage({
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export default function ErrorPage() {
   return (
     <div className="empty-state">
       <h1>We couldn’t load this page.</h1>
@@ -15,7 +10,10 @@ export default function ErrorPage({
         source on GitHub.
       </p>
       <div className="form-row">
-        <button onClick={reset} className="button button-primary">
+        <button
+          onClick={() => window.location.reload()}
+          className="button button-primary"
+        >
           Try again
         </button>
         <Link href="/" className="button button-secondary">

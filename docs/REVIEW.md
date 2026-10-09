@@ -18,6 +18,7 @@ reporting, moderation, consumer exports, setup states and local production behav
 | Provider requests stall or retry                                     | SDK defaults could keep work alive for minutes and make repeated calls            | Two-minute timeout and no automatic SDK retries; an expired publication token fails closed                     |
 | OAuth is configured but the analysis provider is absent              | Submission could consume quota before failing                                     | Analysis is disabled and rejected before source requests or quota consumption; removal still works             |
 | More than 200 reports are unresolved                                 | Older reports and restoration controls could become unreachable                   | Stable, indexed pagination reaches the complete unresolved queue                                               |
+| Database access returns after a server-render failure                | Resetting the error boundary could reuse the failed render                        | Retry reloads the page and requests fresh server data                                                          |
 | A listing is missing or a page fails                                 | Default framework recovery                                                        | Branded unavailable-page and retry controls                                                                    |
 
 Removal cancels publication, not a provider request that has already reached the provider.
@@ -42,8 +43,11 @@ not establish that no provider work or billing occurred.
   checks covered home, examples, the component example, field guide, dashboard, health, JSON
   export and archive. Missing listings, exports and unauthorized moderation returned 404.
 - Browser checks covered search submission, component navigation, copy success, setup messaging,
-  unavailable-page recovery and narrow/wide layouts. No browser console errors were observed;
+  unavailable-page recovery and narrow/wide layouts. No browser console errors were observed in healthy-flow checks;
   the checked layouts had no horizontal overflow. This is not a complete accessibility audit.
+- An isolated database failure returned health status 503 and the page recovery view. After
+  restoring database access in the same process, health returned 200 and the revised retry
+  button recovered the actual catalog. The main database was not altered for this fault test.
 - The existing SQLite database was backed up with SQLite's backup API before starting the
   revised runtime. The schema changes are additive.
 - CI uses read-only repository permission, does not retain checkout credentials, pins official
