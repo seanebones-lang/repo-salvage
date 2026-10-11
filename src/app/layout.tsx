@@ -5,6 +5,10 @@ import { signIn, signOut } from "@/auth";
 import { Icon } from "@/components/icon";
 import { isModerator } from "@/lib/moderation";
 
+// Demo mode intentionally skips session reads. Keep runtime configuration out
+// of prerendered pages so a later normal startup cannot inherit demo navigation.
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: {
     default: "Repo Salvage — Good code deserves a second life",

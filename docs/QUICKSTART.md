@@ -76,7 +76,9 @@ not run source code or perform paid analysis.
 For author sign-in, listing analysis and persistent data, stop the demo and
 follow [the README's local setup](../README.md#local-setup) and
 [hosting guide](HOSTING.md). Use the normal `npm run dev` or production/container
-startup with your own configuration. A hosted service requires persistent SQLite
+startup with your own configuration. For production, rebuild under your normal
+configuration before starting; the demo uses the standard `.next` build output.
+A hosted service requires persistent SQLite
 storage, operator configuration and explicit analysis-provider credentials.
 This release is free MIT source and downloadable packages; it is not a hosted
 public catalog or evidence of independent adoption.
