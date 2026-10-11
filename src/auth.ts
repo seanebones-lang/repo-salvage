@@ -19,7 +19,10 @@ function githubTokenIsUsable(token: Record<string, unknown>) {
 
 // Public-profile scope only. Public repo data is readable without extra scopes.
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  providers: [GitHub({ authorization: { params: { scope: "read:user" } } })],
+  providers:
+    process.env.REPO_SALVAGE_DEMO === "1"
+      ? []
+      : [GitHub({ authorization: { params: { scope: "read:user" } } })],
   callbacks: {
     jwt({ token, account, profile }) {
       if (account) {
@@ -51,6 +54,7 @@ export type SalvageSession = {
 
 /** Signed-in user plus their GitHub token, read server-side from the encrypted JWT cookie. */
 export async function getSession(): Promise<SalvageSession> {
+  if (process.env.REPO_SALVAGE_DEMO === "1") return null;
   const s = (await auth()) as
     ({ login?: string; ghId?: number } & object) | null;
   if (!s?.login || !s.ghId) return null;

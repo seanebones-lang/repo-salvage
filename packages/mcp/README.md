@@ -14,6 +14,9 @@ The package is distributed as an archive; it has not been published to npm.
 Runtime dependencies are the pinned official MCP server SDK and Zod. The SDK
 client is a development/test dependency only.
 
+The [v0.2.1 application release](https://github.com/seanebones-lang/repo-salvage/releases/tag/v0.2.1) also provides this archive and SHA-256 checksums.
+See the [local quickstart](https://github.com/seanebones-lang/repo-salvage/blob/v0.2.1/docs/QUICKSTART.md) before configuring an empty catalog.
+
 ## Host configuration
 
 Translate these command, arguments and environment fields into your host's MCP

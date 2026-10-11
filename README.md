@@ -5,12 +5,33 @@ find reusable implementations, inspect exact pinned source, retain discovered li
 and notices, and understand the evidence and gaps before adapting code. Authors can
 nominate public projects and review source-linked component briefs.
 
+## Try it without an account or API key
+
+Use Node.js 22 and the matching source tag:
+
+```sh
+git clone --branch v0.2.1 --depth 1 https://github.com/seanebones-lang/repo-salvage.git
+cd repo-salvage
+npm ci
+npm run demo
+```
+
+Open **http://127.0.0.1:3187/examples**. Inspect the summary-parser brief, download
+its adaptation, and run the included consumer tests in a separate folder.
+The demo binds to loopback, uses a fresh temporary database, and disables sign-in
+and paid analysis. It preserves your normal configuration. The demo catalog starts
+empty; worked examples remain separate from owner-submitted listings.
+
+See [the quickstart](docs/QUICKSTART.md) for the complete path, another port,
+source downloads and CLI/MCP installation. The [v0.2.1 release](https://github.com/seanebones-lang/repo-salvage/releases/tag/v0.2.1)
+contains source, agent packages, example bundles and checksums.
+
 ## Current status
 
 **Working development prototype; usefulness to independent developers and demand remain
 unproven.** The application, public agent API, standalone CLI and local MCP adapter
 are implemented. Local production builds, packaged consumers, CI and container recovery
-checks have been exercised. There is no public hosted launch or npm release.
+checks have been exercised. Checked GitHub downloads are available; there is no public hosted catalog or npm registry release.
 
 The local catalog contains seven author-owned public repositories from nine recorded
 analysis runs. These are our controlled pilot, not external adoption. Authored agent trials

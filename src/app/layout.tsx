@@ -20,6 +20,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getSession();
+  const demo = process.env.REPO_SALVAGE_DEMO === "1";
   return (
     <html lang="en">
       <body>
@@ -40,7 +41,14 @@ export default async function RootLayout({
             <nav aria-label="Main navigation">
               <Link href="/#catalog">The catalog</Link>
               <Link href="/how-it-works">How it works</Link>
-              {session ? (
+              {demo ? (
+                <Link
+                  className="button button-dark button-small"
+                  href="/examples"
+                >
+                  Worked examples <Icon name="arrow" size={15} />
+                </Link>
+              ) : session ? (
                 <>
                   <Link href="/dashboard">My projects</Link>
                   {isModerator(session.ghId) && (
@@ -79,7 +87,16 @@ export default async function RootLayout({
               )}
             </nav>
           </header>
-          <main id="main">{children}</main>
+          <main id="main">
+            {demo && (
+              <p className="notice">
+                Local demo · Worked examples are separate from the empty
+                catalog. Sign-in and paid analysis are disabled. Demo data is
+                temporary.
+              </p>
+            )}
+            {children}
+          </main>
           <footer className="site-footer">
             <div>
               <Link href="/" className="brand footer-brand">
