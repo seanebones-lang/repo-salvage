@@ -5,6 +5,9 @@ Search the catalog, inspect a part, and fetch selected source with its notices
 and a provenance manifest. No account, API credential or paid model request is
 needed for retrieval. This package has not been published to the npm registry.
 
+The [v0.2.1 application release](https://github.com/seanebones-lang/repo-salvage/releases/tag/v0.2.1) also provides this archive and SHA-256 checksums.
+See the [local quickstart](https://github.com/seanebones-lang/repo-salvage/blob/v0.2.1/docs/QUICKSTART.md) before configuring an empty catalog.
+
 ## Install
 
 Build the application to produce `/repo-salvage-cli.tgz`, or run `npm pack` in

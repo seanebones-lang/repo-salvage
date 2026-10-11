@@ -27,6 +27,17 @@ afterEach(() => {
   vi.useRealTimers();
 });
 describe("server-side session token boundary", () => {
+  it("does not read an existing session or provider token in demo mode", async () => {
+    vi.stubEnv("REPO_SALVAGE_DEMO", "1");
+    try {
+      mocks.auth.mockResolvedValue({ login: "author", ghId: 42 });
+      expect(await getSession()).toBeNull();
+      expect(mocks.auth).not.toHaveBeenCalled();
+      expect(mocks.token).not.toHaveBeenCalled();
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
   it.each([
     ["authjs.session-token=encrypted", false],
     ["__Secure-authjs.session-token.0=encrypted", true],
