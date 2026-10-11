@@ -1,4 +1,4 @@
-/** Exercise the built demo and its downloaded adaptation outside the checkout. */
+/** Build and exercise the demo and its downloaded adaptation outside the checkout. */
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import os from "node:os";
@@ -16,7 +16,7 @@ await new Promise((resolve) => socket.close(resolve));
 const origin = `http://127.0.0.1:${port}`;
 const child = spawn(
   process.execPath,
-  [path.join(root, "scripts/demo.mjs"), "--port", String(port)],
+  [path.join(root, "scripts/demo.mjs"), "--build", "--port", String(port)],
   {
     cwd: temp,
     env: { ...process.env, TMPDIR: temp, TMP: temp, TEMP: temp },
@@ -41,7 +41,8 @@ async function get(route) {
 }
 try {
   let ready = false;
-  for (let attempt = 0; attempt < 100; attempt++) {
+  const deadline = Date.now() + 120000;
+  while (Date.now() < deadline) {
     if (child.exitCode !== null) throw Error("Demo stopped before readiness.");
     try {
       const health = await (await get("/api/health")).json();
