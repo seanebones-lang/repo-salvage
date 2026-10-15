@@ -1,5 +1,7 @@
 # Repo Salvage
 
+Contributing with an agent? Read [AGENTS.md](AGENTS.md) for setup, local checks and project boundaries.
+
 Good code deserves a second life. Repo Salvage helps developers and their coding agents
 find reusable implementations, inspect exact pinned source, retain discovered licenses
 and notices, and understand the evidence and gaps before adapting code. Authors can
