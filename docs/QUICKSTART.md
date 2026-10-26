@@ -46,7 +46,9 @@ run `node scripts/demo.mjs`.
    These clients query a catalog origin that you choose. A fresh demo catalog
    is empty; the curated examples are separate and do not inflate catalog counts.
 
-Press **Ctrl+C** to close the demo. Its database lives in a fresh temporary
+Press **Ctrl+C** to close the demo. On macOS and Linux, stopping the demo also
+signals its build/server process group, including the builder launched by npm.
+Windows retains direct-child signal handling. The demo database lives in a fresh temporary
 directory and is removed on normal shutdown. Abrupt power loss or forced process
 termination can leave a temporary folder behind. The launcher overrides existing
 database/credential settings, disables OAuth providers and signed-in sessions,
