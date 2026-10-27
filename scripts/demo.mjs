@@ -32,10 +32,20 @@ const env = demoEnvironment(
 );
 let child;
 let stopping = false;
+const processGroups = process.platform !== "win32";
 const stop = (signal) => {
   if (!stopping) {
     stopping = true;
-    child?.kill(signal);
+    if (child?.pid) {
+      try {
+        // npm launches the builder as a descendant. Signal the demo-owned
+        // process group so stopping npm does not leave that builder running.
+        if (processGroups) process.kill(-child.pid, signal);
+        else child.kill(signal);
+      } catch (error) {
+        if (error.code !== "ESRCH") throw error;
+      }
+    }
   }
 };
 process.on("SIGINT", stop);
@@ -47,6 +57,7 @@ try {
         cwd: root,
         env,
         stdio: "inherit",
+        detached: processGroups,
       });
       child.once("error", reject);
       child.once("exit", (status) => resolve(status ?? (stopping ? 0 : 1)));
